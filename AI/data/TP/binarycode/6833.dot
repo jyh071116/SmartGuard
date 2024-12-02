@@ -1,0 +1,807 @@
+digraph G {
+// Function: 6833.sol-ERC20-allowance(address,address)
+digraph{
+}
+// Function: 6833.sol-ERC20-approve(address,uint256)
+digraph{
+}
+// Function: 6833.sol-ERC20-balanceOf(address)
+digraph{
+}
+// Function: 6833.sol-ERC20-transfer(address,uint256)
+digraph{
+}
+// Function: 6833.sol-ERC20-transferFrom(address,uint256)
+digraph{
+}
+// Function: 6833.sol-ERC20Basic-balanceOf(address)
+digraph{
+}
+// Function: 6833.sol-ERC20Basic-transfer(address,uint256)
+digraph{
+}
+// Function: 6833.sol-MOEToken-MOEToken()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balances[msg.sender] = totalSupply
+
+IRs:
+REF_0(uint256) -> balances[msg.sender]
+REF_0(uint256) (->balances) := totalSupply(uint256)"];
+}
+// Function: 6833.sol-MOEToken-allowance(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+allowed[_owner][_spender]
+
+IRs:
+REF_29(mapping(address => uint256)) -> allowed[_owner]
+REF_30(uint256) -> REF_29[_spender]
+RETURN REF_30"];
+}
+// Function: 6833.sol-MOEToken-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->7;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_value != 0 && allowed[msg.sender][_spender] != 0
+
+IRs:
+TMP_42(bool) = _value != 0
+REF_25(mapping(address => uint256)) -> allowed[msg.sender]
+REF_26(uint256) -> REF_25[_spender]
+TMP_43(bool) = REF_26 != 0
+TMP_44(bool) = TMP_42 && TMP_43
+CONDITION TMP_44"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+allowed[msg.sender][_spender] = _value
+
+IRs:
+REF_27(mapping(address => uint256)) -> allowed[msg.sender]
+REF_28(uint256) -> REF_27[_spender]
+REF_28(uint256) (->allowed) := _value(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Approval(msg.sender,_spender,_value)
+
+IRs:
+Emit Approval(msg.sender,_spender,_value)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+stoppable()
+
+IRs:
+MODIFIER_CALL, MOEToken.stoppable()()"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+lock(_spender)
+
+IRs:
+MODIFIER_CALL, MOEToken.lock(address)(_spender)"];
+8->1;
+9[label="Node Type: RETURN 9
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 6833.sol-MOEToken-balanceOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+balances[_owner]
+
+IRs:
+REF_3(uint256) -> balances[_owner]
+RETURN REF_3"];
+}
+// Function: 6833.sol-MOEToken-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+myAddress = this
+
+IRs:
+myAddress(address) := this(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Transfer(msg.sender,myAddress,msg.value)
+
+IRs:
+Emit Transfer(msg.sender,myAddress,msg.value)"];
+}
+// Function: 6833.sol-MOEToken-kill()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+selfdestruct(address)(msg.sender)
+
+IRs:
+TMP_51(None) = SOLIDITY_CALL selfdestruct(address)(msg.sender)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, MOEToken.onlyOwner()()"];
+2->1;
+}
+// Function: 6833.sol-MOEToken-lock(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_add != address(0))
+
+IRs:
+TMP_58 = CONVERT 0 to address
+TMP_59(bool) = _add != TMP_58
+TMP_60(None) = SOLIDITY_CALL require(bool)(TMP_59)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+releaseTime = lockAddress[_add]
+
+IRs:
+REF_32(uint256) -> lockAddress[_add]
+releaseTime(uint256) := REF_32(uint256)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+releaseTime > 0
+
+IRs:
+TMP_61(bool) = releaseTime > 0
+CONDITION TMP_61"];
+3->4[label="True"];
+3->6[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool)(block.timestamp >= releaseTime)
+
+IRs:
+TMP_62(bool) = block.timestamp >= releaseTime
+TMP_63(None) = SOLIDITY_CALL require(bool)(TMP_62)"];
+4->5;
+5[label="Node Type: _ 5
+"];
+5->7;
+6[label="Node Type: _ 6
+"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+}
+// Function: 6833.sol-MOEToken-lockOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+lockAddress[_owner]
+
+IRs:
+REF_2(uint256) -> lockAddress[_owner]
+RETURN REF_2"];
+}
+// Function: 6833.sol-MOEToken-lockTime(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_value > block.timestamp
+
+IRs:
+TMP_15(bool) = _value > block.timestamp
+CONDITION TMP_15"];
+1->2[label="True"];
+1->4[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+lockAddress[_to] = _value
+
+IRs:
+REF_1(uint256) -> lockAddress[_to]
+REF_1(uint256) (->lockAddress) := _value(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+LOCK(_to,_value)
+
+IRs:
+Emit LOCK(_to,_value)"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, MOEToken.onlyOwner()()"];
+5->1;
+}
+// Function: 6833.sol-MOEToken-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_64(bool) = msg.sender == owner
+TMP_65(None) = SOLIDITY_CALL require(bool)(TMP_64)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 6833.sol-MOEToken-setName(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+name = _name
+
+IRs:
+name(string) := _name(string)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, MOEToken.onlyOwner()()"];
+2->1;
+}
+// Function: 6833.sol-MOEToken-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+symbol = MOE
+
+IRs:
+symbol(string) := MOE(string)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+decimals = 18
+
+IRs:
+decimals(uint256) := 18(uint256)"];
+}
+// Function: 6833.sol-MOEToken-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+totalSupply = 1000000000 * (10 ** 18)
+
+IRs:
+TMP_54(uint256) = 10 ** 18
+TMP_55(uint256) = 1000000000 * TMP_54
+totalSupply(uint256) := TMP_55(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+name = MOE's game art foundation
+
+IRs:
+name(string) := MOE's game art foundation(string)"];
+}
+// Function: 6833.sol-MOEToken-start()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+stopped = false
+
+IRs:
+stopped(bool) := False(bool)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, MOEToken.onlyOwner()()"];
+2->1;
+}
+// Function: 6833.sol-MOEToken-stop()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+stopped = true
+
+IRs:
+stopped(bool) := True(bool)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, MOEToken.onlyOwner()()"];
+2->1;
+}
+// Function: 6833.sol-MOEToken-stoppable()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(! stopped)
+
+IRs:
+TMP_56 = UnaryType.BANG stopped 
+TMP_57(None) = SOLIDITY_CALL assert(bool)(TMP_56)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 6833.sol-MOEToken-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->7;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_to != address(0))
+
+IRs:
+TMP_22 = CONVERT 0 to address
+TMP_23(bool) = _to != TMP_22
+TMP_24(None) = SOLIDITY_CALL require(bool)(TMP_23)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_amount <= balances[msg.sender])
+
+IRs:
+REF_4(uint256) -> balances[msg.sender]
+TMP_25(bool) = _amount <= REF_4
+TMP_26(None) = SOLIDITY_CALL require(bool)(TMP_25)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balances[msg.sender] = balances[msg.sender].sub(_amount)
+
+IRs:
+REF_5(uint256) -> balances[msg.sender]
+REF_6(uint256) -> balances[msg.sender]
+TMP_27(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_6', '_amount'] 
+REF_5(uint256) (->balances) := TMP_27(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+balances[_to] = balances[_to].add(_amount)
+
+IRs:
+REF_8(uint256) -> balances[_to]
+REF_9(uint256) -> balances[_to]
+TMP_28(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_9', '_amount'] 
+REF_8(uint256) (->balances) := TMP_28(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Transfer(msg.sender,_to,_amount)
+
+IRs:
+Emit Transfer(msg.sender,_to,_amount)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+stoppable()
+
+IRs:
+MODIFIER_CALL, MOEToken.stoppable()()"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+lock(msg.sender)
+
+IRs:
+MODIFIER_CALL, MOEToken.lock(address)(msg.sender)"];
+8->1;
+9[label="Node Type: RETURN 9
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 6833.sol-MOEToken-transferFrom(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->8;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_amount <= balances[_from])
+
+IRs:
+REF_11(uint256) -> balances[_from]
+TMP_32(bool) = _amount <= REF_11
+TMP_33(None) = SOLIDITY_CALL require(bool)(TMP_32)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_amount <= allowed[_from][msg.sender])
+
+IRs:
+REF_12(mapping(address => uint256)) -> allowed[_from]
+REF_13(uint256) -> REF_12[msg.sender]
+TMP_34(bool) = _amount <= REF_13
+TMP_35(None) = SOLIDITY_CALL require(bool)(TMP_34)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balances[_from] = balances[_from].sub(_amount)
+
+IRs:
+REF_14(uint256) -> balances[_from]
+REF_15(uint256) -> balances[_from]
+TMP_36(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_15', '_amount'] 
+REF_14(uint256) (->balances) := TMP_36(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+allowed[_from][msg.sender] = allowed[_from][msg.sender].sub(_amount)
+
+IRs:
+REF_17(mapping(address => uint256)) -> allowed[_from]
+REF_18(uint256) -> REF_17[msg.sender]
+REF_19(mapping(address => uint256)) -> allowed[_from]
+REF_20(uint256) -> REF_19[msg.sender]
+TMP_37(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_20', '_amount'] 
+REF_18(uint256) (->allowed) := TMP_37(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balances[msg.sender] = balances[msg.sender].add(_amount)
+
+IRs:
+REF_22(uint256) -> balances[msg.sender]
+REF_23(uint256) -> balances[msg.sender]
+TMP_38(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_23', '_amount'] 
+REF_22(uint256) (->balances) := TMP_38(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+Transfer(_from,msg.sender,_amount)
+
+IRs:
+Emit Transfer(_from,msg.sender,_amount)"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+stoppable()
+
+IRs:
+MODIFIER_CALL, MOEToken.stoppable()()"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+lock(_from)
+
+IRs:
+MODIFIER_CALL, MOEToken.lock(address)(_from)"];
+9->1;
+10[label="Node Type: RETURN 10
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 6833.sol-MOEToken-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_newOwner != address(0)
+
+IRs:
+TMP_18 = CONVERT 0 to address
+TMP_19(bool) = _newOwner != TMP_18
+CONDITION TMP_19"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = _newOwner
+
+IRs:
+owner(address) := _newOwner(address)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, MOEToken.onlyOwner()()"];
+4->1;
+}
+// Function: 6833.sol-MOEToken-withdraw()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+myAddress = this
+
+IRs:
+myAddress(address) := this(address)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+etherBalance = myAddress.balance
+
+IRs:
+TMP_48(uint256) = SOLIDITY_CALL balance(address)(myAddress)
+etherBalance(uint256) := TMP_48(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner.transfer(etherBalance)
+
+IRs:
+Transfer dest:owner value:etherBalance"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, MOEToken.onlyOwner()()"];
+4->1;
+}
+// Function: 6833.sol-SafeMath-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_10(uint256) = a + b
+c(uint256) := TMP_10(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(c >= a)
+
+IRs:
+TMP_11(bool) = c >= a
+TMP_12(None) = SOLIDITY_CALL assert(bool)(TMP_11)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 6833.sol-SafeMath-div(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a / b
+
+IRs:
+TMP_6(uint256) = a / b
+c(uint256) := TMP_6(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 6833.sol-SafeMath-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_0(uint256) = a * b
+c(uint256) := TMP_0(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(a == 0 || c / a == b)
+
+IRs:
+TMP_1(bool) = a == 0
+TMP_2(uint256) = c / a
+TMP_3(bool) = TMP_2 == b
+TMP_4(bool) = TMP_1 || TMP_3
+TMP_5(None) = SOLIDITY_CALL assert(bool)(TMP_4)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 6833.sol-SafeMath-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(b <= a)
+
+IRs:
+TMP_7(bool) = b <= a
+TMP_8(None) = SOLIDITY_CALL assert(bool)(TMP_7)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_9(uint256) = a - b
+RETURN TMP_9"];
+}
+}

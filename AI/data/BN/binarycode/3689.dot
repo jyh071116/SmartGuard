@@ -1,0 +1,1323 @@
+digraph G {
+// Function: 3689.sol-ApproveAndCallFallBack-receiveApproval(address,uint256,address,bytes)
+digraph{
+}
+// Function: 3689.sol-EthertoteToken-EthertoteAdmin()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == EthertoteAdminAddress)
+
+IRs:
+TMP_139(bool) = msg.sender == EthertoteAdminAddress
+TMP_140(None) = SOLIDITY_CALL require(bool)(TMP_139)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 3689.sol-EthertoteToken-allowance(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+allowed[_owner][_spender]
+
+IRs:
+REF_0(mapping(address => uint256)) -> allowed[_owner]
+REF_1(uint256) -> REF_0[_spender]
+RETURN REF_1"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+remaining
+
+IRs:
+RETURN remaining"];
+}
+// Function: 3689.sol-EthertoteToken-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(transfersEnabled)
+
+IRs:
+TMP_14(None) = SOLIDITY_CALL require(bool)(transfersEnabled)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)((_amount == 0) || (allowed[msg.sender][_spender] == 0))
+
+IRs:
+TMP_15(bool) = _amount == 0
+REF_2(mapping(address => uint256)) -> allowed[msg.sender]
+REF_3(uint256) -> REF_2[_spender]
+TMP_16(bool) = REF_3 == 0
+TMP_17(bool) = TMP_15 || TMP_16
+TMP_18(None) = SOLIDITY_CALL require(bool)(TMP_17)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+isContract(controller)
+
+IRs:
+TMP_19(bool) = INTERNAL_CALL, EthertoteToken.isContract(address)(controller)
+CONDITION TMP_19"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool)(TokenController(controller).onApprove(msg.sender,_spender,_amount))
+
+IRs:
+TMP_20 = CONVERT controller to TokenController
+TMP_21(bool) = HIGH_LEVEL_CALL, dest:TMP_20(TokenController), function:onApprove, arguments:['msg.sender', '_spender', '_amount']  
+TMP_22(None) = SOLIDITY_CALL require(bool)(TMP_21)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+allowed[msg.sender][_spender] = _amount
+
+IRs:
+REF_5(mapping(address => uint256)) -> allowed[msg.sender]
+REF_6(uint256) -> REF_5[_spender]
+REF_6(uint256) (->allowed) := _amount(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+Approval(msg.sender,_spender,_amount)
+
+IRs:
+Emit Approval(msg.sender,_spender,_amount)"];
+7->8;
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+9[label="Node Type: RETURN 9
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 3689.sol-EthertoteToken-approveAndCall(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(approve(_spender,_amount))
+
+IRs:
+TMP_58(bool) = INTERNAL_CALL, EthertoteToken.approve(address,uint256)(_spender,_amount)
+TMP_59(None) = SOLIDITY_CALL require(bool)(TMP_58)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+ApproveAndCallFallBack(_spender).receiveApproval(msg.sender,_amount,this,_extraData)
+
+IRs:
+TMP_60 = CONVERT _spender to ApproveAndCallFallBack
+HIGH_LEVEL_CALL, dest:TMP_60(ApproveAndCallFallBack), function:receiveApproval, arguments:['msg.sender', '_amount', 'this', '_extraData']  "];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 3689.sol-EthertoteToken-balanceOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+balanceOfAt(_owner,block.number)
+
+IRs:
+TMP_6(uint256) = INTERNAL_CALL, EthertoteToken.balanceOfAt(address,uint256)(_owner,block.number)
+RETURN TMP_6"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+balance
+
+IRs:
+RETURN balance"];
+}
+// Function: 3689.sol-EthertoteToken-balanceOfAt(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+(balances[_owner].length == 0) || (balances[_owner][0].fromBlock > _blockNumber)
+
+IRs:
+REF_15(EthertoteToken.Checkpoint[]) -> balances[_owner]
+REF_16 -> LENGTH REF_15
+TMP_62(bool) = REF_16 == 0
+REF_17(EthertoteToken.Checkpoint[]) -> balances[_owner]
+REF_18(EthertoteToken.Checkpoint) -> REF_17[0]
+REF_19(uint128) -> REF_18.fromBlock
+TMP_63(bool) = REF_19 > _blockNumber
+TMP_64(bool) = TMP_62 || TMP_63
+CONDITION TMP_64"];
+1->2[label="True"];
+1->6[label="False"];
+2[label="Node Type: IF 2
+
+EXPRESSION:
+address(parentToken) != 0
+
+IRs:
+TMP_65 = CONVERT parentToken to address
+TMP_66(bool) = TMP_65 != 0
+CONDITION TMP_66"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+parentToken.balanceOfAt(_owner,min(_blockNumber,parentSnapShotBlock))
+
+IRs:
+TMP_67(uint256) = INTERNAL_CALL, EthertoteToken.min(uint256,uint256)(_blockNumber,parentSnapShotBlock)
+TMP_68(uint256) = HIGH_LEVEL_CALL, dest:parentToken(EthertoteToken), function:balanceOfAt, arguments:['_owner', 'TMP_67']  
+RETURN TMP_68"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+getValueAt(balances[_owner],_blockNumber)
+
+IRs:
+REF_21(EthertoteToken.Checkpoint[]) -> balances[_owner]
+TMP_69(uint256) = INTERNAL_CALL, EthertoteToken.getValueAt(EthertoteToken.Checkpoint[],uint256)(REF_21,_blockNumber)
+RETURN TMP_69"];
+}
+// Function: 3689.sol-EthertoteToken-changeController(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+controller = _newController
+
+IRs:
+controller(address) := _newController(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyController()
+
+IRs:
+MODIFIER_CALL, EthertoteToken.onlyController()()"];
+2->1;
+}
+// Function: 3689.sol-EthertoteToken-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+controller = msg.sender
+
+IRs:
+controller(address) := msg.sender(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+EthertoteAdminAddress = msg.sender
+
+IRs:
+EthertoteAdminAddress(address) := msg.sender(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+tokenGenerationLock = false
+
+IRs:
+tokenGenerationLock(bool) := False(bool)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+name = Ethertote
+
+IRs:
+name(string) := Ethertote(string)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+symbol = TOTE
+
+IRs:
+symbol(string) := TOTE(string)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+decimals = 0
+
+IRs:
+decimals(uint8) := 0(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+_totalSupply = 10000000 * 10 ** uint256(decimals)
+
+IRs:
+TMP_0 = CONVERT decimals to uint256
+TMP_1(uint256) = 10 ** TMP_0
+TMP_2(uint256) = 10000000 * TMP_1
+_totalSupply(uint256) := TMP_2(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+version = Ethertote Token contract - version 1.0
+
+IRs:
+version(string) := Ethertote Token contract - version 1.0(string)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+contractOwner = msg.sender
+
+IRs:
+contractOwner(address) := msg.sender(address)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+thisContractAddress = address(this)
+
+IRs:
+TMP_3 = CONVERT this to address
+thisContractAddress(address) := TMP_3(address)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+transfersEnabled = true
+
+IRs:
+transfersEnabled(bool) := True(bool)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+creationBlock = block.number
+
+IRs:
+creationBlock(uint256) := block.number(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+generateTokens(contractOwner,_totalSupply)
+
+IRs:
+TMP_4(bool) = INTERNAL_CALL, EthertoteToken.generateTokens(address,uint256)(contractOwner,_totalSupply)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+controller = relinquishOwnershipAddress
+
+IRs:
+controller(address) := relinquishOwnershipAddress(address)"];
+}
+// Function: 3689.sol-EthertoteToken-doTransfer(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_amount == 0
+
+IRs:
+TMP_35(bool) = _amount == 0
+CONDITION TMP_35"];
+1->2[label="True"];
+1->4[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Transfer(_from,_to,_amount)
+
+IRs:
+Emit Transfer(_from,_to,_amount)"];
+2->3;
+3[label="Node Type: RETURN 3
+"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool)(parentSnapShotBlock < block.number)
+
+IRs:
+TMP_37(bool) = parentSnapShotBlock < block.number
+TMP_38(None) = SOLIDITY_CALL require(bool)(TMP_37)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+require(bool)(_to != address(this))
+
+IRs:
+TMP_39 = CONVERT this to address
+TMP_40(bool) = _to != TMP_39
+TMP_41(None) = SOLIDITY_CALL require(bool)(TMP_40)"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+previousBalanceFrom = balanceOfAt(_from,block.number)
+
+IRs:
+TMP_42(uint256) = INTERNAL_CALL, EthertoteToken.balanceOfAt(address,uint256)(_from,block.number)
+previousBalanceFrom(uint256) := TMP_42(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+require(bool)(previousBalanceFrom >= _amount)
+
+IRs:
+TMP_43(bool) = previousBalanceFrom >= _amount
+TMP_44(None) = SOLIDITY_CALL require(bool)(TMP_43)"];
+8->9;
+9[label="Node Type: IF 9
+
+EXPRESSION:
+isContract(controller)
+
+IRs:
+TMP_45(bool) = INTERNAL_CALL, EthertoteToken.isContract(address)(controller)
+CONDITION TMP_45"];
+9->10[label="True"];
+9->11[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+require(bool)(TokenController(controller).onTransfer(_from,_to,_amount))
+
+IRs:
+TMP_46 = CONVERT controller to TokenController
+TMP_47(bool) = HIGH_LEVEL_CALL, dest:TMP_46(TokenController), function:onTransfer, arguments:['_from', '_to', '_amount']  
+TMP_48(None) = SOLIDITY_CALL require(bool)(TMP_47)"];
+10->11;
+11[label="Node Type: END_IF 11
+"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+updateValueAtNow(balances[_from],previousBalanceFrom - _amount)
+
+IRs:
+REF_12(EthertoteToken.Checkpoint[]) -> balances[_from]
+TMP_49(uint256) = previousBalanceFrom - _amount
+INTERNAL_CALL, EthertoteToken.updateValueAtNow(EthertoteToken.Checkpoint[],uint256)(REF_12,TMP_49)"];
+12->13;
+13[label="Node Type: NEW VARIABLE 13
+
+EXPRESSION:
+previousBalanceTo = balanceOfAt(_to,block.number)
+
+IRs:
+TMP_51(uint256) = INTERNAL_CALL, EthertoteToken.balanceOfAt(address,uint256)(_to,block.number)
+previousBalanceTo(uint256) := TMP_51(uint256)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+require(bool)(previousBalanceTo + _amount >= previousBalanceTo)
+
+IRs:
+TMP_52(uint256) = previousBalanceTo + _amount
+TMP_53(bool) = TMP_52 >= previousBalanceTo
+TMP_54(None) = SOLIDITY_CALL require(bool)(TMP_53)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+updateValueAtNow(balances[_to],previousBalanceTo + _amount)
+
+IRs:
+REF_13(EthertoteToken.Checkpoint[]) -> balances[_to]
+TMP_55(uint256) = previousBalanceTo + _amount
+INTERNAL_CALL, EthertoteToken.updateValueAtNow(EthertoteToken.Checkpoint[],uint256)(REF_13,TMP_55)"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+Transfer(_from,_to,_amount)
+
+IRs:
+Emit Transfer(_from,_to,_amount)"];
+}
+// Function: 3689.sol-EthertoteToken-enableTransfers(bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+transfersEnabled = _transfersEnabled
+
+IRs:
+transfersEnabled(bool) := _transfersEnabled(bool)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyController()
+
+IRs:
+MODIFIER_CALL, EthertoteToken.onlyController()()"];
+2->1;
+}
+// Function: 3689.sol-EthertoteToken-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(isContract(controller))
+
+IRs:
+TMP_119(bool) = INTERNAL_CALL, EthertoteToken.isContract(address)(controller)
+TMP_120(None) = SOLIDITY_CALL require(bool)(TMP_119)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(TokenController(controller).proxyPayments.value(msg.value)(msg.sender))
+
+IRs:
+TMP_121 = CONVERT controller to TokenController
+TMP_123(bool) = HIGH_LEVEL_CALL, dest:TMP_121(TokenController), function:proxyPayments, arguments:['msg.sender'] value:msg.value 
+TMP_124(None) = SOLIDITY_CALL require(bool)(TMP_123)"];
+}
+// Function: 3689.sol-EthertoteToken-generateTokens(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->11;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(tokenGenerationLock == false)
+
+IRs:
+TMP_78(bool) = tokenGenerationLock == False
+TMP_79(None) = SOLIDITY_CALL require(bool)(TMP_78)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+curTotalSupply = totalSupply()
+
+IRs:
+TMP_80(uint256) = INTERNAL_CALL, EthertoteToken.totalSupply()()
+curTotalSupply(uint256) := TMP_80(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(curTotalSupply + _theTotalSupply >= curTotalSupply)
+
+IRs:
+TMP_81(uint256) = curTotalSupply + _theTotalSupply
+TMP_82(bool) = TMP_81 >= curTotalSupply
+TMP_83(None) = SOLIDITY_CALL require(bool)(TMP_82)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+previousBalanceTo = balanceOf(_owner)
+
+IRs:
+TMP_84(uint256) = INTERNAL_CALL, EthertoteToken.balanceOf(address)(_owner)
+previousBalanceTo(uint256) := TMP_84(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool)(previousBalanceTo + _totalSupply >= previousBalanceTo)
+
+IRs:
+TMP_85(uint256) = previousBalanceTo + _totalSupply
+TMP_86(bool) = TMP_85 >= previousBalanceTo
+TMP_87(None) = SOLIDITY_CALL require(bool)(TMP_86)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+updateValueAtNow(totalSupplyHistory,curTotalSupply + _totalSupply)
+
+IRs:
+TMP_88(uint256) = curTotalSupply + _totalSupply
+INTERNAL_CALL, EthertoteToken.updateValueAtNow(EthertoteToken.Checkpoint[],uint256)(totalSupplyHistory,TMP_88)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+updateValueAtNow(balances[_owner],previousBalanceTo + _totalSupply)
+
+IRs:
+REF_26(EthertoteToken.Checkpoint[]) -> balances[_owner]
+TMP_90(uint256) = previousBalanceTo + _totalSupply
+INTERNAL_CALL, EthertoteToken.updateValueAtNow(EthertoteToken.Checkpoint[],uint256)(REF_26,TMP_90)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+Transfer(0,_owner,_totalSupply)
+
+IRs:
+Emit Transfer(0,_owner,_totalSupply)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+tokenGenerationLock = true
+
+IRs:
+tokenGenerationLock(bool) := True(bool)"];
+9->10;
+10[label="Node Type: RETURN 10
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+onlyContract()
+
+IRs:
+MODIFIER_CALL, EthertoteToken.onlyContract()()"];
+11->1;
+}
+// Function: 3689.sol-EthertoteToken-getValueAt(EthertoteToken.Checkpoint[],uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+checkpoints.length == 0
+
+IRs:
+REF_27 -> LENGTH checkpoints
+TMP_95(bool) = REF_27 == 0
+CONDITION TMP_95"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+_block >= checkpoints[checkpoints.length - 1].fromBlock
+
+IRs:
+REF_28 -> LENGTH checkpoints
+TMP_96(uint256) = REF_28 - 1
+REF_29(EthertoteToken.Checkpoint) -> checkpoints[TMP_96]
+REF_30(uint128) -> REF_29.fromBlock
+TMP_97(bool) = _block >= REF_30
+CONDITION TMP_97"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+checkpoints[checkpoints.length - 1].value
+
+IRs:
+REF_31 -> LENGTH checkpoints
+TMP_98(uint256) = REF_31 - 1
+REF_32(EthertoteToken.Checkpoint) -> checkpoints[TMP_98]
+REF_33(uint128) -> REF_32.value
+RETURN REF_33"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: IF 7
+
+EXPRESSION:
+_block < checkpoints[0].fromBlock
+
+IRs:
+REF_34(EthertoteToken.Checkpoint) -> checkpoints[0]
+REF_35(uint128) -> REF_34.fromBlock
+TMP_99(bool) = _block < REF_35
+CONDITION TMP_99"];
+7->8[label="True"];
+7->9[label="False"];
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: NEW VARIABLE 10
+
+EXPRESSION:
+min = 0
+
+IRs:
+min(uint256) := 0(uint256)"];
+10->11;
+11[label="Node Type: NEW VARIABLE 11
+
+EXPRESSION:
+max = checkpoints.length - 1
+
+IRs:
+REF_36 -> LENGTH checkpoints
+TMP_100(uint256) = REF_36 - 1
+max(uint256) := TMP_100(uint256)"];
+11->12;
+12[label="Node Type: BEGIN_LOOP 12
+"];
+12->13;
+13[label="Node Type: IF_LOOP 13
+
+EXPRESSION:
+max > min
+
+IRs:
+TMP_101(bool) = max > min
+CONDITION TMP_101"];
+13->14[label="True"];
+13->19[label="False"];
+14[label="Node Type: NEW VARIABLE 14
+
+EXPRESSION:
+mid = (max + min + 1) / 2
+
+IRs:
+TMP_102(uint256) = max + min
+TMP_103(uint256) = TMP_102 + 1
+TMP_104(uint256) = TMP_103 / 2
+mid(uint256) := TMP_104(uint256)"];
+14->15;
+15[label="Node Type: IF 15
+
+EXPRESSION:
+checkpoints[mid].fromBlock <= _block
+
+IRs:
+REF_37(EthertoteToken.Checkpoint) -> checkpoints[mid]
+REF_38(uint128) -> REF_37.fromBlock
+TMP_105(bool) = REF_38 <= _block
+CONDITION TMP_105"];
+15->16[label="True"];
+15->17[label="False"];
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+min = mid
+
+IRs:
+min(uint256) := mid(uint256)"];
+16->18;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+max = mid - 1
+
+IRs:
+TMP_106(uint256) = mid - 1
+max(uint256) := TMP_106(uint256)"];
+17->18;
+18[label="Node Type: END_IF 18
+"];
+18->13;
+19[label="Node Type: END_LOOP 19
+"];
+19->20;
+20[label="Node Type: RETURN 20
+
+EXPRESSION:
+checkpoints[min].value
+
+IRs:
+REF_39(EthertoteToken.Checkpoint) -> checkpoints[min]
+REF_40(uint128) -> REF_39.value
+RETURN REF_40"];
+}
+// Function: 3689.sol-EthertoteToken-isContract(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+_addr == 0
+
+IRs:
+TMP_116(bool) = _addr == 0
+CONDITION TMP_116"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: INLINE ASM 5
+"];
+5->6;
+6[label="Node Type: END INLINE ASM 6
+"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+size > 0
+
+IRs:
+TMP_117(bool) = size > 0
+RETURN TMP_117"];
+}
+// Function: 3689.sol-EthertoteToken-min(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+a < b
+
+IRs:
+TMP_118(bool) = a < b
+CONDITION TMP_118"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+a
+
+IRs:
+RETURN a"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+b
+
+IRs:
+RETURN b"];
+}
+// Function: 3689.sol-EthertoteToken-onlyContract()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(address(this) == thisContractAddress)
+
+IRs:
+TMP_136 = CONVERT this to address
+TMP_137(bool) = TMP_136 == thisContractAddress
+TMP_138(None) = SOLIDITY_CALL require(bool)(TMP_137)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 3689.sol-EthertoteToken-onlyController()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == controller)
+
+IRs:
+TMP_134(bool) = msg.sender == controller
+TMP_135(None) = SOLIDITY_CALL require(bool)(TMP_134)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 3689.sol-EthertoteToken-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+relinquishOwnershipAddress = 0x0000000000000000000000000000000000000000
+
+IRs:
+relinquishOwnershipAddress(address) := 0(address)"];
+}
+// Function: 3689.sol-EthertoteToken-totalSupply()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+totalSupplyAt(block.number)
+
+IRs:
+TMP_5(uint256) = INTERNAL_CALL, EthertoteToken.totalSupplyAt(uint256)(block.number)
+RETURN TMP_5"];
+}
+// Function: 3689.sol-EthertoteToken-totalSupplyAt(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+(totalSupplyHistory.length == 0) || (totalSupplyHistory[0].fromBlock > _blockNumber)
+
+IRs:
+REF_22 -> LENGTH totalSupplyHistory
+TMP_70(bool) = REF_22 == 0
+REF_23(EthertoteToken.Checkpoint) -> totalSupplyHistory[0]
+REF_24(uint128) -> REF_23.fromBlock
+TMP_71(bool) = REF_24 > _blockNumber
+TMP_72(bool) = TMP_70 || TMP_71
+CONDITION TMP_72"];
+1->2[label="True"];
+1->6[label="False"];
+2[label="Node Type: IF 2
+
+EXPRESSION:
+address(parentToken) != 0
+
+IRs:
+TMP_73 = CONVERT parentToken to address
+TMP_74(bool) = TMP_73 != 0
+CONDITION TMP_74"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+parentToken.totalSupplyAt(min(_blockNumber,parentSnapShotBlock))
+
+IRs:
+TMP_75(uint256) = INTERNAL_CALL, EthertoteToken.min(uint256,uint256)(_blockNumber,parentSnapShotBlock)
+TMP_76(uint256) = HIGH_LEVEL_CALL, dest:parentToken(EthertoteToken), function:totalSupplyAt, arguments:['TMP_75']  
+RETURN TMP_76"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+getValueAt(totalSupplyHistory,_blockNumber)
+
+IRs:
+TMP_77(uint256) = INTERNAL_CALL, EthertoteToken.getValueAt(EthertoteToken.Checkpoint[],uint256)(totalSupplyHistory,_blockNumber)
+RETURN TMP_77"];
+}
+// Function: 3689.sol-EthertoteToken-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(transfersEnabled)
+
+IRs:
+TMP_7(None) = SOLIDITY_CALL require(bool)(transfersEnabled)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_to != address(this))
+
+IRs:
+TMP_8 = CONVERT this to address
+TMP_9(bool) = _to != TMP_8
+TMP_10(None) = SOLIDITY_CALL require(bool)(TMP_9)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(_to != 0x0)
+
+IRs:
+TMP_11(bool) = _to != 0
+TMP_12(None) = SOLIDITY_CALL require(bool)(TMP_11)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+doTransfer(msg.sender,_to,_amount)
+
+IRs:
+INTERNAL_CALL, EthertoteToken.doTransfer(address,address,uint256)(msg.sender,_to,_amount)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 3689.sol-EthertoteToken-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_to != address(this))
+
+IRs:
+TMP_24 = CONVERT this to address
+TMP_25(bool) = _to != TMP_24
+TMP_26(None) = SOLIDITY_CALL require(bool)(TMP_25)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_to != 0x0)
+
+IRs:
+TMP_27(bool) = _to != 0
+TMP_28(None) = SOLIDITY_CALL require(bool)(TMP_27)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+msg.sender != controller
+
+IRs:
+TMP_29(bool) = msg.sender != controller
+CONDITION TMP_29"];
+3->4[label="True"];
+3->7[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool)(transfersEnabled)
+
+IRs:
+TMP_30(None) = SOLIDITY_CALL require(bool)(transfersEnabled)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool)(allowed[_from][msg.sender] >= _amount)
+
+IRs:
+REF_7(mapping(address => uint256)) -> allowed[_from]
+REF_8(uint256) -> REF_7[msg.sender]
+TMP_31(bool) = REF_8 >= _amount
+TMP_32(None) = SOLIDITY_CALL require(bool)(TMP_31)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+allowed[_from][msg.sender] -= _amount
+
+IRs:
+REF_9(mapping(address => uint256)) -> allowed[_from]
+REF_10(uint256) -> REF_9[msg.sender]
+REF_10(-> allowed) = REF_10 - _amount"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+doTransfer(_from,_to,_amount)
+
+IRs:
+INTERNAL_CALL, EthertoteToken.doTransfer(address,address,uint256)(_from,_to,_amount)"];
+8->9;
+9[label="Node Type: RETURN 9
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+10[label="Node Type: RETURN 10
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 3689.sol-EthertoteToken-updateValueAtNow(EthertoteToken.Checkpoint[],uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+(checkpoints.length == 0) || (checkpoints[checkpoints.length - 1].fromBlock < block.number)
+
+IRs:
+REF_41 -> LENGTH checkpoints
+TMP_107(bool) = REF_41 == 0
+REF_42 -> LENGTH checkpoints
+TMP_108(uint256) = REF_42 - 1
+REF_43(EthertoteToken.Checkpoint) -> checkpoints[TMP_108]
+REF_44(uint128) -> REF_43.fromBlock
+TMP_109(bool) = REF_44 < block.number
+TMP_110(bool) = TMP_107 || TMP_109
+CONDITION TMP_110"];
+1->2[label="True"];
+1->5[label="False"];
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+newCheckPoint = checkpoints[checkpoints.length ++]
+
+IRs:
+REF_45 -> LENGTH checkpoints
+TMP_111(uint256) := REF_45(uint256)
+REF_45(-> checkpoints) = REF_45 + 1
+REF_46(EthertoteToken.Checkpoint) -> checkpoints[TMP_111]
+newCheckPoint(EthertoteToken.Checkpoint) := REF_46(EthertoteToken.Checkpoint)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+newCheckPoint.fromBlock = uint128(block.number)
+
+IRs:
+REF_47(uint128) -> newCheckPoint.fromBlock
+TMP_112 = CONVERT block.number to uint128
+REF_47(uint128) (->newCheckPoint) := TMP_112(uint128)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+newCheckPoint.value = uint128(_value)
+
+IRs:
+REF_48(uint128) -> newCheckPoint.value
+TMP_113 = CONVERT _value to uint128
+REF_48(uint128) (->newCheckPoint) := TMP_113(uint128)"];
+4->7;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+oldCheckPoint = checkpoints[checkpoints.length - 1]
+
+IRs:
+REF_49 -> LENGTH checkpoints
+TMP_114(uint256) = REF_49 - 1
+REF_50(EthertoteToken.Checkpoint) -> checkpoints[TMP_114]
+oldCheckPoint(EthertoteToken.Checkpoint) := REF_50(EthertoteToken.Checkpoint)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+oldCheckPoint.value = uint128(_value)
+
+IRs:
+REF_51(uint128) -> oldCheckPoint.value
+TMP_115 = CONVERT _value to uint128
+REF_51(uint128) (->oldCheckPoint) := TMP_115(uint128)"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+}
+// Function: 3689.sol-EthertoteToken-withdrawOtherTokens(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->9;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_token == 0x0
+
+IRs:
+TMP_125(bool) = _token == 0
+CONDITION TMP_125"];
+1->2[label="True"];
+1->4[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+controller.transfer(address(this).balance)
+
+IRs:
+TMP_126 = CONVERT this to address
+TMP_127(uint256) = SOLIDITY_CALL balance(address)(TMP_126)
+Transfer dest:controller value:TMP_127"];
+2->3;
+3[label="Node Type: RETURN 3
+"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+token = EthertoteToken(_token)
+
+IRs:
+TMP_129 = CONVERT _token to EthertoteToken
+token(EthertoteToken) := TMP_129(EthertoteToken)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+balance = token.balanceOf(this)
+
+IRs:
+TMP_130(uint256) = HIGH_LEVEL_CALL, dest:token(EthertoteToken), function:balanceOf, arguments:['this']  
+balance(uint256) := TMP_130(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+token.transfer(controller,balance)
+
+IRs:
+TMP_131(bool) = HIGH_LEVEL_CALL, dest:token(EthertoteToken), function:transfer, arguments:['controller', 'balance']  "];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+ClaimedTokens(_token,controller,balance)
+
+IRs:
+Emit ClaimedTokens(_token,controller,balance)"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+EthertoteAdmin()
+
+IRs:
+MODIFIER_CALL, EthertoteToken.EthertoteAdmin()()"];
+9->1;
+}
+// Function: 3689.sol-TokenController-onApprove(address,address,uint256)
+digraph{
+}
+// Function: 3689.sol-TokenController-onTransfer(address,address,uint256)
+digraph{
+}
+// Function: 3689.sol-TokenController-proxyPayments(address)
+digraph{
+}
+}

@@ -1,0 +1,303 @@
+digraph G {
+// Function: 1061.sol-TON-TON()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+balanceOf[msg.sender] = totalSupply
+
+IRs:
+REF_0(uint256) -> balanceOf[msg.sender]
+REF_0(uint256) (->balanceOf) := totalSupply(uint256)"];
+}
+// Function: 1061.sol-TON-_transfer(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_to != 0x0)
+
+IRs:
+TMP_0(bool) = _to != 0
+TMP_1(None) = SOLIDITY_CALL require(bool)(TMP_0)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(balanceOf[_from] >= _value)
+
+IRs:
+REF_1(uint256) -> balanceOf[_from]
+TMP_2(bool) = REF_1 >= _value
+TMP_3(None) = SOLIDITY_CALL require(bool)(TMP_2)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(balanceOf[_to] + _value >= balanceOf[_to])
+
+IRs:
+REF_2(uint256) -> balanceOf[_to]
+TMP_4(uint256) = REF_2 + _value
+REF_3(uint256) -> balanceOf[_to]
+TMP_5(bool) = TMP_4 >= REF_3
+TMP_6(None) = SOLIDITY_CALL require(bool)(TMP_5)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+previousBalances = balanceOf[_from] + balanceOf[_to]
+
+IRs:
+REF_4(uint256) -> balanceOf[_from]
+REF_5(uint256) -> balanceOf[_to]
+TMP_7(uint256) = REF_4 + REF_5
+previousBalances(uint256) := TMP_7(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balanceOf[_from] -= _value
+
+IRs:
+REF_6(uint256) -> balanceOf[_from]
+REF_6(-> balanceOf) = REF_6 - _value"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+balanceOf[_to] += _value
+
+IRs:
+REF_7(uint256) -> balanceOf[_to]
+REF_7(-> balanceOf) = REF_7 + _value"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+Transfer(_from,_to,_value)
+
+IRs:
+Emit Transfer(_from,_to,_value)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+assert(bool)(balanceOf[_from] + balanceOf[_to] == previousBalances)
+
+IRs:
+REF_8(uint256) -> balanceOf[_from]
+REF_9(uint256) -> balanceOf[_to]
+TMP_9(uint256) = REF_8 + REF_9
+TMP_10(bool) = TMP_9 == previousBalances
+TMP_11(None) = SOLIDITY_CALL assert(bool)(TMP_10)"];
+}
+// Function: 1061.sol-TON-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowance[msg.sender][_spender] = _value
+
+IRs:
+REF_14(mapping(address => uint256)) -> allowance[msg.sender]
+REF_15(uint256) -> REF_14[_spender]
+REF_15(uint256) (->allowance) := _value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,_value)
+
+IRs:
+Emit Approval(msg.sender,_spender,_value)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 1061.sol-TON-approveAndCall(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+spender = tokenRecipient(_spender)
+
+IRs:
+TMP_17 = CONVERT _spender to tokenRecipient
+spender(tokenRecipient) := TMP_17(tokenRecipient)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+approve(_spender,_value)
+
+IRs:
+TMP_18(bool) = INTERNAL_CALL, TON.approve(address,uint256)(_spender,_value)
+CONDITION TMP_18"];
+2->3[label="True"];
+2->5[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+spender.receiveApproval(msg.sender,_value,this,_extraData)
+
+IRs:
+HIGH_LEVEL_CALL, dest:spender(tokenRecipient), function:receiveApproval, arguments:['msg.sender', '_value', 'this', '_extraData']  "];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 1061.sol-TON-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+name = TON
+
+IRs:
+name(string) := TON(string)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+symbol = TON
+
+IRs:
+symbol(string) := TON(string)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+decimals = 18
+
+IRs:
+decimals(uint8) := 18(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+totalSupply = 1000000000000000000000000000
+
+IRs:
+totalSupply(uint256) := 1000000000000000000000000000(uint256)"];
+}
+// Function: 1061.sol-TON-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transfer(msg.sender,_to,_value)
+
+IRs:
+INTERNAL_CALL, TON._transfer(address,address,uint256)(msg.sender,_to,_value)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 1061.sol-TON-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_value <= allowance[_from][msg.sender])
+
+IRs:
+REF_10(mapping(address => uint256)) -> allowance[_from]
+REF_11(uint256) -> REF_10[msg.sender]
+TMP_13(bool) = _value <= REF_11
+TMP_14(None) = SOLIDITY_CALL require(bool)(TMP_13)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+allowance[_from][msg.sender] -= _value
+
+IRs:
+REF_12(mapping(address => uint256)) -> allowance[_from]
+REF_13(uint256) -> REF_12[msg.sender]
+REF_13(-> allowance) = REF_13 - _value"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_transfer(_from,_to,_value)
+
+IRs:
+INTERNAL_CALL, TON._transfer(address,address,uint256)(_from,_to,_value)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 1061.sol-tokenRecipient-receiveApproval(address,uint256,address,bytes)
+digraph{
+}
+}

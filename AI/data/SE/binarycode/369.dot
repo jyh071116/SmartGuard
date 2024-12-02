@@ -1,0 +1,826 @@
+digraph G {
+// Function: 369.sol-Divies-balances()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+(address(this).balance)
+
+IRs:
+TMP_0 = CONVERT this to address
+TMP_1(uint256) = SOLIDITY_CALL balance(address)(TMP_0)
+RETURN TMP_1"];
+}
+// Function: 369.sol-Divies-deposit()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 369.sol-Divies-distribute(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->31;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(_percent > 0 && _percent < 100,please pick a percent between 1 and 99)
+
+IRs:
+TMP_2(bool) = _percent > 0
+TMP_3(bool) = _percent < 100
+TMP_4(bool) = TMP_2 && TMP_3
+TMP_5(None) = SOLIDITY_CALL require(bool,string)(TMP_4,please pick a percent between 1 and 99)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+_pusher = msg.sender
+
+IRs:
+_pusher(address) := msg.sender(address)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+_bal = address(this).balance
+
+IRs:
+TMP_6 = CONVERT this to address
+TMP_7(uint256) = SOLIDITY_CALL balance(address)(TMP_6)
+_bal(uint256) := TMP_7(uint256)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+pushers_[_pusher].tracker <= pusherTracker_.sub(100) && pushers_[_pusher].time.add(3600) < now
+
+IRs:
+REF_0(Divies.Pusher) -> pushers_[_pusher]
+REF_1(uint256) -> REF_0.tracker
+TMP_8(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['pusherTracker_', '100'] 
+TMP_9(bool) = REF_1 <= TMP_8
+REF_3(Divies.Pusher) -> pushers_[_pusher]
+REF_4(uint256) -> REF_3.time
+TMP_10(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_4', '3600'] 
+TMP_11(bool) = TMP_10 < now
+TMP_12(bool) = TMP_9 && TMP_11
+CONDITION TMP_12"];
+6->7[label="True"];
+6->23[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+pushers_[_pusher].tracker = pusherTracker_
+
+IRs:
+REF_6(Divies.Pusher) -> pushers_[_pusher]
+REF_7(uint256) -> REF_6.tracker
+REF_7(uint256) (->pushers_) := pusherTracker_(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+pusherTracker_ ++
+
+IRs:
+TMP_13(uint256) := pusherTracker_(uint256)
+pusherTracker_(uint256) = pusherTracker_ + 1"];
+8->9;
+9[label="Node Type: IF 9
+
+EXPRESSION:
+H4Dcontract_.balanceOf(_pusher) >= H4Dcontract_.stakingRequirement()
+
+IRs:
+TMP_14(uint256) = HIGH_LEVEL_CALL, dest:H4Dcontract_(HourglassInterface), function:balanceOf, arguments:['_pusher']  
+TMP_15(uint256) = HIGH_LEVEL_CALL, dest:H4Dcontract_(HourglassInterface), function:stakingRequirement, arguments:[]  
+TMP_16(bool) = TMP_14 >= TMP_15
+CONDITION TMP_16"];
+9->10[label="True"];
+9->11[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+_mnPayout = (_bal / 10) / 3
+
+IRs:
+TMP_17(uint256) = _bal / 10
+TMP_18(uint256) = TMP_17 / 3
+_mnPayout(uint256) := TMP_18(uint256)"];
+10->11;
+11[label="Node Type: END_IF 11
+"];
+11->12;
+12[label="Node Type: NEW VARIABLE 12
+
+EXPRESSION:
+_stop = (_bal.mul(100 - _percent)) / 100
+
+IRs:
+TMP_19(uint256) = 100 - _percent
+TMP_20(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['_bal', 'TMP_19'] 
+TMP_21(uint256) = TMP_20 / 100
+_stop(uint256) := TMP_21(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+H4Dcontract_.buy.value(_bal)(_pusher)
+
+IRs:
+TMP_23(uint256) = HIGH_LEVEL_CALL, dest:H4Dcontract_(HourglassInterface), function:buy, arguments:['_pusher'] value:_bal "];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+H4Dcontract_.sell(H4Dcontract_.balanceOf(address(this)))
+
+IRs:
+TMP_24 = CONVERT this to address
+TMP_25(uint256) = HIGH_LEVEL_CALL, dest:H4Dcontract_(HourglassInterface), function:balanceOf, arguments:['TMP_24']  
+HIGH_LEVEL_CALL, dest:H4Dcontract_(HourglassInterface), function:sell, arguments:['TMP_25']  "];
+14->15;
+15[label="Node Type: NEW VARIABLE 15
+
+EXPRESSION:
+_tracker = H4Dcontract_.dividendsOf(address(this))
+
+IRs:
+TMP_27 = CONVERT this to address
+TMP_28(uint256) = HIGH_LEVEL_CALL, dest:H4Dcontract_(HourglassInterface), function:dividendsOf, arguments:['TMP_27']  
+_tracker(uint256) := TMP_28(uint256)"];
+15->16;
+16[label="Node Type: BEGIN_LOOP 16
+"];
+16->17;
+17[label="Node Type: IF_LOOP 17
+
+EXPRESSION:
+_tracker >= _stop
+
+IRs:
+TMP_29(bool) = _tracker >= _stop
+CONDITION TMP_29"];
+17->18[label="True"];
+17->21[label="False"];
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+H4Dcontract_.reinvest()
+
+IRs:
+HIGH_LEVEL_CALL, dest:H4Dcontract_(HourglassInterface), function:reinvest, arguments:[]  "];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+H4Dcontract_.sell(H4Dcontract_.balanceOf(address(this)))
+
+IRs:
+TMP_31 = CONVERT this to address
+TMP_32(uint256) = HIGH_LEVEL_CALL, dest:H4Dcontract_(HourglassInterface), function:balanceOf, arguments:['TMP_31']  
+HIGH_LEVEL_CALL, dest:H4Dcontract_(HourglassInterface), function:sell, arguments:['TMP_32']  "];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+_tracker = (_tracker.mul(81)) / 100
+
+IRs:
+TMP_34(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['_tracker', '81'] 
+TMP_35(uint256) = TMP_34 / 100
+_tracker(uint256) := TMP_35(uint256)"];
+20->17;
+21[label="Node Type: END_LOOP 21
+"];
+21->22;
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+H4Dcontract_.withdraw()
+
+IRs:
+HIGH_LEVEL_CALL, dest:H4Dcontract_(HourglassInterface), function:withdraw, arguments:[]  "];
+22->24;
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+_compressedData = _compressedData.insert(1,47,47)
+
+IRs:
+TMP_37(uint256) = LIBRARY_CALL, dest:UintCompressor, function:UintCompressor.insert(uint256,uint256,uint256,uint256), arguments:['_compressedData', '1', '47', '47'] 
+_compressedData(uint256) := TMP_37(uint256)"];
+23->24;
+24[label="Node Type: END_IF 24
+"];
+24->25;
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+pushers_[_pusher].time = now
+
+IRs:
+REF_22(Divies.Pusher) -> pushers_[_pusher]
+REF_23(uint256) -> REF_22.time
+REF_23(uint256) (->pushers_) := now(uint256)"];
+25->26;
+26[label="Node Type: EXPRESSION 26
+
+EXPRESSION:
+_compressedData = _compressedData.insert(now,0,14)
+
+IRs:
+TMP_38(uint256) = LIBRARY_CALL, dest:UintCompressor, function:UintCompressor.insert(uint256,uint256,uint256,uint256), arguments:['_compressedData', 'now', '0', '14'] 
+_compressedData(uint256) := TMP_38(uint256)"];
+26->27;
+27[label="Node Type: EXPRESSION 27
+
+EXPRESSION:
+_compressedData = _compressedData.insert(pushers_[_pusher].tracker,15,29)
+
+IRs:
+REF_26(Divies.Pusher) -> pushers_[_pusher]
+REF_27(uint256) -> REF_26.tracker
+TMP_39(uint256) = LIBRARY_CALL, dest:UintCompressor, function:UintCompressor.insert(uint256,uint256,uint256,uint256), arguments:['_compressedData', 'REF_27', '15', '29'] 
+_compressedData(uint256) := TMP_39(uint256)"];
+27->28;
+28[label="Node Type: EXPRESSION 28
+
+EXPRESSION:
+_compressedData = _compressedData.insert(pusherTracker_,30,44)
+
+IRs:
+TMP_40(uint256) = LIBRARY_CALL, dest:UintCompressor, function:UintCompressor.insert(uint256,uint256,uint256,uint256), arguments:['_compressedData', 'pusherTracker_', '30', '44'] 
+_compressedData(uint256) := TMP_40(uint256)"];
+28->29;
+29[label="Node Type: EXPRESSION 29
+
+EXPRESSION:
+_compressedData = _compressedData.insert(_percent,45,46)
+
+IRs:
+TMP_41(uint256) = LIBRARY_CALL, dest:UintCompressor, function:UintCompressor.insert(uint256,uint256,uint256,uint256), arguments:['_compressedData', '_percent', '45', '46'] 
+_compressedData(uint256) := TMP_41(uint256)"];
+29->30;
+30[label="Node Type: EXPRESSION 30
+
+EXPRESSION:
+onDistribute(_pusher,_bal,_mnPayout,address(this).balance,_compressedData)
+
+IRs:
+TMP_42 = CONVERT this to address
+TMP_43(uint256) = SOLIDITY_CALL balance(address)(TMP_42)
+Emit onDistribute(_pusher,_bal,_mnPayout,TMP_43,_compressedData)"];
+31[label="Node Type: EXPRESSION 31
+
+EXPRESSION:
+isHuman()
+
+IRs:
+MODIFIER_CALL, Divies.isHuman()()"];
+31->1;
+}
+// Function: 369.sol-Divies-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 369.sol-Divies-isHuman()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(tx.origin == msg.sender)
+
+IRs:
+TMP_47(bool) = tx.origin == msg.sender
+TMP_48(None) = SOLIDITY_CALL require(bool)(TMP_47)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 369.sol-Divies-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+H4Dcontract_ = HourglassInterface(0xeB0b5FA53843aAa2e636ccB599bA4a8CE8029aA1)
+
+IRs:
+TMP_46 = CONVERT 1341866471229328296796943476305176013571306461857 to HourglassInterface
+H4Dcontract_(HourglassInterface) := TMP_46(HourglassInterface)"];
+}
+// Function: 369.sol-Divies-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+pusherTracker_ = 100
+
+IRs:
+pusherTracker_(uint256) := 100(uint256)"];
+}
+// Function: 369.sol-HourglassInterface-balanceOf(address)
+digraph{
+}
+// Function: 369.sol-HourglassInterface-buy(address)
+digraph{
+}
+// Function: 369.sol-HourglassInterface-dividendsOf(address)
+digraph{
+}
+// Function: 369.sol-HourglassInterface-exit()
+digraph{
+}
+// Function: 369.sol-HourglassInterface-fallback()
+digraph{
+}
+// Function: 369.sol-HourglassInterface-reinvest()
+digraph{
+}
+// Function: 369.sol-HourglassInterface-sell(uint256)
+digraph{
+}
+// Function: 369.sol-HourglassInterface-stakingRequirement()
+digraph{
+}
+// Function: 369.sol-HourglassInterface-transfer(address,uint256)
+digraph{
+}
+// Function: 369.sol-HourglassInterface-withdraw()
+digraph{
+}
+// Function: 369.sol-SafeMath-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_94(uint256) = a + b
+c(uint256) := TMP_94(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(c >= a,SafeMath add failed)
+
+IRs:
+TMP_95(bool) = c >= a
+TMP_96(None) = SOLIDITY_CALL require(bool,string)(TMP_95,SafeMath add failed)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 369.sol-SafeMath-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+a == 0
+
+IRs:
+TMP_86(bool) = a == 0
+CONDITION TMP_86"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_87(uint256) = a * b
+c(uint256) := TMP_87(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool,string)(c / a == b,SafeMath mul failed)
+
+IRs:
+TMP_88(uint256) = c / a
+TMP_89(bool) = TMP_88 == b
+TMP_90(None) = SOLIDITY_CALL require(bool,string)(TMP_89,SafeMath mul failed)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 369.sol-SafeMath-pwr(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+x == 0
+
+IRs:
+TMP_104(bool) = x == 0
+CONDITION TMP_104"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+(0)
+
+IRs:
+RETURN 0"];
+3[label="Node Type: IF 3
+
+EXPRESSION:
+y == 0
+
+IRs:
+TMP_105(bool) = y == 0
+CONDITION TMP_105"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+(1)
+
+IRs:
+RETURN 1"];
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+z = x
+
+IRs:
+z(uint256) := x(uint256)"];
+5->8;
+6[label="Node Type: BEGIN_LOOP 6
+"];
+6->9;
+7[label="Node Type: END_LOOP 7
+"];
+7->12;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+i = 1
+
+IRs:
+i(uint256) := 1(uint256)"];
+8->6;
+9[label="Node Type: IF_LOOP 9
+
+EXPRESSION:
+i < y
+
+IRs:
+TMP_106(bool) = i < y
+CONDITION TMP_106"];
+9->10[label="True"];
+9->7[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+z = mul(z,x)
+
+IRs:
+TMP_107(uint256) = INTERNAL_CALL, SafeMath.mul(uint256,uint256)(z,x)
+z(uint256) := TMP_107(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_108(uint256) := i(uint256)
+i(uint256) = i + 1"];
+11->9;
+12[label="Node Type: RETURN 12
+
+EXPRESSION:
+(z)
+
+IRs:
+RETURN z"];
+}
+// Function: 369.sol-SafeMath-sq(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+(mul(x,x))
+
+IRs:
+TMP_103(uint256) = INTERNAL_CALL, SafeMath.mul(uint256,uint256)(x,x)
+RETURN TMP_103"];
+}
+// Function: 369.sol-SafeMath-sqrt(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+z = ((add(x,1)) / 2)
+
+IRs:
+TMP_97(uint256) = INTERNAL_CALL, SafeMath.add(uint256,uint256)(x,1)
+TMP_98(uint256) = TMP_97 / 2
+z(uint256) := TMP_98(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+y = x
+
+IRs:
+y(uint256) := x(uint256)"];
+2->3;
+3[label="Node Type: BEGIN_LOOP 3
+"];
+3->4;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+z < y
+
+IRs:
+TMP_99(bool) = z < y
+CONDITION TMP_99"];
+4->5[label="True"];
+4->7[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+y = z
+
+IRs:
+y(uint256) := z(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+z = ((add((x / z),z)) / 2)
+
+IRs:
+TMP_100(uint256) = x / z
+TMP_101(uint256) = INTERNAL_CALL, SafeMath.add(uint256,uint256)(TMP_100,z)
+TMP_102(uint256) = TMP_101 / 2
+z(uint256) := TMP_102(uint256)"];
+6->4;
+7[label="Node Type: END_LOOP 7
+"];
+7->8;
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+y
+
+IRs:
+RETURN y"];
+}
+// Function: 369.sol-SafeMath-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(b <= a,SafeMath sub failed)
+
+IRs:
+TMP_91(bool) = b <= a
+TMP_92(None) = SOLIDITY_CALL require(bool,string)(TMP_91,SafeMath sub failed)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_93(uint256) = a - b
+RETURN TMP_93"];
+}
+// Function: 369.sol-UintCompressor-exponent(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+((10).pwr(_position))
+
+IRs:
+TMP_85(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.pwr(uint256,uint256), arguments:['10', '_position'] 
+RETURN TMP_85"];
+}
+// Function: 369.sol-UintCompressor-extract(uint256,uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(_end < 77 && _start < 77,start/end must be less than 77)
+
+IRs:
+TMP_70(bool) = _end < 77
+TMP_71(bool) = _start < 77
+TMP_72(bool) = TMP_70 && TMP_71
+TMP_73(None) = SOLIDITY_CALL require(bool,string)(TMP_72,start/end must be less than 77)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(_end >= _start,end must be >= start)
+
+IRs:
+TMP_74(bool) = _end >= _start
+TMP_75(None) = SOLIDITY_CALL require(bool,string)(TMP_74,end must be >= start)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_end = exponent(_end).mul(10)
+
+IRs:
+TMP_76(uint256) = INTERNAL_CALL, UintCompressor.exponent(uint256)(_end)
+TMP_77(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['TMP_76', '10'] 
+_end(uint256) := TMP_77(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+_start = exponent(_start)
+
+IRs:
+TMP_78(uint256) = INTERNAL_CALL, UintCompressor.exponent(uint256)(_start)
+_start(uint256) := TMP_78(uint256)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+((((_input / _start).mul(_start)).sub((_input / _end).mul(_end))) / _start)
+
+IRs:
+TMP_79(uint256) = _input / _start
+TMP_80(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['TMP_79', '_start'] 
+TMP_81(uint256) = _input / _end
+TMP_82(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['TMP_81', '_end'] 
+TMP_83(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['TMP_80', 'TMP_82'] 
+TMP_84(uint256) = TMP_83 / _start
+RETURN TMP_84"];
+}
+// Function: 369.sol-UintCompressor-insert(uint256,uint256,uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(_end < 77 && _start < 77,start/end must be less than 77)
+
+IRs:
+TMP_49(bool) = _end < 77
+TMP_50(bool) = _start < 77
+TMP_51(bool) = TMP_49 && TMP_50
+TMP_52(None) = SOLIDITY_CALL require(bool,string)(TMP_51,start/end must be less than 77)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(_end >= _start,end must be >= start)
+
+IRs:
+TMP_53(bool) = _end >= _start
+TMP_54(None) = SOLIDITY_CALL require(bool,string)(TMP_53,end must be >= start)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_end = exponent(_end).mul(10)
+
+IRs:
+TMP_55(uint256) = INTERNAL_CALL, UintCompressor.exponent(uint256)(_end)
+TMP_56(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['TMP_55', '10'] 
+_end(uint256) := TMP_56(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+_start = exponent(_start)
+
+IRs:
+TMP_57(uint256) = INTERNAL_CALL, UintCompressor.exponent(uint256)(_start)
+_start(uint256) := TMP_57(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool)(_include < (_end / _start))
+
+IRs:
+TMP_58(uint256) = _end / _start
+TMP_59(bool) = _include < TMP_58
+TMP_60(None) = SOLIDITY_CALL require(bool)(TMP_59)"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+_include > 0
+
+IRs:
+TMP_61(bool) = _include > 0
+CONDITION TMP_61"];
+6->7[label="True"];
+6->8[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+_include = _include.mul(_start)
+
+IRs:
+TMP_62(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['_include', '_start'] 
+_include(uint256) := TMP_62(uint256)"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: RETURN 9
+
+EXPRESSION:
+((_var.sub((_var / _start).mul(_start))).add(_include).add((_var / _end).mul(_end)))
+
+IRs:
+TMP_63(uint256) = _var / _start
+TMP_64(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['TMP_63', '_start'] 
+TMP_65(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['_var', 'TMP_64'] 
+TMP_66(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['TMP_65', '_include'] 
+TMP_67(uint256) = _var / _end
+TMP_68(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['TMP_67', '_end'] 
+TMP_69(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['TMP_66', 'TMP_68'] 
+RETURN TMP_69"];
+}
+}

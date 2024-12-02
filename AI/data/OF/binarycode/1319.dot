@@ -1,0 +1,329 @@
+digraph G {
+// Function: 1319.sol-SSOrgToken-SSOrgToken(string,string,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+name = tokenName
+
+IRs:
+name(string) := tokenName(string)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+symbol = tokenSymbol
+
+IRs:
+symbol(string) := tokenSymbol(string)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+totalSupply = tokenSupply * 10 ** uint256(decimals)
+
+IRs:
+TMP_0 = CONVERT decimals to uint256
+TMP_1(uint256) = 10 ** TMP_0
+TMP_2(uint256) = tokenSupply * TMP_1
+totalSupply(uint256) := TMP_2(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+balanceOf[msg.sender] = totalSupply
+
+IRs:
+REF_0(uint256) -> balanceOf[msg.sender]
+REF_0(uint256) (->balanceOf) := totalSupply(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 1319.sol-SSOrgToken-buy(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+amount = msg.value / sellPriceOf[seller]
+
+IRs:
+REF_17(uint256) -> sellPriceOf[seller]
+TMP_21(uint256) = msg.value / REF_17
+amount(uint256) := TMP_21(uint256)"];
+1->8;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balanceOf[msg.sender] += amount
+
+IRs:
+REF_18(uint256) -> balanceOf[msg.sender]
+REF_18(-> balanceOf) = REF_18 + amount"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+sellTotalOf[seller] -= amount
+
+IRs:
+REF_19(uint256) -> sellTotalOf[seller]
+REF_19(-> sellTotalOf) = REF_19 - amount"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Transfer(seller,msg.sender,amount)
+
+IRs:
+Emit Transfer(seller,msg.sender,amount)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+seller.transfer(msg.value)
+
+IRs:
+Transfer dest:seller value:msg.value"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+amount
+
+IRs:
+RETURN amount"];
+8[label="Node Type: IF 8
+
+EXPRESSION:
+sellTypeOf[seller] == 0
+
+IRs:
+REF_21(uint8) -> sellTypeOf[seller]
+TMP_24(bool) = REF_21 == 0
+CONDITION TMP_24"];
+8->9[label="True"];
+8->10[label="False"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+require(bool)(sellTotalOf[seller] == amount)
+
+IRs:
+REF_22(uint256) -> sellTotalOf[seller]
+TMP_25(bool) = REF_22 == amount
+TMP_26(None) = SOLIDITY_CALL require(bool)(TMP_25)"];
+9->11;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+require(bool)(sellTotalOf[seller] >= amount)
+
+IRs:
+REF_23(uint256) -> sellTotalOf[seller]
+TMP_27(bool) = REF_23 >= amount
+TMP_28(None) = SOLIDITY_CALL require(bool)(TMP_27)"];
+10->11;
+11[label="Node Type: END_IF 11
+"];
+11->3;
+12[label="Node Type: RETURN 12
+
+EXPRESSION:
+amount
+
+IRs:
+RETURN amount"];
+}
+// Function: 1319.sol-SSOrgToken-setSellInfo(uint8,uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newSellPrice > 0 && newSellTotal >= 0)
+
+IRs:
+TMP_11(bool) = newSellPrice > 0
+TMP_12(bool) = newSellTotal >= 0
+TMP_13(bool) = TMP_11 && TMP_12
+TMP_14(None) = SOLIDITY_CALL require(bool)(TMP_13)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+newSellTotal > sellTotalOf[msg.sender]
+
+IRs:
+REF_6(uint256) -> sellTotalOf[msg.sender]
+TMP_15(bool) = newSellTotal > REF_6
+CONDITION TMP_15"];
+2->3[label="True"];
+2->5[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(balanceOf[msg.sender] >= newSellTotal - sellTotalOf[msg.sender])
+
+IRs:
+REF_7(uint256) -> balanceOf[msg.sender]
+REF_8(uint256) -> sellTotalOf[msg.sender]
+TMP_16(uint256) = newSellTotal - REF_8
+TMP_17(bool) = REF_7 >= TMP_16
+TMP_18(None) = SOLIDITY_CALL require(bool)(TMP_17)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+balanceOf[msg.sender] -= newSellTotal - sellTotalOf[msg.sender]
+
+IRs:
+REF_9(uint256) -> balanceOf[msg.sender]
+REF_10(uint256) -> sellTotalOf[msg.sender]
+TMP_19(uint256) = newSellTotal - REF_10
+REF_9(-> balanceOf) = REF_9 - TMP_19"];
+4->6;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balanceOf[msg.sender] += sellTotalOf[msg.sender] - newSellTotal
+
+IRs:
+REF_11(uint256) -> balanceOf[msg.sender]
+REF_12(uint256) -> sellTotalOf[msg.sender]
+TMP_20(uint256) = REF_12 - newSellTotal
+REF_11(-> balanceOf) = REF_11 + TMP_20"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+sellTotalOf[msg.sender] = newSellTotal
+
+IRs:
+REF_13(uint256) -> sellTotalOf[msg.sender]
+REF_13(uint256) (->sellTotalOf) := newSellTotal(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+sellPriceOf[msg.sender] = newSellPrice
+
+IRs:
+REF_14(uint256) -> sellPriceOf[msg.sender]
+REF_14(uint256) (->sellPriceOf) := newSellPrice(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+sellTypeOf[msg.sender] = newSellType
+
+IRs:
+REF_15(uint8) -> sellTypeOf[msg.sender]
+REF_15(uint8) (->sellTypeOf) := newSellType(uint8)"];
+9->10;
+10[label="Node Type: RETURN 10
+
+EXPRESSION:
+balanceOf[msg.sender]
+
+IRs:
+REF_16(uint256) -> balanceOf[msg.sender]
+RETURN REF_16"];
+}
+// Function: 1319.sol-SSOrgToken-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+decimals = 2
+
+IRs:
+decimals(uint8) := 2(uint256)"];
+}
+// Function: 1319.sol-SSOrgToken-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_to != 0x0)
+
+IRs:
+TMP_3(bool) = _to != 0
+TMP_4(None) = SOLIDITY_CALL require(bool)(TMP_3)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(balanceOf[msg.sender] >= _value)
+
+IRs:
+REF_1(uint256) -> balanceOf[msg.sender]
+TMP_5(bool) = REF_1 >= _value
+TMP_6(None) = SOLIDITY_CALL require(bool)(TMP_5)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(balanceOf[_to] + _value > balanceOf[_to])
+
+IRs:
+REF_2(uint256) -> balanceOf[_to]
+TMP_7(uint256) = REF_2 + _value
+REF_3(uint256) -> balanceOf[_to]
+TMP_8(bool) = TMP_7 > REF_3
+TMP_9(None) = SOLIDITY_CALL require(bool)(TMP_8)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+balanceOf[msg.sender] -= _value
+
+IRs:
+REF_4(uint256) -> balanceOf[msg.sender]
+REF_4(-> balanceOf) = REF_4 - _value"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balanceOf[_to] += _value
+
+IRs:
+REF_5(uint256) -> balanceOf[_to]
+REF_5(-> balanceOf) = REF_5 + _value"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+Transfer(msg.sender,_to,_value)
+
+IRs:
+Emit Transfer(msg.sender,_to,_value)"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+}

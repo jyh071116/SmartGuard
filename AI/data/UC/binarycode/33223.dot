@@ -1,0 +1,862 @@
+digraph G {
+// Function: 33223.sol-Congress-Congress(uint256,uint256,int256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+changeVotingRules(minimumQuorumForProposals,minutesForDebate,marginOfVotesForMajority)
+
+IRs:
+INTERNAL_CALL, Congress.changeVotingRules(uint256,uint256,int256)(minimumQuorumForProposals,minutesForDebate,marginOfVotesForMajority)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+addMember(0,)
+
+IRs:
+INTERNAL_CALL, Congress.addMember(address,string)(0,)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+addMember(owner,founder)
+
+IRs:
+INTERNAL_CALL, Congress.addMember(address,string)(owner,founder)"];
+}
+// Function: 33223.sol-Congress-addMember(address,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->8;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+id = memberId[targetMember]
+
+IRs:
+REF_2(uint256) -> memberId[targetMember]
+id(uint256) := REF_2(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+id == 0
+
+IRs:
+TMP_17(bool) = id == 0
+CONDITION TMP_17"];
+2->3[label="True"];
+2->5[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+memberId[targetMember] = members.length
+
+IRs:
+REF_3(uint256) -> memberId[targetMember]
+REF_4 -> LENGTH members
+REF_3(uint256) (->memberId) := REF_4(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+id = members.length ++
+
+IRs:
+REF_5 -> LENGTH members
+TMP_18(uint256) := REF_5(uint256)
+REF_5(-> members) = REF_5 + 1
+id(uint256) := TMP_18(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+members[id] = Member({member:targetMember,memberSince:now,name:memberName})
+
+IRs:
+REF_6(Congress.Member) -> members[id]
+TMP_19(Congress.Member) = new Member(targetMember,memberName,now)
+REF_6(Congress.Member) (->members) := TMP_19(Congress.Member)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+MembershipChanged(targetMember,true)
+
+IRs:
+Emit MembershipChanged(targetMember,True)"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+8->1;
+}
+// Function: 33223.sol-Congress-changeVotingRules(uint256,uint256,int256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+minimumQuorum = minimumQuorumForProposals
+
+IRs:
+minimumQuorum(uint256) := minimumQuorumForProposals(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+debatingPeriodInMinutes = minutesForDebate
+
+IRs:
+debatingPeriodInMinutes(uint256) := minutesForDebate(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+majorityMargin = marginOfVotesForMajority
+
+IRs:
+majorityMargin(int256) := marginOfVotesForMajority(int256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+ChangeOfRules(minimumQuorum,debatingPeriodInMinutes,majorityMargin)
+
+IRs:
+Emit ChangeOfRules(minimumQuorum,debatingPeriodInMinutes,majorityMargin)"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+5->1;
+}
+// Function: 33223.sol-Congress-checkProposalCode(uint256,address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+p = proposals[proposalNumber]
+
+IRs:
+REF_25(Congress.Proposal) -> proposals[proposalNumber]
+p(Congress.Proposal) := REF_25(Congress.Proposal)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+p.proposalHash == keccak256()(beneficiary,weiAmount,transactionBytecode)
+
+IRs:
+REF_26(bytes32) -> p.proposalHash
+TMP_43(bytes32) = SOLIDITY_CALL keccak256()(beneficiary,weiAmount,transactionBytecode)
+TMP_44(bool) = REF_26 == TMP_43
+RETURN TMP_44"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+codeChecksOut
+
+IRs:
+RETURN codeChecksOut"];
+}
+// Function: 33223.sol-Congress-executeProposal(uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+p = proposals[proposalNumber]
+
+IRs:
+REF_36(Congress.Proposal) -> proposals[proposalNumber]
+p(Congress.Proposal) := REF_36(Congress.Proposal)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(now > p.votingDeadline && ! p.executed && p.proposalHash == keccak256()(p.recipient,p.amount,transactionBytecode) && p.numberOfVotes >= minimumQuorum)
+
+IRs:
+REF_37(uint256) -> p.votingDeadline
+TMP_52(bool) = now > REF_37
+REF_38(bool) -> p.executed
+TMP_53 = UnaryType.BANG REF_38 
+TMP_54(bool) = TMP_52 && TMP_53
+REF_39(bytes32) -> p.proposalHash
+REF_40(address) -> p.recipient
+REF_41(uint256) -> p.amount
+TMP_55(bytes32) = SOLIDITY_CALL keccak256()(REF_40,REF_41,transactionBytecode)
+TMP_56(bool) = REF_39 == TMP_55
+TMP_57(bool) = TMP_54 && TMP_56
+REF_42(uint256) -> p.numberOfVotes
+TMP_58(bool) = REF_42 >= minimumQuorum
+TMP_59(bool) = TMP_57 && TMP_58
+TMP_60(None) = SOLIDITY_CALL require(bool)(TMP_59)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+p.currentResult > majorityMargin
+
+IRs:
+REF_43(int256) -> p.currentResult
+TMP_61(bool) = REF_43 > majorityMargin
+CONDITION TMP_61"];
+3->4[label="True"];
+3->7[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+p.executed = true
+
+IRs:
+REF_44(bool) -> p.executed
+REF_44(bool) (->p) := True(bool)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool)(p.recipient.call.value(p.amount)(transactionBytecode))
+
+IRs:
+REF_45(address) -> p.recipient
+REF_48(uint256) -> p.amount
+TMP_63(bool) = LOW_LEVEL_CALL, dest:REF_45, function:call, arguments:['transactionBytecode'] value:REF_48 
+TMP_64(None) = SOLIDITY_CALL require(bool)(TMP_63)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+p.proposalPassed = true
+
+IRs:
+REF_49(bool) -> p.proposalPassed
+REF_49(bool) (->p) := True(bool)"];
+6->8;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+p.proposalPassed = false
+
+IRs:
+REF_50(bool) -> p.proposalPassed
+REF_50(bool) (->p) := False(bool)"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+ProposalTallied(proposalNumber,p.currentResult,p.numberOfVotes,p.proposalPassed)
+
+IRs:
+REF_51(int256) -> p.currentResult
+REF_52(uint256) -> p.numberOfVotes
+REF_53(bool) -> p.proposalPassed
+Emit ProposalTallied(proposalNumber,REF_51,REF_52,REF_53)"];
+}
+// Function: 33223.sol-Congress-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+receivedEther(msg.sender,msg.value)
+
+IRs:
+Emit receivedEther(msg.sender,msg.value)"];
+}
+// Function: 33223.sol-Congress-newProposal(address,uint256,string,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->14;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+proposalID = proposals.length ++
+
+IRs:
+REF_15 -> LENGTH proposals
+TMP_33(uint256) := REF_15(uint256)
+REF_15(-> proposals) = REF_15 + 1
+proposalID(uint256) := TMP_33(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+p = proposals[proposalID]
+
+IRs:
+REF_16(Congress.Proposal) -> proposals[proposalID]
+p(Congress.Proposal) := REF_16(Congress.Proposal)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+p.recipient = beneficiary
+
+IRs:
+REF_17(address) -> p.recipient
+REF_17(address) (->p) := beneficiary(address)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+p.amount = weiAmount
+
+IRs:
+REF_18(uint256) -> p.amount
+REF_18(uint256) (->p) := weiAmount(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+p.description = jobDescription
+
+IRs:
+REF_19(string) -> p.description
+REF_19(string) (->p) := jobDescription(string)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+p.proposalHash = keccak256()(beneficiary,weiAmount,transactionBytecode)
+
+IRs:
+REF_20(bytes32) -> p.proposalHash
+TMP_34(bytes32) = SOLIDITY_CALL keccak256()(beneficiary,weiAmount,transactionBytecode)
+REF_20(bytes32) (->p) := TMP_34(bytes32)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+p.votingDeadline = now + debatingPeriodInMinutes * 60
+
+IRs:
+REF_21(uint256) -> p.votingDeadline
+TMP_35(uint256) = debatingPeriodInMinutes * 60
+TMP_36(uint256) = now + TMP_35
+REF_21(uint256) (->p) := TMP_36(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+p.executed = false
+
+IRs:
+REF_22(bool) -> p.executed
+REF_22(bool) (->p) := False(bool)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+p.proposalPassed = false
+
+IRs:
+REF_23(bool) -> p.proposalPassed
+REF_23(bool) (->p) := False(bool)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+p.numberOfVotes = 0
+
+IRs:
+REF_24(uint256) -> p.numberOfVotes
+REF_24(uint256) (->p) := 0(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+ProposalAdded(proposalID,beneficiary,weiAmount,jobDescription)
+
+IRs:
+Emit ProposalAdded(proposalID,beneficiary,weiAmount,jobDescription)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+numProposals = proposalID + 1
+
+IRs:
+TMP_38(uint256) = proposalID + 1
+numProposals(uint256) := TMP_38(uint256)"];
+12->13;
+13[label="Node Type: RETURN 13
+
+EXPRESSION:
+proposalID
+
+IRs:
+RETURN proposalID"];
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+onlyMembers()
+
+IRs:
+MODIFIER_CALL, Congress.onlyMembers()()"];
+14->1;
+15[label="Node Type: RETURN 15
+
+EXPRESSION:
+proposalID
+
+IRs:
+RETURN proposalID"];
+}
+// Function: 33223.sol-Congress-newProposalInEther(address,uint256,string,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+newProposal(beneficiary,etherAmount * 1000000000000000000,jobDescription,transactionBytecode)
+
+IRs:
+TMP_40(uint256) = etherAmount * 1000000000000000000
+TMP_41(uint256) = INTERNAL_CALL, Congress.newProposal(address,uint256,string,bytes)(beneficiary,TMP_40,jobDescription,transactionBytecode)
+RETURN TMP_41"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyMembers()
+
+IRs:
+MODIFIER_CALL, Congress.onlyMembers()()"];
+2->1;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+proposalID
+
+IRs:
+RETURN proposalID"];
+}
+// Function: 33223.sol-Congress-onlyMembers()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(memberId[msg.sender] != 0)
+
+IRs:
+REF_54(uint256) -> memberId[msg.sender]
+TMP_68(bool) = REF_54 != 0
+TMP_69(None) = SOLIDITY_CALL require(bool)(TMP_68)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 33223.sol-Congress-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_66(bool) = msg.sender == owner
+TMP_67(None) = SOLIDITY_CALL require(bool)(TMP_66)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 33223.sol-Congress-owned()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 33223.sol-Congress-receiveApproval(address,uint256,address,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+t = Token(_token)
+
+IRs:
+TMP_8 = CONVERT _token to Token
+t(Token) := TMP_8(Token)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(t.transferFrom(_from,this,_value))
+
+IRs:
+TMP_9(bool) = HIGH_LEVEL_CALL, dest:t(Token), function:transferFrom, arguments:['_from', 'this', '_value']  
+TMP_10(None) = SOLIDITY_CALL require(bool)(TMP_9)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+receivedTokens(_from,_value,_token,_extraData)
+
+IRs:
+Emit receivedTokens(_from,_value,_token,_extraData)"];
+}
+// Function: 33223.sol-Congress-removeMember(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->10;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(memberId[targetMember] != 0)
+
+IRs:
+REF_7(uint256) -> memberId[targetMember]
+TMP_22(bool) = REF_7 != 0
+TMP_23(None) = SOLIDITY_CALL require(bool)(TMP_22)"];
+1->4;
+2[label="Node Type: BEGIN_LOOP 2
+"];
+2->5;
+3[label="Node Type: END_LOOP 3
+"];
+3->8;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+i = memberId[targetMember]
+
+IRs:
+REF_8(uint256) -> memberId[targetMember]
+i(uint256) := REF_8(uint256)"];
+4->2;
+5[label="Node Type: IF_LOOP 5
+
+EXPRESSION:
+i < members.length - 1
+
+IRs:
+REF_9 -> LENGTH members
+TMP_24(uint256) = REF_9 - 1
+TMP_25(bool) = i < TMP_24
+CONDITION TMP_25"];
+5->6[label="True"];
+5->3[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+members[i] = members[i + 1]
+
+IRs:
+REF_10(Congress.Member) -> members[i]
+TMP_26(uint256) = i + 1
+REF_11(Congress.Member) -> members[TMP_26]
+REF_10(Congress.Member) (->members) := REF_11(Congress.Member)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_27(uint256) := i(uint256)
+i(uint256) = i + 1"];
+7->5;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+delete members[members.length - 1]
+
+IRs:
+REF_12 -> LENGTH members
+TMP_28(uint256) = REF_12 - 1
+REF_13(Congress.Member) -> members[TMP_28]
+members = delete REF_13 "];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+members.length --
+
+IRs:
+REF_14 -> LENGTH members
+TMP_29(uint256) := REF_14(uint256)
+REF_14(-> members) = REF_14 - 1"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+10->1;
+}
+// Function: 33223.sol-Congress-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+2->1;
+}
+// Function: 33223.sol-Congress-vote(uint256,bool,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->11;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+p = proposals[proposalNumber]
+
+IRs:
+REF_27(Congress.Proposal) -> proposals[proposalNumber]
+p(Congress.Proposal) := REF_27(Congress.Proposal)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(! p.voted[msg.sender])
+
+IRs:
+REF_28(mapping(address => bool)) -> p.voted
+REF_29(bool) -> REF_28[msg.sender]
+TMP_45 = UnaryType.BANG REF_29 
+TMP_46(None) = SOLIDITY_CALL require(bool)(TMP_45)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+p.voted[msg.sender] = true
+
+IRs:
+REF_30(mapping(address => bool)) -> p.voted
+REF_31(bool) -> REF_30[msg.sender]
+REF_31(bool) (->p) := True(bool)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+p.numberOfVotes ++
+
+IRs:
+REF_32(uint256) -> p.numberOfVotes
+TMP_47(uint256) := REF_32(uint256)
+REF_32(-> p) = REF_32 + 1"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+supportsProposal
+
+IRs:
+CONDITION supportsProposal"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+p.currentResult ++
+
+IRs:
+REF_33(int256) -> p.currentResult
+TMP_48(int256) := REF_33(int256)
+REF_33(-> p) = REF_33 + 1"];
+6->8;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+p.currentResult --
+
+IRs:
+REF_34(int256) -> p.currentResult
+TMP_49(int256) := REF_34(int256)
+REF_34(-> p) = REF_34 - 1"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+Voted(proposalNumber,supportsProposal,msg.sender,justificationText)
+
+IRs:
+Emit Voted(proposalNumber,supportsProposal,msg.sender,justificationText)"];
+9->10;
+10[label="Node Type: RETURN 10
+
+EXPRESSION:
+p.numberOfVotes
+
+IRs:
+REF_35(uint256) -> p.numberOfVotes
+RETURN REF_35"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+onlyMembers()
+
+IRs:
+MODIFIER_CALL, Congress.onlyMembers()()"];
+11->1;
+12[label="Node Type: RETURN 12
+
+EXPRESSION:
+voteID
+
+IRs:
+RETURN voteID"];
+}
+// Function: 33223.sol-Token-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 33223.sol-owned-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_1(bool) = msg.sender == owner
+TMP_2(None) = SOLIDITY_CALL require(bool)(TMP_1)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 33223.sol-owned-owned()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 33223.sol-owned-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+2->1;
+}
+// Function: 33223.sol-tokenRecipient-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+receivedEther(msg.sender,msg.value)
+
+IRs:
+Emit receivedEther(msg.sender,msg.value)"];
+}
+// Function: 33223.sol-tokenRecipient-receiveApproval(address,uint256,address,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+t = Token(_token)
+
+IRs:
+TMP_3 = CONVERT _token to Token
+t(Token) := TMP_3(Token)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(t.transferFrom(_from,this,_value))
+
+IRs:
+TMP_4(bool) = HIGH_LEVEL_CALL, dest:t(Token), function:transferFrom, arguments:['_from', 'this', '_value']  
+TMP_5(None) = SOLIDITY_CALL require(bool)(TMP_4)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+receivedTokens(_from,_value,_token,_extraData)
+
+IRs:
+Emit receivedTokens(_from,_value,_token,_extraData)"];
+}
+}

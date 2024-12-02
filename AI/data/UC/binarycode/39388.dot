@@ -1,0 +1,2925 @@
+digraph G {
+// Function: 39388.sol-E4RowEscrow-ArbTokFromHGame(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_tok = (_hGame / (2 ** 48)) & 0xffff
+
+IRs:
+TMP_4(uint256) = 2 ** 48
+TMP_5(uint256) = _hGame / TMP_4
+TMP_6(uint256) = TMP_5 & 65535
+_tok(uint256) := TMP_6(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+_tok
+
+IRs:
+RETURN _tok"];
+}
+// Function: 39388.sol-E4RowEscrow-E4RowEscrow()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 39388.sol-E4RowEscrow-HaraKiri()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+(msg.sender == owner) && (settingsState != SettingStateValue.lockedRelease)
+
+IRs:
+TMP_7(bool) = msg.sender == owner
+REF_1(E4RowEscrow.SettingStateValue) -> SettingStateValue.lockedRelease
+TMP_8(bool) = settingsState != REF_1
+TMP_9(bool) = TMP_7 && TMP_8
+CONDITION TMP_9"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+suicide(address)(tokenPartner)
+
+IRs:
+TMP_10(None) = SOLIDITY_CALL suicide(address)(tokenPartner)"];
+2->4;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+StatEvent(Kill attempt failed)
+
+IRs:
+Emit StatEvent(Kill attempt failed)"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+}
+// Function: 39388.sol-E4RowEscrow-abortGame(address,uint256,E4RowEscrow.EndReason)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+nGame = games[_hGame]
+
+IRs:
+REF_80(E4RowEscrow.gameInstance) -> games[_hGame]
+nGame(E4RowEscrow.gameInstance) := REF_80(E4RowEscrow.gameInstance)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+nGame.active
+
+IRs:
+REF_81(bool) -> nGame.active
+CONDITION REF_81"];
+2->3[label="True"];
+2->31[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_success = true
+
+IRs:
+_success(bool) := True(bool)"];
+3->6;
+4[label="Node Type: BEGIN_LOOP 4
+"];
+4->7;
+5[label="Node Type: END_LOOP 5
+"];
+5->18;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+6->4;
+7[label="Node Type: IF_LOOP 7
+
+EXPRESSION:
+i < nGame.numPlayers
+
+IRs:
+REF_82(uint256) -> nGame.numPlayers
+TMP_59(bool) = i < REF_82
+CONDITION TMP_59"];
+7->8[label="True"];
+7->5[label="False"];
+8[label="Node Type: IF 8
+
+EXPRESSION:
+nGame.playerPots[i] > 0
+
+IRs:
+REF_83(uint256[5]) -> nGame.playerPots
+REF_84(uint256) -> REF_83[i]
+TMP_60(bool) = REF_84 > 0
+CONDITION TMP_60"];
+8->9[label="True"];
+8->16[label="False"];
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+a = nGame.players[i]
+
+IRs:
+REF_85(address[5]) -> nGame.players
+REF_86(address) -> REF_85[i]
+a(address) := REF_86(address)"];
+9->10;
+10[label="Node Type: NEW VARIABLE 10
+
+EXPRESSION:
+nsend = nGame.playerPots[i]
+
+IRs:
+REF_87(uint256[5]) -> nGame.playerPots
+REF_88(uint256) -> REF_87[i]
+nsend(uint256) := REF_88(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+nGame.playerPots[i] = 0
+
+IRs:
+REF_89(uint256[5]) -> nGame.playerPots
+REF_90(uint256) -> REF_89[i]
+REF_90(uint256) (->nGame) := 0(uint256)"];
+11->12;
+12[label="Node Type: IF 12
+
+EXPRESSION:
+! a.call.gas(rfGas).value(nsend)()
+
+IRs:
+TMP_63(bool) = LOW_LEVEL_CALL, dest:a, function:call, arguments:[] value:nsend gas:rfGas
+TMP_64 = UnaryType.BANG TMP_63 
+CONDITION TMP_64"];
+12->13[label="True"];
+12->15[label="False"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+houseFeeHoldover += nsend
+
+IRs:
+houseFeeHoldover(uint256) = houseFeeHoldover + nsend"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+StatEventA(Cannot Refund Address,a)
+
+IRs:
+Emit StatEventA(Cannot Refund Address,a)"];
+14->15;
+15[label="Node Type: END_IF 15
+"];
+15->16;
+16[label="Node Type: END_IF 16
+"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_66(uint256) := i(uint256)
+i(uint256) = i + 1"];
+17->7;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+nGame.active = false
+
+IRs:
+REF_94(bool) -> nGame.active
+REF_94(bool) (->nGame) := False(bool)"];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+nGame.reasonEnded = _reason
+
+IRs:
+REF_95(E4RowEscrow.EndReason) -> nGame.reasonEnded
+REF_95(E4RowEscrow.EndReason) (->nGame) := _reason(E4RowEscrow.EndReason)"];
+19->20;
+20[label="Node Type: IF 20
+
+EXPRESSION:
+_reason == EndReason.erCancel
+
+IRs:
+REF_96(E4RowEscrow.EndReason) -> EndReason.erCancel
+TMP_67(bool) = _reason == REF_96
+CONDITION TMP_67"];
+20->21[label="True"];
+20->24[label="False"];
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+numGamesCanceled ++
+
+IRs:
+TMP_68(uint256) := numGamesCanceled(uint256)
+numGamesCanceled(uint256) = numGamesCanceled + 1"];
+21->22;
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+arbiters[_arb].gamesCanceled ++
+
+IRs:
+REF_97(E4RowEscrow.arbiter) -> arbiters[_arb]
+REF_98(uint256) -> REF_97.gamesCanceled
+TMP_69(uint256) := REF_98(uint256)
+REF_98(-> arbiters) = REF_98 + 1"];
+22->23;
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+StatEvent(Game canceled)
+
+IRs:
+Emit StatEvent(Game canceled)"];
+23->30;
+24[label="Node Type: IF 24
+
+EXPRESSION:
+_reason == EndReason.erTimeOut
+
+IRs:
+REF_99(E4RowEscrow.EndReason) -> EndReason.erTimeOut
+TMP_71(bool) = _reason == REF_99
+CONDITION TMP_71"];
+24->25[label="True"];
+24->28[label="False"];
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+numGamesTimedOut ++
+
+IRs:
+TMP_72(uint256) := numGamesTimedOut(uint256)
+numGamesTimedOut(uint256) = numGamesTimedOut + 1"];
+25->26;
+26[label="Node Type: EXPRESSION 26
+
+EXPRESSION:
+arbiters[_arb].gamesTimedout ++
+
+IRs:
+REF_100(E4RowEscrow.arbiter) -> arbiters[_arb]
+REF_101(uint256) -> REF_100.gamesTimedout
+TMP_73(uint256) := REF_101(uint256)
+REF_101(-> arbiters) = REF_101 + 1"];
+26->27;
+27[label="Node Type: EXPRESSION 27
+
+EXPRESSION:
+StatEvent(Game timed out)
+
+IRs:
+Emit StatEvent(Game timed out)"];
+27->29;
+28[label="Node Type: EXPRESSION 28
+
+EXPRESSION:
+StatEvent(Game aborted)
+
+IRs:
+Emit StatEvent(Game aborted)"];
+28->29;
+29[label="Node Type: END_IF 29
+"];
+29->30;
+30[label="Node Type: END_IF 30
+"];
+30->31;
+31[label="Node Type: END_IF 31
+"];
+31->32;
+32[label="Node Type: RETURN 32
+
+EXPRESSION:
+_success
+
+IRs:
+RETURN _success"];
+}
+// Function: 39388.sol-E4RowEscrow-activeGame(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_valid = false
+
+IRs:
+_valid(bool) := False(bool)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+(_hGame > 0) && (games[_hGame].active)
+
+IRs:
+TMP_23(bool) = _hGame > 0
+REF_20(E4RowEscrow.gameInstance) -> games[_hGame]
+REF_21(bool) -> REF_20.active
+TMP_24(bool) = TMP_23 && REF_21
+CONDITION TMP_24"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_valid = true
+
+IRs:
+_valid(bool) := True(bool)"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+_valid
+
+IRs:
+RETURN _valid"];
+}
+// Function: 39388.sol-E4RowEscrow-applySettings(E4RowEscrow.SettingStateValue,uint256,uint256,uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != owner
+
+IRs:
+TMP_0(bool) = msg.sender != owner
+CONDITION TMP_0"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+houseFeeThreshold = _threshold
+
+IRs:
+houseFeeThreshold(uint256) := _threshold(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+gameTimeOut = _timeout
+
+IRs:
+gameTimeOut(uint256) := _timeout(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+payoutInterval = _interval
+
+IRs:
+payoutInterval(uint256) := _interval(uint256)"];
+6->7;
+7[label="Node Type: IF 7
+
+EXPRESSION:
+settingsState == SettingStateValue.lockedRelease
+
+IRs:
+REF_0(E4RowEscrow.SettingStateValue) -> SettingStateValue.lockedRelease
+TMP_1(bool) = settingsState == REF_0
+CONDITION TMP_1"];
+7->8[label="True"];
+7->10[label="False"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+StatEvent(Settings Tweaked)
+
+IRs:
+Emit StatEvent(Settings Tweaked)"];
+8->9;
+9[label="Node Type: RETURN 9
+"];
+10[label="Node Type: END_IF 10
+"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+settingsState = _state
+
+IRs:
+settingsState(E4RowEscrow.SettingStateValue) := _state(E4RowEscrow.SettingStateValue)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+registrationFee = _fee
+
+IRs:
+registrationFee(uint256) := _fee(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+raGas = 150000
+
+IRs:
+raGas(uint256) := 150000(uint256)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+sgGas = 110000
+
+IRs:
+sgGas(uint256) := 110000(uint256)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+wpGas = 20000
+
+IRs:
+wpGas(uint256) := 20000(uint256)"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+rfGas = 20000
+
+IRs:
+rfGas(uint256) := 20000(uint256)"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+feeGas = 360000
+
+IRs:
+feeGas(uint256) := 360000(uint256)"];
+17->18;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+StatEvent(Settings Changed)
+
+IRs:
+Emit StatEvent(Settings Changed)"];
+}
+// Function: 39388.sol-E4RowEscrow-arbLocked(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_locked = false
+
+IRs:
+_locked(bool) := False(bool)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+validArb2(_addr)
+
+IRs:
+TMP_22(bool) = INTERNAL_CALL, E4RowEscrow.validArb2(address)(_addr)
+CONDITION TMP_22"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_locked = arbiters[_addr].locked
+
+IRs:
+REF_18(E4RowEscrow.arbiter) -> arbiters[_addr]
+REF_19(bool) -> REF_18.locked
+_locked(bool) := REF_19(bool)"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+_locked
+
+IRs:
+RETURN _locked"];
+}
+// Function: 39388.sol-E4RowEscrow-arbTokenExists(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_exists = false
+
+IRs:
+_exists(bool) := False(bool)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+(_tok > 0) && (arbiterTokens[_tok] != address(0)) && arbiters[arbiterTokens[_tok]].registered
+
+IRs:
+TMP_115(bool) = _tok > 0
+REF_132(address) -> arbiterTokens[_tok]
+TMP_116 = CONVERT 0 to address
+TMP_117(bool) = REF_132 != TMP_116
+TMP_118(bool) = TMP_115 && TMP_117
+REF_133(address) -> arbiterTokens[_tok]
+REF_134(E4RowEscrow.arbiter) -> arbiters[REF_133]
+REF_135(bool) -> REF_134.registered
+TMP_119(bool) = TMP_118 && REF_135
+CONDITION TMP_119"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_exists = true
+
+IRs:
+_exists(bool) := True(bool)"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+_exists
+
+IRs:
+RETURN _exists"];
+}
+// Function: 39388.sol-E4RowEscrow-changeOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != owner || settingsState == SettingStateValue.lockedRelease
+
+IRs:
+TMP_175(bool) = msg.sender != owner
+REF_179(E4RowEscrow.SettingStateValue) -> SettingStateValue.lockedRelease
+TMP_176(bool) = settingsState == REF_179
+TMP_177(bool) = TMP_175 || TMP_176
+CONDITION TMP_177"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+owner = _addr
+
+IRs:
+owner(address) := _addr(address)"];
+}
+// Function: 39388.sol-E4RowEscrow-checkHGame(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_arbTok = ArbTokFromHGame(_hGame)
+
+IRs:
+TMP_151(uint256) = INTERNAL_CALL, E4RowEscrow.ArbTokFromHGame(uint256)(_hGame)
+_arbTok(uint256) := TMP_151(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_lowWords = _hGame & 0xffffffffffff
+
+IRs:
+TMP_152(uint256) = _hGame & 281474976710655
+_lowWords(uint256) := TMP_152(uint256)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+(_arbTok,_lowWords)
+
+IRs:
+RETURN _arbTok,_lowWords"];
+}
+// Function: 39388.sol-E4RowEscrow-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+StatEvent(thanks!)
+
+IRs:
+Emit StatEvent(thanks!)"];
+}
+// Function: 39388.sol-E4RowEscrow-flushHouseFees()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != owner
+
+IRs:
+TMP_158(bool) = msg.sender != owner
+CONDITION TMP_158"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+StatEvent(only owner calls this function)
+
+IRs:
+Emit StatEvent(only owner calls this function)"];
+2->13;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+houseFeeHoldover > 0
+
+IRs:
+TMP_160(bool) = houseFeeHoldover > 0
+CONDITION TMP_160"];
+3->4[label="True"];
+3->12[label="False"];
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+ntmpho = houseFeeHoldover
+
+IRs:
+ntmpho(uint256) := houseFeeHoldover(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+houseFeeHoldover = 0
+
+IRs:
+houseFeeHoldover(uint256) := 0(uint256)"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+! tokenPartner.call.gas(feeGas).value(ntmpho)()
+
+IRs:
+TMP_163(bool) = LOW_LEVEL_CALL, dest:tokenPartner, function:call, arguments:[] value:ntmpho gas:feeGas
+TMP_164 = UnaryType.BANG TMP_163 
+CONDITION TMP_164"];
+6->7[label="True"];
+6->9[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+houseFeeHoldover = ntmpho
+
+IRs:
+houseFeeHoldover(uint256) := ntmpho(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+StatEvent(House-Fee Error2)
+
+IRs:
+Emit StatEvent(House-Fee Error2)"];
+8->11;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+lastPayoutTime = now
+
+IRs:
+lastPayoutTime(uint256) := now(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+StatEvent(House-Fee Paid)
+
+IRs:
+Emit StatEvent(House-Fee Paid)"];
+10->11;
+11[label="Node Type: END_IF 11
+"];
+11->12;
+12[label="Node Type: END_IF 12
+"];
+12->13;
+13[label="Node Type: END_IF 13
+"];
+}
+// Function: 39388.sol-E4RowEscrow-getArbInfo(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_idx >= numArbiters
+
+IRs:
+TMP_120(bool) = _idx >= numArbiters
+CONDITION TMP_120"];
+1->2[label="True"];
+1->4[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+StatEvent(Invalid Arb)
+
+IRs:
+Emit StatEvent(Invalid Arb)"];
+2->3;
+3[label="Node Type: RETURN 3
+"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+_addr = arbiterIndexes[_idx]
+
+IRs:
+REF_136(address) -> arbiterIndexes[_idx]
+_addr(address) := REF_136(address)"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+(_addr == address(0)) || (! arbiters[_addr].registered)
+
+IRs:
+TMP_122 = CONVERT 0 to address
+TMP_123(bool) = _addr == TMP_122
+REF_137(E4RowEscrow.arbiter) -> arbiters[_addr]
+REF_138(bool) -> REF_137.registered
+TMP_124 = UnaryType.BANG REF_138 
+TMP_125(bool) = TMP_123 || TMP_124
+CONDITION TMP_125"];
+6->7[label="True"];
+6->9[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+StatEvent(Invalid Arb)
+
+IRs:
+Emit StatEvent(Invalid Arb)"];
+7->8;
+8[label="Node Type: RETURN 8
+"];
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: NEW VARIABLE 10
+
+EXPRESSION:
+xarb = arbiters[_addr]
+
+IRs:
+REF_139(E4RowEscrow.arbiter) -> arbiters[_addr]
+xarb(E4RowEscrow.arbiter) := REF_139(E4RowEscrow.arbiter)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+_started = xarb.gamesStarted
+
+IRs:
+REF_140(uint256) -> xarb.gamesStarted
+_started(uint256) := REF_140(uint256)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+_completed = xarb.gamesCompleted
+
+IRs:
+REF_141(uint256) -> xarb.gamesCompleted
+_completed(uint256) := REF_141(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+_timedOut = xarb.gamesTimedout
+
+IRs:
+REF_142(uint256) -> xarb.gamesTimedout
+_timedOut(uint256) := REF_142(uint256)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+_canceled = xarb.gamesCanceled
+
+IRs:
+REF_143(uint256) -> xarb.gamesCanceled
+_canceled(uint256) := REF_143(uint256)"];
+14->15;
+15[label="Node Type: RETURN 15
+
+EXPRESSION:
+(_addr,_started,_completed,_canceled,_timedOut)
+
+IRs:
+RETURN _addr,_started,_completed,_canceled,_timedOut"];
+}
+// Function: 39388.sol-E4RowEscrow-getGameInfo(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+ngame = games[_hGame]
+
+IRs:
+REF_166(E4RowEscrow.gameInstance) -> games[_hGame]
+ngame(E4RowEscrow.gameInstance) := REF_166(E4RowEscrow.gameInstance)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_active = ngame.active
+
+IRs:
+REF_167(bool) -> ngame.active
+_active(bool) := REF_167(bool)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_players = ngame.numPlayers
+
+IRs:
+REF_168(uint256) -> ngame.numPlayers
+_players(uint256) := REF_168(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+_winner = ngame.winner
+
+IRs:
+REF_169(address) -> ngame.winner
+_winner(address) := REF_169(address)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+_payout = ngame.payout
+
+IRs:
+REF_170(uint256) -> ngame.payout
+_payout(uint256) := REF_170(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+_reason = ngame.reasonEnded
+
+IRs:
+REF_171(E4RowEscrow.EndReason) -> ngame.reasonEnded
+_reason(E4RowEscrow.EndReason) := REF_171(E4RowEscrow.EndReason)"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+(_reason,_players,_payout,_active,_winner)
+
+IRs:
+RETURN _reason,_players,_payout,_active,_winner"];
+}
+// Function: 39388.sol-E4RowEscrow-getNumGamesStarted()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_games = numGamesStarted
+
+IRs:
+_games(int256) := numGamesStarted(int256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+_games
+
+IRs:
+RETURN _games"];
+}
+// Function: 39388.sol-E4RowEscrow-getOpGas()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_ra = raGas
+
+IRs:
+_ra(uint256) := raGas(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_sg = sgGas
+
+IRs:
+_sg(uint256) := sgGas(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_wp = wpGas
+
+IRs:
+_wp(uint256) := wpGas(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+_rf = rfGas
+
+IRs:
+_rf(uint256) := rfGas(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+_fg = feeGas
+
+IRs:
+_fg(uint256) := feeGas(uint256)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+(_ra,_sg,_wp,_rf,_fg)
+
+IRs:
+RETURN _ra,_sg,_wp,_rf,_fg"];
+}
+// Function: 39388.sol-E4RowEscrow-handleBet(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+narb = arbiterTokens[ArbTokFromHGame(_hGame)]
+
+IRs:
+TMP_110(uint256) = INTERNAL_CALL, E4RowEscrow.ArbTokFromHGame(uint256)(_hGame)
+REF_126(address) -> arbiterTokens[TMP_110]
+narb(address) := REF_126(address)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+narb == address(0)
+
+IRs:
+TMP_111 = CONVERT 0 to address
+TMP_112(bool) = narb == TMP_111
+CONDITION TMP_112"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: THROW 3
+"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+(valid,pidx) = validPlayer(_hGame,msg.sender)
+
+IRs:
+TUPLE_1(bool,uint256) = INTERNAL_CALL, E4RowEscrow.validPlayer(uint256,address)(_hGame,msg.sender)
+valid(bool)= UNPACK TUPLE_1 index: 0 
+pidx(uint256)= UNPACK TUPLE_1 index: 1 "];
+7->8;
+8[label="Node Type: IF 8
+
+EXPRESSION:
+! valid
+
+IRs:
+TMP_113 = UnaryType.BANG valid 
+CONDITION TMP_113"];
+8->9[label="True"];
+8->10[label="False"];
+9[label="Node Type: THROW 9
+"];
+10[label="Node Type: END_IF 10
+"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+games[_hGame].playerPots[pidx] += msg.value
+
+IRs:
+REF_127(E4RowEscrow.gameInstance) -> games[_hGame]
+REF_128(uint256[5]) -> REF_127.playerPots
+REF_129(uint256) -> REF_128[pidx]
+REF_129(-> games) = REF_129 + msg.value"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+games[_hGame].lastMoved = now
+
+IRs:
+REF_130(E4RowEscrow.gameInstance) -> games[_hGame]
+REF_131(uint256) -> REF_130.lastMoved
+REF_131(uint256) (->games) := now(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+StatEventI(Bet Added,_hGame)
+
+IRs:
+Emit StatEventI(Bet Added,_hGame)"];
+}
+// Function: 39388.sol-E4RowEscrow-houseKeep(int256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+aborted = 0
+
+IRs:
+aborted(int256) := 0(int256)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+xarb = arbiters[msg.sender]
+
+IRs:
+REF_144(E4RowEscrow.arbiter) -> arbiters[msg.sender]
+xarb(E4RowEscrow.arbiter) := REF_144(E4RowEscrow.arbiter)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+msg.sender == owner
+
+IRs:
+TMP_127(bool) = msg.sender == owner
+CONDITION TMP_127"];
+5->8[label="True"];
+5->23[label="False"];
+6[label="Node Type: BEGIN_LOOP 6
+"];
+6->9;
+7[label="Node Type: END_LOOP 7
+"];
+7->38;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+ar = 0
+
+IRs:
+ar(uint256) := 0(uint256)"];
+8->6;
+9[label="Node Type: IF_LOOP 9
+
+EXPRESSION:
+(ar < numArbiters) && (aborted < _max)
+
+IRs:
+TMP_128(bool) = ar < numArbiters
+TMP_129(bool) = aborted < _max
+TMP_130(bool) = TMP_128 && TMP_129
+CONDITION TMP_130"];
+9->10[label="True"];
+9->7[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+a = arbiterIndexes[ar]
+
+IRs:
+REF_145(address) -> arbiterIndexes[ar]
+a(address) := REF_145(address)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+xarb = arbiters[a]
+
+IRs:
+REF_146(E4RowEscrow.arbiter) -> arbiters[a]
+xarb(E4RowEscrow.arbiter) := REF_146(E4RowEscrow.arbiter)"];
+11->14;
+12[label="Node Type: BEGIN_LOOP 12
+"];
+12->15;
+13[label="Node Type: END_LOOP 13
+"];
+13->22;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+gi = 0
+
+IRs:
+gi(uint256) := 0(uint256)"];
+14->12;
+15[label="Node Type: IF_LOOP 15
+
+EXPRESSION:
+(gi < xarb.gameSlots) && (aborted < _max)
+
+IRs:
+REF_147(uint256) -> xarb.gameSlots
+TMP_131(bool) = gi < REF_147
+TMP_132(bool) = aborted < _max
+TMP_133(bool) = TMP_131 && TMP_132
+CONDITION TMP_133"];
+15->16[label="True"];
+15->13[label="False"];
+16[label="Node Type: NEW VARIABLE 16
+
+EXPRESSION:
+ngame0 = games[xarb.gameIndexes[gi]]
+
+IRs:
+REF_148(mapping(uint256 => uint256)) -> xarb.gameIndexes
+REF_149(uint256) -> REF_148[gi]
+REF_150(E4RowEscrow.gameInstance) -> games[REF_149]
+ngame0(E4RowEscrow.gameInstance) := REF_150(E4RowEscrow.gameInstance)"];
+16->17;
+17[label="Node Type: IF 17
+
+EXPRESSION:
+(ngame0.active) && ((now - ngame0.lastMoved) > gameTimeOut)
+
+IRs:
+REF_151(bool) -> ngame0.active
+REF_152(uint256) -> ngame0.lastMoved
+TMP_134(uint256) = now - REF_152
+TMP_135(bool) = TMP_134 > gameTimeOut
+TMP_136(bool) = REF_151 && TMP_135
+CONDITION TMP_136"];
+17->18[label="True"];
+17->20[label="False"];
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+abortGame(a,xarb.gameIndexes[gi],EndReason.erTimeOut)
+
+IRs:
+REF_153(mapping(uint256 => uint256)) -> xarb.gameIndexes
+REF_154(uint256) -> REF_153[gi]
+REF_155(E4RowEscrow.EndReason) -> EndReason.erTimeOut
+TMP_137(bool) = INTERNAL_CALL, E4RowEscrow.abortGame(address,uint256,E4RowEscrow.EndReason)(a,REF_154,REF_155)"];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+++ aborted
+
+IRs:
+aborted(int256) = aborted + 1"];
+19->20;
+20[label="Node Type: END_IF 20
+"];
+20->21;
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+gi ++
+
+IRs:
+TMP_138(uint256) := gi(uint256)
+gi(uint256) = gi + 1"];
+21->15;
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+ar ++
+
+IRs:
+TMP_139(uint256) := ar(uint256)
+ar(uint256) = ar + 1"];
+22->9;
+23[label="Node Type: IF 23
+
+EXPRESSION:
+! validArb(msg.sender,_arbToken)
+
+IRs:
+TMP_140(bool) = INTERNAL_CALL, E4RowEscrow.validArb(address,uint256)(msg.sender,_arbToken)
+TMP_141 = UnaryType.BANG TMP_140 
+CONDITION TMP_141"];
+23->24[label="True"];
+23->25[label="False"];
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+StatEvent(Housekeep invalid arbiter)
+
+IRs:
+Emit StatEvent(Housekeep invalid arbiter)"];
+24->37;
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+a = msg.sender
+
+IRs:
+a(address) := msg.sender(address)"];
+25->26;
+26[label="Node Type: EXPRESSION 26
+
+EXPRESSION:
+xarb = arbiters[a]
+
+IRs:
+REF_156(E4RowEscrow.arbiter) -> arbiters[a]
+xarb(E4RowEscrow.arbiter) := REF_156(E4RowEscrow.arbiter)"];
+26->29;
+27[label="Node Type: BEGIN_LOOP 27
+"];
+27->30;
+28[label="Node Type: END_LOOP 28
+"];
+28->37;
+29[label="Node Type: EXPRESSION 29
+
+EXPRESSION:
+gi = 0
+
+IRs:
+gi(uint256) := 0(uint256)"];
+29->27;
+30[label="Node Type: IF_LOOP 30
+
+EXPRESSION:
+(gi < xarb.gameSlots) && (aborted < _max)
+
+IRs:
+REF_157(uint256) -> xarb.gameSlots
+TMP_143(bool) = gi < REF_157
+TMP_144(bool) = aborted < _max
+TMP_145(bool) = TMP_143 && TMP_144
+CONDITION TMP_145"];
+30->31[label="True"];
+30->28[label="False"];
+31[label="Node Type: NEW VARIABLE 31
+
+EXPRESSION:
+ngame1 = games[xarb.gameIndexes[gi]]
+
+IRs:
+REF_158(mapping(uint256 => uint256)) -> xarb.gameIndexes
+REF_159(uint256) -> REF_158[gi]
+REF_160(E4RowEscrow.gameInstance) -> games[REF_159]
+ngame1(E4RowEscrow.gameInstance) := REF_160(E4RowEscrow.gameInstance)"];
+31->32;
+32[label="Node Type: IF 32
+
+EXPRESSION:
+(ngame1.active) && ((now - ngame1.lastMoved) > gameTimeOut)
+
+IRs:
+REF_161(bool) -> ngame1.active
+REF_162(uint256) -> ngame1.lastMoved
+TMP_146(uint256) = now - REF_162
+TMP_147(bool) = TMP_146 > gameTimeOut
+TMP_148(bool) = REF_161 && TMP_147
+CONDITION TMP_148"];
+32->33[label="True"];
+32->35[label="False"];
+33[label="Node Type: EXPRESSION 33
+
+EXPRESSION:
+abortGame(a,xarb.gameIndexes[gi],EndReason.erTimeOut)
+
+IRs:
+REF_163(mapping(uint256 => uint256)) -> xarb.gameIndexes
+REF_164(uint256) -> REF_163[gi]
+REF_165(E4RowEscrow.EndReason) -> EndReason.erTimeOut
+TMP_149(bool) = INTERNAL_CALL, E4RowEscrow.abortGame(address,uint256,E4RowEscrow.EndReason)(a,REF_164,REF_165)"];
+33->34;
+34[label="Node Type: EXPRESSION 34
+
+EXPRESSION:
+++ aborted
+
+IRs:
+aborted(int256) = aborted + 1"];
+34->35;
+35[label="Node Type: END_IF 35
+"];
+35->36;
+36[label="Node Type: EXPRESSION 36
+
+EXPRESSION:
+gi ++
+
+IRs:
+TMP_150(uint256) := gi(uint256)
+gi(uint256) = gi + 1"];
+36->30;
+37[label="Node Type: END_IF 37
+"];
+37->38;
+38[label="Node Type: END_IF 38
+"];
+}
+// Function: 39388.sol-E4RowEscrow-registerArbiter(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.value != registrationFee
+
+IRs:
+TMP_25(bool) = msg.value != registrationFee
+CONDITION TMP_25"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+_arbToken == 0
+
+IRs:
+TMP_26(bool) = _arbToken == 0
+CONDITION TMP_26"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: THROW 5
+"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: IF 7
+
+EXPRESSION:
+arbTokenExists(_arbToken & 0xffff)
+
+IRs:
+TMP_27(uint256) = _arbToken & 65535
+TMP_28(bool) = INTERNAL_CALL, E4RowEscrow.arbTokenExists(uint256)(TMP_27)
+CONDITION TMP_28"];
+7->8[label="True"];
+7->9[label="False"];
+8[label="Node Type: THROW 8
+"];
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: IF 10
+
+EXPRESSION:
+arbiters[msg.sender].registered
+
+IRs:
+REF_22(E4RowEscrow.arbiter) -> arbiters[msg.sender]
+REF_23(bool) -> REF_22.registered
+CONDITION REF_23"];
+10->11[label="True"];
+10->12[label="False"];
+11[label="Node Type: THROW 11
+"];
+12[label="Node Type: END_IF 12
+"];
+12->13;
+13[label="Node Type: IF 13
+
+EXPRESSION:
+_numPlayers > MAX_PLAYERS
+
+IRs:
+TMP_29(bool) = _numPlayers > MAX_PLAYERS
+CONDITION TMP_29"];
+13->14[label="True"];
+13->15[label="False"];
+14[label="Node Type: THROW 14
+"];
+15[label="Node Type: END_IF 15
+"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+arbiters[msg.sender].gamesStarted = 0
+
+IRs:
+REF_24(E4RowEscrow.arbiter) -> arbiters[msg.sender]
+REF_25(uint256) -> REF_24.gamesStarted
+REF_25(uint256) (->arbiters) := 0(uint256)"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+arbiters[msg.sender].gamesCompleted = 0
+
+IRs:
+REF_26(E4RowEscrow.arbiter) -> arbiters[msg.sender]
+REF_27(uint256) -> REF_26.gamesCompleted
+REF_27(uint256) (->arbiters) := 0(uint256)"];
+17->18;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+arbiters[msg.sender].gamesCanceled = 0
+
+IRs:
+REF_28(E4RowEscrow.arbiter) -> arbiters[msg.sender]
+REF_29(uint256) -> REF_28.gamesCanceled
+REF_29(uint256) (->arbiters) := 0(uint256)"];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+arbiters[msg.sender].gamesTimedout = 0
+
+IRs:
+REF_30(E4RowEscrow.arbiter) -> arbiters[msg.sender]
+REF_31(uint256) -> REF_30.gamesTimedout
+REF_31(uint256) (->arbiters) := 0(uint256)"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+arbiters[msg.sender].locked = false
+
+IRs:
+REF_32(E4RowEscrow.arbiter) -> arbiters[msg.sender]
+REF_33(bool) -> REF_32.locked
+REF_33(bool) (->arbiters) := False(bool)"];
+20->21;
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+arbiters[msg.sender].arbToken = _arbToken & 0xffff
+
+IRs:
+REF_34(E4RowEscrow.arbiter) -> arbiters[msg.sender]
+REF_35(uint256) -> REF_34.arbToken
+TMP_30(uint256) = _arbToken & 65535
+REF_35(uint256) (->arbiters) := TMP_30(uint256)"];
+21->22;
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+arbiters[msg.sender].numPlayers = _numPlayers
+
+IRs:
+REF_36(E4RowEscrow.arbiter) -> arbiters[msg.sender]
+REF_37(uint256) -> REF_36.numPlayers
+REF_37(uint256) (->arbiters) := _numPlayers(uint256)"];
+22->23;
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+arbiters[msg.sender].registered = true
+
+IRs:
+REF_38(E4RowEscrow.arbiter) -> arbiters[msg.sender]
+REF_39(bool) -> REF_38.registered
+REF_39(bool) (->arbiters) := True(bool)"];
+23->24;
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+arbiterTokens[(_arbToken & 0xffff)] = msg.sender
+
+IRs:
+TMP_31(uint256) = _arbToken & 65535
+REF_40(address) -> arbiterTokens[TMP_31]
+REF_40(address) (->arbiterTokens) := msg.sender(address)"];
+24->25;
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+arbiterIndexes[numArbiters ++] = msg.sender
+
+IRs:
+TMP_32(uint256) := numArbiters(uint256)
+numArbiters(uint256) = numArbiters + 1
+REF_41(address) -> arbiterIndexes[TMP_32]
+REF_41(address) (->arbiterIndexes) := msg.sender(address)"];
+25->26;
+26[label="Node Type: IF 26
+
+EXPRESSION:
+! tokenPartner.call.gas(raGas).value(msg.value)()
+
+IRs:
+TMP_35(bool) = LOW_LEVEL_CALL, dest:tokenPartner, function:call, arguments:[] value:msg.value gas:raGas
+TMP_36 = UnaryType.BANG TMP_35 
+CONDITION TMP_36"];
+26->27[label="True"];
+26->28[label="False"];
+27[label="Node Type: THROW 27
+"];
+28[label="Node Type: END_IF 28
+"];
+28->29;
+29[label="Node Type: EXPRESSION 29
+
+EXPRESSION:
+StatEventI(Arb Added,_arbToken)
+
+IRs:
+Emit StatEventI(Arb Added,_arbToken)"];
+}
+// Function: 39388.sol-E4RowEscrow-setArbiterLocked(address,bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+owner != msg.sender
+
+IRs:
+TMP_154(bool) = owner != msg.sender
+CONDITION TMP_154"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: IF 3
+
+EXPRESSION:
+! validArb2(_addr)
+
+IRs:
+TMP_155(bool) = INTERNAL_CALL, E4RowEscrow.validArb2(address)(_addr)
+TMP_156 = UnaryType.BANG TMP_155 
+CONDITION TMP_156"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+StatEvent(invalid arb)
+
+IRs:
+Emit StatEvent(invalid arb)"];
+4->6;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+arbiters[_addr].locked = _lock
+
+IRs:
+REF_172(E4RowEscrow.arbiter) -> arbiters[_addr]
+REF_173(bool) -> REF_172.locked
+REF_173(bool) (->arbiters) := _lock(bool)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+}
+// Function: 39388.sol-E4RowEscrow-setOpGas(uint256,uint256,uint256,uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != owner
+
+IRs:
+TMP_153(bool) = msg.sender != owner
+CONDITION TMP_153"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+raGas = _ra
+
+IRs:
+raGas(uint256) := _ra(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+sgGas = _sg
+
+IRs:
+sgGas(uint256) := _sg(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+wpGas = _wp
+
+IRs:
+wpGas(uint256) := _wp(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+rfGas = _rf
+
+IRs:
+rfGas(uint256) := _rf(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+feeGas = _fg
+
+IRs:
+feeGas(uint256) := _fg(uint256)"];
+}
+// Function: 39388.sol-E4RowEscrow-setTokenPartner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != owner
+
+IRs:
+TMP_167(bool) = msg.sender != owner
+CONDITION TMP_167"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+(settingsState == SettingStateValue.lockedRelease) && (tokenPartner == address(0))
+
+IRs:
+REF_177(E4RowEscrow.SettingStateValue) -> SettingStateValue.lockedRelease
+TMP_168(bool) = settingsState == REF_177
+TMP_169 = CONVERT 0 to address
+TMP_170(bool) = tokenPartner == TMP_169
+TMP_171(bool) = TMP_168 && TMP_170
+CONDITION TMP_171"];
+4->5[label="True"];
+4->7[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+tokenPartner = _addr
+
+IRs:
+tokenPartner(address) := _addr(address)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+StatEvent(Token Partner Final!)
+
+IRs:
+Emit StatEvent(Token Partner Final!)"];
+6->11;
+7[label="Node Type: IF 7
+
+EXPRESSION:
+settingsState != SettingStateValue.lockedRelease
+
+IRs:
+REF_178(E4RowEscrow.SettingStateValue) -> SettingStateValue.lockedRelease
+TMP_173(bool) = settingsState != REF_178
+CONDITION TMP_173"];
+7->8[label="True"];
+7->10[label="False"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+tokenPartner = _addr
+
+IRs:
+tokenPartner(address) := _addr(address)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+StatEvent(Token Partner Assigned!)
+
+IRs:
+Emit StatEvent(Token Partner Assigned!)"];
+9->10;
+10[label="Node Type: END_IF 10
+"];
+10->11;
+11[label="Node Type: END_IF 11
+"];
+}
+// Function: 39388.sol-E4RowEscrow-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+MAX_PLAYERS = 5
+
+IRs:
+MAX_PLAYERS(uint256) := 5(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+settingsState = SettingStateValue.debug
+
+IRs:
+REF_180(E4RowEscrow.SettingStateValue) -> SettingStateValue.debug
+settingsState(E4RowEscrow.SettingStateValue) := REF_180(E4RowEscrow.SettingStateValue)"];
+}
+// Function: 39388.sol-E4RowEscrow-startGame(uint256,int256,address[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+ntok = ArbTokFromHGame(_hGame)
+
+IRs:
+TMP_38(uint256) = INTERNAL_CALL, E4RowEscrow.ArbTokFromHGame(uint256)(_hGame)
+ntok(uint256) := TMP_38(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+! validArb(msg.sender,ntok)
+
+IRs:
+TMP_39(bool) = INTERNAL_CALL, E4RowEscrow.validArb(address,uint256)(msg.sender,ntok)
+TMP_40 = UnaryType.BANG TMP_39 
+CONDITION TMP_40"];
+2->3[label="True"];
+2->5[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+StatEvent(Invalid Arb)
+
+IRs:
+Emit StatEvent(Invalid Arb)"];
+3->4;
+4[label="Node Type: RETURN 4
+"];
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+arbLocked(msg.sender)
+
+IRs:
+TMP_42(bool) = INTERNAL_CALL, E4RowEscrow.arbLocked(address)(msg.sender)
+CONDITION TMP_42"];
+6->7[label="True"];
+6->9[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+StatEvent(Arb Locked)
+
+IRs:
+Emit StatEvent(Arb Locked)"];
+7->8;
+8[label="Node Type: RETURN 8
+"];
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: NEW VARIABLE 10
+
+EXPRESSION:
+xarb = arbiters[msg.sender]
+
+IRs:
+REF_45(E4RowEscrow.arbiter) -> arbiters[msg.sender]
+xarb(E4RowEscrow.arbiter) := REF_45(E4RowEscrow.arbiter)"];
+10->11;
+11[label="Node Type: IF 11
+
+EXPRESSION:
+_players.length != xarb.numPlayers
+
+IRs:
+REF_46 -> LENGTH _players
+REF_47(uint256) -> xarb.numPlayers
+TMP_44(bool) = REF_46 != REF_47
+CONDITION TMP_44"];
+11->12[label="True"];
+11->14[label="False"];
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+StatEvent(Incorrect num players)
+
+IRs:
+Emit StatEvent(Incorrect num players)"];
+12->13;
+13[label="Node Type: RETURN 13
+"];
+14[label="Node Type: END_IF 14
+"];
+14->15;
+15[label="Node Type: IF 15
+
+EXPRESSION:
+games[_hGame].active
+
+IRs:
+REF_48(E4RowEscrow.gameInstance) -> games[_hGame]
+REF_49(bool) -> REF_48.active
+CONDITION REF_49"];
+15->16[label="True"];
+15->17[label="False"];
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+abortGame(msg.sender,_hGame,EndReason.erCancel)
+
+IRs:
+REF_50(E4RowEscrow.EndReason) -> EndReason.erCancel
+TMP_46(bool) = INTERNAL_CALL, E4RowEscrow.abortGame(address,uint256,E4RowEscrow.EndReason)(msg.sender,_hGame,REF_50)"];
+16->20;
+17[label="Node Type: IF 17
+
+EXPRESSION:
+_hkMax > 0
+
+IRs:
+TMP_47(bool) = _hkMax > 0
+CONDITION TMP_47"];
+17->18[label="True"];
+17->19[label="False"];
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+houseKeep(_hkMax,ntok)
+
+IRs:
+INTERNAL_CALL, E4RowEscrow.houseKeep(int256,uint256)(_hkMax,ntok)"];
+18->19;
+19[label="Node Type: END_IF 19
+"];
+19->20;
+20[label="Node Type: END_IF 20
+"];
+20->21;
+21[label="Node Type: IF 21
+
+EXPRESSION:
+! games[_hGame].allocd
+
+IRs:
+REF_51(E4RowEscrow.gameInstance) -> games[_hGame]
+REF_52(bool) -> REF_51.allocd
+TMP_49 = UnaryType.BANG REF_52 
+CONDITION TMP_49"];
+21->22[label="True"];
+21->24[label="False"];
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+games[_hGame].allocd = true
+
+IRs:
+REF_53(E4RowEscrow.gameInstance) -> games[_hGame]
+REF_54(bool) -> REF_53.allocd
+REF_54(bool) (->games) := True(bool)"];
+22->23;
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+xarb.gameIndexes[xarb.gameSlots ++] = _hGame
+
+IRs:
+REF_55(mapping(uint256 => uint256)) -> xarb.gameIndexes
+REF_56(uint256) -> xarb.gameSlots
+TMP_50(uint256) := REF_56(uint256)
+REF_56(-> xarb) = REF_56 + 1
+REF_57(uint256) -> REF_55[TMP_50]
+REF_57(uint256) (->xarb) := _hGame(uint256)"];
+23->24;
+24[label="Node Type: END_IF 24
+"];
+24->25;
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+numGamesStarted ++
+
+IRs:
+TMP_51(int256) := numGamesStarted(int256)
+numGamesStarted(int256) = numGamesStarted + 1"];
+25->26;
+26[label="Node Type: EXPRESSION 26
+
+EXPRESSION:
+xarb.gamesStarted ++
+
+IRs:
+REF_58(uint256) -> xarb.gamesStarted
+TMP_52(uint256) := REF_58(uint256)
+REF_58(-> xarb) = REF_58 + 1"];
+26->27;
+27[label="Node Type: EXPRESSION 27
+
+EXPRESSION:
+games[_hGame].active = true
+
+IRs:
+REF_59(E4RowEscrow.gameInstance) -> games[_hGame]
+REF_60(bool) -> REF_59.active
+REF_60(bool) (->games) := True(bool)"];
+27->28;
+28[label="Node Type: EXPRESSION 28
+
+EXPRESSION:
+games[_hGame].started = now
+
+IRs:
+REF_61(E4RowEscrow.gameInstance) -> games[_hGame]
+REF_62(uint256) -> REF_61.started
+REF_62(uint256) (->games) := now(uint256)"];
+28->29;
+29[label="Node Type: EXPRESSION 29
+
+EXPRESSION:
+games[_hGame].lastMoved = now
+
+IRs:
+REF_63(E4RowEscrow.gameInstance) -> games[_hGame]
+REF_64(uint256) -> REF_63.lastMoved
+REF_64(uint256) (->games) := now(uint256)"];
+29->30;
+30[label="Node Type: EXPRESSION 30
+
+EXPRESSION:
+games[_hGame].payout = 0
+
+IRs:
+REF_65(E4RowEscrow.gameInstance) -> games[_hGame]
+REF_66(uint256) -> REF_65.payout
+REF_66(uint256) (->games) := 0(uint256)"];
+30->31;
+31[label="Node Type: EXPRESSION 31
+
+EXPRESSION:
+games[_hGame].winner = address(0)
+
+IRs:
+REF_67(E4RowEscrow.gameInstance) -> games[_hGame]
+REF_68(address) -> REF_67.winner
+TMP_53 = CONVERT 0 to address
+REF_68(address) (->games) := TMP_53(address)"];
+31->32;
+32[label="Node Type: EXPRESSION 32
+
+EXPRESSION:
+games[_hGame].numPlayers = _players.length
+
+IRs:
+REF_69(E4RowEscrow.gameInstance) -> games[_hGame]
+REF_70(uint256) -> REF_69.numPlayers
+REF_71 -> LENGTH _players
+REF_70(uint256) (->games) := REF_71(uint256)"];
+32->35;
+33[label="Node Type: BEGIN_LOOP 33
+"];
+33->36;
+34[label="Node Type: END_LOOP 34
+"];
+34->40;
+35[label="Node Type: NEW VARIABLE 35
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+35->33;
+36[label="Node Type: IF_LOOP 36
+
+EXPRESSION:
+i < _players.length && i < MAX_PLAYERS
+
+IRs:
+REF_72 -> LENGTH _players
+TMP_54(bool) = i < REF_72
+TMP_55(bool) = i < MAX_PLAYERS
+TMP_56(bool) = TMP_54 && TMP_55
+CONDITION TMP_56"];
+36->37[label="True"];
+36->34[label="False"];
+37[label="Node Type: EXPRESSION 37
+
+EXPRESSION:
+games[_hGame].players[i] = _players[i]
+
+IRs:
+REF_73(E4RowEscrow.gameInstance) -> games[_hGame]
+REF_74(address[5]) -> REF_73.players
+REF_75(address) -> REF_74[i]
+REF_76(address) -> _players[i]
+REF_75(address) (->games) := REF_76(address)"];
+37->38;
+38[label="Node Type: EXPRESSION 38
+
+EXPRESSION:
+games[_hGame].playerPots[i] = 0
+
+IRs:
+REF_77(E4RowEscrow.gameInstance) -> games[_hGame]
+REF_78(uint256[5]) -> REF_77.playerPots
+REF_79(uint256) -> REF_78[i]
+REF_79(uint256) (->games) := 0(uint256)"];
+38->39;
+39[label="Node Type: EXPRESSION 39
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_57(uint256) := i(uint256)
+i(uint256) = i + 1"];
+39->36;
+40[label="Node Type: EXPRESSION 40
+
+EXPRESSION:
+StatEventI(Game Added,_hGame)
+
+IRs:
+Emit StatEventI(Game Added,_hGame)"];
+}
+// Function: 39388.sol-E4RowEscrow-validArb(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_valid = false
+
+IRs:
+_valid(bool) := False(bool)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+(arbiters[_addr].registered) && (arbiters[_addr].arbToken == _tok)
+
+IRs:
+REF_12(E4RowEscrow.arbiter) -> arbiters[_addr]
+REF_13(bool) -> REF_12.registered
+REF_14(E4RowEscrow.arbiter) -> arbiters[_addr]
+REF_15(uint256) -> REF_14.arbToken
+TMP_20(bool) = REF_15 == _tok
+TMP_21(bool) = REF_13 && TMP_20
+CONDITION TMP_21"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_valid = true
+
+IRs:
+_valid(bool) := True(bool)"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+_valid
+
+IRs:
+RETURN _valid"];
+}
+// Function: 39388.sol-E4RowEscrow-validArb2(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_valid = false
+
+IRs:
+_valid(bool) := False(bool)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+arbiters[_addr].registered
+
+IRs:
+REF_16(E4RowEscrow.arbiter) -> arbiters[_addr]
+REF_17(bool) -> REF_16.registered
+CONDITION REF_17"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_valid = true
+
+IRs:
+_valid(bool) := True(bool)"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+_valid
+
+IRs:
+RETURN _valid"];
+}
+// Function: 39388.sol-E4RowEscrow-validPlayer(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_valid = false
+
+IRs:
+_valid(bool) := False(bool)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+activeGame(_hGame)
+
+IRs:
+TMP_13(bool) = INTERNAL_CALL, E4RowEscrow.activeGame(uint256)(_hGame)
+CONDITION TMP_13"];
+2->5[label="True"];
+2->13[label="False"];
+3[label="Node Type: BEGIN_LOOP 3
+"];
+3->6;
+4[label="Node Type: END_LOOP 4
+"];
+4->13;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+5->3;
+6[label="Node Type: IF_LOOP 6
+
+EXPRESSION:
+i < games[_hGame].numPlayers
+
+IRs:
+REF_2(E4RowEscrow.gameInstance) -> games[_hGame]
+REF_3(uint256) -> REF_2.numPlayers
+TMP_14(bool) = i < REF_3
+CONDITION TMP_14"];
+6->7[label="True"];
+6->4[label="False"];
+7[label="Node Type: IF 7
+
+EXPRESSION:
+games[_hGame].players[i] == _addr
+
+IRs:
+REF_4(E4RowEscrow.gameInstance) -> games[_hGame]
+REF_5(address[5]) -> REF_4.players
+REF_6(address) -> REF_5[i]
+TMP_15(bool) = REF_6 == _addr
+CONDITION TMP_15"];
+7->8[label="True"];
+7->11[label="False"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+_valid = true
+
+IRs:
+_valid(bool) := True(bool)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+_pidx = i
+
+IRs:
+_pidx(uint256) := i(uint256)"];
+9->10;
+10[label="Node Type: BREAK 10
+"];
+10->4;
+11[label="Node Type: END_IF 11
+"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_16(uint256) := i(uint256)
+i(uint256) = i + 1"];
+12->6;
+13[label="Node Type: END_IF 13
+"];
+13->14;
+14[label="Node Type: RETURN 14
+
+EXPRESSION:
+(_valid,_pidx)
+
+IRs:
+RETURN _valid,_pidx"];
+}
+// Function: 39388.sol-E4RowEscrow-validPlayer2(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_valid = false
+
+IRs:
+_valid(bool) := False(bool)"];
+1->4;
+2[label="Node Type: BEGIN_LOOP 2
+"];
+2->5;
+3[label="Node Type: END_LOOP 3
+"];
+3->12;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+4->2;
+5[label="Node Type: IF_LOOP 5
+
+EXPRESSION:
+i < games[_hGame].numPlayers
+
+IRs:
+REF_7(E4RowEscrow.gameInstance) -> games[_hGame]
+REF_8(uint256) -> REF_7.numPlayers
+TMP_17(bool) = i < REF_8
+CONDITION TMP_17"];
+5->6[label="True"];
+5->3[label="False"];
+6[label="Node Type: IF 6
+
+EXPRESSION:
+games[_hGame].players[i] == _addr
+
+IRs:
+REF_9(E4RowEscrow.gameInstance) -> games[_hGame]
+REF_10(address[5]) -> REF_9.players
+REF_11(address) -> REF_10[i]
+TMP_18(bool) = REF_11 == _addr
+CONDITION TMP_18"];
+6->7[label="True"];
+6->10[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+_valid = true
+
+IRs:
+_valid(bool) := True(bool)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+_pidx = i
+
+IRs:
+_pidx(uint256) := i(uint256)"];
+8->9;
+9[label="Node Type: BREAK 9
+"];
+9->3;
+10[label="Node Type: END_IF 10
+"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_19(uint256) := i(uint256)
+i(uint256) = i + 1"];
+11->5;
+12[label="Node Type: RETURN 12
+
+EXPRESSION:
+(_valid,_pidx)
+
+IRs:
+RETURN _valid,_pidx"];
+}
+// Function: 39388.sol-E4RowEscrow-winnerDecided(uint256,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! validArb(msg.sender,ArbTokFromHGame(_hGame))
+
+IRs:
+TMP_76(uint256) = INTERNAL_CALL, E4RowEscrow.ArbTokFromHGame(uint256)(_hGame)
+TMP_77(bool) = INTERNAL_CALL, E4RowEscrow.validArb(address,uint256)(msg.sender,TMP_76)
+TMP_78 = UnaryType.BANG TMP_77 
+CONDITION TMP_78"];
+1->2[label="True"];
+1->4[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+StatEvent(Invalid Arb)
+
+IRs:
+Emit StatEvent(Invalid Arb)"];
+2->3;
+3[label="Node Type: RETURN 3
+"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+(valid,pidx) = validPlayer(_hGame,_winner)
+
+IRs:
+TUPLE_0(bool,uint256) = INTERNAL_CALL, E4RowEscrow.validPlayer(uint256,address)(_hGame,_winner)
+valid(bool)= UNPACK TUPLE_0 index: 0 
+pidx(uint256)= UNPACK TUPLE_0 index: 1 "];
+7->8;
+8[label="Node Type: IF 8
+
+EXPRESSION:
+! valid
+
+IRs:
+TMP_80 = UnaryType.BANG valid 
+CONDITION TMP_80"];
+8->9[label="True"];
+8->11[label="False"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+StatEvent(Invalid Player)
+
+IRs:
+Emit StatEvent(Invalid Player)"];
+9->10;
+10[label="Node Type: RETURN 10
+"];
+11[label="Node Type: END_IF 11
+"];
+11->12;
+12[label="Node Type: NEW VARIABLE 12
+
+EXPRESSION:
+xarb = arbiters[msg.sender]
+
+IRs:
+REF_102(E4RowEscrow.arbiter) -> arbiters[msg.sender]
+xarb(E4RowEscrow.arbiter) := REF_102(E4RowEscrow.arbiter)"];
+12->13;
+13[label="Node Type: NEW VARIABLE 13
+
+EXPRESSION:
+xgame = games[_hGame]
+
+IRs:
+REF_103(E4RowEscrow.gameInstance) -> games[_hGame]
+xgame(E4RowEscrow.gameInstance) := REF_103(E4RowEscrow.gameInstance)"];
+13->14;
+14[label="Node Type: NEW VARIABLE 14
+
+EXPRESSION:
+totalPot = 0
+
+IRs:
+totalPot(uint256) := 0(uint256)"];
+14->15;
+15[label="Node Type: IF 15
+
+EXPRESSION:
+xgame.playerPots[pidx] < _winnerBal
+
+IRs:
+REF_104(uint256[5]) -> xgame.playerPots
+REF_105(uint256) -> REF_104[pidx]
+TMP_82(bool) = REF_105 < _winnerBal
+CONDITION TMP_82"];
+15->16[label="True"];
+15->18[label="False"];
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+abortGame(msg.sender,_hGame,EndReason.erCancel)
+
+IRs:
+REF_106(E4RowEscrow.EndReason) -> EndReason.erCancel
+TMP_83(bool) = INTERNAL_CALL, E4RowEscrow.abortGame(address,uint256,E4RowEscrow.EndReason)(msg.sender,_hGame,REF_106)"];
+16->17;
+17[label="Node Type: RETURN 17
+"];
+18[label="Node Type: END_IF 18
+"];
+18->21;
+19[label="Node Type: BEGIN_LOOP 19
+"];
+19->22;
+20[label="Node Type: END_LOOP 20
+"];
+20->25;
+21[label="Node Type: NEW VARIABLE 21
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+21->19;
+22[label="Node Type: IF_LOOP 22
+
+EXPRESSION:
+i < xgame.numPlayers
+
+IRs:
+REF_107(uint256) -> xgame.numPlayers
+TMP_84(bool) = i < REF_107
+CONDITION TMP_84"];
+22->23[label="True"];
+22->20[label="False"];
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+totalPot += xgame.playerPots[i]
+
+IRs:
+REF_108(uint256[5]) -> xgame.playerPots
+REF_109(uint256) -> REF_108[i]
+totalPot(uint256) = totalPot + REF_109"];
+23->24;
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_85(uint256) := i(uint256)
+i(uint256) = i + 1"];
+24->22;
+25[label="Node Type: NEW VARIABLE 25
+"];
+25->26;
+26[label="Node Type: NEW VARIABLE 26
+"];
+26->27;
+27[label="Node Type: IF 27
+
+EXPRESSION:
+totalPot > 0
+
+IRs:
+TMP_86(bool) = totalPot > 0
+CONDITION TMP_86"];
+27->28[label="True"];
+27->30[label="False"];
+28[label="Node Type: EXPRESSION 28
+
+EXPRESSION:
+nportion = totalPot / 50
+
+IRs:
+TMP_87(uint256) = totalPot / 50
+nportion(uint256) := TMP_87(uint256)"];
+28->29;
+29[label="Node Type: EXPRESSION 29
+
+EXPRESSION:
+nremnant = totalPot - nportion
+
+IRs:
+TMP_88(uint256) = totalPot - nportion
+nremnant(uint256) := TMP_88(uint256)"];
+29->32;
+30[label="Node Type: EXPRESSION 30
+
+EXPRESSION:
+nportion = 0
+
+IRs:
+nportion(uint256) := 0(uint256)"];
+30->31;
+31[label="Node Type: EXPRESSION 31
+
+EXPRESSION:
+nremnant = 0
+
+IRs:
+nremnant(uint256) := 0(uint256)"];
+31->32;
+32[label="Node Type: END_IF 32
+"];
+32->33;
+33[label="Node Type: EXPRESSION 33
+
+EXPRESSION:
+xgame.lastMoved = now
+
+IRs:
+REF_110(uint256) -> xgame.lastMoved
+REF_110(uint256) (->xgame) := now(uint256)"];
+33->34;
+34[label="Node Type: EXPRESSION 34
+
+EXPRESSION:
+xgame.active = false
+
+IRs:
+REF_111(bool) -> xgame.active
+REF_111(bool) (->xgame) := False(bool)"];
+34->35;
+35[label="Node Type: EXPRESSION 35
+
+EXPRESSION:
+xgame.reasonEnded = EndReason.erWinner
+
+IRs:
+REF_112(E4RowEscrow.EndReason) -> xgame.reasonEnded
+REF_113(E4RowEscrow.EndReason) -> EndReason.erWinner
+REF_112(E4RowEscrow.EndReason) (->xgame) := REF_113(E4RowEscrow.EndReason)"];
+35->36;
+36[label="Node Type: EXPRESSION 36
+
+EXPRESSION:
+xgame.winner = _winner
+
+IRs:
+REF_114(address) -> xgame.winner
+REF_114(address) (->xgame) := _winner(address)"];
+36->37;
+37[label="Node Type: EXPRESSION 37
+
+EXPRESSION:
+xgame.payout = nremnant
+
+IRs:
+REF_115(uint256) -> xgame.payout
+REF_115(uint256) (->xgame) := nremnant(uint256)"];
+37->38;
+38[label="Node Type: IF 38
+
+EXPRESSION:
+nportion > 0
+
+IRs:
+TMP_89(bool) = nportion > 0
+CONDITION TMP_89"];
+38->39[label="True"];
+38->49[label="False"];
+39[label="Node Type: EXPRESSION 39
+
+EXPRESSION:
+houseFeeHoldover += nportion
+
+IRs:
+houseFeeHoldover(uint256) = houseFeeHoldover + nportion"];
+39->40;
+40[label="Node Type: IF 40
+
+EXPRESSION:
+(houseFeeHoldover > houseFeeThreshold) && (now > (lastPayoutTime + payoutInterval))
+
+IRs:
+TMP_90(bool) = houseFeeHoldover > houseFeeThreshold
+TMP_91(uint256) = lastPayoutTime + payoutInterval
+TMP_92(bool) = now > TMP_91
+TMP_93(bool) = TMP_90 && TMP_92
+CONDITION TMP_93"];
+40->41[label="True"];
+40->48[label="False"];
+41[label="Node Type: NEW VARIABLE 41
+
+EXPRESSION:
+ntmpho = houseFeeHoldover
+
+IRs:
+ntmpho(uint256) := houseFeeHoldover(uint256)"];
+41->42;
+42[label="Node Type: EXPRESSION 42
+
+EXPRESSION:
+houseFeeHoldover = 0
+
+IRs:
+houseFeeHoldover(uint256) := 0(uint256)"];
+42->43;
+43[label="Node Type: EXPRESSION 43
+
+EXPRESSION:
+lastPayoutTime = now
+
+IRs:
+lastPayoutTime(uint256) := now(uint256)"];
+43->44;
+44[label="Node Type: IF 44
+
+EXPRESSION:
+! tokenPartner.call.gas(feeGas).value(ntmpho)()
+
+IRs:
+TMP_96(bool) = LOW_LEVEL_CALL, dest:tokenPartner, function:call, arguments:[] value:ntmpho gas:feeGas
+TMP_97 = UnaryType.BANG TMP_96 
+CONDITION TMP_97"];
+44->45[label="True"];
+44->47[label="False"];
+45[label="Node Type: EXPRESSION 45
+
+EXPRESSION:
+houseFeeHoldover = ntmpho
+
+IRs:
+houseFeeHoldover(uint256) := ntmpho(uint256)"];
+45->46;
+46[label="Node Type: EXPRESSION 46
+
+EXPRESSION:
+StatEvent(House-Fee Error1)
+
+IRs:
+Emit StatEvent(House-Fee Error1)"];
+46->47;
+47[label="Node Type: END_IF 47
+"];
+47->48;
+48[label="Node Type: END_IF 48
+"];
+48->49;
+49[label="Node Type: END_IF 49
+"];
+49->52;
+50[label="Node Type: BEGIN_LOOP 50
+"];
+50->53;
+51[label="Node Type: END_LOOP 51
+"];
+51->56;
+52[label="Node Type: EXPRESSION 52
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+52->50;
+53[label="Node Type: IF_LOOP 53
+
+EXPRESSION:
+i < xgame.numPlayers
+
+IRs:
+REF_119(uint256) -> xgame.numPlayers
+TMP_99(bool) = i < REF_119
+CONDITION TMP_99"];
+53->54[label="True"];
+53->51[label="False"];
+54[label="Node Type: EXPRESSION 54
+
+EXPRESSION:
+xgame.playerPots[i] = 0
+
+IRs:
+REF_120(uint256[5]) -> xgame.playerPots
+REF_121(uint256) -> REF_120[i]
+REF_121(uint256) (->xgame) := 0(uint256)"];
+54->55;
+55[label="Node Type: EXPRESSION 55
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_100(uint256) := i(uint256)
+i(uint256) = i + 1"];
+55->53;
+56[label="Node Type: EXPRESSION 56
+
+EXPRESSION:
+xarb.gamesCompleted ++
+
+IRs:
+REF_122(uint256) -> xarb.gamesCompleted
+TMP_101(uint256) := REF_122(uint256)
+REF_122(-> xarb) = REF_122 + 1"];
+56->57;
+57[label="Node Type: EXPRESSION 57
+
+EXPRESSION:
+numGamesCompleted ++
+
+IRs:
+TMP_102(uint256) := numGamesCompleted(uint256)
+numGamesCompleted(uint256) = numGamesCompleted + 1"];
+57->58;
+58[label="Node Type: IF 58
+
+EXPRESSION:
+nremnant > 0
+
+IRs:
+TMP_103(bool) = nremnant > 0
+CONDITION TMP_103"];
+58->59[label="True"];
+58->63[label="False"];
+59[label="Node Type: IF 59
+
+EXPRESSION:
+! _winner.call.gas(wpGas).value(uint256(nremnant))()
+
+IRs:
+TMP_105 = CONVERT nremnant to uint256
+TMP_107(bool) = LOW_LEVEL_CALL, dest:_winner, function:call, arguments:[] value:TMP_105 gas:wpGas
+TMP_108 = UnaryType.BANG TMP_107 
+CONDITION TMP_108"];
+59->60[label="True"];
+59->61[label="False"];
+60[label="Node Type: THROW 60
+"];
+61[label="Node Type: EXPRESSION 61
+
+EXPRESSION:
+StatEventI(Winner Paid,_hGame)
+
+IRs:
+Emit StatEventI(Winner Paid,_hGame)"];
+61->62;
+62[label="Node Type: END_IF 62
+"];
+62->63;
+63[label="Node Type: END_IF 63
+"];
+}
+// Function: 39388.sol-iE4RowEscrow-getNumGamesStarted()
+digraph{
+}
+}

@@ -1,0 +1,5106 @@
+digraph G {
+// Function: 984.sol-AddressUtils-isContract(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->2;
+2[label="Node Type: INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: END INLINE ASM 3
+"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+size > 0
+
+IRs:
+TMP_12(bool) = size > 0
+RETURN TMP_12"];
+}
+// Function: 984.sol-Deed-Deed(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = _owner
+
+IRs:
+owner(address) := _owner(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+registrar = msg.sender
+
+IRs:
+registrar(address) := msg.sender(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+creationDate = now
+
+IRs:
+creationDate(uint256) := now(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+active = true
+
+IRs:
+active(bool) := True(bool)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+value = msg.value
+
+IRs:
+value(uint256) := msg.value(uint256)"];
+}
+// Function: 984.sol-Deed-closeDeed(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+active = false
+
+IRs:
+active(bool) := False(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(burn.send(((1000 - refundRatio) * this.balance) / 1000))
+
+IRs:
+TMP_212(uint256) = 1000 - refundRatio
+REF_95(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_213(uint256) = TMP_212 * REF_95
+TMP_214(uint256) = TMP_213 / 1000
+TMP_215 = SEND dest:burn value:TMP_214
+TMP_216(None) = SOLIDITY_CALL require(bool)(TMP_215)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+DeedClosed()
+
+IRs:
+Emit DeedClosed()"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+destroyDeed()
+
+IRs:
+INTERNAL_CALL, Deed.destroyDeed()()"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+onlyRegistrar()
+
+IRs:
+MODIFIER_CALL, Deed.onlyRegistrar()()"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyActive()
+
+IRs:
+MODIFIER_CALL, Deed.onlyActive()()"];
+6->1;
+}
+// Function: 984.sol-Deed-destroyDeed()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! active)
+
+IRs:
+TMP_221 = UnaryType.BANG active 
+TMP_222(None) = SOLIDITY_CALL require(bool)(TMP_221)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+owner.send(this.balance)
+
+IRs:
+REF_97(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_223 = SEND dest:owner value:REF_97
+CONDITION TMP_223"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+selfdestruct(address)(burn)
+
+IRs:
+TMP_224(None) = SOLIDITY_CALL selfdestruct(address)(burn)"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+}
+// Function: 984.sol-Deed-onlyActive()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(active)
+
+IRs:
+TMP_227(None) = SOLIDITY_CALL require(bool)(active)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 984.sol-Deed-onlyRegistrar()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == registrar)
+
+IRs:
+TMP_225(bool) = msg.sender == registrar
+TMP_226(None) = SOLIDITY_CALL require(bool)(TMP_225)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 984.sol-Deed-setBalance(uint256,bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(value >= newValue)
+
+IRs:
+TMP_203(bool) = value >= newValue
+TMP_204(None) = SOLIDITY_CALL require(bool)(TMP_203)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+value = newValue
+
+IRs:
+value(uint256) := newValue(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(owner.send(this.balance - newValue) || ! throwOnFailure)
+
+IRs:
+REF_93(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_205([<slither.core.solidity_types.elementary_type.ElementaryType object at 0x7f3608649150>]) = REF_93 - newValue
+TMP_206 = SEND dest:owner value:TMP_205
+TMP_207 = UnaryType.BANG throwOnFailure 
+TMP_208(bool) = TMP_206 || TMP_207
+TMP_209(None) = SOLIDITY_CALL require(bool)(TMP_208)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyRegistrar()
+
+IRs:
+MODIFIER_CALL, Deed.onlyRegistrar()()"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+onlyActive()
+
+IRs:
+MODIFIER_CALL, Deed.onlyActive()()"];
+5->1;
+}
+// Function: 984.sol-Deed-setOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newOwner != 0)
+
+IRs:
+TMP_198(bool) = newOwner != 0
+TMP_199(None) = SOLIDITY_CALL require(bool)(TMP_198)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+previousOwner = owner
+
+IRs:
+previousOwner(address) := owner(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+OwnerChanged(newOwner)
+
+IRs:
+Emit OwnerChanged(newOwner)"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+onlyRegistrar()
+
+IRs:
+MODIFIER_CALL, Deed.onlyRegistrar()()"];
+5->1;
+}
+// Function: 984.sol-Deed-setRegistrar(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+registrar = newRegistrar
+
+IRs:
+registrar(address) := newRegistrar(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyRegistrar()
+
+IRs:
+MODIFIER_CALL, Deed.onlyRegistrar()()"];
+2->1;
+}
+// Function: 984.sol-Deed-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+burn = 0xdead
+
+IRs:
+burn(address) := 57005(uint256)"];
+}
+// Function: 984.sol-ENS-owner(bytes32)
+digraph{
+}
+// Function: 984.sol-ENS-resolver(bytes32)
+digraph{
+}
+// Function: 984.sol-ENS-setOwner(bytes32,address)
+digraph{
+}
+// Function: 984.sol-ENS-setResolver(bytes32,address)
+digraph{
+}
+// Function: 984.sol-ENS-setSubnodeOwner(bytes32,bytes32,address)
+digraph{
+}
+// Function: 984.sol-ENS-setTTL(bytes32,uint64)
+digraph{
+}
+// Function: 984.sol-ENS-ttl(bytes32)
+digraph{
+}
+// Function: 984.sol-ENSNFT-_burn(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+clearApproval(_owner,_tokenId)
+
+IRs:
+INTERNAL_CALL, ERC721BasicToken.clearApproval(address,uint256)(_owner,_tokenId)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+removeTokenFrom(_owner,_tokenId)
+
+IRs:
+INTERNAL_CALL, ERC721Token.removeTokenFrom(address,uint256)(_owner,_tokenId)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+Transfer(_owner,address(0),_tokenId)
+
+IRs:
+TMP_492 = CONVERT 0 to address
+Emit Transfer(_owner,TMP_492,_tokenId)"];
+}
+// Function: 984.sol-ENSNFT-_mint(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_to != address(0))
+
+IRs:
+TMP_484 = CONVERT 0 to address
+TMP_485(bool) = _to != TMP_484
+TMP_486(None) = SOLIDITY_CALL require(bool)(TMP_485)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+addTokenTo(_to,_tokenId)
+
+IRs:
+INTERNAL_CALL, ERC721Token.addTokenTo(address,uint256)(_to,_tokenId)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+Transfer(address(0),_to,_tokenId)
+
+IRs:
+TMP_488 = CONVERT 0 to address
+Emit Transfer(TMP_488,_to,_tokenId)"];
+}
+// Function: 984.sol-ENSNFT-_registerInterface(bytes4)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_interfaceId != 0xffffffff)
+
+IRs:
+TMP_515(bool) = _interfaceId != 4294967295
+TMP_516(None) = SOLIDITY_CALL require(bool)(TMP_515)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+supportedInterfaces[_interfaceId] = true
+
+IRs:
+REF_296(bool) -> supportedInterfaces[_interfaceId]
+REF_296(bool) (->supportedInterfaces) := True(bool)"];
+}
+// Function: 984.sol-ENSNFT-_setTokenURI(uint256,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(exists(_tokenId))
+
+IRs:
+TMP_422(bool) = INTERNAL_CALL, ERC721BasicToken.exists(uint256)(_tokenId)
+TMP_423(None) = SOLIDITY_CALL require(bool)(TMP_422)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+tokenURIs[_tokenId] = _uri
+
+IRs:
+REF_236(string) -> tokenURIs[_tokenId]
+REF_236(string) (->tokenURIs) := _uri(string)"];
+}
+// Function: 984.sol-ENSNFT-addTokenTo(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(tokenOwner[_tokenId] == address(0))
+
+IRs:
+REF_284(address) -> tokenOwner[_tokenId]
+TMP_500 = CONVERT 0 to address
+TMP_501(bool) = REF_284 == TMP_500
+TMP_502(None) = SOLIDITY_CALL require(bool)(TMP_501)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+tokenOwner[_tokenId] = _to
+
+IRs:
+REF_285(address) -> tokenOwner[_tokenId]
+REF_285(address) (->tokenOwner) := _to(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+ownedTokensCount[_to] = ownedTokensCount[_to].add(1)
+
+IRs:
+REF_286(uint256) -> ownedTokensCount[_to]
+REF_287(uint256) -> ownedTokensCount[_to]
+TMP_503(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_287', '1'] 
+REF_286(uint256) (->ownedTokensCount) := TMP_503(uint256)"];
+}
+// Function: 984.sol-ENSNFT-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+owner = ownerOf(_tokenId)
+
+IRs:
+TMP_450(address) = INTERNAL_CALL, ERC721BasicToken.ownerOf(uint256)(_tokenId)
+owner(address) := TMP_450(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_to != owner)
+
+IRs:
+TMP_451(bool) = _to != owner
+TMP_452(None) = SOLIDITY_CALL require(bool)(TMP_451)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(msg.sender == owner || isApprovedForAll(owner,msg.sender))
+
+IRs:
+TMP_453(bool) = msg.sender == owner
+TMP_454(bool) = INTERNAL_CALL, ERC721BasicToken.isApprovedForAll(address,address)(owner,msg.sender)
+TMP_455(bool) = TMP_453 || TMP_454
+TMP_456(None) = SOLIDITY_CALL require(bool)(TMP_455)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+tokenApprovals[_tokenId] = _to
+
+IRs:
+REF_276(address) -> tokenApprovals[_tokenId]
+REF_276(address) (->tokenApprovals) := _to(address)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Approval(owner,_to,_tokenId)
+
+IRs:
+Emit Approval(owner,_to,_tokenId)"];
+}
+// Function: 984.sol-ENSNFT-balanceOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_owner != address(0))
+
+IRs:
+TMP_442 = CONVERT 0 to address
+TMP_443(bool) = _owner != TMP_442
+TMP_444(None) = SOLIDITY_CALL require(bool)(TMP_443)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+ownedTokensCount[_owner]
+
+IRs:
+REF_273(uint256) -> ownedTokensCount[_owner]
+RETURN REF_273"];
+}
+// Function: 984.sol-ENSNFT-burn(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(ownerOf(tokenId) == msg.sender)
+
+IRs:
+TMP_530(address) = INTERNAL_CALL, ERC721BasicToken.ownerOf(uint256)(tokenId)
+TMP_531(bool) = TMP_530 == msg.sender
+TMP_532(None) = SOLIDITY_CALL require(bool)(TMP_531)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_burn(msg.sender,tokenId)
+
+IRs:
+INTERNAL_CALL, ERC721Token._burn(address,uint256)(msg.sender,tokenId)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+registrar.transfer(bytes32(tokenId),msg.sender)
+
+IRs:
+TMP_534 = CONVERT tokenId to bytes32
+HIGH_LEVEL_CALL, dest:registrar(Registrar), function:transfer, arguments:['TMP_534', 'msg.sender']  "];
+}
+// Function: 984.sol-ENSNFT-checkAndCallSafeTransfer(address,address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! _to.isContract()
+
+IRs:
+TMP_509(bool) = LIBRARY_CALL, dest:AddressUtils, function:AddressUtils.isContract(address), arguments:['_to'] 
+TMP_510 = UnaryType.BANG TMP_509 
+CONDITION TMP_510"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+retval = ERC721Receiver(_to).onERC721Received(msg.sender,_from,_tokenId,_data)
+
+IRs:
+TMP_511 = CONVERT _to to ERC721Receiver
+TMP_512(bytes4) = HIGH_LEVEL_CALL, dest:TMP_511(ERC721Receiver), function:onERC721Received, arguments:['msg.sender', '_from', '_tokenId', '_data']  
+retval(bytes4) := TMP_512(bytes4)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+(retval == ERC721_RECEIVED)
+
+IRs:
+TMP_513(bool) = retval == ERC721_RECEIVED
+RETURN TMP_513"];
+}
+// Function: 984.sol-ENSNFT-clearApproval(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(ownerOf(_tokenId) == _owner)
+
+IRs:
+TMP_494(address) = INTERNAL_CALL, ERC721BasicToken.ownerOf(uint256)(_tokenId)
+TMP_495(bool) = TMP_494 == _owner
+TMP_496(None) = SOLIDITY_CALL require(bool)(TMP_495)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+tokenApprovals[_tokenId] != address(0)
+
+IRs:
+REF_282(address) -> tokenApprovals[_tokenId]
+TMP_497 = CONVERT 0 to address
+TMP_498(bool) = REF_282 != TMP_497
+CONDITION TMP_498"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+tokenApprovals[_tokenId] = address(0)
+
+IRs:
+REF_283(address) -> tokenApprovals[_tokenId]
+TMP_499 = CONVERT 0 to address
+REF_283(address) (->tokenApprovals) := TMP_499(address)"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+}
+// Function: 984.sol-ENSNFT-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_registerInterface(InterfaceId_ERC165)
+
+IRs:
+INTERNAL_CALL, SupportsInterfaceWithLookup._registerInterface(bytes4)(InterfaceId_ERC165)"];
+}
+// Function: 984.sol-ENSNFT-constructor(string,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+name_ = _name
+
+IRs:
+name_(string) := _name(string)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+symbol_ = _symbol
+
+IRs:
+symbol_(string) := _symbol(string)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_registerInterface(InterfaceId_ERC721Enumerable)
+
+IRs:
+INTERNAL_CALL, SupportsInterfaceWithLookup._registerInterface(bytes4)(InterfaceId_ERC721Enumerable)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+_registerInterface(InterfaceId_ERC721Metadata)
+
+IRs:
+INTERNAL_CALL, SupportsInterfaceWithLookup._registerInterface(bytes4)(InterfaceId_ERC721Metadata)"];
+}
+// Function: 984.sol-ENSNFT-constructor(string,string,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+registrar = Registrar(_registrar)
+
+IRs:
+TMP_517 = CONVERT _registrar to Registrar
+registrar(Registrar) := TMP_517(Registrar)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+ERC721Token(_name,_symbol)
+
+IRs:
+INTERNAL_CALL, ERC721Token.constructor(string,string)(_name,_symbol)"];
+2->1;
+}
+// Function: 984.sol-ENSNFT-exists(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+owner = tokenOwner[_tokenId]
+
+IRs:
+REF_275(address) -> tokenOwner[_tokenId]
+owner(address) := REF_275(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+owner != address(0)
+
+IRs:
+TMP_448 = CONVERT 0 to address
+TMP_449(bool) = owner != TMP_448
+RETURN TMP_449"];
+}
+// Function: 984.sol-ENSNFT-getApproved(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+tokenApprovals[_tokenId]
+
+IRs:
+REF_277(address) -> tokenApprovals[_tokenId]
+RETURN REF_277"];
+}
+// Function: 984.sol-ENSNFT-isApprovedForAll(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+operatorApprovals[_owner][_operator]
+
+IRs:
+REF_280(mapping(address => bool)) -> operatorApprovals[_owner]
+REF_281(bool) -> REF_280[_operator]
+RETURN REF_281"];
+}
+// Function: 984.sol-ENSNFT-isApprovedOrOwner(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+owner = ownerOf(_tokenId)
+
+IRs:
+TMP_477(address) = INTERNAL_CALL, ERC721BasicToken.ownerOf(uint256)(_tokenId)
+owner(address) := TMP_477(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+(_spender == owner || getApproved(_tokenId) == _spender || isApprovedForAll(owner,_spender))
+
+IRs:
+TMP_478(bool) = _spender == owner
+TMP_479(address) = INTERNAL_CALL, ERC721BasicToken.getApproved(uint256)(_tokenId)
+TMP_480(bool) = TMP_479 == _spender
+TMP_481(bool) = TMP_478 || TMP_480
+TMP_482(bool) = INTERNAL_CALL, ERC721BasicToken.isApprovedForAll(address,address)(owner,_spender)
+TMP_483(bool) = TMP_481 || TMP_482
+RETURN TMP_483"];
+}
+// Function: 984.sol-ENSNFT-mint(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+(None,deedAddress,None,None,None) = registrar.entries(_hash)
+
+IRs:
+TUPLE_0(Registrar.Mode,address,uint256,uint256,uint256) = HIGH_LEVEL_CALL, dest:registrar(Registrar), function:entries, arguments:['_hash']  
+deedAddress(address)= UNPACK TUPLE_0 index: 1 "];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+deed = Deed(deedAddress)
+
+IRs:
+TMP_519 = CONVERT deedAddress to Deed
+deed(Deed) := TMP_519(Deed)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool)(deed.owner() == address(this))
+
+IRs:
+TMP_520(address) = HIGH_LEVEL_CALL, dest:deed(Deed), function:owner, arguments:[]  
+TMP_521 = CONVERT this to address
+TMP_522(bool) = TMP_520 == TMP_521
+TMP_523(None) = SOLIDITY_CALL require(bool)(TMP_522)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool)(deed.previousOwner() == msg.sender)
+
+IRs:
+TMP_524(address) = HIGH_LEVEL_CALL, dest:deed(Deed), function:previousOwner, arguments:[]  
+TMP_525(bool) = TMP_524 == msg.sender
+TMP_526(None) = SOLIDITY_CALL require(bool)(TMP_525)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+tokenId = uint256(_hash)
+
+IRs:
+TMP_527 = CONVERT _hash to uint256
+tokenId(uint256) := TMP_527(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+_mint(deed.previousOwner(),tokenId)
+
+IRs:
+TMP_528(address) = HIGH_LEVEL_CALL, dest:deed(Deed), function:previousOwner, arguments:[]  
+INTERNAL_CALL, ERC721Token._mint(address,uint256)(TMP_528,tokenId)"];
+}
+// Function: 984.sol-ENSNFT-name()
+digraph{
+}
+// Function: 984.sol-ENSNFT-ownerOf(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+owner = tokenOwner[_tokenId]
+
+IRs:
+REF_274(address) -> tokenOwner[_tokenId]
+owner(address) := REF_274(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(owner != address(0))
+
+IRs:
+TMP_445 = CONVERT 0 to address
+TMP_446(bool) = owner != TMP_445
+TMP_447(None) = SOLIDITY_CALL require(bool)(TMP_446)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+owner
+
+IRs:
+RETURN owner"];
+}
+// Function: 984.sol-ENSNFT-removeTokenFrom(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(ownerOf(_tokenId) == _from)
+
+IRs:
+TMP_504(address) = INTERNAL_CALL, ERC721BasicToken.ownerOf(uint256)(_tokenId)
+TMP_505(bool) = TMP_504 == _from
+TMP_506(None) = SOLIDITY_CALL require(bool)(TMP_505)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+ownedTokensCount[_from] = ownedTokensCount[_from].sub(1)
+
+IRs:
+REF_289(uint256) -> ownedTokensCount[_from]
+REF_290(uint256) -> ownedTokensCount[_from]
+TMP_507(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_290', '1'] 
+REF_289(uint256) (->ownedTokensCount) := TMP_507(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+tokenOwner[_tokenId] = address(0)
+
+IRs:
+REF_292(address) -> tokenOwner[_tokenId]
+TMP_508 = CONVERT 0 to address
+REF_292(address) (->tokenOwner) := TMP_508(address)"];
+}
+// Function: 984.sol-ENSNFT-safeTransferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+safeTransferFrom(_from,_to,_tokenId,)
+
+IRs:
+INTERNAL_CALL, ERC721BasicToken.safeTransferFrom(address,address,uint256,bytes)(_from,_to,_tokenId,)"];
+}
+// Function: 984.sol-ENSNFT-safeTransferFrom(address,address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+transferFrom(_from,_to,_tokenId)
+
+IRs:
+INTERNAL_CALL, ERC721BasicToken.transferFrom(address,address,uint256)(_from,_to,_tokenId)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(checkAndCallSafeTransfer(_from,_to,_tokenId,_data))
+
+IRs:
+TMP_475(bool) = INTERNAL_CALL, ERC721BasicToken.checkAndCallSafeTransfer(address,address,uint256,bytes)(_from,_to,_tokenId,_data)
+TMP_476(None) = SOLIDITY_CALL require(bool)(TMP_475)"];
+}
+// Function: 984.sol-ENSNFT-setApprovalForAll(address,bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_to != msg.sender)
+
+IRs:
+TMP_458(bool) = _to != msg.sender
+TMP_459(None) = SOLIDITY_CALL require(bool)(TMP_458)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+operatorApprovals[msg.sender][_to] = _approved
+
+IRs:
+REF_278(mapping(address => bool)) -> operatorApprovals[msg.sender]
+REF_279(bool) -> REF_278[_to]
+REF_279(bool) (->operatorApprovals) := _approved(bool)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+ApprovalForAll(msg.sender,_to,_approved)
+
+IRs:
+Emit ApprovalForAll(msg.sender,_to,_approved)"];
+}
+// Function: 984.sol-ENSNFT-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+InterfaceId_ERC165 = 0x01ffc9a7
+
+IRs:
+InterfaceId_ERC165(bytes4) := 33540519(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+InterfaceId_ERC721 = 0x80ac58cd
+
+IRs:
+InterfaceId_ERC721(bytes4) := 2158778573(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+InterfaceId_ERC721Exists = 0x4f558e79
+
+IRs:
+InterfaceId_ERC721Exists(bytes4) := 1331007097(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+InterfaceId_ERC721Enumerable = 0x780e9d63
+
+IRs:
+InterfaceId_ERC721Enumerable(bytes4) := 2014223715(uint256)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+InterfaceId_ERC721Metadata = 0x5b5e139f
+
+IRs:
+InterfaceId_ERC721Metadata(bytes4) := 1532892063(uint256)"];
+}
+// Function: 984.sol-ENSNFT-supportsInterface(bytes4)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+supportedInterfaces[_interfaceId]
+
+IRs:
+REF_295(bool) -> supportedInterfaces[_interfaceId]
+RETURN REF_295"];
+}
+// Function: 984.sol-ENSNFT-symbol()
+digraph{
+}
+// Function: 984.sol-ENSNFT-tokenByIndex(uint256)
+digraph{
+}
+// Function: 984.sol-ENSNFT-tokenOfOwnerByIndex(address,uint256)
+digraph{
+}
+// Function: 984.sol-ENSNFT-tokenURI(uint256)
+digraph{
+}
+// Function: 984.sol-ENSNFT-totalSupply()
+digraph{
+}
+// Function: 984.sol-ENSNFT-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(isApprovedOrOwner(msg.sender,_tokenId))
+
+IRs:
+TMP_461(bool) = INTERNAL_CALL, ERC721BasicToken.isApprovedOrOwner(address,uint256)(msg.sender,_tokenId)
+TMP_462(None) = SOLIDITY_CALL require(bool)(TMP_461)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_from != address(0))
+
+IRs:
+TMP_463 = CONVERT 0 to address
+TMP_464(bool) = _from != TMP_463
+TMP_465(None) = SOLIDITY_CALL require(bool)(TMP_464)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(_to != address(0))
+
+IRs:
+TMP_466 = CONVERT 0 to address
+TMP_467(bool) = _to != TMP_466
+TMP_468(None) = SOLIDITY_CALL require(bool)(TMP_467)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+clearApproval(_from,_tokenId)
+
+IRs:
+INTERNAL_CALL, ERC721BasicToken.clearApproval(address,uint256)(_from,_tokenId)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+removeTokenFrom(_from,_tokenId)
+
+IRs:
+INTERNAL_CALL, ERC721Token.removeTokenFrom(address,uint256)(_from,_tokenId)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+addTokenTo(_to,_tokenId)
+
+IRs:
+INTERNAL_CALL, ERC721Token.addTokenTo(address,uint256)(_to,_tokenId)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+Transfer(_from,_to,_tokenId)
+
+IRs:
+Emit Transfer(_from,_to,_tokenId)"];
+}
+// Function: 984.sol-ERC165-supportsInterface(bytes4)
+digraph{
+}
+// Function: 984.sol-ERC721-approve(address,uint256)
+digraph{
+}
+// Function: 984.sol-ERC721-balanceOf(address)
+digraph{
+}
+// Function: 984.sol-ERC721-exists(uint256)
+digraph{
+}
+// Function: 984.sol-ERC721-getApproved(uint256)
+digraph{
+}
+// Function: 984.sol-ERC721-isApprovedForAll(address,address)
+digraph{
+}
+// Function: 984.sol-ERC721-name()
+digraph{
+}
+// Function: 984.sol-ERC721-ownerOf(uint256)
+digraph{
+}
+// Function: 984.sol-ERC721-safeTransferFrom(address,address,uint256)
+digraph{
+}
+// Function: 984.sol-ERC721-safeTransferFrom(address,address,uint256,bytes)
+digraph{
+}
+// Function: 984.sol-ERC721-setApprovalForAll(address,bool)
+digraph{
+}
+// Function: 984.sol-ERC721-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+InterfaceId_ERC721 = 0x80ac58cd
+
+IRs:
+InterfaceId_ERC721(bytes4) := 2158778573(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+InterfaceId_ERC721Exists = 0x4f558e79
+
+IRs:
+InterfaceId_ERC721Exists(bytes4) := 1331007097(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+InterfaceId_ERC721Enumerable = 0x780e9d63
+
+IRs:
+InterfaceId_ERC721Enumerable(bytes4) := 2014223715(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+InterfaceId_ERC721Metadata = 0x5b5e139f
+
+IRs:
+InterfaceId_ERC721Metadata(bytes4) := 1532892063(uint256)"];
+}
+// Function: 984.sol-ERC721-supportsInterface(bytes4)
+digraph{
+}
+// Function: 984.sol-ERC721-symbol()
+digraph{
+}
+// Function: 984.sol-ERC721-tokenByIndex(uint256)
+digraph{
+}
+// Function: 984.sol-ERC721-tokenOfOwnerByIndex(address,uint256)
+digraph{
+}
+// Function: 984.sol-ERC721-tokenURI(uint256)
+digraph{
+}
+// Function: 984.sol-ERC721-totalSupply()
+digraph{
+}
+// Function: 984.sol-ERC721-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 984.sol-ERC721Basic-approve(address,uint256)
+digraph{
+}
+// Function: 984.sol-ERC721Basic-balanceOf(address)
+digraph{
+}
+// Function: 984.sol-ERC721Basic-exists(uint256)
+digraph{
+}
+// Function: 984.sol-ERC721Basic-getApproved(uint256)
+digraph{
+}
+// Function: 984.sol-ERC721Basic-isApprovedForAll(address,address)
+digraph{
+}
+// Function: 984.sol-ERC721Basic-ownerOf(uint256)
+digraph{
+}
+// Function: 984.sol-ERC721Basic-safeTransferFrom(address,address,uint256)
+digraph{
+}
+// Function: 984.sol-ERC721Basic-safeTransferFrom(address,address,uint256,bytes)
+digraph{
+}
+// Function: 984.sol-ERC721Basic-setApprovalForAll(address,bool)
+digraph{
+}
+// Function: 984.sol-ERC721Basic-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+InterfaceId_ERC721 = 0x80ac58cd
+
+IRs:
+InterfaceId_ERC721(bytes4) := 2158778573(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+InterfaceId_ERC721Exists = 0x4f558e79
+
+IRs:
+InterfaceId_ERC721Exists(bytes4) := 1331007097(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+InterfaceId_ERC721Enumerable = 0x780e9d63
+
+IRs:
+InterfaceId_ERC721Enumerable(bytes4) := 2014223715(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+InterfaceId_ERC721Metadata = 0x5b5e139f
+
+IRs:
+InterfaceId_ERC721Metadata(bytes4) := 1532892063(uint256)"];
+}
+// Function: 984.sol-ERC721Basic-supportsInterface(bytes4)
+digraph{
+}
+// Function: 984.sol-ERC721Basic-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 984.sol-ERC721BasicToken-_burn(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+clearApproval(_owner,_tokenId)
+
+IRs:
+INTERNAL_CALL, ERC721BasicToken.clearApproval(address,uint256)(_owner,_tokenId)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+removeTokenFrom(_owner,_tokenId)
+
+IRs:
+INTERNAL_CALL, ERC721BasicToken.removeTokenFrom(address,uint256)(_owner,_tokenId)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+Transfer(_owner,address(0),_tokenId)
+
+IRs:
+TMP_71 = CONVERT 0 to address
+Emit Transfer(_owner,TMP_71,_tokenId)"];
+}
+// Function: 984.sol-ERC721BasicToken-_mint(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_to != address(0))
+
+IRs:
+TMP_63 = CONVERT 0 to address
+TMP_64(bool) = _to != TMP_63
+TMP_65(None) = SOLIDITY_CALL require(bool)(TMP_64)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+addTokenTo(_to,_tokenId)
+
+IRs:
+INTERNAL_CALL, ERC721BasicToken.addTokenTo(address,uint256)(_to,_tokenId)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+Transfer(address(0),_to,_tokenId)
+
+IRs:
+TMP_67 = CONVERT 0 to address
+Emit Transfer(TMP_67,_to,_tokenId)"];
+}
+// Function: 984.sol-ERC721BasicToken-_registerInterface(bytes4)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_interfaceId != 0xffffffff)
+
+IRs:
+TMP_17(bool) = _interfaceId != 4294967295
+TMP_18(None) = SOLIDITY_CALL require(bool)(TMP_17)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+supportedInterfaces[_interfaceId] = true
+
+IRs:
+REF_3(bool) -> supportedInterfaces[_interfaceId]
+REF_3(bool) (->supportedInterfaces) := True(bool)"];
+}
+// Function: 984.sol-ERC721BasicToken-addTokenTo(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(tokenOwner[_tokenId] == address(0))
+
+IRs:
+REF_15(address) -> tokenOwner[_tokenId]
+TMP_79 = CONVERT 0 to address
+TMP_80(bool) = REF_15 == TMP_79
+TMP_81(None) = SOLIDITY_CALL require(bool)(TMP_80)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+tokenOwner[_tokenId] = _to
+
+IRs:
+REF_16(address) -> tokenOwner[_tokenId]
+REF_16(address) (->tokenOwner) := _to(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+ownedTokensCount[_to] = ownedTokensCount[_to].add(1)
+
+IRs:
+REF_17(uint256) -> ownedTokensCount[_to]
+REF_18(uint256) -> ownedTokensCount[_to]
+TMP_82(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_18', '1'] 
+REF_17(uint256) (->ownedTokensCount) := TMP_82(uint256)"];
+}
+// Function: 984.sol-ERC721BasicToken-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+owner = ownerOf(_tokenId)
+
+IRs:
+TMP_29(address) = INTERNAL_CALL, ERC721BasicToken.ownerOf(uint256)(_tokenId)
+owner(address) := TMP_29(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_to != owner)
+
+IRs:
+TMP_30(bool) = _to != owner
+TMP_31(None) = SOLIDITY_CALL require(bool)(TMP_30)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(msg.sender == owner || isApprovedForAll(owner,msg.sender))
+
+IRs:
+TMP_32(bool) = msg.sender == owner
+TMP_33(bool) = INTERNAL_CALL, ERC721BasicToken.isApprovedForAll(address,address)(owner,msg.sender)
+TMP_34(bool) = TMP_32 || TMP_33
+TMP_35(None) = SOLIDITY_CALL require(bool)(TMP_34)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+tokenApprovals[_tokenId] = _to
+
+IRs:
+REF_7(address) -> tokenApprovals[_tokenId]
+REF_7(address) (->tokenApprovals) := _to(address)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Approval(owner,_to,_tokenId)
+
+IRs:
+Emit Approval(owner,_to,_tokenId)"];
+}
+// Function: 984.sol-ERC721BasicToken-balanceOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_owner != address(0))
+
+IRs:
+TMP_21 = CONVERT 0 to address
+TMP_22(bool) = _owner != TMP_21
+TMP_23(None) = SOLIDITY_CALL require(bool)(TMP_22)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+ownedTokensCount[_owner]
+
+IRs:
+REF_4(uint256) -> ownedTokensCount[_owner]
+RETURN REF_4"];
+}
+// Function: 984.sol-ERC721BasicToken-checkAndCallSafeTransfer(address,address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! _to.isContract()
+
+IRs:
+TMP_88(bool) = LIBRARY_CALL, dest:AddressUtils, function:AddressUtils.isContract(address), arguments:['_to'] 
+TMP_89 = UnaryType.BANG TMP_88 
+CONDITION TMP_89"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+retval = ERC721Receiver(_to).onERC721Received(msg.sender,_from,_tokenId,_data)
+
+IRs:
+TMP_90 = CONVERT _to to ERC721Receiver
+TMP_91(bytes4) = HIGH_LEVEL_CALL, dest:TMP_90(ERC721Receiver), function:onERC721Received, arguments:['msg.sender', '_from', '_tokenId', '_data']  
+retval(bytes4) := TMP_91(bytes4)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+(retval == ERC721_RECEIVED)
+
+IRs:
+TMP_92(bool) = retval == ERC721_RECEIVED
+RETURN TMP_92"];
+}
+// Function: 984.sol-ERC721BasicToken-clearApproval(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(ownerOf(_tokenId) == _owner)
+
+IRs:
+TMP_73(address) = INTERNAL_CALL, ERC721BasicToken.ownerOf(uint256)(_tokenId)
+TMP_74(bool) = TMP_73 == _owner
+TMP_75(None) = SOLIDITY_CALL require(bool)(TMP_74)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+tokenApprovals[_tokenId] != address(0)
+
+IRs:
+REF_13(address) -> tokenApprovals[_tokenId]
+TMP_76 = CONVERT 0 to address
+TMP_77(bool) = REF_13 != TMP_76
+CONDITION TMP_77"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+tokenApprovals[_tokenId] = address(0)
+
+IRs:
+REF_14(address) -> tokenApprovals[_tokenId]
+TMP_78 = CONVERT 0 to address
+REF_14(address) (->tokenApprovals) := TMP_78(address)"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+}
+// Function: 984.sol-ERC721BasicToken-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_registerInterface(InterfaceId_ERC721)
+
+IRs:
+INTERNAL_CALL, SupportsInterfaceWithLookup._registerInterface(bytes4)(InterfaceId_ERC721)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_registerInterface(InterfaceId_ERC721Exists)
+
+IRs:
+INTERNAL_CALL, SupportsInterfaceWithLookup._registerInterface(bytes4)(InterfaceId_ERC721Exists)"];
+}
+// Function: 984.sol-ERC721BasicToken-exists(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+owner = tokenOwner[_tokenId]
+
+IRs:
+REF_6(address) -> tokenOwner[_tokenId]
+owner(address) := REF_6(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+owner != address(0)
+
+IRs:
+TMP_27 = CONVERT 0 to address
+TMP_28(bool) = owner != TMP_27
+RETURN TMP_28"];
+}
+// Function: 984.sol-ERC721BasicToken-getApproved(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+tokenApprovals[_tokenId]
+
+IRs:
+REF_8(address) -> tokenApprovals[_tokenId]
+RETURN REF_8"];
+}
+// Function: 984.sol-ERC721BasicToken-isApprovedForAll(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+operatorApprovals[_owner][_operator]
+
+IRs:
+REF_11(mapping(address => bool)) -> operatorApprovals[_owner]
+REF_12(bool) -> REF_11[_operator]
+RETURN REF_12"];
+}
+// Function: 984.sol-ERC721BasicToken-isApprovedOrOwner(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+owner = ownerOf(_tokenId)
+
+IRs:
+TMP_56(address) = INTERNAL_CALL, ERC721BasicToken.ownerOf(uint256)(_tokenId)
+owner(address) := TMP_56(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+(_spender == owner || getApproved(_tokenId) == _spender || isApprovedForAll(owner,_spender))
+
+IRs:
+TMP_57(bool) = _spender == owner
+TMP_58(address) = INTERNAL_CALL, ERC721BasicToken.getApproved(uint256)(_tokenId)
+TMP_59(bool) = TMP_58 == _spender
+TMP_60(bool) = TMP_57 || TMP_59
+TMP_61(bool) = INTERNAL_CALL, ERC721BasicToken.isApprovedForAll(address,address)(owner,_spender)
+TMP_62(bool) = TMP_60 || TMP_61
+RETURN TMP_62"];
+}
+// Function: 984.sol-ERC721BasicToken-ownerOf(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+owner = tokenOwner[_tokenId]
+
+IRs:
+REF_5(address) -> tokenOwner[_tokenId]
+owner(address) := REF_5(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(owner != address(0))
+
+IRs:
+TMP_24 = CONVERT 0 to address
+TMP_25(bool) = owner != TMP_24
+TMP_26(None) = SOLIDITY_CALL require(bool)(TMP_25)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+owner
+
+IRs:
+RETURN owner"];
+}
+// Function: 984.sol-ERC721BasicToken-removeTokenFrom(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(ownerOf(_tokenId) == _from)
+
+IRs:
+TMP_83(address) = INTERNAL_CALL, ERC721BasicToken.ownerOf(uint256)(_tokenId)
+TMP_84(bool) = TMP_83 == _from
+TMP_85(None) = SOLIDITY_CALL require(bool)(TMP_84)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+ownedTokensCount[_from] = ownedTokensCount[_from].sub(1)
+
+IRs:
+REF_20(uint256) -> ownedTokensCount[_from]
+REF_21(uint256) -> ownedTokensCount[_from]
+TMP_86(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_21', '1'] 
+REF_20(uint256) (->ownedTokensCount) := TMP_86(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+tokenOwner[_tokenId] = address(0)
+
+IRs:
+REF_23(address) -> tokenOwner[_tokenId]
+TMP_87 = CONVERT 0 to address
+REF_23(address) (->tokenOwner) := TMP_87(address)"];
+}
+// Function: 984.sol-ERC721BasicToken-safeTransferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+safeTransferFrom(_from,_to,_tokenId,)
+
+IRs:
+INTERNAL_CALL, ERC721BasicToken.safeTransferFrom(address,address,uint256,bytes)(_from,_to,_tokenId,)"];
+}
+// Function: 984.sol-ERC721BasicToken-safeTransferFrom(address,address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+transferFrom(_from,_to,_tokenId)
+
+IRs:
+INTERNAL_CALL, ERC721BasicToken.transferFrom(address,address,uint256)(_from,_to,_tokenId)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(checkAndCallSafeTransfer(_from,_to,_tokenId,_data))
+
+IRs:
+TMP_54(bool) = INTERNAL_CALL, ERC721BasicToken.checkAndCallSafeTransfer(address,address,uint256,bytes)(_from,_to,_tokenId,_data)
+TMP_55(None) = SOLIDITY_CALL require(bool)(TMP_54)"];
+}
+// Function: 984.sol-ERC721BasicToken-setApprovalForAll(address,bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_to != msg.sender)
+
+IRs:
+TMP_37(bool) = _to != msg.sender
+TMP_38(None) = SOLIDITY_CALL require(bool)(TMP_37)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+operatorApprovals[msg.sender][_to] = _approved
+
+IRs:
+REF_9(mapping(address => bool)) -> operatorApprovals[msg.sender]
+REF_10(bool) -> REF_9[_to]
+REF_10(bool) (->operatorApprovals) := _approved(bool)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+ApprovalForAll(msg.sender,_to,_approved)
+
+IRs:
+Emit ApprovalForAll(msg.sender,_to,_approved)"];
+}
+// Function: 984.sol-ERC721BasicToken-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+InterfaceId_ERC165 = 0x01ffc9a7
+
+IRs:
+InterfaceId_ERC165(bytes4) := 33540519(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+InterfaceId_ERC721 = 0x80ac58cd
+
+IRs:
+InterfaceId_ERC721(bytes4) := 2158778573(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+InterfaceId_ERC721Exists = 0x4f558e79
+
+IRs:
+InterfaceId_ERC721Exists(bytes4) := 1331007097(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+InterfaceId_ERC721Enumerable = 0x780e9d63
+
+IRs:
+InterfaceId_ERC721Enumerable(bytes4) := 2014223715(uint256)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+InterfaceId_ERC721Metadata = 0x5b5e139f
+
+IRs:
+InterfaceId_ERC721Metadata(bytes4) := 1532892063(uint256)"];
+4->5;
+5[label="Node Type: OTHER_ENTRYPOINT 5
+
+EXPRESSION:
+ERC721_RECEIVED = 0x150b7a02
+
+IRs:
+ERC721_RECEIVED(bytes4) := 353073666(uint256)"];
+}
+// Function: 984.sol-ERC721BasicToken-supportsInterface(bytes4)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+supportedInterfaces[_interfaceId]
+
+IRs:
+REF_2(bool) -> supportedInterfaces[_interfaceId]
+RETURN REF_2"];
+}
+// Function: 984.sol-ERC721BasicToken-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(isApprovedOrOwner(msg.sender,_tokenId))
+
+IRs:
+TMP_40(bool) = INTERNAL_CALL, ERC721BasicToken.isApprovedOrOwner(address,uint256)(msg.sender,_tokenId)
+TMP_41(None) = SOLIDITY_CALL require(bool)(TMP_40)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_from != address(0))
+
+IRs:
+TMP_42 = CONVERT 0 to address
+TMP_43(bool) = _from != TMP_42
+TMP_44(None) = SOLIDITY_CALL require(bool)(TMP_43)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(_to != address(0))
+
+IRs:
+TMP_45 = CONVERT 0 to address
+TMP_46(bool) = _to != TMP_45
+TMP_47(None) = SOLIDITY_CALL require(bool)(TMP_46)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+clearApproval(_from,_tokenId)
+
+IRs:
+INTERNAL_CALL, ERC721BasicToken.clearApproval(address,uint256)(_from,_tokenId)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+removeTokenFrom(_from,_tokenId)
+
+IRs:
+INTERNAL_CALL, ERC721BasicToken.removeTokenFrom(address,uint256)(_from,_tokenId)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+addTokenTo(_to,_tokenId)
+
+IRs:
+INTERNAL_CALL, ERC721BasicToken.addTokenTo(address,uint256)(_to,_tokenId)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+Transfer(_from,_to,_tokenId)
+
+IRs:
+Emit Transfer(_from,_to,_tokenId)"];
+}
+// Function: 984.sol-ERC721Enumerable-approve(address,uint256)
+digraph{
+}
+// Function: 984.sol-ERC721Enumerable-balanceOf(address)
+digraph{
+}
+// Function: 984.sol-ERC721Enumerable-exists(uint256)
+digraph{
+}
+// Function: 984.sol-ERC721Enumerable-getApproved(uint256)
+digraph{
+}
+// Function: 984.sol-ERC721Enumerable-isApprovedForAll(address,address)
+digraph{
+}
+// Function: 984.sol-ERC721Enumerable-ownerOf(uint256)
+digraph{
+}
+// Function: 984.sol-ERC721Enumerable-safeTransferFrom(address,address,uint256)
+digraph{
+}
+// Function: 984.sol-ERC721Enumerable-safeTransferFrom(address,address,uint256,bytes)
+digraph{
+}
+// Function: 984.sol-ERC721Enumerable-setApprovalForAll(address,bool)
+digraph{
+}
+// Function: 984.sol-ERC721Enumerable-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+InterfaceId_ERC721 = 0x80ac58cd
+
+IRs:
+InterfaceId_ERC721(bytes4) := 2158778573(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+InterfaceId_ERC721Exists = 0x4f558e79
+
+IRs:
+InterfaceId_ERC721Exists(bytes4) := 1331007097(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+InterfaceId_ERC721Enumerable = 0x780e9d63
+
+IRs:
+InterfaceId_ERC721Enumerable(bytes4) := 2014223715(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+InterfaceId_ERC721Metadata = 0x5b5e139f
+
+IRs:
+InterfaceId_ERC721Metadata(bytes4) := 1532892063(uint256)"];
+}
+// Function: 984.sol-ERC721Enumerable-supportsInterface(bytes4)
+digraph{
+}
+// Function: 984.sol-ERC721Enumerable-tokenByIndex(uint256)
+digraph{
+}
+// Function: 984.sol-ERC721Enumerable-tokenOfOwnerByIndex(address,uint256)
+digraph{
+}
+// Function: 984.sol-ERC721Enumerable-totalSupply()
+digraph{
+}
+// Function: 984.sol-ERC721Enumerable-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 984.sol-ERC721Metadata-approve(address,uint256)
+digraph{
+}
+// Function: 984.sol-ERC721Metadata-balanceOf(address)
+digraph{
+}
+// Function: 984.sol-ERC721Metadata-exists(uint256)
+digraph{
+}
+// Function: 984.sol-ERC721Metadata-getApproved(uint256)
+digraph{
+}
+// Function: 984.sol-ERC721Metadata-isApprovedForAll(address,address)
+digraph{
+}
+// Function: 984.sol-ERC721Metadata-name()
+digraph{
+}
+// Function: 984.sol-ERC721Metadata-ownerOf(uint256)
+digraph{
+}
+// Function: 984.sol-ERC721Metadata-safeTransferFrom(address,address,uint256)
+digraph{
+}
+// Function: 984.sol-ERC721Metadata-safeTransferFrom(address,address,uint256,bytes)
+digraph{
+}
+// Function: 984.sol-ERC721Metadata-setApprovalForAll(address,bool)
+digraph{
+}
+// Function: 984.sol-ERC721Metadata-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+InterfaceId_ERC721 = 0x80ac58cd
+
+IRs:
+InterfaceId_ERC721(bytes4) := 2158778573(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+InterfaceId_ERC721Exists = 0x4f558e79
+
+IRs:
+InterfaceId_ERC721Exists(bytes4) := 1331007097(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+InterfaceId_ERC721Enumerable = 0x780e9d63
+
+IRs:
+InterfaceId_ERC721Enumerable(bytes4) := 2014223715(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+InterfaceId_ERC721Metadata = 0x5b5e139f
+
+IRs:
+InterfaceId_ERC721Metadata(bytes4) := 1532892063(uint256)"];
+}
+// Function: 984.sol-ERC721Metadata-supportsInterface(bytes4)
+digraph{
+}
+// Function: 984.sol-ERC721Metadata-symbol()
+digraph{
+}
+// Function: 984.sol-ERC721Metadata-tokenURI(uint256)
+digraph{
+}
+// Function: 984.sol-ERC721Metadata-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 984.sol-ERC721Receiver-onERC721Received(address,address,uint256,bytes)
+digraph{
+}
+// Function: 984.sol-ERC721Receiver-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+ERC721_RECEIVED = 0x150b7a02
+
+IRs:
+ERC721_RECEIVED(bytes4) := 353073666(uint256)"];
+}
+// Function: 984.sol-ERC721Token-_burn(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+super._burn(_owner,_tokenId)
+
+IRs:
+INTERNAL_CALL, ERC721BasicToken._burn(address,uint256)(_owner,_tokenId)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+bytes(tokenURIs[_tokenId]).length != 0
+
+IRs:
+REF_80(string) -> tokenURIs[_tokenId]
+TMP_194 = CONVERT REF_80 to bytes
+REF_81 -> LENGTH TMP_194
+TMP_195(bool) = REF_81 != 0
+CONDITION TMP_195"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+delete tokenURIs[_tokenId]
+
+IRs:
+REF_82(string) -> tokenURIs[_tokenId]
+tokenURIs = delete REF_82 "];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+tokenIndex = allTokensIndex[_tokenId]
+
+IRs:
+REF_83(uint256) -> allTokensIndex[_tokenId]
+tokenIndex(uint256) := REF_83(uint256)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+lastTokenIndex = allTokens.length.sub(1)
+
+IRs:
+REF_84 -> LENGTH allTokens
+TMP_196(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_84', '1'] 
+lastTokenIndex(uint256) := TMP_196(uint256)"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+lastToken = allTokens[lastTokenIndex]
+
+IRs:
+REF_86(uint256) -> allTokens[lastTokenIndex]
+lastToken(uint256) := REF_86(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+allTokens[tokenIndex] = lastToken
+
+IRs:
+REF_87(uint256) -> allTokens[tokenIndex]
+REF_87(uint256) (->allTokens) := lastToken(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+allTokens[lastTokenIndex] = 0
+
+IRs:
+REF_88(uint256) -> allTokens[lastTokenIndex]
+REF_88(uint256) (->allTokens) := 0(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+allTokens.length --
+
+IRs:
+REF_89 -> LENGTH allTokens
+TMP_197(uint256) := REF_89(uint256)
+REF_89(-> allTokens) = REF_89 - 1"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+allTokensIndex[_tokenId] = 0
+
+IRs:
+REF_90(uint256) -> allTokensIndex[_tokenId]
+REF_90(uint256) (->allTokensIndex) := 0(uint256)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+allTokensIndex[lastToken] = tokenIndex
+
+IRs:
+REF_91(uint256) -> allTokensIndex[lastToken]
+REF_91(uint256) (->allTokensIndex) := tokenIndex(uint256)"];
+}
+// Function: 984.sol-ERC721Token-_mint(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+super._mint(_to,_tokenId)
+
+IRs:
+INTERNAL_CALL, ERC721BasicToken._mint(address,uint256)(_to,_tokenId)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+allTokensIndex[_tokenId] = allTokens.length
+
+IRs:
+REF_75(uint256) -> allTokensIndex[_tokenId]
+REF_76 -> LENGTH allTokens
+REF_75(uint256) (->allTokensIndex) := REF_76(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+allTokens.push(_tokenId)
+
+IRs:
+REF_78 -> LENGTH allTokens
+TMP_191(uint256) := REF_78(uint256)
+TMP_192(uint256) = TMP_191 + 1
+REF_78(uint256) (->allTokens) := TMP_192(uint256)
+REF_79(uint256) -> allTokens[TMP_191]
+REF_79(uint256) (->allTokens) := _tokenId(uint256)"];
+}
+// Function: 984.sol-ERC721Token-_registerInterface(bytes4)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_interfaceId != 0xffffffff)
+
+IRs:
+TMP_168(bool) = _interfaceId != 4294967295
+TMP_169(None) = SOLIDITY_CALL require(bool)(TMP_168)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+supportedInterfaces[_interfaceId] = true
+
+IRs:
+REF_49(bool) -> supportedInterfaces[_interfaceId]
+REF_49(bool) (->supportedInterfaces) := True(bool)"];
+}
+// Function: 984.sol-ERC721Token-_setTokenURI(uint256,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(exists(_tokenId))
+
+IRs:
+TMP_180(bool) = INTERNAL_CALL, ERC721BasicToken.exists(uint256)(_tokenId)
+TMP_181(None) = SOLIDITY_CALL require(bool)(TMP_180)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+tokenURIs[_tokenId] = _uri
+
+IRs:
+REF_55(string) -> tokenURIs[_tokenId]
+REF_55(string) (->tokenURIs) := _uri(string)"];
+}
+// Function: 984.sol-ERC721Token-addTokenTo(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+super.addTokenTo(_to,_tokenId)
+
+IRs:
+INTERNAL_CALL, ERC721BasicToken.addTokenTo(address,uint256)(_to,_tokenId)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+length = ownedTokens[_to].length
+
+IRs:
+REF_56(uint256[]) -> ownedTokens[_to]
+REF_57 -> LENGTH REF_56
+length(uint256) := REF_57(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+ownedTokens[_to].push(_tokenId)
+
+IRs:
+REF_58(uint256[]) -> ownedTokens[_to]
+REF_60 -> LENGTH REF_58
+TMP_184(uint256) := REF_60(uint256)
+TMP_185(uint256) = TMP_184 + 1
+REF_60(uint256) (->ownedTokens) := TMP_185(uint256)
+REF_61(uint256) -> REF_58[TMP_184]
+REF_61(uint256) (->ownedTokens) := _tokenId(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+ownedTokensIndex[_tokenId] = length
+
+IRs:
+REF_62(uint256) -> ownedTokensIndex[_tokenId]
+REF_62(uint256) (->ownedTokensIndex) := length(uint256)"];
+}
+// Function: 984.sol-ERC721Token-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+owner = ownerOf(_tokenId)
+
+IRs:
+TMP_103(address) = INTERNAL_CALL, ERC721BasicToken.ownerOf(uint256)(_tokenId)
+owner(address) := TMP_103(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_to != owner)
+
+IRs:
+TMP_104(bool) = _to != owner
+TMP_105(None) = SOLIDITY_CALL require(bool)(TMP_104)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(msg.sender == owner || isApprovedForAll(owner,msg.sender))
+
+IRs:
+TMP_106(bool) = msg.sender == owner
+TMP_107(bool) = INTERNAL_CALL, ERC721BasicToken.isApprovedForAll(address,address)(owner,msg.sender)
+TMP_108(bool) = TMP_106 || TMP_107
+TMP_109(None) = SOLIDITY_CALL require(bool)(TMP_108)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+tokenApprovals[_tokenId] = _to
+
+IRs:
+REF_29(address) -> tokenApprovals[_tokenId]
+REF_29(address) (->tokenApprovals) := _to(address)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Approval(owner,_to,_tokenId)
+
+IRs:
+Emit Approval(owner,_to,_tokenId)"];
+}
+// Function: 984.sol-ERC721Token-balanceOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_owner != address(0))
+
+IRs:
+TMP_95 = CONVERT 0 to address
+TMP_96(bool) = _owner != TMP_95
+TMP_97(None) = SOLIDITY_CALL require(bool)(TMP_96)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+ownedTokensCount[_owner]
+
+IRs:
+REF_26(uint256) -> ownedTokensCount[_owner]
+RETURN REF_26"];
+}
+// Function: 984.sol-ERC721Token-checkAndCallSafeTransfer(address,address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! _to.isContract()
+
+IRs:
+TMP_162(bool) = LIBRARY_CALL, dest:AddressUtils, function:AddressUtils.isContract(address), arguments:['_to'] 
+TMP_163 = UnaryType.BANG TMP_162 
+CONDITION TMP_163"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+retval = ERC721Receiver(_to).onERC721Received(msg.sender,_from,_tokenId,_data)
+
+IRs:
+TMP_164 = CONVERT _to to ERC721Receiver
+TMP_165(bytes4) = HIGH_LEVEL_CALL, dest:TMP_164(ERC721Receiver), function:onERC721Received, arguments:['msg.sender', '_from', '_tokenId', '_data']  
+retval(bytes4) := TMP_165(bytes4)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+(retval == ERC721_RECEIVED)
+
+IRs:
+TMP_166(bool) = retval == ERC721_RECEIVED
+RETURN TMP_166"];
+}
+// Function: 984.sol-ERC721Token-clearApproval(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(ownerOf(_tokenId) == _owner)
+
+IRs:
+TMP_147(address) = INTERNAL_CALL, ERC721BasicToken.ownerOf(uint256)(_tokenId)
+TMP_148(bool) = TMP_147 == _owner
+TMP_149(None) = SOLIDITY_CALL require(bool)(TMP_148)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+tokenApprovals[_tokenId] != address(0)
+
+IRs:
+REF_35(address) -> tokenApprovals[_tokenId]
+TMP_150 = CONVERT 0 to address
+TMP_151(bool) = REF_35 != TMP_150
+CONDITION TMP_151"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+tokenApprovals[_tokenId] = address(0)
+
+IRs:
+REF_36(address) -> tokenApprovals[_tokenId]
+TMP_152 = CONVERT 0 to address
+REF_36(address) (->tokenApprovals) := TMP_152(address)"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+}
+// Function: 984.sol-ERC721Token-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_registerInterface(InterfaceId_ERC165)
+
+IRs:
+INTERNAL_CALL, SupportsInterfaceWithLookup._registerInterface(bytes4)(InterfaceId_ERC165)"];
+}
+// Function: 984.sol-ERC721Token-constructor(string,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+name_ = _name
+
+IRs:
+name_(string) := _name(string)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+symbol_ = _symbol
+
+IRs:
+symbol_(string) := _symbol(string)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_registerInterface(InterfaceId_ERC721Enumerable)
+
+IRs:
+INTERNAL_CALL, SupportsInterfaceWithLookup._registerInterface(bytes4)(InterfaceId_ERC721Enumerable)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+_registerInterface(InterfaceId_ERC721Metadata)
+
+IRs:
+INTERNAL_CALL, SupportsInterfaceWithLookup._registerInterface(bytes4)(InterfaceId_ERC721Metadata)"];
+}
+// Function: 984.sol-ERC721Token-exists(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+owner = tokenOwner[_tokenId]
+
+IRs:
+REF_28(address) -> tokenOwner[_tokenId]
+owner(address) := REF_28(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+owner != address(0)
+
+IRs:
+TMP_101 = CONVERT 0 to address
+TMP_102(bool) = owner != TMP_101
+RETURN TMP_102"];
+}
+// Function: 984.sol-ERC721Token-getApproved(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+tokenApprovals[_tokenId]
+
+IRs:
+REF_30(address) -> tokenApprovals[_tokenId]
+RETURN REF_30"];
+}
+// Function: 984.sol-ERC721Token-isApprovedForAll(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+operatorApprovals[_owner][_operator]
+
+IRs:
+REF_33(mapping(address => bool)) -> operatorApprovals[_owner]
+REF_34(bool) -> REF_33[_operator]
+RETURN REF_34"];
+}
+// Function: 984.sol-ERC721Token-isApprovedOrOwner(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+owner = ownerOf(_tokenId)
+
+IRs:
+TMP_130(address) = INTERNAL_CALL, ERC721BasicToken.ownerOf(uint256)(_tokenId)
+owner(address) := TMP_130(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+(_spender == owner || getApproved(_tokenId) == _spender || isApprovedForAll(owner,_spender))
+
+IRs:
+TMP_131(bool) = _spender == owner
+TMP_132(address) = INTERNAL_CALL, ERC721BasicToken.getApproved(uint256)(_tokenId)
+TMP_133(bool) = TMP_132 == _spender
+TMP_134(bool) = TMP_131 || TMP_133
+TMP_135(bool) = INTERNAL_CALL, ERC721BasicToken.isApprovedForAll(address,address)(owner,_spender)
+TMP_136(bool) = TMP_134 || TMP_135
+RETURN TMP_136"];
+}
+// Function: 984.sol-ERC721Token-name()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+name_
+
+IRs:
+RETURN name_"];
+}
+// Function: 984.sol-ERC721Token-ownerOf(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+owner = tokenOwner[_tokenId]
+
+IRs:
+REF_27(address) -> tokenOwner[_tokenId]
+owner(address) := REF_27(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(owner != address(0))
+
+IRs:
+TMP_98 = CONVERT 0 to address
+TMP_99(bool) = owner != TMP_98
+TMP_100(None) = SOLIDITY_CALL require(bool)(TMP_99)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+owner
+
+IRs:
+RETURN owner"];
+}
+// Function: 984.sol-ERC721Token-removeTokenFrom(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+super.removeTokenFrom(_from,_tokenId)
+
+IRs:
+INTERNAL_CALL, ERC721BasicToken.removeTokenFrom(address,uint256)(_from,_tokenId)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+tokenIndex = ownedTokensIndex[_tokenId]
+
+IRs:
+REF_63(uint256) -> ownedTokensIndex[_tokenId]
+tokenIndex(uint256) := REF_63(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+lastTokenIndex = ownedTokens[_from].length.sub(1)
+
+IRs:
+REF_64(uint256[]) -> ownedTokens[_from]
+REF_65 -> LENGTH REF_64
+TMP_187(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_65', '1'] 
+lastTokenIndex(uint256) := TMP_187(uint256)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+lastToken = ownedTokens[_from][lastTokenIndex]
+
+IRs:
+REF_67(uint256[]) -> ownedTokens[_from]
+REF_68(uint256) -> REF_67[lastTokenIndex]
+lastToken(uint256) := REF_68(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+ownedTokens[_from][tokenIndex] = lastToken
+
+IRs:
+REF_69(uint256[]) -> ownedTokens[_from]
+REF_70(uint256) -> REF_69[tokenIndex]
+REF_70(uint256) (->ownedTokens) := lastToken(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+ownedTokens[_from].length --
+
+IRs:
+REF_71(uint256[]) -> ownedTokens[_from]
+REF_72 -> LENGTH REF_71
+TMP_188(uint256) := REF_72(uint256)
+REF_72(-> ownedTokens) = REF_72 - 1"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+ownedTokensIndex[_tokenId] = 0
+
+IRs:
+REF_73(uint256) -> ownedTokensIndex[_tokenId]
+REF_73(uint256) (->ownedTokensIndex) := 0(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+ownedTokensIndex[lastToken] = tokenIndex
+
+IRs:
+REF_74(uint256) -> ownedTokensIndex[lastToken]
+REF_74(uint256) (->ownedTokensIndex) := tokenIndex(uint256)"];
+}
+// Function: 984.sol-ERC721Token-safeTransferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+safeTransferFrom(_from,_to,_tokenId,)
+
+IRs:
+INTERNAL_CALL, ERC721BasicToken.safeTransferFrom(address,address,uint256,bytes)(_from,_to,_tokenId,)"];
+}
+// Function: 984.sol-ERC721Token-safeTransferFrom(address,address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+transferFrom(_from,_to,_tokenId)
+
+IRs:
+INTERNAL_CALL, ERC721BasicToken.transferFrom(address,address,uint256)(_from,_to,_tokenId)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(checkAndCallSafeTransfer(_from,_to,_tokenId,_data))
+
+IRs:
+TMP_128(bool) = INTERNAL_CALL, ERC721BasicToken.checkAndCallSafeTransfer(address,address,uint256,bytes)(_from,_to,_tokenId,_data)
+TMP_129(None) = SOLIDITY_CALL require(bool)(TMP_128)"];
+}
+// Function: 984.sol-ERC721Token-setApprovalForAll(address,bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_to != msg.sender)
+
+IRs:
+TMP_111(bool) = _to != msg.sender
+TMP_112(None) = SOLIDITY_CALL require(bool)(TMP_111)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+operatorApprovals[msg.sender][_to] = _approved
+
+IRs:
+REF_31(mapping(address => bool)) -> operatorApprovals[msg.sender]
+REF_32(bool) -> REF_31[_to]
+REF_32(bool) (->operatorApprovals) := _approved(bool)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+ApprovalForAll(msg.sender,_to,_approved)
+
+IRs:
+Emit ApprovalForAll(msg.sender,_to,_approved)"];
+}
+// Function: 984.sol-ERC721Token-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+InterfaceId_ERC165 = 0x01ffc9a7
+
+IRs:
+InterfaceId_ERC165(bytes4) := 33540519(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+InterfaceId_ERC721 = 0x80ac58cd
+
+IRs:
+InterfaceId_ERC721(bytes4) := 2158778573(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+InterfaceId_ERC721Exists = 0x4f558e79
+
+IRs:
+InterfaceId_ERC721Exists(bytes4) := 1331007097(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+InterfaceId_ERC721Enumerable = 0x780e9d63
+
+IRs:
+InterfaceId_ERC721Enumerable(bytes4) := 2014223715(uint256)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+InterfaceId_ERC721Metadata = 0x5b5e139f
+
+IRs:
+InterfaceId_ERC721Metadata(bytes4) := 1532892063(uint256)"];
+}
+// Function: 984.sol-ERC721Token-supportsInterface(bytes4)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+supportedInterfaces[_interfaceId]
+
+IRs:
+REF_48(bool) -> supportedInterfaces[_interfaceId]
+RETURN REF_48"];
+}
+// Function: 984.sol-ERC721Token-symbol()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+symbol_
+
+IRs:
+RETURN symbol_"];
+}
+// Function: 984.sol-ERC721Token-tokenByIndex(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_index < totalSupply())
+
+IRs:
+TMP_177(uint256) = INTERNAL_CALL, ERC721Token.totalSupply()()
+TMP_178(bool) = _index < TMP_177
+TMP_179(None) = SOLIDITY_CALL require(bool)(TMP_178)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+allTokens[_index]
+
+IRs:
+REF_54(uint256) -> allTokens[_index]
+RETURN REF_54"];
+}
+// Function: 984.sol-ERC721Token-tokenOfOwnerByIndex(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_index < balanceOf(_owner))
+
+IRs:
+TMP_174(uint256) = INTERNAL_CALL, ERC721BasicToken.balanceOf(address)(_owner)
+TMP_175(bool) = _index < TMP_174
+TMP_176(None) = SOLIDITY_CALL require(bool)(TMP_175)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+ownedTokens[_owner][_index]
+
+IRs:
+REF_51(uint256[]) -> ownedTokens[_owner]
+REF_52(uint256) -> REF_51[_index]
+RETURN REF_52"];
+}
+// Function: 984.sol-ERC721Token-tokenURI(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(exists(_tokenId))
+
+IRs:
+TMP_172(bool) = INTERNAL_CALL, ERC721BasicToken.exists(uint256)(_tokenId)
+TMP_173(None) = SOLIDITY_CALL require(bool)(TMP_172)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+tokenURIs[_tokenId]
+
+IRs:
+REF_50(string) -> tokenURIs[_tokenId]
+RETURN REF_50"];
+}
+// Function: 984.sol-ERC721Token-totalSupply()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+allTokens.length
+
+IRs:
+REF_53 -> LENGTH allTokens
+RETURN REF_53"];
+}
+// Function: 984.sol-ERC721Token-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(isApprovedOrOwner(msg.sender,_tokenId))
+
+IRs:
+TMP_114(bool) = INTERNAL_CALL, ERC721BasicToken.isApprovedOrOwner(address,uint256)(msg.sender,_tokenId)
+TMP_115(None) = SOLIDITY_CALL require(bool)(TMP_114)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_from != address(0))
+
+IRs:
+TMP_116 = CONVERT 0 to address
+TMP_117(bool) = _from != TMP_116
+TMP_118(None) = SOLIDITY_CALL require(bool)(TMP_117)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(_to != address(0))
+
+IRs:
+TMP_119 = CONVERT 0 to address
+TMP_120(bool) = _to != TMP_119
+TMP_121(None) = SOLIDITY_CALL require(bool)(TMP_120)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+clearApproval(_from,_tokenId)
+
+IRs:
+INTERNAL_CALL, ERC721BasicToken.clearApproval(address,uint256)(_from,_tokenId)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+removeTokenFrom(_from,_tokenId)
+
+IRs:
+INTERNAL_CALL, ERC721Token.removeTokenFrom(address,uint256)(_from,_tokenId)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+addTokenTo(_to,_tokenId)
+
+IRs:
+INTERNAL_CALL, ERC721Token.addTokenTo(address,uint256)(_to,_tokenId)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+Transfer(_from,_to,_tokenId)
+
+IRs:
+Emit Transfer(_from,_to,_tokenId)"];
+}
+// Function: 984.sol-Registrar-Registrar(ENS,bytes32,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+ens = _ens
+
+IRs:
+ens(ENS) := _ens(ENS)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+rootNode = _rootNode
+
+IRs:
+rootNode(bytes32) := _rootNode(bytes32)"];
+2->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+_startDate > 0
+
+IRs:
+TMP_228(bool) = _startDate > 0
+CONDITION TMP_228"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+registryStarted = _startDate
+
+IRs:
+registryStarted(uint256) := _startDate(uint256)"];
+5->7;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+registryStarted = now
+
+IRs:
+registryStarted(uint256) := now(uint256)"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+}
+// Function: 984.sol-Registrar-_eraseNodeHierarchy(uint256,bytes32[],bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+ens.setSubnodeOwner(node,labels[idx],address(this))
+
+IRs:
+REF_220(bytes32) -> labels[idx]
+TMP_373 = CONVERT this to address
+HIGH_LEVEL_CALL, dest:ens(ENS), function:setSubnodeOwner, arguments:['node', 'REF_220', 'TMP_373']  "];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+node = keccak256()(node,labels[idx])
+
+IRs:
+REF_221(bytes32) -> labels[idx]
+TMP_375(bytes32) = SOLIDITY_CALL keccak256()(node,REF_221)
+node(bytes32) := TMP_375(bytes32)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+idx > 0
+
+IRs:
+TMP_376(bool) = idx > 0
+CONDITION TMP_376"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+_eraseNodeHierarchy(idx - 1,labels,node)
+
+IRs:
+TMP_377(uint256) = idx - 1
+INTERNAL_CALL, Registrar._eraseNodeHierarchy(uint256,bytes32[],bytes32)(TMP_377,labels,node)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+ens.setResolver(node,0)
+
+IRs:
+HIGH_LEVEL_CALL, dest:ens(ENS), function:setResolver, arguments:['node', '0']  "];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+ens.setOwner(node,0)
+
+IRs:
+HIGH_LEVEL_CALL, dest:ens(ENS), function:setOwner, arguments:['node', '0']  "];
+}
+// Function: 984.sol-Registrar-_tryEraseSingleNode(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+ens.owner(rootNode) == address(this)
+
+IRs:
+TMP_365(address) = HIGH_LEVEL_CALL, dest:ens(ENS), function:owner, arguments:['rootNode']  
+TMP_366 = CONVERT this to address
+TMP_367(bool) = TMP_365 == TMP_366
+CONDITION TMP_367"];
+1->2[label="True"];
+1->6[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+ens.setSubnodeOwner(rootNode,label,address(this))
+
+IRs:
+TMP_368 = CONVERT this to address
+HIGH_LEVEL_CALL, dest:ens(ENS), function:setSubnodeOwner, arguments:['rootNode', 'label', 'TMP_368']  "];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+node = keccak256()(rootNode,label)
+
+IRs:
+TMP_370(bytes32) = SOLIDITY_CALL keccak256()(rootNode,label)
+node(bytes32) := TMP_370(bytes32)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+ens.setResolver(node,0)
+
+IRs:
+HIGH_LEVEL_CALL, dest:ens(ENS), function:setResolver, arguments:['node', '0']  "];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+ens.setOwner(node,0)
+
+IRs:
+HIGH_LEVEL_CALL, dest:ens(ENS), function:setOwner, arguments:['node', '0']  "];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+}
+// Function: 984.sol-Registrar-acceptRegistrarTransfer(bytes32,Deed,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+hash
+"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+deed
+"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+registrationDate
+"];
+}
+// Function: 984.sol-Registrar-cancelBid(address,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+bid = sealedBids[bidder][seal]
+
+IRs:
+REF_137(mapping(bytes32 => Deed)) -> sealedBids[bidder]
+REF_138(Deed) -> REF_137[seal]
+bid(Deed) := REF_138(Deed)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(address(bid) != 0 && now >= bid.creationDate() + totalAuctionLength + 1209600)
+
+IRs:
+TMP_281 = CONVERT bid to address
+TMP_282(bool) = TMP_281 != 0
+TMP_283(uint256) = HIGH_LEVEL_CALL, dest:bid(Deed), function:creationDate, arguments:[]  
+TMP_284(uint256) = TMP_283 + totalAuctionLength
+TMP_285(uint256) = TMP_284 + 1209600
+TMP_286(bool) = now >= TMP_285
+TMP_287(bool) = TMP_282 && TMP_286
+TMP_288(None) = SOLIDITY_CALL require(bool)(TMP_287)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+bid.setOwner(msg.sender)
+
+IRs:
+HIGH_LEVEL_CALL, dest:bid(Deed), function:setOwner, arguments:['msg.sender']  "];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+bid.closeDeed(5)
+
+IRs:
+HIGH_LEVEL_CALL, dest:bid(Deed), function:closeDeed, arguments:['5']  "];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+sealedBids[bidder][seal] = Deed(0)
+
+IRs:
+REF_142(mapping(bytes32 => Deed)) -> sealedBids[bidder]
+REF_143(Deed) -> REF_142[seal]
+TMP_291 = CONVERT 0 to Deed
+REF_143(Deed) (->sealedBids) := TMP_291(Deed)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+BidRevealed(seal,bidder,0,5)
+
+IRs:
+Emit BidRevealed(seal,bidder,0,5)"];
+}
+// Function: 984.sol-Registrar-entries(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+h = _entries[_hash]
+
+IRs:
+REF_210(Registrar.Entry) -> _entries[_hash]
+h(Registrar.Entry) := REF_210(Registrar.Entry)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+(state(_hash),h.deed,h.registrationDate,h.value,h.highestBid)
+
+IRs:
+TMP_356(Registrar.Mode) = INTERNAL_CALL, Registrar.state(bytes32)(_hash)
+REF_211(Deed) -> h.deed
+REF_212(uint256) -> h.registrationDate
+REF_213(uint256) -> h.value
+REF_214(uint256) -> h.highestBid
+RETURN TMP_356,REF_211,REF_212,REF_213,REF_214"];
+}
+// Function: 984.sol-Registrar-eraseNode(bytes32[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(labels.length != 0)
+
+IRs:
+REF_185 -> LENGTH labels
+TMP_333(bool) = REF_185 != 0
+TMP_334(None) = SOLIDITY_CALL require(bool)(TMP_333)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(state(labels[labels.length - 1]) != Mode.Owned)
+
+IRs:
+REF_186 -> LENGTH labels
+TMP_335(uint256) = REF_186 - 1
+REF_187(bytes32) -> labels[TMP_335]
+TMP_336(Registrar.Mode) = INTERNAL_CALL, Registrar.state(bytes32)(REF_187)
+REF_188(Registrar.Mode) -> Mode.Owned
+TMP_337(bool) = TMP_336 != REF_188
+TMP_338(None) = SOLIDITY_CALL require(bool)(TMP_337)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_eraseNodeHierarchy(labels.length - 1,labels,rootNode)
+
+IRs:
+REF_189 -> LENGTH labels
+TMP_339(uint256) = REF_189 - 1
+INTERNAL_CALL, Registrar._eraseNodeHierarchy(uint256,bytes32[],bytes32)(TMP_339,labels,rootNode)"];
+}
+// Function: 984.sol-Registrar-finalizeAuction(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+h = _entries[_hash]
+
+IRs:
+REF_144(Registrar.Entry) -> _entries[_hash]
+h(Registrar.Entry) := REF_144(Registrar.Entry)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+h.value = max(h.value,minPrice)
+
+IRs:
+REF_145(uint256) -> h.value
+REF_146(uint256) -> h.value
+TMP_293(uint256) = INTERNAL_CALL, Registrar.max(uint256,uint256)(REF_146,minPrice)
+REF_145(uint256) (->h) := TMP_293(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+h.deed.setBalance(h.value,true)
+
+IRs:
+REF_147(Deed) -> h.deed
+REF_149(uint256) -> h.value
+HIGH_LEVEL_CALL, dest:REF_147(Deed), function:setBalance, arguments:['REF_149', 'True']  "];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+trySetSubnodeOwner(_hash,h.deed.owner())
+
+IRs:
+REF_150(Deed) -> h.deed
+TMP_295(address) = HIGH_LEVEL_CALL, dest:REF_150(Deed), function:owner, arguments:[]  
+INTERNAL_CALL, Registrar.trySetSubnodeOwner(bytes32,address)(_hash,TMP_295)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+HashRegistered(_hash,h.deed.owner(),h.value,h.registrationDate)
+
+IRs:
+REF_152(Deed) -> h.deed
+TMP_297(address) = HIGH_LEVEL_CALL, dest:REF_152(Deed), function:owner, arguments:[]  
+REF_154(uint256) -> h.value
+REF_155(uint256) -> h.registrationDate
+Emit HashRegistered(_hash,TMP_297,REF_154,REF_155)"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyOwner(_hash)
+
+IRs:
+MODIFIER_CALL, Registrar.onlyOwner(bytes32)(_hash)"];
+6->1;
+}
+// Function: 984.sol-Registrar-getAllowedTime(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+registryStarted + ((launchLength * (uint256(_hash) >> 128)) >> 128)
+
+IRs:
+TMP_359 = CONVERT _hash to uint256
+TMP_360(uint256) = TMP_359 >> 128
+TMP_361(uint32) = launchLength * TMP_360
+TMP_362(uint32) = TMP_361 >> 128
+TMP_363(uint256) = registryStarted + TMP_362
+RETURN TMP_363"];
+}
+// Function: 984.sol-Registrar-inState(bytes32,Registrar.Mode)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(state(_hash) == _state)
+
+IRs:
+TMP_394(Registrar.Mode) = INTERNAL_CALL, Registrar.state(bytes32)(_hash)
+TMP_395(bool) = TMP_394 == _state
+TMP_396(None) = SOLIDITY_CALL require(bool)(TMP_395)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 984.sol-Registrar-invalidateName(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->15;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(strlen(unhashedName) <= 6)
+
+IRs:
+TMP_317(uint256) = INTERNAL_CALL, Registrar.strlen(string)(unhashedName)
+TMP_318(bool) = TMP_317 <= 6
+TMP_319(None) = SOLIDITY_CALL require(bool)(TMP_318)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+hash = keccak256()(unhashedName)
+
+IRs:
+TMP_320(bytes32) = SOLIDITY_CALL keccak256()(unhashedName)
+hash(bytes32) := TMP_320(bytes32)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+h = _entries[hash]
+
+IRs:
+REF_168(Registrar.Entry) -> _entries[hash]
+h(Registrar.Entry) := REF_168(Registrar.Entry)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+_tryEraseSingleNode(hash)
+
+IRs:
+INTERNAL_CALL, Registrar._tryEraseSingleNode(bytes32)(hash)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+address(h.deed) != 0
+
+IRs:
+REF_169(Deed) -> h.deed
+TMP_322 = CONVERT REF_169 to address
+TMP_323(bool) = TMP_322 != 0
+CONDITION TMP_323"];
+5->6[label="True"];
+5->10[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+h.value = max(h.value,minPrice)
+
+IRs:
+REF_170(uint256) -> h.value
+REF_171(uint256) -> h.value
+TMP_324(uint256) = INTERNAL_CALL, Registrar.max(uint256,uint256)(REF_171,minPrice)
+REF_170(uint256) (->h) := TMP_324(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+h.deed.setBalance(h.value / 2,false)
+
+IRs:
+REF_172(Deed) -> h.deed
+REF_174(uint256) -> h.value
+TMP_325(uint256) = REF_174 / 2
+HIGH_LEVEL_CALL, dest:REF_172(Deed), function:setBalance, arguments:['TMP_325', 'False']  "];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+h.deed.setOwner(msg.sender)
+
+IRs:
+REF_175(Deed) -> h.deed
+HIGH_LEVEL_CALL, dest:REF_175(Deed), function:setOwner, arguments:['msg.sender']  "];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+h.deed.closeDeed(1000)
+
+IRs:
+REF_177(Deed) -> h.deed
+HIGH_LEVEL_CALL, dest:REF_177(Deed), function:closeDeed, arguments:['1000']  "];
+9->10;
+10[label="Node Type: END_IF 10
+"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+HashInvalidated(hash,unhashedName,h.value,h.registrationDate)
+
+IRs:
+REF_179(uint256) -> h.value
+REF_180(uint256) -> h.registrationDate
+Emit HashInvalidated(hash,unhashedName,REF_179,REF_180)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+h.value = 0
+
+IRs:
+REF_181(uint256) -> h.value
+REF_181(uint256) (->h) := 0(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+h.highestBid = 0
+
+IRs:
+REF_182(uint256) -> h.highestBid
+REF_182(uint256) (->h) := 0(uint256)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+h.deed = Deed(0)
+
+IRs:
+REF_183(Deed) -> h.deed
+TMP_330 = CONVERT 0 to Deed
+REF_183(Deed) (->h) := TMP_330(Deed)"];
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+inState(keccak256()(unhashedName),Mode.Owned)
+
+IRs:
+TMP_331(bytes32) = SOLIDITY_CALL keccak256()(unhashedName)
+REF_184(Registrar.Mode) -> Mode.Owned
+MODIFIER_CALL, Registrar.inState(bytes32,Registrar.Mode)(TMP_331,REF_184)"];
+15->1;
+}
+// Function: 984.sol-Registrar-isAllowed(bytes32,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+_timestamp > getAllowedTime(_hash)
+
+IRs:
+TMP_357(uint256) = INTERNAL_CALL, Registrar.getAllowedTime(bytes32)(_hash)
+TMP_358(bool) = _timestamp > TMP_357
+RETURN TMP_358"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+allowed
+
+IRs:
+RETURN allowed"];
+}
+// Function: 984.sol-Registrar-max(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+a > b
+
+IRs:
+TMP_385(bool) = a > b
+CONDITION TMP_385"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a
+
+IRs:
+RETURN a"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+b
+
+IRs:
+RETURN b"];
+}
+// Function: 984.sol-Registrar-min(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+a < b
+
+IRs:
+TMP_386(bool) = a < b
+CONDITION TMP_386"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a
+
+IRs:
+RETURN a"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+b
+
+IRs:
+RETURN b"];
+}
+// Function: 984.sol-Registrar-newBid(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(address(sealedBids[msg.sender][sealedBid]) == 0x0)
+
+IRs:
+REF_107(mapping(bytes32 => Deed)) -> sealedBids[msg.sender]
+REF_108(Deed) -> REF_107[sealedBid]
+TMP_239 = CONVERT REF_108 to address
+TMP_240(bool) = TMP_239 == 0
+TMP_241(None) = SOLIDITY_CALL require(bool)(TMP_240)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(msg.value >= minPrice)
+
+IRs:
+TMP_242(bool) = msg.value >= minPrice
+TMP_243(None) = SOLIDITY_CALL require(bool)(TMP_242)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+newBid = (new Deed).value(msg.value)(msg.sender)
+
+IRs:
+TMP_246(Deed) = new Deed(msg.sender) value:msg.value 
+newBid(Deed) := TMP_246(Deed)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+sealedBids[msg.sender][sealedBid] = newBid
+
+IRs:
+REF_110(mapping(bytes32 => Deed)) -> sealedBids[msg.sender]
+REF_111(Deed) -> REF_110[sealedBid]
+REF_111(Deed) (->sealedBids) := newBid(Deed)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+NewBid(sealedBid,msg.sender,msg.value)
+
+IRs:
+Emit NewBid(sealedBid,msg.sender,msg.value)"];
+}
+// Function: 984.sol-Registrar-onlyOwner(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(state(_hash) == Mode.Owned && msg.sender == _entries[_hash].deed.owner())
+
+IRs:
+TMP_397(Registrar.Mode) = INTERNAL_CALL, Registrar.state(bytes32)(_hash)
+REF_226(Registrar.Mode) -> Mode.Owned
+TMP_398(bool) = TMP_397 == REF_226
+REF_227(Registrar.Entry) -> _entries[_hash]
+REF_228(Deed) -> REF_227.deed
+TMP_399(address) = HIGH_LEVEL_CALL, dest:REF_228(Deed), function:owner, arguments:[]  
+TMP_400(bool) = msg.sender == TMP_399
+TMP_401(bool) = TMP_398 && TMP_400
+TMP_402(None) = SOLIDITY_CALL require(bool)(TMP_401)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 984.sol-Registrar-registryOpen()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(now >= registryStarted && now <= registryStarted + 883008000 && ens.owner(rootNode) == address(this))
+
+IRs:
+TMP_403(bool) = now >= registryStarted
+TMP_404(uint256) = registryStarted + 883008000
+TMP_405(bool) = now <= TMP_404
+TMP_406(bool) = TMP_403 && TMP_405
+TMP_407(address) = HIGH_LEVEL_CALL, dest:ens(ENS), function:owner, arguments:['rootNode']  
+TMP_408 = CONVERT this to address
+TMP_409(bool) = TMP_407 == TMP_408
+TMP_410(bool) = TMP_406 && TMP_409
+TMP_411(None) = SOLIDITY_CALL require(bool)(TMP_410)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 984.sol-Registrar-releaseDeed(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->10;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+h = _entries[_hash]
+
+IRs:
+REF_159(Registrar.Entry) -> _entries[_hash]
+h(Registrar.Entry) := REF_159(Registrar.Entry)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+deedContract = h.deed
+
+IRs:
+REF_160(Deed) -> h.deed
+deedContract(Deed) := REF_160(Deed)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(now >= h.registrationDate + 220752000 || ens.owner(rootNode) != address(this))
+
+IRs:
+REF_161(uint256) -> h.registrationDate
+TMP_305(uint256) = REF_161 + 220752000
+TMP_306(bool) = now >= TMP_305
+TMP_307(address) = HIGH_LEVEL_CALL, dest:ens(ENS), function:owner, arguments:['rootNode']  
+TMP_308 = CONVERT this to address
+TMP_309(bool) = TMP_307 != TMP_308
+TMP_310(bool) = TMP_306 || TMP_309
+TMP_311(None) = SOLIDITY_CALL require(bool)(TMP_310)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+h.value = 0
+
+IRs:
+REF_163(uint256) -> h.value
+REF_163(uint256) (->h) := 0(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+h.highestBid = 0
+
+IRs:
+REF_164(uint256) -> h.highestBid
+REF_164(uint256) (->h) := 0(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+h.deed = Deed(0)
+
+IRs:
+REF_165(Deed) -> h.deed
+TMP_312 = CONVERT 0 to Deed
+REF_165(Deed) (->h) := TMP_312(Deed)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+_tryEraseSingleNode(_hash)
+
+IRs:
+INTERNAL_CALL, Registrar._tryEraseSingleNode(bytes32)(_hash)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+deedContract.closeDeed(1000)
+
+IRs:
+HIGH_LEVEL_CALL, dest:deedContract(Deed), function:closeDeed, arguments:['1000']  "];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+HashReleased(_hash,h.value)
+
+IRs:
+REF_167(uint256) -> h.value
+Emit HashReleased(_hash,REF_167)"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+onlyOwner(_hash)
+
+IRs:
+MODIFIER_CALL, Registrar.onlyOwner(bytes32)(_hash)"];
+10->1;
+}
+// Function: 984.sol-Registrar-shaBid(bytes32,address,uint256,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+keccak256()(hash,owner,value,salt)
+
+IRs:
+TMP_364(bytes32) = SOLIDITY_CALL keccak256()(hash,owner,value,salt)
+RETURN TMP_364"];
+}
+// Function: 984.sol-Registrar-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+totalAuctionLength = 432000
+
+IRs:
+totalAuctionLength(uint32) := 432000(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+revealPeriod = 172800
+
+IRs:
+revealPeriod(uint32) := 172800(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+launchLength = 4838400
+
+IRs:
+launchLength(uint32) := 4838400(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+minPrice = 10000000000000000
+
+IRs:
+minPrice(uint256) := 10000000000000000(uint256)"];
+}
+// Function: 984.sol-Registrar-startAuction(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->11;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+mode = state(_hash)
+
+IRs:
+TMP_229(Registrar.Mode) = INTERNAL_CALL, Registrar.state(bytes32)(_hash)
+mode(Registrar.Mode) := TMP_229(Registrar.Mode)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+mode == Mode.Auction
+
+IRs:
+REF_98(Registrar.Mode) -> Mode.Auction
+TMP_230(bool) = mode == REF_98
+CONDITION TMP_230"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool)(mode == Mode.Open)
+
+IRs:
+REF_99(Registrar.Mode) -> Mode.Open
+TMP_231(bool) = mode == REF_99
+TMP_232(None) = SOLIDITY_CALL require(bool)(TMP_231)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+newAuction = _entries[_hash]
+
+IRs:
+REF_100(Registrar.Entry) -> _entries[_hash]
+newAuction(Registrar.Entry) := REF_100(Registrar.Entry)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+newAuction.registrationDate = now + totalAuctionLength
+
+IRs:
+REF_101(uint256) -> newAuction.registrationDate
+TMP_233(uint256) = now + totalAuctionLength
+REF_101(uint256) (->newAuction) := TMP_233(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+newAuction.value = 0
+
+IRs:
+REF_102(uint256) -> newAuction.value
+REF_102(uint256) (->newAuction) := 0(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+newAuction.highestBid = 0
+
+IRs:
+REF_103(uint256) -> newAuction.highestBid
+REF_103(uint256) (->newAuction) := 0(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+AuctionStarted(_hash,newAuction.registrationDate)
+
+IRs:
+REF_104(uint256) -> newAuction.registrationDate
+Emit AuctionStarted(_hash,REF_104)"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+registryOpen()
+
+IRs:
+MODIFIER_CALL, Registrar.registryOpen()()"];
+11->1;
+}
+// Function: 984.sol-Registrar-startAuctions(bytes32[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: BEGIN_LOOP 1
+"];
+1->4;
+2[label="Node Type: END_LOOP 2
+"];
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+3->1;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+i < _hashes.length
+
+IRs:
+REF_105 -> LENGTH _hashes
+TMP_236(bool) = i < REF_105
+CONDITION TMP_236"];
+4->5[label="True"];
+4->2[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+startAuction(_hashes[i])
+
+IRs:
+REF_106(bytes32) -> _hashes[i]
+INTERNAL_CALL, Registrar.startAuction(bytes32)(REF_106)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_238(uint256) := i(uint256)
+i(uint256) = i + 1"];
+6->4;
+}
+// Function: 984.sol-Registrar-startAuctionsAndBid(bytes32[],bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+startAuctions(hashes)
+
+IRs:
+INTERNAL_CALL, Registrar.startAuctions(bytes32[])(hashes)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+newBid(sealedBid)
+
+IRs:
+INTERNAL_CALL, Registrar.newBid(bytes32)(sealedBid)"];
+}
+// Function: 984.sol-Registrar-state(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+entry = _entries[_hash]
+
+IRs:
+REF_201(Registrar.Entry) -> _entries[_hash]
+entry(Registrar.Entry) := REF_201(Registrar.Entry)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+! isAllowed(_hash,now)
+
+IRs:
+TMP_350(bool) = INTERNAL_CALL, Registrar.isAllowed(bytes32,uint256)(_hash,now)
+TMP_351 = UnaryType.BANG TMP_350 
+CONDITION TMP_351"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+Mode.NotYetAvailable
+
+IRs:
+REF_202(Registrar.Mode) -> Mode.NotYetAvailable
+RETURN REF_202"];
+4[label="Node Type: IF 4
+
+EXPRESSION:
+now < entry.registrationDate
+
+IRs:
+REF_203(uint256) -> entry.registrationDate
+TMP_352(bool) = now < REF_203
+CONDITION TMP_352"];
+4->5[label="True"];
+4->9[label="False"];
+5[label="Node Type: IF 5
+
+EXPRESSION:
+now < entry.registrationDate - revealPeriod
+
+IRs:
+REF_204(uint256) -> entry.registrationDate
+TMP_353(uint256) = REF_204 - revealPeriod
+TMP_354(bool) = now < TMP_353
+CONDITION TMP_354"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+Mode.Auction
+
+IRs:
+REF_205(Registrar.Mode) -> Mode.Auction
+RETURN REF_205"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+Mode.Reveal
+
+IRs:
+REF_206(Registrar.Mode) -> Mode.Reveal
+RETURN REF_206"];
+9[label="Node Type: IF 9
+
+EXPRESSION:
+entry.highestBid == 0
+
+IRs:
+REF_207(uint256) -> entry.highestBid
+TMP_355(bool) = REF_207 == 0
+CONDITION TMP_355"];
+9->10[label="True"];
+9->11[label="False"];
+10[label="Node Type: RETURN 10
+
+EXPRESSION:
+Mode.Open
+
+IRs:
+REF_208(Registrar.Mode) -> Mode.Open
+RETURN REF_208"];
+11[label="Node Type: RETURN 11
+
+EXPRESSION:
+Mode.Owned
+
+IRs:
+REF_209(Registrar.Mode) -> Mode.Owned
+RETURN REF_209"];
+}
+// Function: 984.sol-Registrar-strlen(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+s
+"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+"];
+3->4;
+4[label="Node Type: INLINE ASM 4
+"];
+4->5;
+5[label="Node Type: END INLINE ASM 5
+"];
+5->8;
+6[label="Node Type: BEGIN_LOOP 6
+"];
+6->9;
+7[label="Node Type: END_LOOP 7
+"];
+7->30;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+len = 0
+
+IRs:
+len(uint256) := 0(uint256)"];
+8->6;
+9[label="Node Type: IF_LOOP 9
+
+EXPRESSION:
+ptr < end
+
+IRs:
+TMP_387(bool) = ptr < end
+CONDITION TMP_387"];
+9->10[label="True"];
+9->7[label="False"];
+10[label="Node Type: NEW VARIABLE 10
+"];
+10->11;
+11[label="Node Type: INLINE ASM 11
+"];
+11->12;
+12[label="Node Type: END INLINE ASM 12
+"];
+12->13;
+13[label="Node Type: IF 13
+
+EXPRESSION:
+b < 0x80
+
+IRs:
+TMP_388(bool) = b < 128
+CONDITION TMP_388"];
+13->14[label="True"];
+13->15[label="False"];
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+ptr += 1
+
+IRs:
+ptr(uint256) = ptr + 1"];
+14->28;
+15[label="Node Type: IF 15
+
+EXPRESSION:
+b < 0xE0
+
+IRs:
+TMP_389(bool) = b < 224
+CONDITION TMP_389"];
+15->16[label="True"];
+15->17[label="False"];
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+ptr += 2
+
+IRs:
+ptr(uint256) = ptr + 2"];
+16->27;
+17[label="Node Type: IF 17
+
+EXPRESSION:
+b < 0xF0
+
+IRs:
+TMP_390(bool) = b < 240
+CONDITION TMP_390"];
+17->18[label="True"];
+17->19[label="False"];
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+ptr += 3
+
+IRs:
+ptr(uint256) = ptr + 3"];
+18->26;
+19[label="Node Type: IF 19
+
+EXPRESSION:
+b < 0xF8
+
+IRs:
+TMP_391(bool) = b < 248
+CONDITION TMP_391"];
+19->20[label="True"];
+19->21[label="False"];
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+ptr += 4
+
+IRs:
+ptr(uint256) = ptr + 4"];
+20->25;
+21[label="Node Type: IF 21
+
+EXPRESSION:
+b < 0xFC
+
+IRs:
+TMP_392(bool) = b < 252
+CONDITION TMP_392"];
+21->22[label="True"];
+21->23[label="False"];
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+ptr += 5
+
+IRs:
+ptr(uint256) = ptr + 5"];
+22->24;
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+ptr += 6
+
+IRs:
+ptr(uint256) = ptr + 6"];
+23->24;
+24[label="Node Type: END_IF 24
+"];
+24->25;
+25[label="Node Type: END_IF 25
+"];
+25->26;
+26[label="Node Type: END_IF 26
+"];
+26->27;
+27[label="Node Type: END_IF 27
+"];
+27->28;
+28[label="Node Type: END_IF 28
+"];
+28->29;
+29[label="Node Type: EXPRESSION 29
+
+EXPRESSION:
+len ++
+
+IRs:
+TMP_393(uint256) := len(uint256)
+len(uint256) = len + 1"];
+29->9;
+30[label="Node Type: RETURN 30
+
+EXPRESSION:
+len
+
+IRs:
+RETURN len"];
+}
+// Function: 984.sol-Registrar-transfer(bytes32,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newOwner != 0)
+
+IRs:
+TMP_300(bool) = newOwner != 0
+TMP_301(None) = SOLIDITY_CALL require(bool)(TMP_300)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+h = _entries[_hash]
+
+IRs:
+REF_156(Registrar.Entry) -> _entries[_hash]
+h(Registrar.Entry) := REF_156(Registrar.Entry)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+h.deed.setOwner(newOwner)
+
+IRs:
+REF_157(Deed) -> h.deed
+HIGH_LEVEL_CALL, dest:REF_157(Deed), function:setOwner, arguments:['newOwner']  "];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+trySetSubnodeOwner(_hash,newOwner)
+
+IRs:
+INTERNAL_CALL, Registrar.trySetSubnodeOwner(bytes32,address)(_hash,newOwner)"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+onlyOwner(_hash)
+
+IRs:
+MODIFIER_CALL, Registrar.onlyOwner(bytes32)(_hash)"];
+5->1;
+}
+// Function: 984.sol-Registrar-transferRegistrars(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->10;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+registrar = ens.owner(rootNode)
+
+IRs:
+TMP_341(address) = HIGH_LEVEL_CALL, dest:ens(ENS), function:owner, arguments:['rootNode']  
+registrar(address) := TMP_341(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(registrar != address(this))
+
+IRs:
+TMP_342 = CONVERT this to address
+TMP_343(bool) = registrar != TMP_342
+TMP_344(None) = SOLIDITY_CALL require(bool)(TMP_343)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+h = _entries[_hash]
+
+IRs:
+REF_191(Registrar.Entry) -> _entries[_hash]
+h(Registrar.Entry) := REF_191(Registrar.Entry)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+h.deed.setRegistrar(registrar)
+
+IRs:
+REF_192(Deed) -> h.deed
+HIGH_LEVEL_CALL, dest:REF_192(Deed), function:setRegistrar, arguments:['registrar']  "];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Registrar(registrar).acceptRegistrarTransfer(_hash,h.deed,h.registrationDate)
+
+IRs:
+TMP_346 = CONVERT registrar to Registrar
+REF_195(Deed) -> h.deed
+REF_196(uint256) -> h.registrationDate
+HIGH_LEVEL_CALL, dest:TMP_346(Registrar), function:acceptRegistrarTransfer, arguments:['_hash', 'REF_195', 'REF_196']  "];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+h.deed = Deed(0)
+
+IRs:
+REF_197(Deed) -> h.deed
+TMP_348 = CONVERT 0 to Deed
+REF_197(Deed) (->h) := TMP_348(Deed)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+h.registrationDate = 0
+
+IRs:
+REF_198(uint256) -> h.registrationDate
+REF_198(uint256) (->h) := 0(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+h.value = 0
+
+IRs:
+REF_199(uint256) -> h.value
+REF_199(uint256) (->h) := 0(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+h.highestBid = 0
+
+IRs:
+REF_200(uint256) -> h.highestBid
+REF_200(uint256) (->h) := 0(uint256)"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+onlyOwner(_hash)
+
+IRs:
+MODIFIER_CALL, Registrar.onlyOwner(bytes32)(_hash)"];
+10->1;
+}
+// Function: 984.sol-Registrar-trySetSubnodeOwner(bytes32,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+ens.owner(rootNode) == address(this)
+
+IRs:
+TMP_381(address) = HIGH_LEVEL_CALL, dest:ens(ENS), function:owner, arguments:['rootNode']  
+TMP_382 = CONVERT this to address
+TMP_383(bool) = TMP_381 == TMP_382
+CONDITION TMP_383"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+ens.setSubnodeOwner(rootNode,_hash,_newOwner)
+
+IRs:
+HIGH_LEVEL_CALL, dest:ens(ENS), function:setSubnodeOwner, arguments:['rootNode', '_hash', '_newOwner']  "];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 984.sol-Registrar-unsealBid(bytes32,uint256,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+seal = shaBid(_hash,msg.sender,_value,_salt)
+
+IRs:
+TMP_250(bytes32) = INTERNAL_CALL, Registrar.shaBid(bytes32,address,uint256,bytes32)(_hash,msg.sender,_value,_salt)
+seal(bytes32) := TMP_250(bytes32)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+bid = sealedBids[msg.sender][seal]
+
+IRs:
+REF_112(mapping(bytes32 => Deed)) -> sealedBids[msg.sender]
+REF_113(Deed) -> REF_112[seal]
+bid(Deed) := REF_113(Deed)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(address(bid) != 0)
+
+IRs:
+TMP_251 = CONVERT bid to address
+TMP_252(bool) = TMP_251 != 0
+TMP_253(None) = SOLIDITY_CALL require(bool)(TMP_252)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+sealedBids[msg.sender][seal] = Deed(0)
+
+IRs:
+REF_114(mapping(bytes32 => Deed)) -> sealedBids[msg.sender]
+REF_115(Deed) -> REF_114[seal]
+TMP_254 = CONVERT 0 to Deed
+REF_115(Deed) (->sealedBids) := TMP_254(Deed)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+h = _entries[_hash]
+
+IRs:
+REF_116(Registrar.Entry) -> _entries[_hash]
+h(Registrar.Entry) := REF_116(Registrar.Entry)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+value = min(_value,bid.value())
+
+IRs:
+TMP_255(uint256) = HIGH_LEVEL_CALL, dest:bid(Deed), function:value, arguments:[]  
+TMP_256(uint256) = INTERNAL_CALL, Registrar.min(uint256,uint256)(_value,TMP_255)
+value(uint256) := TMP_256(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+bid.setBalance(value,true)
+
+IRs:
+HIGH_LEVEL_CALL, dest:bid(Deed), function:setBalance, arguments:['value', 'True']  "];
+7->8;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+auctionState = state(_hash)
+
+IRs:
+TMP_258(Registrar.Mode) = INTERNAL_CALL, Registrar.state(bytes32)(_hash)
+auctionState(Registrar.Mode) := TMP_258(Registrar.Mode)"];
+8->9;
+9[label="Node Type: IF 9
+
+EXPRESSION:
+auctionState == Mode.Owned
+
+IRs:
+REF_119(Registrar.Mode) -> Mode.Owned
+TMP_259(bool) = auctionState == REF_119
+CONDITION TMP_259"];
+9->10[label="True"];
+9->12[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+bid.closeDeed(5)
+
+IRs:
+HIGH_LEVEL_CALL, dest:bid(Deed), function:closeDeed, arguments:['5']  "];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+BidRevealed(_hash,msg.sender,value,1)
+
+IRs:
+Emit BidRevealed(_hash,msg.sender,value,1)"];
+11->36;
+12[label="Node Type: IF 12
+
+EXPRESSION:
+auctionState != Mode.Reveal
+
+IRs:
+REF_121(Registrar.Mode) -> Mode.Reveal
+TMP_262(bool) = auctionState != REF_121
+CONDITION TMP_262"];
+12->13[label="True"];
+12->14[label="False"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_263(None) = SOLIDITY_CALL revert()()"];
+13->35;
+14[label="Node Type: IF 14
+
+EXPRESSION:
+value < minPrice || bid.creationDate() > h.registrationDate - revealPeriod
+
+IRs:
+TMP_264(bool) = value < minPrice
+TMP_265(uint256) = HIGH_LEVEL_CALL, dest:bid(Deed), function:creationDate, arguments:[]  
+REF_123(uint256) -> h.registrationDate
+TMP_266(uint256) = REF_123 - revealPeriod
+TMP_267(bool) = TMP_265 > TMP_266
+TMP_268(bool) = TMP_264 || TMP_267
+CONDITION TMP_268"];
+14->15[label="True"];
+14->17[label="False"];
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+bid.closeDeed(995)
+
+IRs:
+HIGH_LEVEL_CALL, dest:bid(Deed), function:closeDeed, arguments:['995']  "];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+BidRevealed(_hash,msg.sender,value,0)
+
+IRs:
+Emit BidRevealed(_hash,msg.sender,value,0)"];
+16->34;
+17[label="Node Type: IF 17
+
+EXPRESSION:
+value > h.highestBid
+
+IRs:
+REF_125(uint256) -> h.highestBid
+TMP_271(bool) = value > REF_125
+CONDITION TMP_271"];
+17->18[label="True"];
+17->26[label="False"];
+18[label="Node Type: IF 18
+
+EXPRESSION:
+address(h.deed) != 0
+
+IRs:
+REF_126(Deed) -> h.deed
+TMP_272 = CONVERT REF_126 to address
+TMP_273(bool) = TMP_272 != 0
+CONDITION TMP_273"];
+18->19[label="True"];
+18->21[label="False"];
+19[label="Node Type: NEW VARIABLE 19
+
+EXPRESSION:
+previousWinner = h.deed
+
+IRs:
+REF_127(Deed) -> h.deed
+previousWinner(Deed) := REF_127(Deed)"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+previousWinner.closeDeed(995)
+
+IRs:
+HIGH_LEVEL_CALL, dest:previousWinner(Deed), function:closeDeed, arguments:['995']  "];
+20->21;
+21[label="Node Type: END_IF 21
+"];
+21->22;
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+h.value = h.highestBid
+
+IRs:
+REF_129(uint256) -> h.value
+REF_130(uint256) -> h.highestBid
+REF_129(uint256) (->h) := REF_130(uint256)"];
+22->23;
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+h.highestBid = value
+
+IRs:
+REF_131(uint256) -> h.highestBid
+REF_131(uint256) (->h) := value(uint256)"];
+23->24;
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+h.deed = bid
+
+IRs:
+REF_132(Deed) -> h.deed
+REF_132(Deed) (->h) := bid(Deed)"];
+24->25;
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+BidRevealed(_hash,msg.sender,value,2)
+
+IRs:
+Emit BidRevealed(_hash,msg.sender,value,2)"];
+25->33;
+26[label="Node Type: IF 26
+
+EXPRESSION:
+value > h.value
+
+IRs:
+REF_133(uint256) -> h.value
+TMP_276(bool) = value > REF_133
+CONDITION TMP_276"];
+26->27[label="True"];
+26->30[label="False"];
+27[label="Node Type: EXPRESSION 27
+
+EXPRESSION:
+h.value = value
+
+IRs:
+REF_134(uint256) -> h.value
+REF_134(uint256) (->h) := value(uint256)"];
+27->28;
+28[label="Node Type: EXPRESSION 28
+
+EXPRESSION:
+bid.closeDeed(995)
+
+IRs:
+HIGH_LEVEL_CALL, dest:bid(Deed), function:closeDeed, arguments:['995']  "];
+28->29;
+29[label="Node Type: EXPRESSION 29
+
+EXPRESSION:
+BidRevealed(_hash,msg.sender,value,3)
+
+IRs:
+Emit BidRevealed(_hash,msg.sender,value,3)"];
+29->32;
+30[label="Node Type: EXPRESSION 30
+
+EXPRESSION:
+bid.closeDeed(995)
+
+IRs:
+HIGH_LEVEL_CALL, dest:bid(Deed), function:closeDeed, arguments:['995']  "];
+30->31;
+31[label="Node Type: EXPRESSION 31
+
+EXPRESSION:
+BidRevealed(_hash,msg.sender,value,4)
+
+IRs:
+Emit BidRevealed(_hash,msg.sender,value,4)"];
+31->32;
+32[label="Node Type: END_IF 32
+"];
+32->33;
+33[label="Node Type: END_IF 33
+"];
+33->34;
+34[label="Node Type: END_IF 34
+"];
+34->35;
+35[label="Node Type: END_IF 35
+"];
+35->36;
+36[label="Node Type: END_IF 36
+"];
+}
+// Function: 984.sol-SafeMath-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+c = _a + _b
+
+IRs:
+TMP_9(uint256) = _a + _b
+c(uint256) := TMP_9(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(c >= _a)
+
+IRs:
+TMP_10(bool) = c >= _a
+TMP_11(None) = SOLIDITY_CALL assert(bool)(TMP_10)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 984.sol-SafeMath-div(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+_a / _b
+
+IRs:
+TMP_5(uint256) = _a / _b
+RETURN TMP_5"];
+}
+// Function: 984.sol-SafeMath-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_a == 0
+
+IRs:
+TMP_0(bool) = _a == 0
+CONDITION TMP_0"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+c = _a * _b
+
+IRs:
+TMP_1(uint256) = _a * _b
+c(uint256) := TMP_1(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+assert(bool)(c / _a == _b)
+
+IRs:
+TMP_2(uint256) = c / _a
+TMP_3(bool) = TMP_2 == _b
+TMP_4(None) = SOLIDITY_CALL assert(bool)(TMP_3)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 984.sol-SafeMath-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(_b <= _a)
+
+IRs:
+TMP_6(bool) = _b <= _a
+TMP_7(None) = SOLIDITY_CALL assert(bool)(TMP_6)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+_a - _b
+
+IRs:
+TMP_8(uint256) = _a - _b
+RETURN TMP_8"];
+}
+// Function: 984.sol-SupportsInterfaceWithLookup-_registerInterface(bytes4)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_interfaceId != 0xffffffff)
+
+IRs:
+TMP_14(bool) = _interfaceId != 4294967295
+TMP_15(None) = SOLIDITY_CALL require(bool)(TMP_14)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+supportedInterfaces[_interfaceId] = true
+
+IRs:
+REF_1(bool) -> supportedInterfaces[_interfaceId]
+REF_1(bool) (->supportedInterfaces) := True(bool)"];
+}
+// Function: 984.sol-SupportsInterfaceWithLookup-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_registerInterface(InterfaceId_ERC165)
+
+IRs:
+INTERNAL_CALL, SupportsInterfaceWithLookup._registerInterface(bytes4)(InterfaceId_ERC165)"];
+}
+// Function: 984.sol-SupportsInterfaceWithLookup-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+InterfaceId_ERC165 = 0x01ffc9a7
+
+IRs:
+InterfaceId_ERC165(bytes4) := 33540519(uint256)"];
+}
+// Function: 984.sol-SupportsInterfaceWithLookup-supportsInterface(bytes4)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+supportedInterfaces[_interfaceId]
+
+IRs:
+REF_0(bool) -> supportedInterfaces[_interfaceId]
+RETURN REF_0"];
+}
+}

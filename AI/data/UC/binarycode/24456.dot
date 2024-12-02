@@ -1,0 +1,169 @@
+digraph G {
+// Function: 24456.sol-ETH_VAULT-CashOut(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_am <= balances[msg.sender]
+
+IRs:
+REF_2(uint256) -> balances[msg.sender]
+TMP_3(bool) = _am <= REF_2
+CONDITION TMP_3"];
+1->2[label="True"];
+1->6[label="False"];
+2[label="Node Type: IF 2
+
+EXPRESSION:
+msg.sender.call.value(_am)()
+
+IRs:
+TMP_5(bool) = LOW_LEVEL_CALL, dest:msg.sender, function:call, arguments:[] value:_am 
+CONDITION TMP_5"];
+2->3[label="True"];
+2->5[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balances[msg.sender] -= _am
+
+IRs:
+REF_5(uint256) -> balances[msg.sender]
+REF_5(-> balances) = REF_5 - _am"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+TransferLog.AddMessage(msg.sender,_am,CashOut)
+
+IRs:
+HIGH_LEVEL_CALL, dest:TransferLog(Log), function:AddMessage, arguments:['msg.sender', '_am', 'CashOut']  "];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+}
+// Function: 24456.sol-ETH_VAULT-Deposit()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.value > MinDeposit
+
+IRs:
+TMP_1(bool) = msg.value > MinDeposit
+CONDITION TMP_1"];
+1->2[label="True"];
+1->4[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balances[msg.sender] += msg.value
+
+IRs:
+REF_0(uint256) -> balances[msg.sender]
+REF_0(-> balances) = REF_0 + msg.value"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+TransferLog.AddMessage(msg.sender,msg.value,Deposit)
+
+IRs:
+HIGH_LEVEL_CALL, dest:TransferLog(Log), function:AddMessage, arguments:['msg.sender', 'msg.value', 'Deposit']  "];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+}
+// Function: 24456.sol-ETH_VAULT-ETH_VAULT(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+TransferLog = Log(_log)
+
+IRs:
+TMP_0 = CONVERT _log to Log
+TransferLog(Log) := TMP_0(Log)"];
+}
+// Function: 24456.sol-ETH_VAULT-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 24456.sol-ETH_VAULT-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+MinDeposit = 1000000000000000000
+
+IRs:
+MinDeposit(uint256) := 1000000000000000000(uint256)"];
+}
+// Function: 24456.sol-Log-AddMessage(address,uint256,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+LastMsg.Sender = _adr
+
+IRs:
+REF_7(address) -> LastMsg.Sender
+REF_7(address) (->LastMsg) := _adr(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+LastMsg.Time = now
+
+IRs:
+REF_8(uint256) -> LastMsg.Time
+REF_8(uint256) (->LastMsg) := now(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+LastMsg.Val = _val
+
+IRs:
+REF_9(uint256) -> LastMsg.Val
+REF_9(uint256) (->LastMsg) := _val(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+LastMsg.Data = _data
+
+IRs:
+REF_10(string) -> LastMsg.Data
+REF_10(string) (->LastMsg) := _data(string)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+History.push(LastMsg)
+
+IRs:
+REF_12 -> LENGTH History
+TMP_8(uint256) := REF_12(uint256)
+TMP_9(uint256) = TMP_8 + 1
+REF_12(uint256) (->History) := TMP_9(uint256)
+REF_13(Log.Message) -> History[TMP_8]
+REF_13(Log.Message) (->History) := LastMsg(Log.Message)"];
+}
+}

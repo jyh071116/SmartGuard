@@ -1,0 +1,2064 @@
+digraph G {
+// Function: 7511.sol-Ownable-Ownable()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 7511.sol-Ownable-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_17(bool) = msg.sender == owner
+TMP_18(None) = SOLIDITY_CALL require(bool)(TMP_17)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 7511.sol-Ownable-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newOwner != address(0))
+
+IRs:
+TMP_12 = CONVERT 0 to address
+TMP_13(bool) = newOwner != TMP_12
+TMP_14(None) = SOLIDITY_CALL require(bool)(TMP_13)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->1;
+}
+// Function: 7511.sol-R1Exchange-Ownable()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 7511.sol-R1Exchange-adminWithdraw(address[3],uint256[3],uint8,bytes32,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->21;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+user = addresses[0]
+
+IRs:
+REF_77(address) -> addresses[0]
+user(address) := REF_77(address)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+token = addresses[1]
+
+IRs:
+REF_78(address) -> addresses[1]
+token(address) := REF_78(address)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+feeAccount = addresses[2]
+
+IRs:
+REF_79(address) -> addresses[2]
+feeAccount(address) := REF_79(address)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+amount = values[0]
+
+IRs:
+REF_80(uint256) -> values[0]
+amount(uint256) := REF_80(uint256)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+nonce = values[1]
+
+IRs:
+REF_81(uint256) -> values[1]
+nonce(uint256) := REF_81(uint256)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+fee = values[2]
+
+IRs:
+REF_82(uint256) -> values[2]
+fee(uint256) := REF_82(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+require(bool)(amount <= tokenList[token][user])
+
+IRs:
+REF_83(mapping(address => uint256)) -> tokenList[token]
+REF_84(uint256) -> REF_83[user]
+TMP_97(bool) = amount <= REF_84
+TMP_98(None) = SOLIDITY_CALL require(bool)(TMP_97)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+require(bool)(safeMul(fee,feeRate) < amount)
+
+IRs:
+TMP_99(uint256) = INTERNAL_CALL, SafeMath.safeMul(uint256,uint256)(fee,feeRate)
+TMP_100(bool) = TMP_99 < amount
+TMP_101(None) = SOLIDITY_CALL require(bool)(TMP_100)"];
+8->9;
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+hash = keccak256()(user,token,amount,nonce)
+
+IRs:
+TMP_102(bytes32) = SOLIDITY_CALL keccak256()(user,token,amount,nonce)
+hash(bytes32) := TMP_102(bytes32)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+require(bool)(! withdrawn[hash])
+
+IRs:
+REF_85(bool) -> withdrawn[hash]
+TMP_103 = UnaryType.BANG REF_85 
+TMP_104(None) = SOLIDITY_CALL require(bool)(TMP_103)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+withdrawn[hash] = true
+
+IRs:
+REF_86(bool) -> withdrawn[hash]
+REF_86(bool) (->withdrawn) := True(bool)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+require(bool)(ecrecover(bytes32,uint8,bytes32,bytes32)(keccak256()(Ethereum Signed Message:
+32,hash),v,r,s) == user)
+
+IRs:
+TMP_105(bytes32) = SOLIDITY_CALL keccak256()(Ethereum Signed Message:
+32,hash)
+TMP_106(address) = SOLIDITY_CALL ecrecover(bytes32,uint8,bytes32,bytes32)(TMP_105,v,r,s)
+TMP_107(bool) = TMP_106 == user
+TMP_108(None) = SOLIDITY_CALL require(bool)(TMP_107)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+tokenList[token][user] = safeSub(tokenList[token][user],amount)
+
+IRs:
+REF_87(mapping(address => uint256)) -> tokenList[token]
+REF_88(uint256) -> REF_87[user]
+REF_89(mapping(address => uint256)) -> tokenList[token]
+REF_90(uint256) -> REF_89[user]
+TMP_109(uint256) = INTERNAL_CALL, SafeMath.safeSub(uint256,uint256)(REF_90,amount)
+REF_88(uint256) (->tokenList) := TMP_109(uint256)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+tokenList[token][feeAccount] = safeAdd(tokenList[token][feeAccount],fee)
+
+IRs:
+REF_91(mapping(address => uint256)) -> tokenList[token]
+REF_92(uint256) -> REF_91[feeAccount]
+REF_93(mapping(address => uint256)) -> tokenList[token]
+REF_94(uint256) -> REF_93[feeAccount]
+TMP_110(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(REF_94,fee)
+REF_92(uint256) (->tokenList) := TMP_110(uint256)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+amount = safeSub(amount,fee)
+
+IRs:
+TMP_111(uint256) = INTERNAL_CALL, SafeMath.safeSub(uint256,uint256)(amount,fee)
+amount(uint256) := TMP_111(uint256)"];
+15->16;
+16[label="Node Type: IF 16
+
+EXPRESSION:
+token == 0
+
+IRs:
+TMP_112(bool) = token == 0
+CONDITION TMP_112"];
+16->17[label="True"];
+16->18[label="False"];
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+require(bool)(user.send(amount))
+
+IRs:
+TMP_113 = SEND dest:user value:amount
+TMP_114(None) = SOLIDITY_CALL require(bool)(TMP_113)"];
+17->19;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+require(bool)(Token(token).transfer(user,amount))
+
+IRs:
+TMP_115 = CONVERT token to Token
+TMP_116(bool) = HIGH_LEVEL_CALL, dest:TMP_115(Token), function:transfer, arguments:['user', 'amount']  
+TMP_117(None) = SOLIDITY_CALL require(bool)(TMP_116)"];
+18->19;
+19[label="Node Type: END_IF 19
+"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+Withdraw(token,user,amount,tokenList[token][user])
+
+IRs:
+REF_97(mapping(address => uint256)) -> tokenList[token]
+REF_98(uint256) -> REF_97[user]
+Emit Withdraw(token,user,amount,REF_98)"];
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+onlyAdmin()
+
+IRs:
+MODIFIER_CALL, R1Exchange.onlyAdmin()()"];
+21->22;
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+isFeeAccount(addresses[2])
+
+IRs:
+REF_99(address) -> addresses[2]
+MODIFIER_CALL, R1Exchange.isFeeAccount(address)(REF_99)"];
+22->1;
+}
+// Function: 7511.sol-R1Exchange-applyWithdraw(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+apply = safeAdd(applyList[token][msg.sender],amount)
+
+IRs:
+REF_15(mapping(address => uint256)) -> applyList[token]
+REF_16(uint256) -> REF_15[msg.sender]
+TMP_59(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(REF_16,amount)
+apply(uint256) := TMP_59(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(safeAdd(apply,withdrawAllowance[token][msg.sender]) <= tokenList[token][msg.sender])
+
+IRs:
+REF_17(mapping(address => uint256)) -> withdrawAllowance[token]
+REF_18(uint256) -> REF_17[msg.sender]
+TMP_60(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(apply,REF_18)
+REF_19(mapping(address => uint256)) -> tokenList[token]
+REF_20(uint256) -> REF_19[msg.sender]
+TMP_61(bool) = TMP_60 <= REF_20
+TMP_62(None) = SOLIDITY_CALL require(bool)(TMP_61)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+applyList[token][msg.sender] = apply
+
+IRs:
+REF_21(mapping(address => uint256)) -> applyList[token]
+REF_22(uint256) -> REF_21[msg.sender]
+REF_22(uint256) (->applyList) := apply(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+latestApply[token][msg.sender] = block.timestamp
+
+IRs:
+REF_23(mapping(address => uint256)) -> latestApply[token]
+REF_24(uint256) -> REF_23[msg.sender]
+REF_24(uint256) (->latestApply) := block.timestamp(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+ApplyWithdraw(token,msg.sender,amount,block.timestamp)
+
+IRs:
+Emit ApplyWithdraw(token,msg.sender,amount,block.timestamp)"];
+}
+// Function: 7511.sol-R1Exchange-approveWithdraw(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+withdrawAllowance[token][user] = safeAdd(withdrawAllowance[token][user],applyList[token][user])
+
+IRs:
+REF_25(mapping(address => uint256)) -> withdrawAllowance[token]
+REF_26(uint256) -> REF_25[user]
+REF_27(mapping(address => uint256)) -> withdrawAllowance[token]
+REF_28(uint256) -> REF_27[user]
+REF_29(mapping(address => uint256)) -> applyList[token]
+REF_30(uint256) -> REF_29[user]
+TMP_64(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(REF_28,REF_30)
+REF_26(uint256) (->withdrawAllowance) := TMP_64(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+applyList[token][user] = 0
+
+IRs:
+REF_31(mapping(address => uint256)) -> applyList[token]
+REF_32(uint256) -> REF_31[user]
+REF_32(uint256) (->applyList) := 0(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+latestApply[token][user] = 0
+
+IRs:
+REF_33(mapping(address => uint256)) -> latestApply[token]
+REF_34(uint256) -> REF_33[user]
+REF_34(uint256) (->latestApply) := 0(uint256)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyAdmin()
+
+IRs:
+MODIFIER_CALL, R1Exchange.onlyAdmin()()"];
+4->1;
+}
+// Function: 7511.sol-R1Exchange-balance(R1Exchange.Order,R1Exchange.Order,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(safeMul(makerOrder.amountSell,takerOrder.amountSell) >= safeMul(makerOrder.amountBuy,takerOrder.amountBuy))
+
+IRs:
+REF_165(uint256) -> makerOrder.amountSell
+REF_166(uint256) -> takerOrder.amountSell
+TMP_151(uint256) = INTERNAL_CALL, SafeMath.safeMul(uint256,uint256)(REF_165,REF_166)
+REF_167(uint256) -> makerOrder.amountBuy
+REF_168(uint256) -> takerOrder.amountBuy
+TMP_152(uint256) = INTERNAL_CALL, SafeMath.safeMul(uint256,uint256)(REF_167,REF_168)
+TMP_153(bool) = TMP_151 >= TMP_152
+TMP_154(None) = SOLIDITY_CALL require(bool)(TMP_153)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+takerBuy = 0
+
+IRs:
+takerBuy(uint256) := 0(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+takerSell = 0
+
+IRs:
+takerSell(uint256) := 0(uint256)"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+takerOrder.baseToken == takerOrder.tokenBuy
+
+IRs:
+REF_169(address) -> takerOrder.baseToken
+REF_170(address) -> takerOrder.tokenBuy
+TMP_155(bool) = REF_169 == REF_170
+CONDITION TMP_155"];
+4->5[label="True"];
+4->12[label="False"];
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+makerAmount = safeSub(makerOrder.amountBuy,orderFilled[makerOrder.user][makerOrder.orderHash])
+
+IRs:
+REF_171(uint256) -> makerOrder.amountBuy
+REF_172(address) -> makerOrder.user
+REF_173(mapping(bytes32 => uint256)) -> orderFilled[REF_172]
+REF_174(bytes32) -> makerOrder.orderHash
+REF_175(uint256) -> REF_173[REF_174]
+TMP_156(uint256) = INTERNAL_CALL, SafeMath.safeSub(uint256,uint256)(REF_171,REF_175)
+makerAmount(uint256) := TMP_156(uint256)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+takerAmount = safeSub(takerOrder.amountSell,orderFilled[takerOrder.user][takerOrder.orderHash])
+
+IRs:
+REF_176(uint256) -> takerOrder.amountSell
+REF_177(address) -> takerOrder.user
+REF_178(mapping(bytes32 => uint256)) -> orderFilled[REF_177]
+REF_179(bytes32) -> takerOrder.orderHash
+REF_180(uint256) -> REF_178[REF_179]
+TMP_157(uint256) = INTERNAL_CALL, SafeMath.safeSub(uint256,uint256)(REF_176,REF_180)
+takerAmount(uint256) := TMP_157(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+require(bool)(tradeAmount > 0 && tradeAmount <= makerAmount && tradeAmount <= takerAmount)
+
+IRs:
+TMP_158(bool) = tradeAmount > 0
+TMP_159(bool) = tradeAmount <= makerAmount
+TMP_160(bool) = TMP_158 && TMP_159
+TMP_161(bool) = tradeAmount <= takerAmount
+TMP_162(bool) = TMP_160 && TMP_161
+TMP_163(None) = SOLIDITY_CALL require(bool)(TMP_162)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+takerSell = tradeAmount
+
+IRs:
+takerSell(uint256) := tradeAmount(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+takerBuy = safeMul(makerOrder.amountSell,takerSell) / makerOrder.amountBuy
+
+IRs:
+REF_181(uint256) -> makerOrder.amountSell
+TMP_164(uint256) = INTERNAL_CALL, SafeMath.safeMul(uint256,uint256)(REF_181,takerSell)
+REF_182(uint256) -> makerOrder.amountBuy
+TMP_165(uint256) = TMP_164 / REF_182
+takerBuy(uint256) := TMP_165(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+orderFilled[takerOrder.user][takerOrder.orderHash] = safeAdd(orderFilled[takerOrder.user][takerOrder.orderHash],takerSell)
+
+IRs:
+REF_183(address) -> takerOrder.user
+REF_184(mapping(bytes32 => uint256)) -> orderFilled[REF_183]
+REF_185(bytes32) -> takerOrder.orderHash
+REF_186(uint256) -> REF_184[REF_185]
+REF_187(address) -> takerOrder.user
+REF_188(mapping(bytes32 => uint256)) -> orderFilled[REF_187]
+REF_189(bytes32) -> takerOrder.orderHash
+REF_190(uint256) -> REF_188[REF_189]
+TMP_166(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(REF_190,takerSell)
+REF_186(uint256) (->orderFilled) := TMP_166(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+orderFilled[makerOrder.user][makerOrder.orderHash] = safeAdd(orderFilled[makerOrder.user][makerOrder.orderHash],takerSell)
+
+IRs:
+REF_191(address) -> makerOrder.user
+REF_192(mapping(bytes32 => uint256)) -> orderFilled[REF_191]
+REF_193(bytes32) -> makerOrder.orderHash
+REF_194(uint256) -> REF_192[REF_193]
+REF_195(address) -> makerOrder.user
+REF_196(mapping(bytes32 => uint256)) -> orderFilled[REF_195]
+REF_197(bytes32) -> makerOrder.orderHash
+REF_198(uint256) -> REF_196[REF_197]
+TMP_167(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(REF_198,takerSell)
+REF_194(uint256) (->orderFilled) := TMP_167(uint256)"];
+11->19;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+takerAmount = safeSub(takerOrder.amountBuy,orderFilled[takerOrder.user][takerOrder.orderHash])
+
+IRs:
+REF_199(uint256) -> takerOrder.amountBuy
+REF_200(address) -> takerOrder.user
+REF_201(mapping(bytes32 => uint256)) -> orderFilled[REF_200]
+REF_202(bytes32) -> takerOrder.orderHash
+REF_203(uint256) -> REF_201[REF_202]
+TMP_168(uint256) = INTERNAL_CALL, SafeMath.safeSub(uint256,uint256)(REF_199,REF_203)
+takerAmount(uint256) := TMP_168(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+makerAmount = safeSub(makerOrder.amountSell,orderFilled[makerOrder.user][makerOrder.orderHash])
+
+IRs:
+REF_204(uint256) -> makerOrder.amountSell
+REF_205(address) -> makerOrder.user
+REF_206(mapping(bytes32 => uint256)) -> orderFilled[REF_205]
+REF_207(bytes32) -> makerOrder.orderHash
+REF_208(uint256) -> REF_206[REF_207]
+TMP_169(uint256) = INTERNAL_CALL, SafeMath.safeSub(uint256,uint256)(REF_204,REF_208)
+makerAmount(uint256) := TMP_169(uint256)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+require(bool)(tradeAmount > 0 && tradeAmount <= makerAmount && tradeAmount <= takerAmount)
+
+IRs:
+TMP_170(bool) = tradeAmount > 0
+TMP_171(bool) = tradeAmount <= makerAmount
+TMP_172(bool) = TMP_170 && TMP_171
+TMP_173(bool) = tradeAmount <= takerAmount
+TMP_174(bool) = TMP_172 && TMP_173
+TMP_175(None) = SOLIDITY_CALL require(bool)(TMP_174)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+takerBuy = tradeAmount
+
+IRs:
+takerBuy(uint256) := tradeAmount(uint256)"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+takerSell = safeMul(makerOrder.amountBuy,takerBuy) / makerOrder.amountSell
+
+IRs:
+REF_209(uint256) -> makerOrder.amountBuy
+TMP_176(uint256) = INTERNAL_CALL, SafeMath.safeMul(uint256,uint256)(REF_209,takerBuy)
+REF_210(uint256) -> makerOrder.amountSell
+TMP_177(uint256) = TMP_176 / REF_210
+takerSell(uint256) := TMP_177(uint256)"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+orderFilled[takerOrder.user][takerOrder.orderHash] = safeAdd(orderFilled[takerOrder.user][takerOrder.orderHash],takerBuy)
+
+IRs:
+REF_211(address) -> takerOrder.user
+REF_212(mapping(bytes32 => uint256)) -> orderFilled[REF_211]
+REF_213(bytes32) -> takerOrder.orderHash
+REF_214(uint256) -> REF_212[REF_213]
+REF_215(address) -> takerOrder.user
+REF_216(mapping(bytes32 => uint256)) -> orderFilled[REF_215]
+REF_217(bytes32) -> takerOrder.orderHash
+REF_218(uint256) -> REF_216[REF_217]
+TMP_178(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(REF_218,takerBuy)
+REF_214(uint256) (->orderFilled) := TMP_178(uint256)"];
+17->18;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+orderFilled[makerOrder.user][makerOrder.orderHash] = safeAdd(orderFilled[makerOrder.user][makerOrder.orderHash],takerBuy)
+
+IRs:
+REF_219(address) -> makerOrder.user
+REF_220(mapping(bytes32 => uint256)) -> orderFilled[REF_219]
+REF_221(bytes32) -> makerOrder.orderHash
+REF_222(uint256) -> REF_220[REF_221]
+REF_223(address) -> makerOrder.user
+REF_224(mapping(bytes32 => uint256)) -> orderFilled[REF_223]
+REF_225(bytes32) -> makerOrder.orderHash
+REF_226(uint256) -> REF_224[REF_225]
+TMP_179(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(REF_226,takerBuy)
+REF_222(uint256) (->orderFilled) := TMP_179(uint256)"];
+18->19;
+19[label="Node Type: END_IF 19
+"];
+19->20;
+20[label="Node Type: NEW VARIABLE 20
+
+EXPRESSION:
+makerFee = chargeFee(makerOrder,feeAccount,takerSell)
+
+IRs:
+TMP_180(uint256) = INTERNAL_CALL, R1Exchange.chargeFee(R1Exchange.Order,address,uint256)(makerOrder,feeAccount,takerSell)
+makerFee(uint256) := TMP_180(uint256)"];
+20->21;
+21[label="Node Type: NEW VARIABLE 21
+
+EXPRESSION:
+takerFee = chargeFee(takerOrder,feeAccount,takerBuy)
+
+IRs:
+TMP_181(uint256) = INTERNAL_CALL, R1Exchange.chargeFee(R1Exchange.Order,address,uint256)(takerOrder,feeAccount,takerBuy)
+takerFee(uint256) := TMP_181(uint256)"];
+21->22;
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+tokenList[takerOrder.tokenSell][takerOrder.user] = safeSub(tokenList[takerOrder.tokenSell][takerOrder.user],takerSell)
+
+IRs:
+REF_227(address) -> takerOrder.tokenSell
+REF_228(mapping(address => uint256)) -> tokenList[REF_227]
+REF_229(address) -> takerOrder.user
+REF_230(uint256) -> REF_228[REF_229]
+REF_231(address) -> takerOrder.tokenSell
+REF_232(mapping(address => uint256)) -> tokenList[REF_231]
+REF_233(address) -> takerOrder.user
+REF_234(uint256) -> REF_232[REF_233]
+TMP_182(uint256) = INTERNAL_CALL, SafeMath.safeSub(uint256,uint256)(REF_234,takerSell)
+REF_230(uint256) (->tokenList) := TMP_182(uint256)"];
+22->23;
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+tokenList[takerOrder.tokenBuy][takerOrder.user] = safeAdd(tokenList[takerOrder.tokenBuy][takerOrder.user],safeSub(takerBuy,takerFee))
+
+IRs:
+REF_235(address) -> takerOrder.tokenBuy
+REF_236(mapping(address => uint256)) -> tokenList[REF_235]
+REF_237(address) -> takerOrder.user
+REF_238(uint256) -> REF_236[REF_237]
+REF_239(address) -> takerOrder.tokenBuy
+REF_240(mapping(address => uint256)) -> tokenList[REF_239]
+REF_241(address) -> takerOrder.user
+REF_242(uint256) -> REF_240[REF_241]
+TMP_183(uint256) = INTERNAL_CALL, SafeMath.safeSub(uint256,uint256)(takerBuy,takerFee)
+TMP_184(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(REF_242,TMP_183)
+REF_238(uint256) (->tokenList) := TMP_184(uint256)"];
+23->24;
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+tokenList[makerOrder.tokenSell][makerOrder.user] = safeSub(tokenList[makerOrder.tokenSell][makerOrder.user],takerBuy)
+
+IRs:
+REF_243(address) -> makerOrder.tokenSell
+REF_244(mapping(address => uint256)) -> tokenList[REF_243]
+REF_245(address) -> makerOrder.user
+REF_246(uint256) -> REF_244[REF_245]
+REF_247(address) -> makerOrder.tokenSell
+REF_248(mapping(address => uint256)) -> tokenList[REF_247]
+REF_249(address) -> makerOrder.user
+REF_250(uint256) -> REF_248[REF_249]
+TMP_185(uint256) = INTERNAL_CALL, SafeMath.safeSub(uint256,uint256)(REF_250,takerBuy)
+REF_246(uint256) (->tokenList) := TMP_185(uint256)"];
+24->25;
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+tokenList[makerOrder.tokenBuy][makerOrder.user] = safeAdd(tokenList[makerOrder.tokenBuy][makerOrder.user],safeSub(takerSell,makerFee))
+
+IRs:
+REF_251(address) -> makerOrder.tokenBuy
+REF_252(mapping(address => uint256)) -> tokenList[REF_251]
+REF_253(address) -> makerOrder.user
+REF_254(uint256) -> REF_252[REF_253]
+REF_255(address) -> makerOrder.tokenBuy
+REF_256(mapping(address => uint256)) -> tokenList[REF_255]
+REF_257(address) -> makerOrder.user
+REF_258(uint256) -> REF_256[REF_257]
+TMP_186(uint256) = INTERNAL_CALL, SafeMath.safeSub(uint256,uint256)(takerSell,makerFee)
+TMP_187(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(REF_258,TMP_186)
+REF_254(uint256) (->tokenList) := TMP_187(uint256)"];
+}
+// Function: 7511.sol-R1Exchange-balanceOf(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+tokenList[token][user]
+
+IRs:
+REF_100(mapping(address => uint256)) -> tokenList[token]
+REF_101(uint256) -> REF_100[user]
+RETURN REF_101"];
+}
+// Function: 7511.sol-R1Exchange-batchTrade(address[11][],uint256[11][],uint8[2][],bytes32[2][],bytes32[2][])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->7;
+1[label="Node Type: BEGIN_LOOP 1
+"];
+1->4;
+2[label="Node Type: END_LOOP 2
+"];
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+3->1;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+i < addresses.length
+
+IRs:
+REF_290 -> LENGTH addresses
+TMP_197(bool) = i < REF_290
+CONDITION TMP_197"];
+4->5[label="True"];
+4->2[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+trade(addresses[i],values[i],v[i],r[i],s[i])
+
+IRs:
+REF_291(address[11]) -> addresses[i]
+REF_292(uint256[11]) -> values[i]
+REF_293(uint8[2]) -> v[i]
+REF_294(bytes32[2]) -> r[i]
+REF_295(bytes32[2]) -> s[i]
+INTERNAL_CALL, R1Exchange.trade(address[11],uint256[11],uint8[2],bytes32[2],bytes32[2])(REF_291,REF_292,REF_293,REF_294,REF_295)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_199(uint256) := i(uint256)
+i(uint256) = i + 1"];
+6->4;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+onlyAdmin()
+
+IRs:
+MODIFIER_CALL, R1Exchange.onlyAdmin()()"];
+7->3;
+}
+// Function: 7511.sol-R1Exchange-changeFeeRate(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(fr > 0)
+
+IRs:
+TMP_47(bool) = fr > 0
+TMP_48(None) = SOLIDITY_CALL require(bool)(TMP_47)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+feeRate = fr
+
+IRs:
+feeRate(uint256) := fr(uint256)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 7511.sol-R1Exchange-changeLockTime(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(lock <= 604800)
+
+IRs:
+TMP_44(bool) = lock <= 604800
+TMP_45(None) = SOLIDITY_CALL require(bool)(TMP_44)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+applyWait = lock
+
+IRs:
+applyWait(uint256) := lock(uint256)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 7511.sol-R1Exchange-chargeFee(R1Exchange.Order,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+classicFee = 0
+
+IRs:
+classicFee(uint256) := 0(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+order.feeToken != 0
+
+IRs:
+REF_259(address) -> order.feeToken
+TMP_188(bool) = REF_259 != 0
+CONDITION TMP_188"];
+2->3[label="True"];
+2->6[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(order.fee <= tokenList[order.feeToken][order.user])
+
+IRs:
+REF_260(uint256) -> order.fee
+REF_261(address) -> order.feeToken
+REF_262(mapping(address => uint256)) -> tokenList[REF_261]
+REF_263(address) -> order.user
+REF_264(uint256) -> REF_262[REF_263]
+TMP_189(bool) = REF_260 <= REF_264
+TMP_190(None) = SOLIDITY_CALL require(bool)(TMP_189)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+tokenList[order.feeToken][feeAccount] = safeAdd(tokenList[order.feeToken][feeAccount],order.fee)
+
+IRs:
+REF_265(address) -> order.feeToken
+REF_266(mapping(address => uint256)) -> tokenList[REF_265]
+REF_267(uint256) -> REF_266[feeAccount]
+REF_268(address) -> order.feeToken
+REF_269(mapping(address => uint256)) -> tokenList[REF_268]
+REF_270(uint256) -> REF_269[feeAccount]
+REF_271(uint256) -> order.fee
+TMP_191(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(REF_270,REF_271)
+REF_267(uint256) (->tokenList) := TMP_191(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+tokenList[order.feeToken][order.user] = safeSub(tokenList[order.feeToken][order.user],order.fee)
+
+IRs:
+REF_272(address) -> order.feeToken
+REF_273(mapping(address => uint256)) -> tokenList[REF_272]
+REF_274(address) -> order.user
+REF_275(uint256) -> REF_273[REF_274]
+REF_276(address) -> order.feeToken
+REF_277(mapping(address => uint256)) -> tokenList[REF_276]
+REF_278(address) -> order.user
+REF_279(uint256) -> REF_277[REF_278]
+REF_280(uint256) -> order.fee
+TMP_192(uint256) = INTERNAL_CALL, SafeMath.safeSub(uint256,uint256)(REF_279,REF_280)
+REF_275(uint256) (->tokenList) := TMP_192(uint256)"];
+5->9;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+classicFee = order.fee
+
+IRs:
+REF_281(uint256) -> order.fee
+classicFee(uint256) := REF_281(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+require(bool)(safeMul(order.fee,feeRate) <= amountBuy)
+
+IRs:
+REF_282(uint256) -> order.fee
+TMP_193(uint256) = INTERNAL_CALL, SafeMath.safeMul(uint256,uint256)(REF_282,feeRate)
+TMP_194(bool) = TMP_193 <= amountBuy
+TMP_195(None) = SOLIDITY_CALL require(bool)(TMP_194)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+tokenList[order.tokenBuy][feeAccount] = safeAdd(tokenList[order.tokenBuy][feeAccount],order.fee)
+
+IRs:
+REF_283(address) -> order.tokenBuy
+REF_284(mapping(address => uint256)) -> tokenList[REF_283]
+REF_285(uint256) -> REF_284[feeAccount]
+REF_286(address) -> order.tokenBuy
+REF_287(mapping(address => uint256)) -> tokenList[REF_286]
+REF_288(uint256) -> REF_287[feeAccount]
+REF_289(uint256) -> order.fee
+TMP_196(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(REF_288,REF_289)
+REF_285(uint256) (->tokenList) := TMP_196(uint256)"];
+8->9;
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: RETURN 10
+
+EXPRESSION:
+classicFee
+
+IRs:
+RETURN classicFee"];
+}
+// Function: 7511.sol-R1Exchange-deposit()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+tokenList[0][msg.sender] = safeAdd(tokenList[0][msg.sender],msg.value)
+
+IRs:
+REF_2(mapping(address => uint256)) -> tokenList[0]
+REF_3(uint256) -> REF_2[msg.sender]
+REF_4(mapping(address => uint256)) -> tokenList[0]
+REF_5(uint256) -> REF_4[msg.sender]
+TMP_50(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(REF_5,msg.value)
+REF_3(uint256) (->tokenList) := TMP_50(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Deposit(0,msg.sender,msg.value,tokenList[0][msg.sender])
+
+IRs:
+REF_6(mapping(address => uint256)) -> tokenList[0]
+REF_7(uint256) -> REF_6[msg.sender]
+Emit Deposit(0,msg.sender,msg.value,REF_7)"];
+}
+// Function: 7511.sol-R1Exchange-depositToken(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(token != 0)
+
+IRs:
+TMP_52(bool) = token != 0
+TMP_53(None) = SOLIDITY_CALL require(bool)(TMP_52)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+tokenList[token][msg.sender] = safeAdd(tokenList[token][msg.sender],amount)
+
+IRs:
+REF_8(mapping(address => uint256)) -> tokenList[token]
+REF_9(uint256) -> REF_8[msg.sender]
+REF_10(mapping(address => uint256)) -> tokenList[token]
+REF_11(uint256) -> REF_10[msg.sender]
+TMP_54(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(REF_11,amount)
+REF_9(uint256) (->tokenList) := TMP_54(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(Token(token).transferFrom(msg.sender,this,amount))
+
+IRs:
+TMP_55 = CONVERT token to Token
+TMP_56(bool) = HIGH_LEVEL_CALL, dest:TMP_55(Token), function:transferFrom, arguments:['msg.sender', 'this', 'amount']  
+TMP_57(None) = SOLIDITY_CALL require(bool)(TMP_56)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Deposit(token,msg.sender,amount,tokenList[token][msg.sender])
+
+IRs:
+REF_13(mapping(address => uint256)) -> tokenList[token]
+REF_14(uint256) -> REF_13[msg.sender]
+Emit Deposit(token,msg.sender,amount,REF_14)"];
+}
+// Function: 7511.sol-R1Exchange-enableWithdraw(bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+withdrawEnabled = enabled
+
+IRs:
+withdrawEnabled(bool) := enabled(bool)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 7511.sol-R1Exchange-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_36(None) = SOLIDITY_CALL revert()()"];
+}
+// Function: 7511.sol-R1Exchange-getOrderHash(address,uint256,address,uint256,address,uint256,uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+keccak256()(tokenBuy,amountBuy,tokenSell,amountSell,base,expires,nonce,feeToken)
+
+IRs:
+TMP_121(bytes32) = SOLIDITY_CALL keccak256()(tokenBuy,amountBuy,tokenSell,amountSell,base,expires,nonce,feeToken)
+RETURN TMP_121"];
+}
+// Function: 7511.sol-R1Exchange-isFeeAccount(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(feeAccounts[fa])
+
+IRs:
+REF_307(bool) -> feeAccounts[fa]
+TMP_216(None) = SOLIDITY_CALL require(bool)(REF_307)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 7511.sol-R1Exchange-isWithdrawEnabled()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(withdrawEnabled)
+
+IRs:
+TMP_215(None) = SOLIDITY_CALL require(bool)(withdrawEnabled)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 7511.sol-R1Exchange-onlyAdmin()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(admins[msg.sender])
+
+IRs:
+REF_306(bool) -> admins[msg.sender]
+TMP_214(None) = SOLIDITY_CALL require(bool)(REF_306)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 7511.sol-R1Exchange-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_212(bool) = msg.sender == owner
+TMP_213(None) = SOLIDITY_CALL require(bool)(TMP_212)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 7511.sol-R1Exchange-refund(address,address[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->16;
+1[label="Node Type: BEGIN_LOOP 1
+"];
+1->4;
+2[label="Node Type: END_LOOP 2
+"];
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+3->1;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+i < tokens.length
+
+IRs:
+REF_296 -> LENGTH tokens
+TMP_201(bool) = i < REF_296
+CONDITION TMP_201"];
+4->5[label="True"];
+4->2[label="False"];
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+token = tokens[i]
+
+IRs:
+REF_297(address) -> tokens[i]
+token(address) := REF_297(address)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+amount = tokenList[token][user]
+
+IRs:
+REF_298(mapping(address => uint256)) -> tokenList[token]
+REF_299(uint256) -> REF_298[user]
+amount(uint256) := REF_299(uint256)"];
+6->7;
+7[label="Node Type: IF 7
+
+EXPRESSION:
+amount > 0
+
+IRs:
+TMP_202(bool) = amount > 0
+CONDITION TMP_202"];
+7->8[label="True"];
+7->14[label="False"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+tokenList[token][user] = 0
+
+IRs:
+REF_300(mapping(address => uint256)) -> tokenList[token]
+REF_301(uint256) -> REF_300[user]
+REF_301(uint256) (->tokenList) := 0(uint256)"];
+8->9;
+9[label="Node Type: IF 9
+
+EXPRESSION:
+token == 0
+
+IRs:
+TMP_203(bool) = token == 0
+CONDITION TMP_203"];
+9->10[label="True"];
+9->11[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+require(bool)(user.send(amount))
+
+IRs:
+TMP_204 = SEND dest:user value:amount
+TMP_205(None) = SOLIDITY_CALL require(bool)(TMP_204)"];
+10->12;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+require(bool)(Token(token).transfer(user,amount))
+
+IRs:
+TMP_206 = CONVERT token to Token
+TMP_207(bool) = HIGH_LEVEL_CALL, dest:TMP_206(Token), function:transfer, arguments:['user', 'amount']  
+TMP_208(None) = SOLIDITY_CALL require(bool)(TMP_207)"];
+11->12;
+12[label="Node Type: END_IF 12
+"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+Withdraw(token,user,amount,tokenList[token][user])
+
+IRs:
+REF_304(mapping(address => uint256)) -> tokenList[token]
+REF_305(uint256) -> REF_304[user]
+Emit Withdraw(token,user,amount,REF_305)"];
+13->14;
+14[label="Node Type: END_IF 14
+"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_210(uint256) := i(uint256)
+i(uint256) = i + 1"];
+15->4;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+onlyAdmin()
+
+IRs:
+MODIFIER_CALL, R1Exchange.onlyAdmin()()"];
+16->3;
+}
+// Function: 7511.sol-R1Exchange-safeAdd(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+z = _x + _y
+
+IRs:
+TMP_24(uint256) = _x + _y
+z(uint256) := TMP_24(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(z >= _x)
+
+IRs:
+TMP_25(bool) = z >= _x
+TMP_26(None) = SOLIDITY_CALL assert(bool)(TMP_25)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 7511.sol-R1Exchange-safeMul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+z = _x * _y
+
+IRs:
+TMP_30(uint256) = _x * _y
+z(uint256) := TMP_30(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(_x == 0 || z / _x == _y)
+
+IRs:
+TMP_31(bool) = _x == 0
+TMP_32(uint256) = z / _x
+TMP_33(bool) = TMP_32 == _y
+TMP_34(bool) = TMP_31 || TMP_33
+TMP_35(None) = SOLIDITY_CALL assert(bool)(TMP_34)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 7511.sol-R1Exchange-safeSub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(_x >= _y)
+
+IRs:
+TMP_27(bool) = _x >= _y
+TMP_28(None) = SOLIDITY_CALL assert(bool)(TMP_27)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+_x - _y
+
+IRs:
+TMP_29(uint256) = _x - _y
+RETURN TMP_29"];
+}
+// Function: 7511.sol-R1Exchange-setAdmin(address,bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(admin != 0)
+
+IRs:
+TMP_37(bool) = admin != 0
+TMP_38(None) = SOLIDITY_CALL require(bool)(TMP_37)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+admins[admin] = isAdmin
+
+IRs:
+REF_0(bool) -> admins[admin]
+REF_0(bool) (->admins) := isAdmin(bool)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 7511.sol-R1Exchange-setFeeAccount(address,bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(acc != 0)
+
+IRs:
+TMP_40(bool) = acc != 0
+TMP_41(None) = SOLIDITY_CALL require(bool)(TMP_40)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+feeAccounts[acc] = asFee
+
+IRs:
+REF_1(bool) -> feeAccounts[acc]
+REF_1(bool) (->feeAccounts) := asFee(bool)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 7511.sol-R1Exchange-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+withdrawEnabled = false
+
+IRs:
+withdrawEnabled(bool) := False(bool)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+applyWait = 604800
+
+IRs:
+applyWait(uint256) := 604800(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+feeRate = 1
+
+IRs:
+feeRate(uint256) := 1(uint256)"];
+}
+// Function: 7511.sol-R1Exchange-trade(address[11],uint256[11],uint8[2],bytes32[2],bytes32[2])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->12;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+makerOrder = Order({tokenBuy:addresses[0],tokenSell:addresses[2],user:addresses[4],amountBuy:values[0],amountSell:values[2],fee:values[4],expires:values[6],nonce:values[8],orderHash:0,baseToken:addresses[6],feeToken:addresses[8]})
+
+IRs:
+REF_102(address) -> addresses[0]
+REF_103(address) -> addresses[2]
+REF_104(address) -> addresses[4]
+REF_105(uint256) -> values[0]
+REF_106(uint256) -> values[2]
+REF_107(uint256) -> values[4]
+REF_108(uint256) -> values[6]
+REF_109(uint256) -> values[8]
+REF_110(address) -> addresses[6]
+REF_111(address) -> addresses[8]
+TMP_122(R1Exchange.Order) = new Order(REF_102,REF_103,REF_105,REF_106,REF_104,REF_107,REF_108,REF_109,0,REF_110,REF_111)
+makerOrder(R1Exchange.Order) := TMP_122(R1Exchange.Order)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+takerOrder = Order({tokenBuy:addresses[1],tokenSell:addresses[3],user:addresses[5],amountBuy:values[1],amountSell:values[3],fee:values[5],expires:values[7],nonce:values[9],orderHash:0,baseToken:addresses[7],feeToken:addresses[9]})
+
+IRs:
+REF_112(address) -> addresses[1]
+REF_113(address) -> addresses[3]
+REF_114(address) -> addresses[5]
+REF_115(uint256) -> values[1]
+REF_116(uint256) -> values[3]
+REF_117(uint256) -> values[5]
+REF_118(uint256) -> values[7]
+REF_119(uint256) -> values[9]
+REF_120(address) -> addresses[7]
+REF_121(address) -> addresses[9]
+TMP_123(R1Exchange.Order) = new Order(REF_112,REF_113,REF_115,REF_116,REF_114,REF_117,REF_118,REF_119,0,REF_120,REF_121)
+takerOrder(R1Exchange.Order) := TMP_123(R1Exchange.Order)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+tradeAmount = values[10]
+
+IRs:
+REF_122(uint256) -> values[10]
+tradeAmount(uint256) := REF_122(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool)(makerOrder.expires >= block.number && takerOrder.expires >= block.number)
+
+IRs:
+REF_123(uint256) -> makerOrder.expires
+TMP_124(bool) = REF_123 >= block.number
+REF_124(uint256) -> takerOrder.expires
+TMP_125(bool) = REF_124 >= block.number
+TMP_126(bool) = TMP_124 && TMP_125
+TMP_127(None) = SOLIDITY_CALL require(bool)(TMP_126)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool)(makerOrder.baseToken == takerOrder.baseToken && makerOrder.tokenBuy == takerOrder.tokenSell && makerOrder.tokenSell == takerOrder.tokenBuy)
+
+IRs:
+REF_125(address) -> makerOrder.baseToken
+REF_126(address) -> takerOrder.baseToken
+TMP_128(bool) = REF_125 == REF_126
+REF_127(address) -> makerOrder.tokenBuy
+REF_128(address) -> takerOrder.tokenSell
+TMP_129(bool) = REF_127 == REF_128
+TMP_130(bool) = TMP_128 && TMP_129
+REF_129(address) -> makerOrder.tokenSell
+REF_130(address) -> takerOrder.tokenBuy
+TMP_131(bool) = REF_129 == REF_130
+TMP_132(bool) = TMP_130 && TMP_131
+TMP_133(None) = SOLIDITY_CALL require(bool)(TMP_132)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+require(bool)(takerOrder.baseToken == takerOrder.tokenBuy || takerOrder.baseToken == takerOrder.tokenSell)
+
+IRs:
+REF_131(address) -> takerOrder.baseToken
+REF_132(address) -> takerOrder.tokenBuy
+TMP_134(bool) = REF_131 == REF_132
+REF_133(address) -> takerOrder.baseToken
+REF_134(address) -> takerOrder.tokenSell
+TMP_135(bool) = REF_133 == REF_134
+TMP_136(bool) = TMP_134 || TMP_135
+TMP_137(None) = SOLIDITY_CALL require(bool)(TMP_136)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+makerOrder.orderHash = getOrderHash(makerOrder.tokenBuy,makerOrder.amountBuy,makerOrder.tokenSell,makerOrder.amountSell,makerOrder.baseToken,makerOrder.expires,makerOrder.nonce,makerOrder.feeToken)
+
+IRs:
+REF_135(bytes32) -> makerOrder.orderHash
+REF_136(address) -> makerOrder.tokenBuy
+REF_137(uint256) -> makerOrder.amountBuy
+REF_138(address) -> makerOrder.tokenSell
+REF_139(uint256) -> makerOrder.amountSell
+REF_140(address) -> makerOrder.baseToken
+REF_141(uint256) -> makerOrder.expires
+REF_142(uint256) -> makerOrder.nonce
+REF_143(address) -> makerOrder.feeToken
+TMP_138(bytes32) = INTERNAL_CALL, R1Exchange.getOrderHash(address,uint256,address,uint256,address,uint256,uint256,address)(REF_136,REF_137,REF_138,REF_139,REF_140,REF_141,REF_142,REF_143)
+REF_135(bytes32) (->makerOrder) := TMP_138(bytes32)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+takerOrder.orderHash = getOrderHash(takerOrder.tokenBuy,takerOrder.amountBuy,takerOrder.tokenSell,takerOrder.amountSell,takerOrder.baseToken,takerOrder.expires,takerOrder.nonce,takerOrder.feeToken)
+
+IRs:
+REF_144(bytes32) -> takerOrder.orderHash
+REF_145(address) -> takerOrder.tokenBuy
+REF_146(uint256) -> takerOrder.amountBuy
+REF_147(address) -> takerOrder.tokenSell
+REF_148(uint256) -> takerOrder.amountSell
+REF_149(address) -> takerOrder.baseToken
+REF_150(uint256) -> takerOrder.expires
+REF_151(uint256) -> takerOrder.nonce
+REF_152(address) -> takerOrder.feeToken
+TMP_139(bytes32) = INTERNAL_CALL, R1Exchange.getOrderHash(address,uint256,address,uint256,address,uint256,uint256,address)(REF_145,REF_146,REF_147,REF_148,REF_149,REF_150,REF_151,REF_152)
+REF_144(bytes32) (->takerOrder) := TMP_139(bytes32)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+require(bool)(ecrecover(bytes32,uint8,bytes32,bytes32)(keccak256()(Ethereum Signed Message:
+32,makerOrder.orderHash),v[0],r[0],s[0]) == makerOrder.user)
+
+IRs:
+REF_153(bytes32) -> makerOrder.orderHash
+TMP_140(bytes32) = SOLIDITY_CALL keccak256()(Ethereum Signed Message:
+32,REF_153)
+REF_154(uint8) -> v[0]
+REF_155(bytes32) -> r[0]
+REF_156(bytes32) -> s[0]
+TMP_141(address) = SOLIDITY_CALL ecrecover(bytes32,uint8,bytes32,bytes32)(TMP_140,REF_154,REF_155,REF_156)
+REF_157(address) -> makerOrder.user
+TMP_142(bool) = TMP_141 == REF_157
+TMP_143(None) = SOLIDITY_CALL require(bool)(TMP_142)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+require(bool)(ecrecover(bytes32,uint8,bytes32,bytes32)(keccak256()(Ethereum Signed Message:
+32,takerOrder.orderHash),v[1],r[1],s[1]) == takerOrder.user)
+
+IRs:
+REF_158(bytes32) -> takerOrder.orderHash
+TMP_144(bytes32) = SOLIDITY_CALL keccak256()(Ethereum Signed Message:
+32,REF_158)
+REF_159(uint8) -> v[1]
+REF_160(bytes32) -> r[1]
+REF_161(bytes32) -> s[1]
+TMP_145(address) = SOLIDITY_CALL ecrecover(bytes32,uint8,bytes32,bytes32)(TMP_144,REF_159,REF_160,REF_161)
+REF_162(address) -> takerOrder.user
+TMP_146(bool) = TMP_145 == REF_162
+TMP_147(None) = SOLIDITY_CALL require(bool)(TMP_146)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+balance(makerOrder,takerOrder,addresses[10],tradeAmount)
+
+IRs:
+REF_163(address) -> addresses[10]
+INTERNAL_CALL, R1Exchange.balance(R1Exchange.Order,R1Exchange.Order,address,uint256)(makerOrder,takerOrder,REF_163,tradeAmount)"];
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+onlyAdmin()
+
+IRs:
+MODIFIER_CALL, R1Exchange.onlyAdmin()()"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+isFeeAccount(addresses[10])
+
+IRs:
+REF_164(address) -> addresses[10]
+MODIFIER_CALL, R1Exchange.isFeeAccount(address)(REF_164)"];
+13->1;
+}
+// Function: 7511.sol-R1Exchange-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newOwner != address(0))
+
+IRs:
+TMP_19 = CONVERT 0 to address
+TMP_20(bool) = newOwner != TMP_19
+TMP_21(None) = SOLIDITY_CALL require(bool)(TMP_20)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->1;
+}
+// Function: 7511.sol-R1Exchange-withdraw(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(amount <= tokenList[token][msg.sender])
+
+IRs:
+REF_35(mapping(address => uint256)) -> tokenList[token]
+REF_36(uint256) -> REF_35[msg.sender]
+TMP_66(bool) = amount <= REF_36
+TMP_67(None) = SOLIDITY_CALL require(bool)(TMP_66)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+amount > withdrawAllowance[token][msg.sender]
+
+IRs:
+REF_37(mapping(address => uint256)) -> withdrawAllowance[token]
+REF_38(uint256) -> REF_37[msg.sender]
+TMP_68(bool) = amount > REF_38
+CONDITION TMP_68"];
+2->3[label="True"];
+2->6[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(latestApply[token][msg.sender] != 0 && safeSub(block.timestamp,latestApply[token][msg.sender]) > applyWait)
+
+IRs:
+REF_39(mapping(address => uint256)) -> latestApply[token]
+REF_40(uint256) -> REF_39[msg.sender]
+TMP_69(bool) = REF_40 != 0
+REF_41(mapping(address => uint256)) -> latestApply[token]
+REF_42(uint256) -> REF_41[msg.sender]
+TMP_70(uint256) = INTERNAL_CALL, SafeMath.safeSub(uint256,uint256)(block.timestamp,REF_42)
+TMP_71(bool) = TMP_70 > applyWait
+TMP_72(bool) = TMP_69 && TMP_71
+TMP_73(None) = SOLIDITY_CALL require(bool)(TMP_72)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+withdrawAllowance[token][msg.sender] = safeAdd(withdrawAllowance[token][msg.sender],applyList[token][msg.sender])
+
+IRs:
+REF_43(mapping(address => uint256)) -> withdrawAllowance[token]
+REF_44(uint256) -> REF_43[msg.sender]
+REF_45(mapping(address => uint256)) -> withdrawAllowance[token]
+REF_46(uint256) -> REF_45[msg.sender]
+REF_47(mapping(address => uint256)) -> applyList[token]
+REF_48(uint256) -> REF_47[msg.sender]
+TMP_74(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(REF_46,REF_48)
+REF_44(uint256) (->withdrawAllowance) := TMP_74(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+applyList[token][msg.sender] = 0
+
+IRs:
+REF_49(mapping(address => uint256)) -> applyList[token]
+REF_50(uint256) -> REF_49[msg.sender]
+REF_50(uint256) (->applyList) := 0(uint256)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+require(bool)(amount <= withdrawAllowance[token][msg.sender])
+
+IRs:
+REF_51(mapping(address => uint256)) -> withdrawAllowance[token]
+REF_52(uint256) -> REF_51[msg.sender]
+TMP_75(bool) = amount <= REF_52
+TMP_76(None) = SOLIDITY_CALL require(bool)(TMP_75)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+withdrawAllowance[token][msg.sender] = safeSub(withdrawAllowance[token][msg.sender],amount)
+
+IRs:
+REF_53(mapping(address => uint256)) -> withdrawAllowance[token]
+REF_54(uint256) -> REF_53[msg.sender]
+REF_55(mapping(address => uint256)) -> withdrawAllowance[token]
+REF_56(uint256) -> REF_55[msg.sender]
+TMP_77(uint256) = INTERNAL_CALL, SafeMath.safeSub(uint256,uint256)(REF_56,amount)
+REF_54(uint256) (->withdrawAllowance) := TMP_77(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+tokenList[token][msg.sender] = safeSub(tokenList[token][msg.sender],amount)
+
+IRs:
+REF_57(mapping(address => uint256)) -> tokenList[token]
+REF_58(uint256) -> REF_57[msg.sender]
+REF_59(mapping(address => uint256)) -> tokenList[token]
+REF_60(uint256) -> REF_59[msg.sender]
+TMP_78(uint256) = INTERNAL_CALL, SafeMath.safeSub(uint256,uint256)(REF_60,amount)
+REF_58(uint256) (->tokenList) := TMP_78(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+latestApply[token][msg.sender] = 0
+
+IRs:
+REF_61(mapping(address => uint256)) -> latestApply[token]
+REF_62(uint256) -> REF_61[msg.sender]
+REF_62(uint256) (->latestApply) := 0(uint256)"];
+10->11;
+11[label="Node Type: IF 11
+
+EXPRESSION:
+token == 0
+
+IRs:
+TMP_79(bool) = token == 0
+CONDITION TMP_79"];
+11->12[label="True"];
+11->13[label="False"];
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+require(bool)(msg.sender.send(amount))
+
+IRs:
+TMP_80 = SEND dest:msg.sender value:amount
+TMP_81(None) = SOLIDITY_CALL require(bool)(TMP_80)"];
+12->14;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+require(bool)(Token(token).transfer(msg.sender,amount))
+
+IRs:
+TMP_82 = CONVERT token to Token
+TMP_83(bool) = HIGH_LEVEL_CALL, dest:TMP_82(Token), function:transfer, arguments:['msg.sender', 'amount']  
+TMP_84(None) = SOLIDITY_CALL require(bool)(TMP_83)"];
+13->14;
+14[label="Node Type: END_IF 14
+"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+Withdraw(token,msg.sender,amount,tokenList[token][msg.sender])
+
+IRs:
+REF_65(mapping(address => uint256)) -> tokenList[token]
+REF_66(uint256) -> REF_65[msg.sender]
+Emit Withdraw(token,msg.sender,amount,REF_66)"];
+}
+// Function: 7511.sol-R1Exchange-withdrawNoLimit(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->8;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(amount <= tokenList[token][msg.sender])
+
+IRs:
+REF_67(mapping(address => uint256)) -> tokenList[token]
+REF_68(uint256) -> REF_67[msg.sender]
+TMP_86(bool) = amount <= REF_68
+TMP_87(None) = SOLIDITY_CALL require(bool)(TMP_86)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+tokenList[token][msg.sender] = safeSub(tokenList[token][msg.sender],amount)
+
+IRs:
+REF_69(mapping(address => uint256)) -> tokenList[token]
+REF_70(uint256) -> REF_69[msg.sender]
+REF_71(mapping(address => uint256)) -> tokenList[token]
+REF_72(uint256) -> REF_71[msg.sender]
+TMP_88(uint256) = INTERNAL_CALL, SafeMath.safeSub(uint256,uint256)(REF_72,amount)
+REF_70(uint256) (->tokenList) := TMP_88(uint256)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+token == 0
+
+IRs:
+TMP_89(bool) = token == 0
+CONDITION TMP_89"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool)(msg.sender.send(amount))
+
+IRs:
+TMP_90 = SEND dest:msg.sender value:amount
+TMP_91(None) = SOLIDITY_CALL require(bool)(TMP_90)"];
+4->6;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool)(Token(token).transfer(msg.sender,amount))
+
+IRs:
+TMP_92 = CONVERT token to Token
+TMP_93(bool) = HIGH_LEVEL_CALL, dest:TMP_92(Token), function:transfer, arguments:['msg.sender', 'amount']  
+TMP_94(None) = SOLIDITY_CALL require(bool)(TMP_93)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+Withdraw(token,msg.sender,amount,tokenList[token][msg.sender])
+
+IRs:
+REF_75(mapping(address => uint256)) -> tokenList[token]
+REF_76(uint256) -> REF_75[msg.sender]
+Emit Withdraw(token,msg.sender,amount,REF_76)"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+isWithdrawEnabled()
+
+IRs:
+MODIFIER_CALL, R1Exchange.isWithdrawEnabled()()"];
+8->1;
+}
+// Function: 7511.sol-SafeMath-safeAdd(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+z = _x + _y
+
+IRs:
+TMP_0(uint256) = _x + _y
+z(uint256) := TMP_0(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(z >= _x)
+
+IRs:
+TMP_1(bool) = z >= _x
+TMP_2(None) = SOLIDITY_CALL assert(bool)(TMP_1)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 7511.sol-SafeMath-safeMul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+z = _x * _y
+
+IRs:
+TMP_6(uint256) = _x * _y
+z(uint256) := TMP_6(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(_x == 0 || z / _x == _y)
+
+IRs:
+TMP_7(bool) = _x == 0
+TMP_8(uint256) = z / _x
+TMP_9(bool) = TMP_8 == _y
+TMP_10(bool) = TMP_7 || TMP_9
+TMP_11(None) = SOLIDITY_CALL assert(bool)(TMP_10)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 7511.sol-SafeMath-safeSub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(_x >= _y)
+
+IRs:
+TMP_3(bool) = _x >= _y
+TMP_4(None) = SOLIDITY_CALL assert(bool)(TMP_3)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+_x - _y
+
+IRs:
+TMP_5(uint256) = _x - _y
+RETURN TMP_5"];
+}
+// Function: 7511.sol-Token-allowance(address,address)
+digraph{
+}
+// Function: 7511.sol-Token-approve(address,uint256)
+digraph{
+}
+// Function: 7511.sol-Token-balanceOf(address)
+digraph{
+}
+// Function: 7511.sol-Token-transfer(address,uint256)
+digraph{
+}
+// Function: 7511.sol-Token-transferFrom(address,address,uint256)
+digraph{
+}
+}

@@ -1,0 +1,2433 @@
+digraph G {
+// Function: 524.sol-BasicToken-balanceOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+wallets[_owner].tokensAmount
+
+IRs:
+REF_12(BasicToken.WalletData) -> wallets[_owner]
+REF_13(uint256) -> REF_12.tokensAmount
+RETURN REF_13"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+balance
+
+IRs:
+RETURN balance"];
+}
+// Function: 524.sol-BasicToken-checkIfCanUseTokens(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+unfreezedAmount = wallets[_owner].tokensAmount - wallets[_owner].freezedAmount
+
+IRs:
+REF_14(BasicToken.WalletData) -> wallets[_owner]
+REF_15(uint256) -> REF_14.tokensAmount
+REF_16(BasicToken.WalletData) -> wallets[_owner]
+REF_17(uint256) -> REF_16.freezedAmount
+TMP_24(uint256) = REF_15 - REF_17
+unfreezedAmount(uint256) := TMP_24(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+_amount <= unfreezedAmount
+
+IRs:
+TMP_25(bool) = _amount <= unfreezedAmount
+RETURN TMP_25"];
+}
+// Function: 524.sol-BasicToken-notSender(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender != _owner)
+
+IRs:
+TMP_26(bool) = msg.sender != _owner
+TMP_27(None) = SOLIDITY_CALL require(bool)(TMP_26)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 524.sol-BasicToken-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->7;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_to != address(0) && wallets[msg.sender].tokensAmount >= _value && checkIfCanUseTokens(msg.sender,_value))
+
+IRs:
+TMP_13 = CONVERT 0 to address
+TMP_14(bool) = _to != TMP_13
+REF_0(BasicToken.WalletData) -> wallets[msg.sender]
+REF_1(uint256) -> REF_0.tokensAmount
+TMP_15(bool) = REF_1 >= _value
+TMP_16(bool) = TMP_14 && TMP_15
+TMP_17(bool) = INTERNAL_CALL, BasicToken.checkIfCanUseTokens(address,uint256)(msg.sender,_value)
+TMP_18(bool) = TMP_16 && TMP_17
+TMP_19(None) = SOLIDITY_CALL require(bool)(TMP_18)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+amount = wallets[msg.sender].tokensAmount.sub(_value)
+
+IRs:
+REF_2(BasicToken.WalletData) -> wallets[msg.sender]
+REF_3(uint256) -> REF_2.tokensAmount
+TMP_20(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_3', '_value'] 
+amount(uint256) := TMP_20(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+wallets[msg.sender].tokensAmount = amount
+
+IRs:
+REF_5(BasicToken.WalletData) -> wallets[msg.sender]
+REF_6(uint256) -> REF_5.tokensAmount
+REF_6(uint256) (->wallets) := amount(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+wallets[_to].tokensAmount = wallets[_to].tokensAmount.add(_value)
+
+IRs:
+REF_7(BasicToken.WalletData) -> wallets[_to]
+REF_8(uint256) -> REF_7.tokensAmount
+REF_9(BasicToken.WalletData) -> wallets[_to]
+REF_10(uint256) -> REF_9.tokensAmount
+TMP_21(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_10', '_value'] 
+REF_8(uint256) (->wallets) := TMP_21(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Transfer(msg.sender,_to,_value)
+
+IRs:
+Emit Transfer(msg.sender,_to,_value)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+notSender(_to)
+
+IRs:
+MODIFIER_CALL, BasicToken.notSender(address)(_to)"];
+7->1;
+}
+// Function: 524.sol-CryptosoulToken-allowMinting()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! canMint && now >= nextMintPossibleDate)
+
+IRs:
+TMP_239 = UnaryType.BANG canMint 
+TMP_240(bool) = now >= nextMintPossibleDate
+TMP_241(bool) = TMP_239 && TMP_240
+TMP_242(None) = SOLIDITY_CALL require(bool)(TMP_241)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+nextMintPossibleDate = now
+
+IRs:
+nextMintPossibleDate(uint256) := now(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+canMint = true
+
+IRs:
+canMint(bool) := True(bool)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+AllowMinting()
+
+IRs:
+Emit AllowMinting()"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+5->1;
+}
+// Function: 524.sol-CryptosoulToken-allowance(address,address)
+digraph{
+}
+// Function: 524.sol-CryptosoulToken-approve(address,uint256)
+digraph{
+}
+// Function: 524.sol-CryptosoulToken-balanceOf(address)
+digraph{
+}
+// Function: 524.sol-CryptosoulToken-burn(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(checkIfCanUseTokens(owner,value) && wallets[owner].tokensAmount >= value)
+
+IRs:
+TMP_256(bool) = INTERNAL_CALL, BasicToken.checkIfCanUseTokens(address,uint256)(owner,value)
+REF_328(BasicToken.WalletData) -> wallets[owner]
+REF_329(uint256) -> REF_328.tokensAmount
+TMP_257(bool) = REF_329 >= value
+TMP_258(bool) = TMP_256 && TMP_257
+TMP_259(None) = SOLIDITY_CALL require(bool)(TMP_258)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+wallets[owner].tokensAmount = wallets[owner].tokensAmount.sub(value)
+
+IRs:
+REF_330(BasicToken.WalletData) -> wallets[owner]
+REF_331(uint256) -> REF_330.tokensAmount
+REF_332(BasicToken.WalletData) -> wallets[owner]
+REF_333(uint256) -> REF_332.tokensAmount
+TMP_260(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_333', 'value'] 
+REF_331(uint256) (->wallets) := TMP_260(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+totalSupply = totalSupply.sub(value)
+
+IRs:
+TMP_261(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['totalSupply', 'value'] 
+totalSupply(uint256) := TMP_261(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Burn(owner,value)
+
+IRs:
+Emit Burn(owner,value)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+6->1;
+}
+// Function: 524.sol-CryptosoulToken-checkIfCanUseTokens(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+unfreezedAmount = wallets[_owner].tokensAmount - wallets[_owner].freezedAmount
+
+IRs:
+REF_313(BasicToken.WalletData) -> wallets[_owner]
+REF_314(uint256) -> REF_313.tokensAmount
+REF_315(BasicToken.WalletData) -> wallets[_owner]
+REF_316(uint256) -> REF_315.freezedAmount
+TMP_236(uint256) = REF_314 - REF_316
+unfreezedAmount(uint256) := TMP_236(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+_amount <= unfreezedAmount
+
+IRs:
+TMP_237(bool) = _amount <= unfreezedAmount
+RETURN TMP_237"];
+}
+// Function: 524.sol-CryptosoulToken-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+wallets[owner].tokensAmount = START_TOKENS
+
+IRs:
+REF_317(BasicToken.WalletData) -> wallets[owner]
+REF_318(uint256) -> REF_317.tokensAmount
+REF_318(uint256) (->wallets) := START_TOKENS(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+wallets[owner].canFreezeTokens = true
+
+IRs:
+REF_319(BasicToken.WalletData) -> wallets[owner]
+REF_320(bool) -> REF_319.canFreezeTokens
+REF_320(bool) (->wallets) := True(bool)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+totalSupply = START_TOKENS
+
+IRs:
+totalSupply(uint256) := START_TOKENS(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+nextMintPossibleDate = 1538352000
+
+IRs:
+nextMintPossibleDate(uint256) := 1538352000(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Mint(owner,START_TOKENS)
+
+IRs:
+Emit Mint(owner,START_TOKENS)"];
+}
+// Function: 524.sol-CryptosoulToken-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_271(None) = SOLIDITY_CALL revert()()"];
+}
+// Function: 524.sol-CryptosoulToken-freezeAllowance(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+wallets[_owner].canFreezeTokens
+
+IRs:
+REF_248(BasicToken.WalletData) -> wallets[_owner]
+REF_249(bool) -> REF_248.canFreezeTokens
+RETURN REF_249"];
+}
+// Function: 524.sol-CryptosoulToken-freezeTokens(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(wallets[msg.sender].freezedAmount == 0 && wallets[msg.sender].tokensAmount >= _amount)
+
+IRs:
+REF_250(BasicToken.WalletData) -> wallets[msg.sender]
+REF_251(uint256) -> REF_250.freezedAmount
+TMP_199(bool) = REF_251 == 0
+REF_252(BasicToken.WalletData) -> wallets[msg.sender]
+REF_253(uint256) -> REF_252.tokensAmount
+TMP_200(bool) = REF_253 >= _amount
+TMP_201(bool) = TMP_199 && TMP_200
+TMP_202(None) = SOLIDITY_CALL require(bool)(TMP_201)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+wallets[msg.sender].freezedAmount = _amount
+
+IRs:
+REF_254(BasicToken.WalletData) -> wallets[msg.sender]
+REF_255(uint256) -> REF_254.freezedAmount
+REF_255(uint256) (->wallets) := _amount(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+wallets[msg.sender].unfreezeDate = _unfreezeDate
+
+IRs:
+REF_256(BasicToken.WalletData) -> wallets[msg.sender]
+REF_257(uint256) -> REF_256.unfreezeDate
+REF_257(uint256) (->wallets) := _unfreezeDate(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+FreezeTokens(msg.sender,_amount)
+
+IRs:
+Emit FreezeTokens(msg.sender,_amount)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+isFreezeAllowed()
+
+IRs:
+MODIFIER_CALL, FreezableToken.isFreezeAllowed()()"];
+6->1;
+}
+// Function: 524.sol-CryptosoulToken-getUnfreezedTokens(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+wallets[_owner].tokensAmount - wallets[_owner].freezedAmount
+
+IRs:
+REF_272(BasicToken.WalletData) -> wallets[_owner]
+REF_273(uint256) -> REF_272.tokensAmount
+REF_274(BasicToken.WalletData) -> wallets[_owner]
+REF_275(uint256) -> REF_274.freezedAmount
+TMP_210(uint256) = REF_273 - REF_275
+RETURN TMP_210"];
+}
+// Function: 524.sol-CryptosoulToken-giveFreezePermission(address[],bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->9;
+1[label="Node Type: BEGIN_LOOP 1
+"];
+1->4;
+2[label="Node Type: END_LOOP 2
+"];
+2->8;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+3->1;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+i < _owners.length
+
+IRs:
+REF_243 -> LENGTH _owners
+TMP_195(bool) = i < REF_243
+CONDITION TMP_195"];
+4->5[label="True"];
+4->2[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+wallets[_owners[i]].canFreezeTokens = _permission
+
+IRs:
+REF_244(address) -> _owners[i]
+REF_245(BasicToken.WalletData) -> wallets[REF_244]
+REF_246(bool) -> REF_245.canFreezeTokens
+REF_246(bool) (->wallets) := _permission(bool)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+ChangeFreezePermission(_owners[i],_permission)
+
+IRs:
+REF_247(address) -> _owners[i]
+Emit ChangeFreezePermission(REF_247,_permission)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_197(uint256) := i(uint256)
+i(uint256) = i + 1"];
+7->4;
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+9->3;
+}
+// Function: 524.sol-CryptosoulToken-isFreezeAllowed()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(freezeAllowance(msg.sender))
+
+IRs:
+TMP_278(bool) = INTERNAL_CALL, FreezableToken.freezeAllowance(address)(msg.sender)
+TMP_279(None) = SOLIDITY_CALL require(bool)(TMP_278)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 524.sol-CryptosoulToken-massApprove(address[],uint256[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: BEGIN_LOOP 1
+"];
+1->4;
+2[label="Node Type: END_LOOP 2
+"];
+2->7;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+3->1;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+i < _spenders.length
+
+IRs:
+REF_228 -> LENGTH _spenders
+TMP_180(bool) = i < REF_228
+CONDITION TMP_180"];
+4->5[label="True"];
+4->2[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+approve(_spenders[i],_values[i])
+
+IRs:
+REF_229(address) -> _spenders[i]
+REF_230(uint256) -> _values[i]
+TMP_181(bool) = INTERNAL_CALL, StandartToken.approve(address,uint256)(REF_229,REF_230)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_182(uint256) := i(uint256)
+i(uint256) = i + 1"];
+6->4;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+succes
+
+IRs:
+RETURN succes"];
+}
+// Function: 524.sol-CryptosoulToken-massTransfer(address[],uint256[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->8;
+1[label="Node Type: BEGIN_LOOP 1
+"];
+1->4;
+2[label="Node Type: END_LOOP 2
+"];
+2->7;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+3->1;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+i < _addresses.length
+
+IRs:
+REF_225 -> LENGTH _addresses
+TMP_176(bool) = i < REF_225
+CONDITION TMP_176"];
+4->5[label="True"];
+4->2[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+transferFromOwner(_addresses[i],_values[i])
+
+IRs:
+REF_226(address) -> _addresses[i]
+REF_227(uint256) -> _values[i]
+INTERNAL_CALL, MultisendableToken.transferFromOwner(address,uint256)(REF_226,REF_227)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_178(uint256) := i(uint256)
+i(uint256) = i + 1"];
+6->4;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+8->3;
+}
+// Function: 524.sol-CryptosoulToken-mint()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->7;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(canMint && now >= nextMintPossibleDate && totalSupply + MINT_AMOUNT <= MAX_BALANCE_VALUE)
+
+IRs:
+TMP_245(bool) = now >= nextMintPossibleDate
+TMP_246(bool) = canMint && TMP_245
+TMP_247(uint256) = totalSupply + MINT_AMOUNT
+TMP_248(bool) = TMP_247 <= MAX_BALANCE_VALUE
+TMP_249(bool) = TMP_246 && TMP_248
+TMP_250(None) = SOLIDITY_CALL require(bool)(TMP_249)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+nextMintPossibleDate = nextMintPossibleDate.add(MINT_INTERVAL)
+
+IRs:
+TMP_251(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['nextMintPossibleDate', 'MINT_INTERVAL'] 
+nextMintPossibleDate(uint256) := TMP_251(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+wallets[owner].tokensAmount = wallets[owner].tokensAmount.add(MINT_AMOUNT)
+
+IRs:
+REF_322(BasicToken.WalletData) -> wallets[owner]
+REF_323(uint256) -> REF_322.tokensAmount
+REF_324(BasicToken.WalletData) -> wallets[owner]
+REF_325(uint256) -> REF_324.tokensAmount
+TMP_252(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_325', 'MINT_AMOUNT'] 
+REF_323(uint256) (->wallets) := TMP_252(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+totalSupply = totalSupply.add(MINT_AMOUNT)
+
+IRs:
+TMP_253(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['totalSupply', 'MINT_AMOUNT'] 
+totalSupply(uint256) := TMP_253(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Mint(owner,MINT_AMOUNT)
+
+IRs:
+Emit Mint(owner,MINT_AMOUNT)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+7->1;
+}
+// Function: 524.sol-CryptosoulToken-notSender(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender != _owner)
+
+IRs:
+TMP_282(bool) = msg.sender != _owner
+TMP_283(None) = SOLIDITY_CALL require(bool)(TMP_282)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 524.sol-CryptosoulToken-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_280(bool) = msg.sender == owner
+TMP_281(None) = SOLIDITY_CALL require(bool)(TMP_280)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 524.sol-CryptosoulToken-showFreezedTokensAmount(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+wallets[_owner].freezedAmount
+
+IRs:
+REF_258(BasicToken.WalletData) -> wallets[_owner]
+REF_259(uint256) -> REF_258.freezedAmount
+RETURN REF_259"];
+}
+// Function: 524.sol-CryptosoulToken-showTokensUnfreezeDate(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+wallets[_owner].unfreezeDate
+
+IRs:
+REF_270(BasicToken.WalletData) -> wallets[_owner]
+REF_271(uint256) -> REF_270.unfreezeDate
+RETURN REF_271"];
+}
+// Function: 524.sol-CryptosoulToken-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+name = CryptoSoul
+
+IRs:
+name(string) := CryptoSoul(string)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+symbol = SOUL
+
+IRs:
+symbol(string) := SOUL(string)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+decimals = 18
+
+IRs:
+decimals(uint256) := 18(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+START_TOKENS = 500000000 * 10 ** decimals
+
+IRs:
+TMP_272(uint256) = 10 ** decimals
+TMP_273(uint256) = 500000000 * TMP_272
+START_TOKENS(uint256) := TMP_273(uint256)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+MINT_AMOUNT = 1370000 * 10 ** decimals
+
+IRs:
+TMP_274(uint256) = 10 ** decimals
+TMP_275(uint256) = 1370000 * TMP_274
+MINT_AMOUNT(uint256) := TMP_275(uint256)"];
+4->5;
+5[label="Node Type: OTHER_ENTRYPOINT 5
+
+EXPRESSION:
+MINT_INTERVAL = 86400
+
+IRs:
+MINT_INTERVAL(uint256) := 86400(uint256)"];
+5->6;
+6[label="Node Type: OTHER_ENTRYPOINT 6
+
+EXPRESSION:
+MAX_BALANCE_VALUE = 10000000000 * 10 ** decimals
+
+IRs:
+TMP_276(uint256) = 10 ** decimals
+TMP_277(uint256) = 10000000000 * TMP_276
+MAX_BALANCE_VALUE(uint256) := TMP_277(uint256)"];
+}
+// Function: 524.sol-CryptosoulToken-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+owner = 0x0
+
+IRs:
+owner(address) := 0(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+masterKey = 0x4977A392d8D207B49c7fDE8A6B91C23bCebE7291
+
+IRs:
+masterKey(address) := 419424364220801662516286185410478754278638776977(address)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+nextMintPossibleDate = 0
+
+IRs:
+nextMintPossibleDate(uint256) := 0(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+canMint = false
+
+IRs:
+canMint(bool) := False(bool)"];
+}
+// Function: 524.sol-CryptosoulToken-transfer(address,uint256)
+digraph{
+}
+// Function: 524.sol-CryptosoulToken-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 524.sol-CryptosoulToken-transferFromOwner(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_to != address(0) && wallets[owner].tokensAmount >= _value && checkIfCanUseTokens(owner,_value))
+
+IRs:
+TMP_183 = CONVERT 0 to address
+TMP_184(bool) = _to != TMP_183
+REF_231(BasicToken.WalletData) -> wallets[owner]
+REF_232(uint256) -> REF_231.tokensAmount
+TMP_185(bool) = REF_232 >= _value
+TMP_186(bool) = TMP_184 && TMP_185
+TMP_187(bool) = INTERNAL_CALL, BasicToken.checkIfCanUseTokens(address,uint256)(owner,_value)
+TMP_188(bool) = TMP_186 && TMP_187
+TMP_189(None) = SOLIDITY_CALL require(bool)(TMP_188)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+wallets[owner].tokensAmount = wallets[owner].tokensAmount.sub(_value)
+
+IRs:
+REF_233(BasicToken.WalletData) -> wallets[owner]
+REF_234(uint256) -> REF_233.tokensAmount
+REF_235(BasicToken.WalletData) -> wallets[owner]
+REF_236(uint256) -> REF_235.tokensAmount
+TMP_190(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_236', '_value'] 
+REF_234(uint256) (->wallets) := TMP_190(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+wallets[_to].tokensAmount = wallets[_to].tokensAmount.add(_value)
+
+IRs:
+REF_238(BasicToken.WalletData) -> wallets[_to]
+REF_239(uint256) -> REF_238.tokensAmount
+REF_240(BasicToken.WalletData) -> wallets[_to]
+REF_241(uint256) -> REF_240.tokensAmount
+TMP_191(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_241', '_value'] 
+REF_239(uint256) (->wallets) := TMP_191(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Transfer(owner,_to,_value)
+
+IRs:
+Emit Transfer(owner,_to,_value)"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+notSender(_to)
+
+IRs:
+MODIFIER_CALL, BasicToken.notSender(address)(_to)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+6->1;
+}
+// Function: 524.sol-CryptosoulToken-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == masterKey && _newOwner != address(0))
+
+IRs:
+TMP_264(bool) = msg.sender == masterKey
+TMP_265 = CONVERT 0 to address
+TMP_266(bool) = _newOwner != TMP_265
+TMP_267(bool) = TMP_264 && TMP_266
+TMP_268(None) = SOLIDITY_CALL require(bool)(TMP_267)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+TransferOwnership(owner,_newOwner)
+
+IRs:
+Emit TransferOwnership(owner,_newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = _newOwner
+
+IRs:
+owner(address) := _newOwner(address)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+notSender(_newOwner)
+
+IRs:
+MODIFIER_CALL, BasicToken.notSender(address)(_newOwner)"];
+5->1;
+}
+// Function: 524.sol-CryptosoulToken-unfreezeTokens()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(wallets[msg.sender].freezedAmount > 0 && now >= wallets[msg.sender].unfreezeDate)
+
+IRs:
+REF_260(BasicToken.WalletData) -> wallets[msg.sender]
+REF_261(uint256) -> REF_260.freezedAmount
+TMP_205(bool) = REF_261 > 0
+REF_262(BasicToken.WalletData) -> wallets[msg.sender]
+REF_263(uint256) -> REF_262.unfreezeDate
+TMP_206(bool) = now >= REF_263
+TMP_207(bool) = TMP_205 && TMP_206
+TMP_208(None) = SOLIDITY_CALL require(bool)(TMP_207)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+UnfreezeTokens(msg.sender,wallets[msg.sender].freezedAmount)
+
+IRs:
+REF_264(BasicToken.WalletData) -> wallets[msg.sender]
+REF_265(uint256) -> REF_264.freezedAmount
+Emit UnfreezeTokens(msg.sender,REF_265)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+wallets[msg.sender].freezedAmount = 0
+
+IRs:
+REF_266(BasicToken.WalletData) -> wallets[msg.sender]
+REF_267(uint256) -> REF_266.freezedAmount
+REF_267(uint256) (->wallets) := 0(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+wallets[msg.sender].unfreezeDate = 0
+
+IRs:
+REF_268(BasicToken.WalletData) -> wallets[msg.sender]
+REF_269(uint256) -> REF_268.unfreezeDate
+REF_269(uint256) (->wallets) := 0(uint256)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 524.sol-ERC20-allowance(address,address)
+digraph{
+}
+// Function: 524.sol-ERC20-approve(address,uint256)
+digraph{
+}
+// Function: 524.sol-ERC20-balanceOf(address)
+digraph{
+}
+// Function: 524.sol-ERC20-transfer(address,uint256)
+digraph{
+}
+// Function: 524.sol-ERC20-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 524.sol-ERC20Basic-balanceOf(address)
+digraph{
+}
+// Function: 524.sol-ERC20Basic-transfer(address,uint256)
+digraph{
+}
+// Function: 524.sol-FreezableToken-allowance(address,address)
+digraph{
+}
+// Function: 524.sol-FreezableToken-approve(address,uint256)
+digraph{
+}
+// Function: 524.sol-FreezableToken-balanceOf(address)
+digraph{
+}
+// Function: 524.sol-FreezableToken-checkIfCanUseTokens(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+unfreezedAmount = wallets[_owner].tokensAmount - wallets[_owner].freezedAmount
+
+IRs:
+REF_96(BasicToken.WalletData) -> wallets[_owner]
+REF_97(uint256) -> REF_96.tokensAmount
+REF_98(BasicToken.WalletData) -> wallets[_owner]
+REF_99(uint256) -> REF_98.freezedAmount
+TMP_84(uint256) = REF_97 - REF_99
+unfreezedAmount(uint256) := TMP_84(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+_amount <= unfreezedAmount
+
+IRs:
+TMP_85(bool) = _amount <= unfreezedAmount
+RETURN TMP_85"];
+}
+// Function: 524.sol-FreezableToken-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 524.sol-FreezableToken-freezeAllowance(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+wallets[_owner].canFreezeTokens
+
+IRs:
+REF_105(BasicToken.WalletData) -> wallets[_owner]
+REF_106(bool) -> REF_105.canFreezeTokens
+RETURN REF_106"];
+}
+// Function: 524.sol-FreezableToken-freezeTokens(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(wallets[msg.sender].freezedAmount == 0 && wallets[msg.sender].tokensAmount >= _amount)
+
+IRs:
+REF_107(BasicToken.WalletData) -> wallets[msg.sender]
+REF_108(uint256) -> REF_107.freezedAmount
+TMP_90(bool) = REF_108 == 0
+REF_109(BasicToken.WalletData) -> wallets[msg.sender]
+REF_110(uint256) -> REF_109.tokensAmount
+TMP_91(bool) = REF_110 >= _amount
+TMP_92(bool) = TMP_90 && TMP_91
+TMP_93(None) = SOLIDITY_CALL require(bool)(TMP_92)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+wallets[msg.sender].freezedAmount = _amount
+
+IRs:
+REF_111(BasicToken.WalletData) -> wallets[msg.sender]
+REF_112(uint256) -> REF_111.freezedAmount
+REF_112(uint256) (->wallets) := _amount(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+wallets[msg.sender].unfreezeDate = _unfreezeDate
+
+IRs:
+REF_113(BasicToken.WalletData) -> wallets[msg.sender]
+REF_114(uint256) -> REF_113.unfreezeDate
+REF_114(uint256) (->wallets) := _unfreezeDate(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+FreezeTokens(msg.sender,_amount)
+
+IRs:
+Emit FreezeTokens(msg.sender,_amount)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+isFreezeAllowed()
+
+IRs:
+MODIFIER_CALL, FreezableToken.isFreezeAllowed()()"];
+6->1;
+}
+// Function: 524.sol-FreezableToken-getUnfreezedTokens(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+wallets[_owner].tokensAmount - wallets[_owner].freezedAmount
+
+IRs:
+REF_129(BasicToken.WalletData) -> wallets[_owner]
+REF_130(uint256) -> REF_129.tokensAmount
+REF_131(BasicToken.WalletData) -> wallets[_owner]
+REF_132(uint256) -> REF_131.freezedAmount
+TMP_101(uint256) = REF_130 - REF_132
+RETURN TMP_101"];
+}
+// Function: 524.sol-FreezableToken-giveFreezePermission(address[],bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->9;
+1[label="Node Type: BEGIN_LOOP 1
+"];
+1->4;
+2[label="Node Type: END_LOOP 2
+"];
+2->8;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+3->1;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+i < _owners.length
+
+IRs:
+REF_100 -> LENGTH _owners
+TMP_86(bool) = i < REF_100
+CONDITION TMP_86"];
+4->5[label="True"];
+4->2[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+wallets[_owners[i]].canFreezeTokens = _permission
+
+IRs:
+REF_101(address) -> _owners[i]
+REF_102(BasicToken.WalletData) -> wallets[REF_101]
+REF_103(bool) -> REF_102.canFreezeTokens
+REF_103(bool) (->wallets) := _permission(bool)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+ChangeFreezePermission(_owners[i],_permission)
+
+IRs:
+REF_104(address) -> _owners[i]
+Emit ChangeFreezePermission(REF_104,_permission)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_88(uint256) := i(uint256)
+i(uint256) = i + 1"];
+7->4;
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+9->3;
+}
+// Function: 524.sol-FreezableToken-isFreezeAllowed()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(freezeAllowance(msg.sender))
+
+IRs:
+TMP_106(bool) = INTERNAL_CALL, FreezableToken.freezeAllowance(address)(msg.sender)
+TMP_107(None) = SOLIDITY_CALL require(bool)(TMP_106)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 524.sol-FreezableToken-notSender(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender != _owner)
+
+IRs:
+TMP_104(bool) = msg.sender != _owner
+TMP_105(None) = SOLIDITY_CALL require(bool)(TMP_104)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 524.sol-FreezableToken-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_102(bool) = msg.sender == owner
+TMP_103(None) = SOLIDITY_CALL require(bool)(TMP_102)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 524.sol-FreezableToken-showFreezedTokensAmount(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+wallets[_owner].freezedAmount
+
+IRs:
+REF_115(BasicToken.WalletData) -> wallets[_owner]
+REF_116(uint256) -> REF_115.freezedAmount
+RETURN REF_116"];
+}
+// Function: 524.sol-FreezableToken-showTokensUnfreezeDate(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+wallets[_owner].unfreezeDate
+
+IRs:
+REF_127(BasicToken.WalletData) -> wallets[_owner]
+REF_128(uint256) -> REF_127.unfreezeDate
+RETURN REF_128"];
+}
+// Function: 524.sol-FreezableToken-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+owner = 0x0
+
+IRs:
+owner(address) := 0(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+masterKey = 0x4977A392d8D207B49c7fDE8A6B91C23bCebE7291
+
+IRs:
+masterKey(address) := 419424364220801662516286185410478754278638776977(address)"];
+}
+// Function: 524.sol-FreezableToken-transfer(address,uint256)
+digraph{
+}
+// Function: 524.sol-FreezableToken-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 524.sol-FreezableToken-transferOwnership(address)
+digraph{
+}
+// Function: 524.sol-FreezableToken-unfreezeTokens()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(wallets[msg.sender].freezedAmount > 0 && now >= wallets[msg.sender].unfreezeDate)
+
+IRs:
+REF_117(BasicToken.WalletData) -> wallets[msg.sender]
+REF_118(uint256) -> REF_117.freezedAmount
+TMP_96(bool) = REF_118 > 0
+REF_119(BasicToken.WalletData) -> wallets[msg.sender]
+REF_120(uint256) -> REF_119.unfreezeDate
+TMP_97(bool) = now >= REF_120
+TMP_98(bool) = TMP_96 && TMP_97
+TMP_99(None) = SOLIDITY_CALL require(bool)(TMP_98)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+UnfreezeTokens(msg.sender,wallets[msg.sender].freezedAmount)
+
+IRs:
+REF_121(BasicToken.WalletData) -> wallets[msg.sender]
+REF_122(uint256) -> REF_121.freezedAmount
+Emit UnfreezeTokens(msg.sender,REF_122)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+wallets[msg.sender].freezedAmount = 0
+
+IRs:
+REF_123(BasicToken.WalletData) -> wallets[msg.sender]
+REF_124(uint256) -> REF_123.freezedAmount
+REF_124(uint256) (->wallets) := 0(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+wallets[msg.sender].unfreezeDate = 0
+
+IRs:
+REF_125(BasicToken.WalletData) -> wallets[msg.sender]
+REF_126(uint256) -> REF_125.unfreezeDate
+REF_126(uint256) (->wallets) := 0(uint256)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 524.sol-MultisendableToken-allowance(address,address)
+digraph{
+}
+// Function: 524.sol-MultisendableToken-approve(address,uint256)
+digraph{
+}
+// Function: 524.sol-MultisendableToken-balanceOf(address)
+digraph{
+}
+// Function: 524.sol-MultisendableToken-checkIfCanUseTokens(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+unfreezedAmount = wallets[_owner].tokensAmount - wallets[_owner].freezedAmount
+
+IRs:
+REF_203(BasicToken.WalletData) -> wallets[_owner]
+REF_204(uint256) -> REF_203.tokensAmount
+REF_205(BasicToken.WalletData) -> wallets[_owner]
+REF_206(uint256) -> REF_205.freezedAmount
+TMP_149(uint256) = REF_204 - REF_206
+unfreezedAmount(uint256) := TMP_149(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+_amount <= unfreezedAmount
+
+IRs:
+TMP_150(bool) = _amount <= unfreezedAmount
+RETURN TMP_150"];
+}
+// Function: 524.sol-MultisendableToken-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 524.sol-MultisendableToken-freezeAllowance(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+wallets[_owner].canFreezeTokens
+
+IRs:
+REF_138(BasicToken.WalletData) -> wallets[_owner]
+REF_139(bool) -> REF_138.canFreezeTokens
+RETURN REF_139"];
+}
+// Function: 524.sol-MultisendableToken-freezeTokens(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(wallets[msg.sender].freezedAmount == 0 && wallets[msg.sender].tokensAmount >= _amount)
+
+IRs:
+REF_140(BasicToken.WalletData) -> wallets[msg.sender]
+REF_141(uint256) -> REF_140.freezedAmount
+TMP_112(bool) = REF_141 == 0
+REF_142(BasicToken.WalletData) -> wallets[msg.sender]
+REF_143(uint256) -> REF_142.tokensAmount
+TMP_113(bool) = REF_143 >= _amount
+TMP_114(bool) = TMP_112 && TMP_113
+TMP_115(None) = SOLIDITY_CALL require(bool)(TMP_114)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+wallets[msg.sender].freezedAmount = _amount
+
+IRs:
+REF_144(BasicToken.WalletData) -> wallets[msg.sender]
+REF_145(uint256) -> REF_144.freezedAmount
+REF_145(uint256) (->wallets) := _amount(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+wallets[msg.sender].unfreezeDate = _unfreezeDate
+
+IRs:
+REF_146(BasicToken.WalletData) -> wallets[msg.sender]
+REF_147(uint256) -> REF_146.unfreezeDate
+REF_147(uint256) (->wallets) := _unfreezeDate(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+FreezeTokens(msg.sender,_amount)
+
+IRs:
+Emit FreezeTokens(msg.sender,_amount)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+isFreezeAllowed()
+
+IRs:
+MODIFIER_CALL, FreezableToken.isFreezeAllowed()()"];
+6->1;
+}
+// Function: 524.sol-MultisendableToken-getUnfreezedTokens(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+wallets[_owner].tokensAmount - wallets[_owner].freezedAmount
+
+IRs:
+REF_162(BasicToken.WalletData) -> wallets[_owner]
+REF_163(uint256) -> REF_162.tokensAmount
+REF_164(BasicToken.WalletData) -> wallets[_owner]
+REF_165(uint256) -> REF_164.freezedAmount
+TMP_123(uint256) = REF_163 - REF_165
+RETURN TMP_123"];
+}
+// Function: 524.sol-MultisendableToken-giveFreezePermission(address[],bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->9;
+1[label="Node Type: BEGIN_LOOP 1
+"];
+1->4;
+2[label="Node Type: END_LOOP 2
+"];
+2->8;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+3->1;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+i < _owners.length
+
+IRs:
+REF_133 -> LENGTH _owners
+TMP_108(bool) = i < REF_133
+CONDITION TMP_108"];
+4->5[label="True"];
+4->2[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+wallets[_owners[i]].canFreezeTokens = _permission
+
+IRs:
+REF_134(address) -> _owners[i]
+REF_135(BasicToken.WalletData) -> wallets[REF_134]
+REF_136(bool) -> REF_135.canFreezeTokens
+REF_136(bool) (->wallets) := _permission(bool)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+ChangeFreezePermission(_owners[i],_permission)
+
+IRs:
+REF_137(address) -> _owners[i]
+Emit ChangeFreezePermission(REF_137,_permission)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_110(uint256) := i(uint256)
+i(uint256) = i + 1"];
+7->4;
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+9->3;
+}
+// Function: 524.sol-MultisendableToken-isFreezeAllowed()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(freezeAllowance(msg.sender))
+
+IRs:
+TMP_170(bool) = INTERNAL_CALL, FreezableToken.freezeAllowance(address)(msg.sender)
+TMP_171(None) = SOLIDITY_CALL require(bool)(TMP_170)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 524.sol-MultisendableToken-massApprove(address[],uint256[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: BEGIN_LOOP 1
+"];
+1->4;
+2[label="Node Type: END_LOOP 2
+"];
+2->7;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+3->1;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+i < _spenders.length
+
+IRs:
+REF_210 -> LENGTH _spenders
+TMP_155(bool) = i < REF_210
+CONDITION TMP_155"];
+4->5[label="True"];
+4->2[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+approve(_spenders[i],_values[i])
+
+IRs:
+REF_211(address) -> _spenders[i]
+REF_212(uint256) -> _values[i]
+TMP_156(bool) = INTERNAL_CALL, StandartToken.approve(address,uint256)(REF_211,REF_212)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_157(uint256) := i(uint256)
+i(uint256) = i + 1"];
+6->4;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+succes
+
+IRs:
+RETURN succes"];
+}
+// Function: 524.sol-MultisendableToken-massTransfer(address[],uint256[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->8;
+1[label="Node Type: BEGIN_LOOP 1
+"];
+1->4;
+2[label="Node Type: END_LOOP 2
+"];
+2->7;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+3->1;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+i < _addresses.length
+
+IRs:
+REF_207 -> LENGTH _addresses
+TMP_151(bool) = i < REF_207
+CONDITION TMP_151"];
+4->5[label="True"];
+4->2[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+transferFromOwner(_addresses[i],_values[i])
+
+IRs:
+REF_208(address) -> _addresses[i]
+REF_209(uint256) -> _values[i]
+INTERNAL_CALL, MultisendableToken.transferFromOwner(address,uint256)(REF_208,REF_209)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_153(uint256) := i(uint256)
+i(uint256) = i + 1"];
+6->4;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+8->3;
+}
+// Function: 524.sol-MultisendableToken-notSender(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender != _owner)
+
+IRs:
+TMP_174(bool) = msg.sender != _owner
+TMP_175(None) = SOLIDITY_CALL require(bool)(TMP_174)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 524.sol-MultisendableToken-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_172(bool) = msg.sender == owner
+TMP_173(None) = SOLIDITY_CALL require(bool)(TMP_172)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 524.sol-MultisendableToken-showFreezedTokensAmount(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+wallets[_owner].freezedAmount
+
+IRs:
+REF_148(BasicToken.WalletData) -> wallets[_owner]
+REF_149(uint256) -> REF_148.freezedAmount
+RETURN REF_149"];
+}
+// Function: 524.sol-MultisendableToken-showTokensUnfreezeDate(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+wallets[_owner].unfreezeDate
+
+IRs:
+REF_160(BasicToken.WalletData) -> wallets[_owner]
+REF_161(uint256) -> REF_160.unfreezeDate
+RETURN REF_161"];
+}
+// Function: 524.sol-MultisendableToken-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+owner = 0x0
+
+IRs:
+owner(address) := 0(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+masterKey = 0x4977A392d8D207B49c7fDE8A6B91C23bCebE7291
+
+IRs:
+masterKey(address) := 419424364220801662516286185410478754278638776977(address)"];
+}
+// Function: 524.sol-MultisendableToken-transfer(address,uint256)
+digraph{
+}
+// Function: 524.sol-MultisendableToken-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 524.sol-MultisendableToken-transferFromOwner(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_to != address(0) && wallets[owner].tokensAmount >= _value && checkIfCanUseTokens(owner,_value))
+
+IRs:
+TMP_158 = CONVERT 0 to address
+TMP_159(bool) = _to != TMP_158
+REF_213(BasicToken.WalletData) -> wallets[owner]
+REF_214(uint256) -> REF_213.tokensAmount
+TMP_160(bool) = REF_214 >= _value
+TMP_161(bool) = TMP_159 && TMP_160
+TMP_162(bool) = INTERNAL_CALL, BasicToken.checkIfCanUseTokens(address,uint256)(owner,_value)
+TMP_163(bool) = TMP_161 && TMP_162
+TMP_164(None) = SOLIDITY_CALL require(bool)(TMP_163)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+wallets[owner].tokensAmount = wallets[owner].tokensAmount.sub(_value)
+
+IRs:
+REF_215(BasicToken.WalletData) -> wallets[owner]
+REF_216(uint256) -> REF_215.tokensAmount
+REF_217(BasicToken.WalletData) -> wallets[owner]
+REF_218(uint256) -> REF_217.tokensAmount
+TMP_165(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_218', '_value'] 
+REF_216(uint256) (->wallets) := TMP_165(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+wallets[_to].tokensAmount = wallets[_to].tokensAmount.add(_value)
+
+IRs:
+REF_220(BasicToken.WalletData) -> wallets[_to]
+REF_221(uint256) -> REF_220.tokensAmount
+REF_222(BasicToken.WalletData) -> wallets[_to]
+REF_223(uint256) -> REF_222.tokensAmount
+TMP_166(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_223', '_value'] 
+REF_221(uint256) (->wallets) := TMP_166(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Transfer(owner,_to,_value)
+
+IRs:
+Emit Transfer(owner,_to,_value)"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+notSender(_to)
+
+IRs:
+MODIFIER_CALL, BasicToken.notSender(address)(_to)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+6->1;
+}
+// Function: 524.sol-MultisendableToken-transferOwnership(address)
+digraph{
+}
+// Function: 524.sol-MultisendableToken-unfreezeTokens()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(wallets[msg.sender].freezedAmount > 0 && now >= wallets[msg.sender].unfreezeDate)
+
+IRs:
+REF_150(BasicToken.WalletData) -> wallets[msg.sender]
+REF_151(uint256) -> REF_150.freezedAmount
+TMP_118(bool) = REF_151 > 0
+REF_152(BasicToken.WalletData) -> wallets[msg.sender]
+REF_153(uint256) -> REF_152.unfreezeDate
+TMP_119(bool) = now >= REF_153
+TMP_120(bool) = TMP_118 && TMP_119
+TMP_121(None) = SOLIDITY_CALL require(bool)(TMP_120)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+UnfreezeTokens(msg.sender,wallets[msg.sender].freezedAmount)
+
+IRs:
+REF_154(BasicToken.WalletData) -> wallets[msg.sender]
+REF_155(uint256) -> REF_154.freezedAmount
+Emit UnfreezeTokens(msg.sender,REF_155)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+wallets[msg.sender].freezedAmount = 0
+
+IRs:
+REF_156(BasicToken.WalletData) -> wallets[msg.sender]
+REF_157(uint256) -> REF_156.freezedAmount
+REF_157(uint256) (->wallets) := 0(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+wallets[msg.sender].unfreezeDate = 0
+
+IRs:
+REF_158(BasicToken.WalletData) -> wallets[msg.sender]
+REF_159(uint256) -> REF_158.unfreezeDate
+REF_159(uint256) (->wallets) := 0(uint256)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 524.sol-Ownable-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 524.sol-Ownable-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_57(bool) = msg.sender == owner
+TMP_58(None) = SOLIDITY_CALL require(bool)(TMP_57)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 524.sol-Ownable-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+owner = 0x0
+
+IRs:
+owner(address) := 0(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+masterKey = 0x4977A392d8D207B49c7fDE8A6B91C23bCebE7291
+
+IRs:
+masterKey(address) := 419424364220801662516286185410478754278638776977(address)"];
+}
+// Function: 524.sol-Ownable-transferOwnership(address)
+digraph{
+}
+// Function: 524.sol-SafeMath-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+result = a + b
+
+IRs:
+TMP_10(uint256) = a + b
+result(uint256) := TMP_10(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(result >= a)
+
+IRs:
+TMP_11(bool) = result >= a
+TMP_12(None) = SOLIDITY_CALL assert(bool)(TMP_11)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+result
+
+IRs:
+RETURN result"];
+}
+// Function: 524.sol-SafeMath-div(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+result = a / b
+
+IRs:
+TMP_6(uint256) = a / b
+result(uint256) := TMP_6(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+result
+
+IRs:
+RETURN result"];
+}
+// Function: 524.sol-SafeMath-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+result = a * b
+
+IRs:
+TMP_0(uint256) = a * b
+result(uint256) := TMP_0(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(a == 0 || result / a == b)
+
+IRs:
+TMP_1(bool) = a == 0
+TMP_2(uint256) = result / a
+TMP_3(bool) = TMP_2 == b
+TMP_4(bool) = TMP_1 || TMP_3
+TMP_5(None) = SOLIDITY_CALL assert(bool)(TMP_4)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+result
+
+IRs:
+RETURN result"];
+}
+// Function: 524.sol-SafeMath-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(b <= a)
+
+IRs:
+TMP_7(bool) = b <= a
+TMP_8(None) = SOLIDITY_CALL assert(bool)(TMP_7)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_9(uint256) = a - b
+RETURN TMP_9"];
+}
+// Function: 524.sol-StandartToken-allowance(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+allowed[_owner][_spender]
+
+IRs:
+REF_38(mapping(address => uint256)) -> allowed[_owner]
+REF_39(uint256) -> REF_38[_spender]
+RETURN REF_39"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+remaining
+
+IRs:
+RETURN remaining"];
+}
+// Function: 524.sol-StandartToken-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowed[msg.sender][_spender] = _value
+
+IRs:
+REF_36(mapping(address => uint256)) -> allowed[msg.sender]
+REF_37(uint256) -> REF_36[_spender]
+REF_37(uint256) (->allowed) := _value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,_value)
+
+IRs:
+Emit Approval(msg.sender,_spender,_value)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 524.sol-StandartToken-balanceOf(address)
+digraph{
+}
+// Function: 524.sol-StandartToken-checkIfCanUseTokens(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+unfreezedAmount = wallets[_owner].tokensAmount - wallets[_owner].freezedAmount
+
+IRs:
+REF_32(BasicToken.WalletData) -> wallets[_owner]
+REF_33(uint256) -> REF_32.tokensAmount
+REF_34(BasicToken.WalletData) -> wallets[_owner]
+REF_35(uint256) -> REF_34.freezedAmount
+TMP_39(uint256) = REF_33 - REF_35
+unfreezedAmount(uint256) := TMP_39(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+_amount <= unfreezedAmount
+
+IRs:
+TMP_40(bool) = _amount <= unfreezedAmount
+RETURN TMP_40"];
+}
+// Function: 524.sol-StandartToken-notSender(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender != _owner)
+
+IRs:
+TMP_55(bool) = msg.sender != _owner
+TMP_56(None) = SOLIDITY_CALL require(bool)(TMP_55)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 524.sol-StandartToken-transfer(address,uint256)
+digraph{
+}
+// Function: 524.sol-StandartToken-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_to != address(0) && checkIfCanUseTokens(_from,_value) && _value <= wallets[_from].tokensAmount && _value <= allowed[_from][msg.sender])
+
+IRs:
+TMP_42 = CONVERT 0 to address
+TMP_43(bool) = _to != TMP_42
+TMP_44(bool) = INTERNAL_CALL, BasicToken.checkIfCanUseTokens(address,uint256)(_from,_value)
+TMP_45(bool) = TMP_43 && TMP_44
+REF_40(BasicToken.WalletData) -> wallets[_from]
+REF_41(uint256) -> REF_40.tokensAmount
+TMP_46(bool) = _value <= REF_41
+TMP_47(bool) = TMP_45 && TMP_46
+REF_42(mapping(address => uint256)) -> allowed[_from]
+REF_43(uint256) -> REF_42[msg.sender]
+TMP_48(bool) = _value <= REF_43
+TMP_49(bool) = TMP_47 && TMP_48
+TMP_50(None) = SOLIDITY_CALL require(bool)(TMP_49)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+wallets[_from].tokensAmount = wallets[_from].tokensAmount.sub(_value)
+
+IRs:
+REF_44(BasicToken.WalletData) -> wallets[_from]
+REF_45(uint256) -> REF_44.tokensAmount
+REF_46(BasicToken.WalletData) -> wallets[_from]
+REF_47(uint256) -> REF_46.tokensAmount
+TMP_51(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_47', '_value'] 
+REF_45(uint256) (->wallets) := TMP_51(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+wallets[_to].tokensAmount = wallets[_to].tokensAmount.add(_value)
+
+IRs:
+REF_49(BasicToken.WalletData) -> wallets[_to]
+REF_50(uint256) -> REF_49.tokensAmount
+REF_51(BasicToken.WalletData) -> wallets[_to]
+REF_52(uint256) -> REF_51.tokensAmount
+TMP_52(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_52', '_value'] 
+REF_50(uint256) (->wallets) := TMP_52(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+allowed[_from][msg.sender] = allowed[_from][msg.sender].sub(_value)
+
+IRs:
+REF_54(mapping(address => uint256)) -> allowed[_from]
+REF_55(uint256) -> REF_54[msg.sender]
+REF_56(mapping(address => uint256)) -> allowed[_from]
+REF_57(uint256) -> REF_56[msg.sender]
+TMP_53(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_57', '_value'] 
+REF_55(uint256) (->allowed) := TMP_53(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Transfer(_from,_to,_value)
+
+IRs:
+Emit Transfer(_from,_to,_value)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+}

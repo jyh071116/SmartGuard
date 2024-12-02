@@ -1,0 +1,5696 @@
+digraph G {
+// Function: 277.sol-Battle-_addBattleSequence(uint8,uint8,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+mask = 0x3
+
+IRs:
+mask(uint256) := 3(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+mask = ~ (mask << 2 * rounds)
+
+IRs:
+TMP_379(uint256) = 2 * rounds
+TMP_380(uint256) = mask << TMP_379
+TMP_381 = UnaryType.TILD TMP_380 
+mask(uint256) := TMP_381(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+newSeq = battleSequence & mask
+
+IRs:
+TMP_382(uint256) = battleSequence & mask
+newSeq(uint256) := TMP_382(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+newSeq = newSeq | (uint256(attackType) << 2 * rounds)
+
+IRs:
+TMP_383 = CONVERT attackType to uint256
+TMP_384(uint256) = 2 * rounds
+TMP_385(uint256) = TMP_383 << TMP_384
+TMP_386(uint256) = newSeq | TMP_385
+newSeq(uint256) := TMP_386(uint256)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+newSeq
+
+IRs:
+RETURN newSeq"];
+}
+// Function: 277.sol-Battle-_calculateFee(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+developerCut.mul(_challengeFee / 10000)
+
+IRs:
+TMP_538(uint256) = _challengeFee / 10000
+TMP_539(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['developerCut', 'TMP_538'] 
+RETURN TMP_539"];
+}
+// Function: 277.sol-Battle-_createCard(address,uint16)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(_to != address(0),cannot create card for unknown address)
+
+IRs:
+TMP_495 = CONVERT 0 to address
+TMP_496(bool) = _to != TMP_495
+TMP_497(None) = SOLIDITY_CALL require(bool,string)(TMP_496,cannot create card for unknown address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+currentElement += 1
+
+IRs:
+currentElement(uint8) = currentElement + 1"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+currentElement == 4
+
+IRs:
+TMP_498(bool) = currentElement == 4
+CONDITION TMP_498"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+currentElement = 8
+
+IRs:
+currentElement(uint8) := 8(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+currentElement == 10
+
+IRs:
+TMP_499(bool) = currentElement == 10
+CONDITION TMP_499"];
+6->7[label="True"];
+6->8[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+currentElement = 1
+
+IRs:
+currentElement(uint8) := 1(uint256)"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+tempExpLevel = _initLevel
+
+IRs:
+tempExpLevel(uint256) := _initLevel(uint16)"];
+9->10;
+10[label="Node Type: IF 10
+
+EXPRESSION:
+tempExpLevel > expToNextLevelArr.length
+
+IRs:
+REF_306 -> LENGTH expToNextLevelArr
+TMP_500(bool) = tempExpLevel > REF_306
+CONDITION TMP_500"];
+10->11[label="True"];
+10->12[label="False"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+tempExpLevel = expToNextLevelArr.length
+
+IRs:
+REF_307 -> LENGTH expToNextLevelArr
+tempExpLevel(uint256) := REF_307(uint256)"];
+11->12;
+12[label="Node Type: END_IF 12
+"];
+12->13;
+13[label="Node Type: NEW VARIABLE 13
+
+EXPRESSION:
+tempCurrentExp = 0
+
+IRs:
+tempCurrentExp(uint32) := 0(uint256)"];
+13->14;
+14[label="Node Type: IF 14
+
+EXPRESSION:
+_initLevel > 1
+
+IRs:
+TMP_501(bool) = _initLevel > 1
+CONDITION TMP_501"];
+14->15[label="True"];
+14->16[label="False"];
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+tempCurrentExp = expToNextLevelArr[tempExpLevel]
+
+IRs:
+REF_308(uint32) -> expToNextLevelArr[tempExpLevel]
+tempCurrentExp(uint32) := REF_308(uint32)"];
+15->16;
+16[label="Node Type: END_IF 16
+"];
+16->17;
+17[label="Node Type: NEW VARIABLE 17
+
+EXPRESSION:
+tokenId = hogsmashToken.mint(_to)
+
+IRs:
+TMP_502(uint256) = HIGH_LEVEL_CALL, dest:hogsmashToken(HogSmashToken), function:mint, arguments:['_to']  
+tokenId(uint256) := TMP_502(uint256)"];
+17->18;
+18[label="Node Type: NEW VARIABLE 18
+
+EXPRESSION:
+_card = Card({element:currentElement,level:_initLevel,attack:1,defense:1,hp:3,speed:1,criticalRate:25,flexiGems:1,currentExp:tempCurrentExp,expToNextLevel:expToNextLevelArr[tempExpLevel],cardHash:generateHash(),createdDatetime:uint64(now),rank:tokenId})
+
+IRs:
+REF_310(uint32) -> expToNextLevelArr[tempExpLevel]
+TMP_503(uint256) = INTERNAL_CALL, Battle.generateHash()()
+TMP_504 = CONVERT now to uint64
+TMP_505(BattleBase.Card) = new Card(currentElement,_initLevel,1,1,3,1,25,1,TMP_503,tempCurrentExp,REF_310,TMP_504,tokenId)
+_card(BattleBase.Card) := TMP_505(BattleBase.Card)"];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+cards[tokenId] = _card
+
+IRs:
+REF_311(BattleBase.Card) -> cards[tokenId]
+REF_311(BattleBase.Card) (->cards) := _card(BattleBase.Card)"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+ranking.push(tokenId)
+
+IRs:
+REF_313 -> LENGTH ranking
+TMP_507(uint256) := REF_313(uint256)
+TMP_508(uint256) = TMP_507 + 1
+REF_313(uint256) (->ranking) := TMP_508(uint256)
+REF_314(uint256) -> ranking[TMP_507]
+REF_314(uint256) (->ranking) := tokenId(uint256)"];
+20->21;
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+CardCreated(msg.sender,tokenId)
+
+IRs:
+Emit CardCreated(msg.sender,tokenId)"];
+21->22;
+22[label="Node Type: RETURN 22
+
+EXPRESSION:
+tokenId
+
+IRs:
+RETURN tokenId"];
+}
+// Function: 277.sol-Battle-_isChallengerAttackFirst(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+randResult = uint8((getRandom() % 100) + 1)
+
+IRs:
+TMP_472(uint256) = INTERNAL_CALL, Random.getRandom()()
+TMP_473(uint256) = TMP_472 % 100
+TMP_474(uint256) = TMP_473 + 1
+TMP_475 = CONVERT TMP_474 to uint8
+randResult(uint8) := TMP_475(uint8)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+challengerChance = (((_challengerSpeed * 10 ** 3) / (_challengerSpeed + _defenderSpeed)) + 5) / 10
+
+IRs:
+TMP_476(uint256) = 10 ** 3
+TMP_477(uint256) = _challengerSpeed * TMP_476
+TMP_478(uint256) = _challengerSpeed + _defenderSpeed
+TMP_479(uint256) = TMP_477 / TMP_478
+TMP_480(uint256) = TMP_479 + 5
+TMP_481(uint256) = TMP_480 / 10
+challengerChance(uint256) := TMP_481(uint256)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+randResult <= challengerChance
+
+IRs:
+TMP_482(bool) = randResult <= challengerChance
+CONDITION TMP_482"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+}
+// Function: 277.sol-Battle-_rollCriticalDice()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+uint16((getRandom() % 10000) + 1)
+
+IRs:
+TMP_468(uint256) = INTERNAL_CALL, Random.getRandom()()
+TMP_469(uint256) = TMP_468 % 10000
+TMP_470(uint256) = TMP_469 + 1
+TMP_471 = CONVERT TMP_470 to uint16
+RETURN TMP_471"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+result
+
+IRs:
+RETURN result"];
+}
+// Function: 277.sol-Battle-_simulateBattle(BattleBase.Card,BattleBase.Card,uint256[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+continueBattle = true
+
+IRs:
+continueBattle(bool) := True(bool)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+currentAttacker = 0
+
+IRs:
+currentAttacker(uint8) := 0(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+battleRound = 0
+
+IRs:
+battleRound(uint8) := 0(uint256)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+! _isChallengerAttackFirst(stats[3],defender.speed)
+
+IRs:
+REF_169(uint256) -> stats[3]
+REF_170(uint32) -> defender.speed
+TMP_387(bool) = INTERNAL_CALL, Battle._isChallengerAttackFirst(uint256,uint256)(REF_169,REF_170)
+TMP_388 = UnaryType.BANG TMP_387 
+CONDITION TMP_388"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+currentAttacker = 1
+
+IRs:
+currentAttacker(uint8) := 1(uint256)"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: BEGIN_LOOP 8
+"];
+8->9;
+9[label="Node Type: IF_LOOP 9
+
+EXPRESSION:
+continueBattle
+
+IRs:
+CONDITION continueBattle"];
+9->10[label="True"];
+9->48[label="False"];
+10[label="Node Type: IF 10
+
+EXPRESSION:
+currentAttacker == 0
+
+IRs:
+TMP_389(bool) = currentAttacker == 0
+CONDITION TMP_389"];
+10->11[label="True"];
+10->26[label="False"];
+11[label="Node Type: IF 11
+
+EXPRESSION:
+_rollCriticalDice() <= stats[4]
+
+IRs:
+TMP_390(uint16) = INTERNAL_CALL, Battle._rollCriticalDice()()
+REF_171(uint256) -> stats[4]
+TMP_391(bool) = TMP_390 <= REF_171
+CONDITION TMP_391"];
+11->12[label="True"];
+11->14[label="False"];
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+tempAttackStrength = stats[0] * 2
+
+IRs:
+REF_172(uint256) -> stats[0]
+TMP_392(uint256) = REF_172 * 2
+tempAttackStrength(uint256) := TMP_392(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+battleSequence = _addBattleSequence(2,battleRound,battleSequence)
+
+IRs:
+TMP_393(uint256) = INTERNAL_CALL, Battle._addBattleSequence(uint8,uint8,uint256)(2,battleRound,battleSequence)
+battleSequence(uint256) := TMP_393(uint256)"];
+13->16;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+tempAttackStrength = stats[0]
+
+IRs:
+REF_173(uint256) -> stats[0]
+tempAttackStrength(uint256) := REF_173(uint256)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+battleSequence = _addBattleSequence(0,battleRound,battleSequence)
+
+IRs:
+TMP_394(uint256) = INTERNAL_CALL, Battle._addBattleSequence(uint8,uint8,uint256)(0,battleRound,battleSequence)
+battleSequence(uint256) := TMP_394(uint256)"];
+15->16;
+16[label="Node Type: END_IF 16
+"];
+16->17;
+17[label="Node Type: IF 17
+
+EXPRESSION:
+tempAttackStrength <= defender.defense
+
+IRs:
+REF_174(uint32) -> defender.defense
+TMP_395(bool) = tempAttackStrength <= REF_174
+CONDITION TMP_395"];
+17->18[label="True"];
+17->19[label="False"];
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+tempAttackStrength = 1
+
+IRs:
+tempAttackStrength(uint256) := 1(uint256)"];
+18->20;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+tempAttackStrength -= defender.defense
+
+IRs:
+REF_175(uint32) -> defender.defense
+tempAttackStrength(uint256) = tempAttackStrength - REF_175"];
+19->20;
+20[label="Node Type: END_IF 20
+"];
+20->21;
+21[label="Node Type: IF 21
+
+EXPRESSION:
+stats[6] <= tempAttackStrength
+
+IRs:
+REF_176(uint256) -> stats[6]
+TMP_396(bool) = REF_176 <= tempAttackStrength
+CONDITION TMP_396"];
+21->22[label="True"];
+21->23[label="False"];
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+stats[6] = 0
+
+IRs:
+REF_177(uint256) -> stats[6]
+REF_177(uint256) (->stats) := 0(uint256)"];
+22->24;
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+stats[6] -= tempAttackStrength
+
+IRs:
+REF_178(uint256) -> stats[6]
+REF_178(-> stats) = REF_178 - tempAttackStrength"];
+23->24;
+24[label="Node Type: END_IF 24
+"];
+24->25;
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+currentAttacker = 1
+
+IRs:
+currentAttacker(uint8) := 1(uint256)"];
+25->43;
+26[label="Node Type: IF 26
+
+EXPRESSION:
+currentAttacker == 1
+
+IRs:
+TMP_397(bool) = currentAttacker == 1
+CONDITION TMP_397"];
+26->27[label="True"];
+26->42[label="False"];
+27[label="Node Type: IF 27
+
+EXPRESSION:
+_rollCriticalDice() <= stats[5]
+
+IRs:
+TMP_398(uint16) = INTERNAL_CALL, Battle._rollCriticalDice()()
+REF_179(uint256) -> stats[5]
+TMP_399(bool) = TMP_398 <= REF_179
+CONDITION TMP_399"];
+27->28[label="True"];
+27->30[label="False"];
+28[label="Node Type: EXPRESSION 28
+
+EXPRESSION:
+tempAttackStrength = defender.attack * 2
+
+IRs:
+REF_180(uint32) -> defender.attack
+TMP_400(uint32) = REF_180 * 2
+tempAttackStrength(uint256) := TMP_400(uint32)"];
+28->29;
+29[label="Node Type: EXPRESSION 29
+
+EXPRESSION:
+battleSequence = _addBattleSequence(3,battleRound,battleSequence)
+
+IRs:
+TMP_401(uint256) = INTERNAL_CALL, Battle._addBattleSequence(uint8,uint8,uint256)(3,battleRound,battleSequence)
+battleSequence(uint256) := TMP_401(uint256)"];
+29->32;
+30[label="Node Type: EXPRESSION 30
+
+EXPRESSION:
+tempAttackStrength = defender.attack
+
+IRs:
+REF_181(uint32) -> defender.attack
+tempAttackStrength(uint256) := REF_181(uint32)"];
+30->31;
+31[label="Node Type: EXPRESSION 31
+
+EXPRESSION:
+battleSequence = _addBattleSequence(1,battleRound,battleSequence)
+
+IRs:
+TMP_402(uint256) = INTERNAL_CALL, Battle._addBattleSequence(uint8,uint8,uint256)(1,battleRound,battleSequence)
+battleSequence(uint256) := TMP_402(uint256)"];
+31->32;
+32[label="Node Type: END_IF 32
+"];
+32->33;
+33[label="Node Type: IF 33
+
+EXPRESSION:
+tempAttackStrength <= stats[1]
+
+IRs:
+REF_182(uint256) -> stats[1]
+TMP_403(bool) = tempAttackStrength <= REF_182
+CONDITION TMP_403"];
+33->34[label="True"];
+33->35[label="False"];
+34[label="Node Type: EXPRESSION 34
+
+EXPRESSION:
+tempAttackStrength = 1
+
+IRs:
+tempAttackStrength(uint256) := 1(uint256)"];
+34->36;
+35[label="Node Type: EXPRESSION 35
+
+EXPRESSION:
+tempAttackStrength -= stats[1]
+
+IRs:
+REF_183(uint256) -> stats[1]
+tempAttackStrength(uint256) = tempAttackStrength - REF_183"];
+35->36;
+36[label="Node Type: END_IF 36
+"];
+36->37;
+37[label="Node Type: IF 37
+
+EXPRESSION:
+stats[2] <= tempAttackStrength
+
+IRs:
+REF_184(uint256) -> stats[2]
+TMP_404(bool) = REF_184 <= tempAttackStrength
+CONDITION TMP_404"];
+37->38[label="True"];
+37->39[label="False"];
+38[label="Node Type: EXPRESSION 38
+
+EXPRESSION:
+stats[2] = 0
+
+IRs:
+REF_185(uint256) -> stats[2]
+REF_185(uint256) (->stats) := 0(uint256)"];
+38->40;
+39[label="Node Type: EXPRESSION 39
+
+EXPRESSION:
+stats[2] -= tempAttackStrength
+
+IRs:
+REF_186(uint256) -> stats[2]
+REF_186(-> stats) = REF_186 - tempAttackStrength"];
+39->40;
+40[label="Node Type: END_IF 40
+"];
+40->41;
+41[label="Node Type: EXPRESSION 41
+
+EXPRESSION:
+currentAttacker = 0
+
+IRs:
+currentAttacker(uint8) := 0(uint256)"];
+41->42;
+42[label="Node Type: END_IF 42
+"];
+42->43;
+43[label="Node Type: END_IF 43
+"];
+43->44;
+44[label="Node Type: EXPRESSION 44
+
+EXPRESSION:
+battleRound ++
+
+IRs:
+TMP_405(uint8) := battleRound(uint8)
+battleRound(uint8) = battleRound + 1"];
+44->45;
+45[label="Node Type: IF 45
+
+EXPRESSION:
+(battleRound >= maxBattleRounds) || (stats[6] <= 0) || (stats[2] <= 0)
+
+IRs:
+TMP_406(bool) = battleRound >= maxBattleRounds
+REF_187(uint256) -> stats[6]
+TMP_407(bool) = REF_187 <= 0
+TMP_408(bool) = TMP_406 || TMP_407
+REF_188(uint256) -> stats[2]
+TMP_409(bool) = REF_188 <= 0
+TMP_410(bool) = TMP_408 || TMP_409
+CONDITION TMP_410"];
+45->46[label="True"];
+45->47[label="False"];
+46[label="Node Type: EXPRESSION 46
+
+EXPRESSION:
+continueBattle = false
+
+IRs:
+continueBattle(bool) := False(bool)"];
+46->47;
+47[label="Node Type: END_IF 47
+"];
+47->9;
+48[label="Node Type: END_LOOP 48
+"];
+48->49;
+49[label="Node Type: NEW VARIABLE 49
+
+EXPRESSION:
+challengerGainExp = 0
+
+IRs:
+challengerGainExp(uint32) := 0(uint256)"];
+49->50;
+50[label="Node Type: NEW VARIABLE 50
+
+EXPRESSION:
+defenderGainExp = 0
+
+IRs:
+defenderGainExp(uint32) := 0(uint256)"];
+50->51;
+51[label="Node Type: IF 51
+
+EXPRESSION:
+challenger.level == defender.level
+
+IRs:
+REF_189(uint16) -> challenger.level
+REF_190(uint16) -> defender.level
+TMP_411(bool) = REF_189 == REF_190
+CONDITION TMP_411"];
+51->52[label="True"];
+51->53[label="False"];
+52[label="Node Type: EXPRESSION 52
+
+EXPRESSION:
+challengerGainExp = activeWinExp[10]
+
+IRs:
+REF_191(uint32) -> activeWinExp[10]
+challengerGainExp(uint32) := REF_191(uint32)"];
+52->66;
+53[label="Node Type: IF 53
+
+EXPRESSION:
+challenger.level > defender.level
+
+IRs:
+REF_192(uint16) -> challenger.level
+REF_193(uint16) -> defender.level
+TMP_412(bool) = REF_192 > REF_193
+CONDITION TMP_412"];
+53->54[label="True"];
+53->58[label="False"];
+54[label="Node Type: IF 54
+
+EXPRESSION:
+(challenger.level - defender.level) >= 11
+
+IRs:
+REF_194(uint16) -> challenger.level
+REF_195(uint16) -> defender.level
+TMP_413(uint16) = REF_194 - REF_195
+TMP_414(bool) = TMP_413 >= 11
+CONDITION TMP_414"];
+54->55[label="True"];
+54->56[label="False"];
+55[label="Node Type: EXPRESSION 55
+
+EXPRESSION:
+challengerGainExp = 1
+
+IRs:
+challengerGainExp(uint32) := 1(uint256)"];
+55->57;
+56[label="Node Type: EXPRESSION 56
+
+EXPRESSION:
+challengerGainExp = activeWinExp[10 + defender.level - challenger.level]
+
+IRs:
+REF_196(uint16) -> defender.level
+TMP_415(uint256) = 10 + REF_196
+REF_197(uint16) -> challenger.level
+TMP_416(uint256) = TMP_415 - REF_197
+REF_198(uint32) -> activeWinExp[TMP_416]
+challengerGainExp(uint32) := REF_198(uint32)"];
+56->57;
+57[label="Node Type: END_IF 57
+"];
+57->65;
+58[label="Node Type: IF 58
+
+EXPRESSION:
+challenger.level < defender.level
+
+IRs:
+REF_199(uint16) -> challenger.level
+REF_200(uint16) -> defender.level
+TMP_417(bool) = REF_199 < REF_200
+CONDITION TMP_417"];
+58->59[label="True"];
+58->64[label="False"];
+59[label="Node Type: NEW VARIABLE 59
+
+EXPRESSION:
+levelDiff = defender.level - challenger.level
+
+IRs:
+REF_201(uint16) -> defender.level
+REF_202(uint16) -> challenger.level
+TMP_418(uint16) = REF_201 - REF_202
+levelDiff(uint256) := TMP_418(uint16)"];
+59->60;
+60[label="Node Type: IF 60
+
+EXPRESSION:
+levelDiff > 20
+
+IRs:
+TMP_419(bool) = levelDiff > 20
+CONDITION TMP_419"];
+60->61[label="True"];
+60->62[label="False"];
+61[label="Node Type: EXPRESSION 61
+
+EXPRESSION:
+levelDiff = 20
+
+IRs:
+levelDiff(uint256) := 20(uint256)"];
+61->62;
+62[label="Node Type: END_IF 62
+"];
+62->63;
+63[label="Node Type: EXPRESSION 63
+
+EXPRESSION:
+challengerGainExp = activeWinExp[10 + levelDiff]
+
+IRs:
+TMP_420(uint256) = 10 + levelDiff
+REF_203(uint32) -> activeWinExp[TMP_420]
+challengerGainExp(uint32) := REF_203(uint32)"];
+63->64;
+64[label="Node Type: END_IF 64
+"];
+64->65;
+65[label="Node Type: END_IF 65
+"];
+65->66;
+66[label="Node Type: END_IF 66
+"];
+66->67;
+67[label="Node Type: IF 67
+
+EXPRESSION:
+stats[2] == stats[6]
+
+IRs:
+REF_204(uint256) -> stats[2]
+REF_205(uint256) -> stats[6]
+TMP_421(bool) = REF_204 == REF_205
+CONDITION TMP_421"];
+67->68[label="True"];
+67->69[label="False"];
+68[label="Node Type: EXPRESSION 68
+
+EXPRESSION:
+stats[7] = 2
+
+IRs:
+REF_206(uint256) -> stats[7]
+REF_206(uint256) (->stats) := 2(uint256)"];
+68->110;
+69[label="Node Type: IF 69
+
+EXPRESSION:
+stats[2] > stats[6]
+
+IRs:
+REF_207(uint256) -> stats[2]
+REF_208(uint256) -> stats[6]
+TMP_422(bool) = REF_207 > REF_208
+CONDITION TMP_422"];
+69->70[label="True"];
+69->90[label="False"];
+70[label="Node Type: EXPRESSION 70
+
+EXPRESSION:
+stats[7] = 0
+
+IRs:
+REF_209(uint256) -> stats[7]
+REF_209(uint256) (->stats) := 0(uint256)"];
+70->71;
+71[label="Node Type: IF 71
+
+EXPRESSION:
+defender.rank < challenger.rank
+
+IRs:
+REF_210(uint256) -> defender.rank
+REF_211(uint256) -> challenger.rank
+TMP_423(bool) = REF_210 < REF_211
+CONDITION TMP_423"];
+71->72[label="True"];
+71->77[label="False"];
+72[label="Node Type: EXPRESSION 72
+
+EXPRESSION:
+ranking[defender.rank] = stats[12]
+
+IRs:
+REF_212(uint256) -> defender.rank
+REF_213(uint256) -> ranking[REF_212]
+REF_214(uint256) -> stats[12]
+REF_213(uint256) (->ranking) := REF_214(uint256)"];
+72->73;
+73[label="Node Type: EXPRESSION 73
+
+EXPRESSION:
+ranking[challenger.rank] = stats[13]
+
+IRs:
+REF_215(uint256) -> challenger.rank
+REF_216(uint256) -> ranking[REF_215]
+REF_217(uint256) -> stats[13]
+REF_216(uint256) (->ranking) := REF_217(uint256)"];
+73->74;
+74[label="Node Type: NEW VARIABLE 74
+
+EXPRESSION:
+tempRank = defender.rank
+
+IRs:
+REF_218(uint256) -> defender.rank
+tempRank(uint256) := REF_218(uint256)"];
+74->75;
+75[label="Node Type: EXPRESSION 75
+
+EXPRESSION:
+defender.rank = challenger.rank
+
+IRs:
+REF_219(uint256) -> defender.rank
+REF_220(uint256) -> challenger.rank
+REF_219(uint256) (->defender) := REF_220(uint256)"];
+75->76;
+76[label="Node Type: EXPRESSION 76
+
+EXPRESSION:
+challenger.rank = tempRank
+
+IRs:
+REF_221(uint256) -> challenger.rank
+REF_221(uint256) (->challenger) := tempRank(uint256)"];
+76->77;
+77[label="Node Type: END_IF 77
+"];
+77->78;
+78[label="Node Type: EXPRESSION 78
+
+EXPRESSION:
+challenger.currentExp += challengerGainExp
+
+IRs:
+REF_222(uint32) -> challenger.currentExp
+REF_222(-> challenger) = REF_222 + challengerGainExp"];
+78->79;
+79[label="Node Type: IF 79
+
+EXPRESSION:
+challenger.currentExp > challenger.expToNextLevel
+
+IRs:
+REF_223(uint32) -> challenger.currentExp
+REF_224(uint32) -> challenger.expToNextLevel
+TMP_424(bool) = REF_223 > REF_224
+CONDITION TMP_424"];
+79->80[label="True"];
+79->81[label="False"];
+80[label="Node Type: EXPRESSION 80
+
+EXPRESSION:
+challenger.currentExp = challenger.expToNextLevel
+
+IRs:
+REF_225(uint32) -> challenger.currentExp
+REF_226(uint32) -> challenger.expToNextLevel
+REF_225(uint32) (->challenger) := REF_226(uint32)"];
+80->81;
+81[label="Node Type: END_IF 81
+"];
+81->82;
+82[label="Node Type: EXPRESSION 82
+
+EXPRESSION:
+defenderGainExp = ((challengerGainExp * 105 / 100) + 5) / 10
+
+IRs:
+TMP_425(uint32) = challengerGainExp * 105
+TMP_426(uint32) = TMP_425 / 100
+TMP_427(uint32) = TMP_426 + 5
+TMP_428(uint32) = TMP_427 / 10
+defenderGainExp(uint32) := TMP_428(uint32)"];
+82->83;
+83[label="Node Type: IF 83
+
+EXPRESSION:
+defenderGainExp <= 0
+
+IRs:
+TMP_429(bool) = defenderGainExp <= 0
+CONDITION TMP_429"];
+83->84[label="True"];
+83->85[label="False"];
+84[label="Node Type: EXPRESSION 84
+
+EXPRESSION:
+defenderGainExp = 1
+
+IRs:
+defenderGainExp(uint32) := 1(uint256)"];
+84->85;
+85[label="Node Type: END_IF 85
+"];
+85->86;
+86[label="Node Type: EXPRESSION 86
+
+EXPRESSION:
+defender.currentExp += defenderGainExp
+
+IRs:
+REF_227(uint32) -> defender.currentExp
+REF_227(-> defender) = REF_227 + defenderGainExp"];
+86->87;
+87[label="Node Type: IF 87
+
+EXPRESSION:
+defender.currentExp > defender.expToNextLevel
+
+IRs:
+REF_228(uint32) -> defender.currentExp
+REF_229(uint32) -> defender.expToNextLevel
+TMP_430(bool) = REF_228 > REF_229
+CONDITION TMP_430"];
+87->88[label="True"];
+87->89[label="False"];
+88[label="Node Type: EXPRESSION 88
+
+EXPRESSION:
+defender.currentExp = defender.expToNextLevel
+
+IRs:
+REF_230(uint32) -> defender.currentExp
+REF_231(uint32) -> defender.expToNextLevel
+REF_230(uint32) (->defender) := REF_231(uint32)"];
+88->89;
+89[label="Node Type: END_IF 89
+"];
+89->109;
+90[label="Node Type: IF 90
+
+EXPRESSION:
+stats[6] > stats[2]
+
+IRs:
+REF_232(uint256) -> stats[6]
+REF_233(uint256) -> stats[2]
+TMP_431(bool) = REF_232 > REF_233
+CONDITION TMP_431"];
+90->91[label="True"];
+90->108[label="False"];
+91[label="Node Type: EXPRESSION 91
+
+EXPRESSION:
+stats[7] = 1
+
+IRs:
+REF_234(uint256) -> stats[7]
+REF_234(uint256) (->stats) := 1(uint256)"];
+91->92;
+92[label="Node Type: NEW VARIABLE 92
+
+EXPRESSION:
+tempChallengerGain = challengerGainExp * 35 / 100
+
+IRs:
+TMP_432(uint32) = challengerGainExp * 35
+TMP_433(uint32) = TMP_432 / 100
+tempChallengerGain(uint32) := TMP_433(uint32)"];
+92->93;
+93[label="Node Type: IF 93
+
+EXPRESSION:
+tempChallengerGain <= 0
+
+IRs:
+TMP_434(bool) = tempChallengerGain <= 0
+CONDITION TMP_434"];
+93->94[label="True"];
+93->95[label="False"];
+94[label="Node Type: EXPRESSION 94
+
+EXPRESSION:
+tempChallengerGain = 1
+
+IRs:
+tempChallengerGain(uint32) := 1(uint256)"];
+94->95;
+95[label="Node Type: END_IF 95
+"];
+95->96;
+96[label="Node Type: EXPRESSION 96
+
+EXPRESSION:
+challenger.currentExp += tempChallengerGain
+
+IRs:
+REF_235(uint32) -> challenger.currentExp
+REF_235(-> challenger) = REF_235 + tempChallengerGain"];
+96->97;
+97[label="Node Type: IF 97
+
+EXPRESSION:
+challenger.currentExp > challenger.expToNextLevel
+
+IRs:
+REF_236(uint32) -> challenger.currentExp
+REF_237(uint32) -> challenger.expToNextLevel
+TMP_435(bool) = REF_236 > REF_237
+CONDITION TMP_435"];
+97->98[label="True"];
+97->99[label="False"];
+98[label="Node Type: EXPRESSION 98
+
+EXPRESSION:
+challenger.currentExp = challenger.expToNextLevel
+
+IRs:
+REF_238(uint32) -> challenger.currentExp
+REF_239(uint32) -> challenger.expToNextLevel
+REF_238(uint32) (->challenger) := REF_239(uint32)"];
+98->99;
+99[label="Node Type: END_IF 99
+"];
+99->100;
+100[label="Node Type: EXPRESSION 100
+
+EXPRESSION:
+defenderGainExp = challengerGainExp * 30 / 100
+
+IRs:
+TMP_436(uint32) = challengerGainExp * 30
+TMP_437(uint32) = TMP_436 / 100
+defenderGainExp(uint32) := TMP_437(uint32)"];
+100->101;
+101[label="Node Type: IF 101
+
+EXPRESSION:
+defenderGainExp <= 0
+
+IRs:
+TMP_438(bool) = defenderGainExp <= 0
+CONDITION TMP_438"];
+101->102[label="True"];
+101->103[label="False"];
+102[label="Node Type: EXPRESSION 102
+
+EXPRESSION:
+defenderGainExp = 1
+
+IRs:
+defenderGainExp(uint32) := 1(uint256)"];
+102->103;
+103[label="Node Type: END_IF 103
+"];
+103->104;
+104[label="Node Type: EXPRESSION 104
+
+EXPRESSION:
+defender.currentExp += defenderGainExp
+
+IRs:
+REF_240(uint32) -> defender.currentExp
+REF_240(-> defender) = REF_240 + defenderGainExp"];
+104->105;
+105[label="Node Type: IF 105
+
+EXPRESSION:
+defender.currentExp > defender.expToNextLevel
+
+IRs:
+REF_241(uint32) -> defender.currentExp
+REF_242(uint32) -> defender.expToNextLevel
+TMP_439(bool) = REF_241 > REF_242
+CONDITION TMP_439"];
+105->106[label="True"];
+105->107[label="False"];
+106[label="Node Type: EXPRESSION 106
+
+EXPRESSION:
+defender.currentExp = defender.expToNextLevel
+
+IRs:
+REF_243(uint32) -> defender.currentExp
+REF_244(uint32) -> defender.expToNextLevel
+REF_243(uint32) (->defender) := REF_244(uint32)"];
+106->107;
+107[label="Node Type: END_IF 107
+"];
+107->108;
+108[label="Node Type: END_IF 108
+"];
+108->109;
+109[label="Node Type: END_IF 109
+"];
+109->110;
+110[label="Node Type: END_IF 110
+"];
+110->111;
+111[label="Node Type: RETURN 111
+
+EXPRESSION:
+battleSequence
+
+IRs:
+RETURN battleSequence"];
+112[label="Node Type: RETURN 112
+
+EXPRESSION:
+battleSequence
+
+IRs:
+RETURN battleSequence"];
+}
+// Function: 277.sol-Battle-_transferFees(uint256,uint256[],uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+totalDeveloperCut = totalDeveloperCut.add(developerFee)
+
+IRs:
+TMP_440(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['totalDeveloperCut', 'developerFee'] 
+totalDeveloperCut(uint256) := TMP_440(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+remainFee = msg.value.sub(developerFee)
+
+IRs:
+TMP_441(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['msg.value', 'developerFee'] 
+remainFee(uint256) := TMP_441(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+totalGained = 0
+
+IRs:
+totalGained(uint256) := 0(uint256)"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+stats[7] == 1
+
+IRs:
+REF_247(uint256) -> stats[7]
+TMP_442(bool) = REF_247 == 1
+CONDITION TMP_442"];
+4->5[label="True"];
+4->7[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+rankTokens[stats[10]] = rankTokens[stats[10]].add(remainFee)
+
+IRs:
+REF_248(uint256) -> stats[10]
+REF_249(uint256) -> rankTokens[REF_248]
+REF_250(uint256) -> stats[10]
+REF_251(uint256) -> rankTokens[REF_250]
+TMP_443(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_251', 'remainFee'] 
+REF_249(uint256) (->rankTokens) := TMP_443(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+totalRankTokens = totalRankTokens.add(remainFee)
+
+IRs:
+TMP_444(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['totalRankTokens', 'remainFee'] 
+totalRankTokens(uint256) := TMP_444(uint256)"];
+6->36;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+challengerAddress = hogsmashToken.ownerOf(_challengerCardId)
+
+IRs:
+TMP_445(address) = HIGH_LEVEL_CALL, dest:hogsmashToken(HogSmashToken), function:ownerOf, arguments:['_challengerCardId']  
+challengerAddress(address) := TMP_445(address)"];
+7->8;
+8[label="Node Type: IF 8
+
+EXPRESSION:
+stats[7] == 0
+
+IRs:
+REF_255(uint256) -> stats[7]
+TMP_446(bool) = REF_255 == 0
+CONDITION TMP_446"];
+8->9[label="True"];
+8->34[label="False"];
+9[label="Node Type: IF 9
+
+EXPRESSION:
+stats[9] > stats[10]
+
+IRs:
+REF_256(uint256) -> stats[9]
+REF_257(uint256) -> stats[10]
+TMP_447(bool) = REF_256 > REF_257
+CONDITION TMP_447"];
+9->10[label="True"];
+9->20[label="False"];
+10[label="Node Type: IF 10
+
+EXPRESSION:
+rankTokens[stats[10]] > 0
+
+IRs:
+REF_258(uint256) -> stats[10]
+REF_259(uint256) -> rankTokens[REF_258]
+TMP_448(bool) = REF_259 > 0
+CONDITION TMP_448"];
+10->11[label="True"];
+10->14[label="False"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+totalGained = totalGained.add(rankTokens[stats[10]])
+
+IRs:
+REF_261(uint256) -> stats[10]
+REF_262(uint256) -> rankTokens[REF_261]
+TMP_449(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['totalGained', 'REF_262'] 
+totalGained(uint256) := TMP_449(uint256)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+totalRankTokens = totalRankTokens.sub(rankTokens[stats[10]])
+
+IRs:
+REF_264(uint256) -> stats[10]
+REF_265(uint256) -> rankTokens[REF_264]
+TMP_450(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['totalRankTokens', 'REF_265'] 
+totalRankTokens(uint256) := TMP_450(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+rankTokens[stats[10]] = 0
+
+IRs:
+REF_266(uint256) -> stats[10]
+REF_267(uint256) -> rankTokens[REF_266]
+REF_267(uint256) (->rankTokens) := 0(uint256)"];
+13->14;
+14[label="Node Type: END_IF 14
+"];
+14->15;
+15[label="Node Type: IF 15
+
+EXPRESSION:
+rankTokens[stats[9]] > 0
+
+IRs:
+REF_268(uint256) -> stats[9]
+REF_269(uint256) -> rankTokens[REF_268]
+TMP_451(bool) = REF_269 > 0
+CONDITION TMP_451"];
+15->16[label="True"];
+15->19[label="False"];
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+totalGained = totalGained.add(rankTokens[stats[9]])
+
+IRs:
+REF_271(uint256) -> stats[9]
+REF_272(uint256) -> rankTokens[REF_271]
+TMP_452(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['totalGained', 'REF_272'] 
+totalGained(uint256) := TMP_452(uint256)"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+totalRankTokens = totalRankTokens.sub(rankTokens[stats[9]])
+
+IRs:
+REF_274(uint256) -> stats[9]
+REF_275(uint256) -> rankTokens[REF_274]
+TMP_453(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['totalRankTokens', 'REF_275'] 
+totalRankTokens(uint256) := TMP_453(uint256)"];
+17->18;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+rankTokens[stats[9]] = 0
+
+IRs:
+REF_276(uint256) -> stats[9]
+REF_277(uint256) -> rankTokens[REF_276]
+REF_277(uint256) (->rankTokens) := 0(uint256)"];
+18->19;
+19[label="Node Type: END_IF 19
+"];
+19->32;
+20[label="Node Type: IF 20
+
+EXPRESSION:
+stats[9] < 50
+
+IRs:
+REF_278(uint256) -> stats[9]
+TMP_454(bool) = REF_278 < 50
+CONDITION TMP_454"];
+20->21[label="True"];
+20->31[label="False"];
+21[label="Node Type: IF 21
+
+EXPRESSION:
+(stats[10] < 150) && (rankTokens[stats[10]] > 0)
+
+IRs:
+REF_279(uint256) -> stats[10]
+TMP_455(bool) = REF_279 < 150
+REF_280(uint256) -> stats[10]
+REF_281(uint256) -> rankTokens[REF_280]
+TMP_456(bool) = REF_281 > 0
+TMP_457(bool) = TMP_455 && TMP_456
+CONDITION TMP_457"];
+21->22[label="True"];
+21->25[label="False"];
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+totalGained = totalGained.add(rankTokens[stats[10]])
+
+IRs:
+REF_283(uint256) -> stats[10]
+REF_284(uint256) -> rankTokens[REF_283]
+TMP_458(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['totalGained', 'REF_284'] 
+totalGained(uint256) := TMP_458(uint256)"];
+22->23;
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+totalRankTokens = totalRankTokens.sub(rankTokens[stats[10]])
+
+IRs:
+REF_286(uint256) -> stats[10]
+REF_287(uint256) -> rankTokens[REF_286]
+TMP_459(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['totalRankTokens', 'REF_287'] 
+totalRankTokens(uint256) := TMP_459(uint256)"];
+23->24;
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+rankTokens[stats[10]] = 0
+
+IRs:
+REF_288(uint256) -> stats[10]
+REF_289(uint256) -> rankTokens[REF_288]
+REF_289(uint256) (->rankTokens) := 0(uint256)"];
+24->25;
+25[label="Node Type: END_IF 25
+"];
+25->26;
+26[label="Node Type: IF 26
+
+EXPRESSION:
+(stats[10] < 150) && (rankTokens[stats[9]] > 0)
+
+IRs:
+REF_290(uint256) -> stats[10]
+TMP_460(bool) = REF_290 < 150
+REF_291(uint256) -> stats[9]
+REF_292(uint256) -> rankTokens[REF_291]
+TMP_461(bool) = REF_292 > 0
+TMP_462(bool) = TMP_460 && TMP_461
+CONDITION TMP_462"];
+26->27[label="True"];
+26->30[label="False"];
+27[label="Node Type: EXPRESSION 27
+
+EXPRESSION:
+totalGained = totalGained.add(rankTokens[stats[9]])
+
+IRs:
+REF_294(uint256) -> stats[9]
+REF_295(uint256) -> rankTokens[REF_294]
+TMP_463(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['totalGained', 'REF_295'] 
+totalGained(uint256) := TMP_463(uint256)"];
+27->28;
+28[label="Node Type: EXPRESSION 28
+
+EXPRESSION:
+totalRankTokens = totalRankTokens.sub(rankTokens[stats[9]])
+
+IRs:
+REF_297(uint256) -> stats[9]
+REF_298(uint256) -> rankTokens[REF_297]
+TMP_464(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['totalRankTokens', 'REF_298'] 
+totalRankTokens(uint256) := TMP_464(uint256)"];
+28->29;
+29[label="Node Type: EXPRESSION 29
+
+EXPRESSION:
+rankTokens[stats[9]] = 0
+
+IRs:
+REF_299(uint256) -> stats[9]
+REF_300(uint256) -> rankTokens[REF_299]
+REF_300(uint256) (->rankTokens) := 0(uint256)"];
+29->30;
+30[label="Node Type: END_IF 30
+"];
+30->31;
+31[label="Node Type: END_IF 31
+"];
+31->32;
+32[label="Node Type: END_IF 32
+"];
+32->33;
+33[label="Node Type: EXPRESSION 33
+
+EXPRESSION:
+challengerAddress.transfer(totalGained.add(remainFee))
+
+IRs:
+TMP_465(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['totalGained', 'remainFee'] 
+Transfer dest:challengerAddress value:TMP_465"];
+33->35;
+34[label="Node Type: EXPRESSION 34
+
+EXPRESSION:
+challengerAddress.transfer(remainFee)
+
+IRs:
+Transfer dest:challengerAddress value:remainFee"];
+34->35;
+35[label="Node Type: END_IF 35
+"];
+35->36;
+36[label="Node Type: END_IF 36
+"];
+36->37;
+37[label="Node Type: RETURN 37
+
+EXPRESSION:
+totalGained
+
+IRs:
+RETURN totalGained"];
+}
+// Function: 277.sol-Battle-_upgradeLevel(uint256,uint16,uint16,uint16,uint16,uint16,uint16,uint16)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+card = cards[_id]
+
+IRs:
+REF_51(BattleBase.Card) -> cards[_id]
+card(BattleBase.Card) := REF_51(BattleBase.Card)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+extraStats = new uint16[](5)
+
+IRs:
+TMP_254(uint16[])  = new uint16[](5)
+extraStats(uint16[]) = ['TMP_254(uint16[])']"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+numOfSpecials > 0
+
+IRs:
+TMP_255(bool) = numOfSpecials > 0
+CONDITION TMP_255"];
+3->4[label="True"];
+3->36[label="False"];
+4[label="Node Type: IF 4
+
+EXPRESSION:
+card.cardHash % 100 >= 70
+
+IRs:
+REF_52(uint256) -> card.cardHash
+TMP_256(uint256) = REF_52 % 100
+TMP_257(bool) = TMP_256 >= 70
+CONDITION TMP_257"];
+4->5[label="True"];
+4->35[label="False"];
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+cardType = (uint256(card.cardHash / 10000000000)) % 100
+
+IRs:
+REF_53(uint256) -> card.cardHash
+TMP_258(uint256) = REF_53 / 10000000000
+TMP_259 = CONVERT TMP_258 to uint256
+TMP_260(uint256) = TMP_259 % 100
+cardType(uint256) := TMP_260(uint256)"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+cardType < 20
+
+IRs:
+TMP_261(bool) = cardType < 20
+CONDITION TMP_261"];
+6->7[label="True"];
+6->8[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+extraStats[0] += numOfSpecials
+
+IRs:
+REF_54(uint16) -> extraStats[0]
+REF_54(-> extraStats) = REF_54 + numOfSpecials"];
+7->18;
+8[label="Node Type: IF 8
+
+EXPRESSION:
+cardType < 40
+
+IRs:
+TMP_262(bool) = cardType < 40
+CONDITION TMP_262"];
+8->9[label="True"];
+8->10[label="False"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+extraStats[1] += numOfSpecials
+
+IRs:
+REF_55(uint16) -> extraStats[1]
+REF_55(-> extraStats) = REF_55 + numOfSpecials"];
+9->17;
+10[label="Node Type: IF 10
+
+EXPRESSION:
+cardType < 60
+
+IRs:
+TMP_263(bool) = cardType < 60
+CONDITION TMP_263"];
+10->11[label="True"];
+10->12[label="False"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+extraStats[2] += numOfSpecials
+
+IRs:
+REF_56(uint16) -> extraStats[2]
+REF_56(-> extraStats) = REF_56 + numOfSpecials"];
+11->16;
+12[label="Node Type: IF 12
+
+EXPRESSION:
+cardType < 80
+
+IRs:
+TMP_264(bool) = cardType < 80
+CONDITION TMP_264"];
+12->13[label="True"];
+12->14[label="False"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+extraStats[3] += numOfSpecials
+
+IRs:
+REF_57(uint16) -> extraStats[3]
+REF_57(-> extraStats) = REF_57 + numOfSpecials"];
+13->15;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+extraStats[4] += numOfSpecials
+
+IRs:
+REF_58(uint16) -> extraStats[4]
+REF_58(-> extraStats) = REF_58 + numOfSpecials"];
+14->15;
+15[label="Node Type: END_IF 15
+"];
+15->16;
+16[label="Node Type: END_IF 16
+"];
+16->17;
+17[label="Node Type: END_IF 17
+"];
+17->18;
+18[label="Node Type: END_IF 18
+"];
+18->19;
+19[label="Node Type: IF 19
+
+EXPRESSION:
+card.cardHash % 100 >= 90
+
+IRs:
+REF_59(uint256) -> card.cardHash
+TMP_265(uint256) = REF_59 % 100
+TMP_266(bool) = TMP_265 >= 90
+CONDITION TMP_266"];
+19->20[label="True"];
+19->34[label="False"];
+20[label="Node Type: NEW VARIABLE 20
+
+EXPRESSION:
+cardTypeInner = cardType % 10
+
+IRs:
+TMP_267(uint256) = cardType % 10
+cardTypeInner(uint256) := TMP_267(uint256)"];
+20->21;
+21[label="Node Type: IF 21
+
+EXPRESSION:
+cardTypeInner < 2
+
+IRs:
+TMP_268(bool) = cardTypeInner < 2
+CONDITION TMP_268"];
+21->22[label="True"];
+21->23[label="False"];
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+extraStats[0] += numOfSpecials
+
+IRs:
+REF_60(uint16) -> extraStats[0]
+REF_60(-> extraStats) = REF_60 + numOfSpecials"];
+22->33;
+23[label="Node Type: IF 23
+
+EXPRESSION:
+cardTypeInner < 4
+
+IRs:
+TMP_269(bool) = cardTypeInner < 4
+CONDITION TMP_269"];
+23->24[label="True"];
+23->25[label="False"];
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+extraStats[1] += numOfSpecials
+
+IRs:
+REF_61(uint16) -> extraStats[1]
+REF_61(-> extraStats) = REF_61 + numOfSpecials"];
+24->32;
+25[label="Node Type: IF 25
+
+EXPRESSION:
+cardTypeInner < 6
+
+IRs:
+TMP_270(bool) = cardTypeInner < 6
+CONDITION TMP_270"];
+25->26[label="True"];
+25->27[label="False"];
+26[label="Node Type: EXPRESSION 26
+
+EXPRESSION:
+extraStats[2] += numOfSpecials
+
+IRs:
+REF_62(uint16) -> extraStats[2]
+REF_62(-> extraStats) = REF_62 + numOfSpecials"];
+26->31;
+27[label="Node Type: IF 27
+
+EXPRESSION:
+cardTypeInner < 8
+
+IRs:
+TMP_271(bool) = cardTypeInner < 8
+CONDITION TMP_271"];
+27->28[label="True"];
+27->29[label="False"];
+28[label="Node Type: EXPRESSION 28
+
+EXPRESSION:
+extraStats[3] += numOfSpecials
+
+IRs:
+REF_63(uint16) -> extraStats[3]
+REF_63(-> extraStats) = REF_63 + numOfSpecials"];
+28->30;
+29[label="Node Type: EXPRESSION 29
+
+EXPRESSION:
+extraStats[4] += numOfSpecials
+
+IRs:
+REF_64(uint16) -> extraStats[4]
+REF_64(-> extraStats) = REF_64 + numOfSpecials"];
+29->30;
+30[label="Node Type: END_IF 30
+"];
+30->31;
+31[label="Node Type: END_IF 31
+"];
+31->32;
+32[label="Node Type: END_IF 32
+"];
+32->33;
+33[label="Node Type: END_IF 33
+"];
+33->34;
+34[label="Node Type: END_IF 34
+"];
+34->35;
+35[label="Node Type: END_IF 35
+"];
+35->36;
+36[label="Node Type: END_IF 36
+"];
+36->37;
+37[label="Node Type: EXPRESSION 37
+
+EXPRESSION:
+card.attack += (_attackLevelUp + extraStats[0]) * gemAttackConversion
+
+IRs:
+REF_65(uint32) -> card.attack
+REF_66(uint16) -> extraStats[0]
+TMP_272(uint16) = _attackLevelUp + REF_66
+TMP_273(uint16) = TMP_272 * gemAttackConversion
+REF_65(-> card) = REF_65 + TMP_273"];
+37->38;
+38[label="Node Type: EXPRESSION 38
+
+EXPRESSION:
+card.defense += (_defenseLevelUp + extraStats[1]) * gemDefenseConversion
+
+IRs:
+REF_67(uint32) -> card.defense
+REF_68(uint16) -> extraStats[1]
+TMP_274(uint16) = _defenseLevelUp + REF_68
+TMP_275(uint16) = TMP_274 * gemDefenseConversion
+REF_67(-> card) = REF_67 + TMP_275"];
+38->39;
+39[label="Node Type: EXPRESSION 39
+
+EXPRESSION:
+card.hp += (_hpLevelUp + extraStats[2]) * gemHpConversion
+
+IRs:
+REF_69(uint32) -> card.hp
+REF_70(uint16) -> extraStats[2]
+TMP_276(uint16) = _hpLevelUp + REF_70
+TMP_277(uint16) = TMP_276 * gemHpConversion
+REF_69(-> card) = REF_69 + TMP_277"];
+39->40;
+40[label="Node Type: EXPRESSION 40
+
+EXPRESSION:
+card.speed += (_speedLevelUp + extraStats[3]) * gemSpeedConversion
+
+IRs:
+REF_71(uint32) -> card.speed
+REF_72(uint16) -> extraStats[3]
+TMP_278(uint16) = _speedLevelUp + REF_72
+TMP_279(uint16) = TMP_278 * gemSpeedConversion
+REF_71(-> card) = REF_71 + TMP_279"];
+40->41;
+41[label="Node Type: EXPRESSION 41
+
+EXPRESSION:
+card.criticalRate += uint16(_criticalRateLevelUp * gemCriticalRateConversion)
+
+IRs:
+REF_73(uint16) -> card.criticalRate
+TMP_280(uint16) = _criticalRateLevelUp * gemCriticalRateConversion
+TMP_281 = CONVERT TMP_280 to uint16
+REF_73(-> card) = REF_73 + TMP_281"];
+41->42;
+42[label="Node Type: EXPRESSION 42
+
+EXPRESSION:
+card.flexiGems += _flexiGemsLevelUp + extraStats[4]
+
+IRs:
+REF_74(uint32) -> card.flexiGems
+REF_75(uint16) -> extraStats[4]
+TMP_282(uint16) = _flexiGemsLevelUp + REF_75
+REF_74(-> card) = REF_74 + TMP_282"];
+42->43;
+43[label="Node Type: EXPRESSION 43
+
+EXPRESSION:
+card.level += 1
+
+IRs:
+REF_76(uint16) -> card.level
+REF_76(-> card) = REF_76 + 1"];
+43->44;
+44[label="Node Type: EXPRESSION 44
+
+EXPRESSION:
+card.currentExp = 0
+
+IRs:
+REF_77(uint32) -> card.currentExp
+REF_77(uint32) (->card) := 0(uint256)"];
+44->45;
+45[label="Node Type: NEW VARIABLE 45
+
+EXPRESSION:
+tempExpLevel = card.level
+
+IRs:
+REF_78(uint16) -> card.level
+tempExpLevel(uint256) := REF_78(uint16)"];
+45->46;
+46[label="Node Type: IF 46
+
+EXPRESSION:
+tempExpLevel > expToNextLevelArr.length
+
+IRs:
+REF_79 -> LENGTH expToNextLevelArr
+TMP_283(bool) = tempExpLevel > REF_79
+CONDITION TMP_283"];
+46->47[label="True"];
+46->48[label="False"];
+47[label="Node Type: EXPRESSION 47
+
+EXPRESSION:
+tempExpLevel = expToNextLevelArr.length
+
+IRs:
+REF_80 -> LENGTH expToNextLevelArr
+tempExpLevel(uint256) := REF_80(uint256)"];
+47->48;
+48[label="Node Type: END_IF 48
+"];
+48->49;
+49[label="Node Type: EXPRESSION 49
+
+EXPRESSION:
+card.expToNextLevel = expToNextLevelArr[tempExpLevel]
+
+IRs:
+REF_81(uint32) -> card.expToNextLevel
+REF_82(uint32) -> expToNextLevelArr[tempExpLevel]
+REF_81(uint32) (->card) := REF_82(uint32)"];
+}
+// Function: 277.sol-Battle-buyStarterPack()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->7;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(starterPackOnSale == true,starter pack is not on sale)
+
+IRs:
+TMP_483(bool) = starterPackOnSale == True
+TMP_484(None) = SOLIDITY_CALL require(bool,string)(TMP_483,starter pack is not on sale)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(msg.value == starterPackPrice,fee must be equals to starter pack price)
+
+IRs:
+TMP_485(bool) = msg.value == starterPackPrice
+TMP_486(None) = SOLIDITY_CALL require(bool,string)(TMP_485,fee must be equals to starter pack price)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool,string)(address(marketplace) != address(0),marketplace not set)
+
+IRs:
+TMP_487 = CONVERT marketplace to address
+TMP_488 = CONVERT 0 to address
+TMP_489(bool) = TMP_487 != TMP_488
+TMP_490(None) = SOLIDITY_CALL require(bool,string)(TMP_489,marketplace not set)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+totalDeveloperCut = totalDeveloperCut.add(starterPackPrice)
+
+IRs:
+TMP_491(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['totalDeveloperCut', 'starterPackPrice'] 
+totalDeveloperCut(uint256) := TMP_491(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+hogsmashToken.setApprovalForAllByContract(msg.sender,marketplace,true)
+
+IRs:
+HIGH_LEVEL_CALL, dest:hogsmashToken(HogSmashToken), function:setApprovalForAllByContract, arguments:['msg.sender', 'marketplace', 'True']  "];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+_createCard(msg.sender,starterPackCardLevel)
+
+IRs:
+TMP_493(uint256) = INTERNAL_CALL, Battle._createCard(address,uint16)(msg.sender,starterPackCardLevel)
+RETURN TMP_493"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+whenNotPaused()
+
+IRs:
+MODIFIER_CALL, Pausable.whenNotPaused()()"];
+7->1;
+}
+// Function: 277.sol-Battle-challenge(uint256,uint32[5],uint256,uint256,uint16)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->63;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(battleStart != false,battle has not started)
+
+IRs:
+TMP_285(bool) = battleStart != False
+TMP_286(None) = SOLIDITY_CALL require(bool,string)(TMP_285,battle has not started)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(msg.sender != hogsmashToken.ownerOf(_defenderCardId),cannot challenge own cards)
+
+IRs:
+TMP_287(address) = HIGH_LEVEL_CALL, dest:hogsmashToken(HogSmashToken), function:ownerOf, arguments:['_defenderCardId']  
+TMP_288(bool) = msg.sender != TMP_287
+TMP_289(None) = SOLIDITY_CALL require(bool,string)(TMP_288,cannot challenge own cards)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+challenger = cards[_challengerCardId]
+
+IRs:
+REF_84(BattleBase.Card) -> cards[_challengerCardId]
+challenger(BattleBase.Card) := REF_84(BattleBase.Card)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool,string)((_statUp[0] + _statUp[1] + _statUp[2] + _statUp[3] + _statUp[4]) == challenger.flexiGems,flexi gems not used up)
+
+IRs:
+REF_85(uint32) -> _statUp[0]
+REF_86(uint32) -> _statUp[1]
+TMP_290(uint32) = REF_85 + REF_86
+REF_87(uint32) -> _statUp[2]
+TMP_291(uint32) = TMP_290 + REF_87
+REF_88(uint32) -> _statUp[3]
+TMP_292(uint32) = TMP_291 + REF_88
+REF_89(uint32) -> _statUp[4]
+TMP_293(uint32) = TMP_292 + REF_89
+REF_90(uint32) -> challenger.flexiGems
+TMP_294(bool) = TMP_293 == REF_90
+TMP_295(None) = SOLIDITY_CALL require(bool,string)(TMP_294,flexi gems not used up)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+defender = cards[_defenderCardId]
+
+IRs:
+REF_91(BattleBase.Card) -> cards[_defenderCardId]
+defender(BattleBase.Card) := REF_91(BattleBase.Card)"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+defender.rank != _defenderRank
+
+IRs:
+REF_92(uint256) -> defender.rank
+TMP_296(bool) = REF_92 != _defenderRank
+CONDITION TMP_296"];
+6->7[label="True"];
+6->10[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+RejectChallenge(_challengerCardId,_defenderCardId,_defenderRank,1,uint256(block.number))
+
+IRs:
+TMP_297 = CONVERT block.number to uint256
+Emit RejectChallenge(_challengerCardId,_defenderCardId,_defenderRank,1,TMP_297)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+(msg.sender).transfer(msg.value)
+
+IRs:
+Transfer dest:msg.sender value:msg.value"];
+8->9;
+9[label="Node Type: RETURN 9
+"];
+10[label="Node Type: END_IF 10
+"];
+10->11;
+11[label="Node Type: IF 11
+
+EXPRESSION:
+defender.level != _defenderLevel
+
+IRs:
+REF_94(uint16) -> defender.level
+TMP_300(bool) = REF_94 != _defenderLevel
+CONDITION TMP_300"];
+11->12[label="True"];
+11->15[label="False"];
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+RejectChallenge(_challengerCardId,_defenderCardId,_defenderRank,2,uint256(block.number))
+
+IRs:
+TMP_301 = CONVERT block.number to uint256
+Emit RejectChallenge(_challengerCardId,_defenderCardId,_defenderRank,2,TMP_301)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+(msg.sender).transfer(msg.value)
+
+IRs:
+Transfer dest:msg.sender value:msg.value"];
+13->14;
+14[label="Node Type: RETURN 14
+"];
+15[label="Node Type: END_IF 15
+"];
+15->16;
+16[label="Node Type: NEW VARIABLE 16
+
+EXPRESSION:
+requiredChallengeFee = challengeFee
+
+IRs:
+requiredChallengeFee(uint256) := challengeFee(uint256)"];
+16->17;
+17[label="Node Type: IF 17
+
+EXPRESSION:
+defender.rank < 150
+
+IRs:
+REF_96(uint256) -> defender.rank
+TMP_304(bool) = REF_96 < 150
+CONDITION TMP_304"];
+17->18[label="True"];
+17->19[label="False"];
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+requiredChallengeFee = requiredChallengeFee.mul(2)
+
+IRs:
+TMP_305(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['requiredChallengeFee', '2'] 
+requiredChallengeFee(uint256) := TMP_305(uint256)"];
+18->19;
+19[label="Node Type: END_IF 19
+"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+require(bool,string)(msg.value == requiredChallengeFee,fee must be equals to challenge price)
+
+IRs:
+TMP_306(bool) = msg.value == requiredChallengeFee
+TMP_307(None) = SOLIDITY_CALL require(bool,string)(TMP_306,fee must be equals to challenge price)"];
+20->21;
+21[label="Node Type: NEW VARIABLE 21
+
+EXPRESSION:
+developerFee = 0
+
+IRs:
+developerFee(uint256) := 0(uint256)"];
+21->22;
+22[label="Node Type: IF 22
+
+EXPRESSION:
+msg.value > 0
+
+IRs:
+TMP_308(bool) = msg.value > 0
+CONDITION TMP_308"];
+22->23[label="True"];
+22->24[label="False"];
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+developerFee = _calculateFee(msg.value)
+
+IRs:
+TMP_309(uint256) = INTERNAL_CALL, Battle._calculateFee(uint256)(msg.value)
+developerFee(uint256) := TMP_309(uint256)"];
+23->24;
+24[label="Node Type: END_IF 24
+"];
+24->25;
+25[label="Node Type: NEW VARIABLE 25
+
+EXPRESSION:
+stats = new uint256[](14)
+
+IRs:
+TMP_311(uint256[])  = new uint256[](14)
+stats(uint256[]) = ['TMP_311(uint256[])']"];
+25->26;
+26[label="Node Type: EXPRESSION 26
+
+EXPRESSION:
+stats[0] = challenger.attack + (_statUp[0] * gemAttackConversion)
+
+IRs:
+REF_98(uint256) -> stats[0]
+REF_99(uint32) -> challenger.attack
+REF_100(uint32) -> _statUp[0]
+TMP_312(uint32) = REF_100 * gemAttackConversion
+TMP_313(uint32) = REF_99 + TMP_312
+REF_98(uint256) (->stats) := TMP_313(uint32)"];
+26->27;
+27[label="Node Type: EXPRESSION 27
+
+EXPRESSION:
+stats[1] = challenger.defense + (_statUp[1] * gemDefenseConversion)
+
+IRs:
+REF_101(uint256) -> stats[1]
+REF_102(uint32) -> challenger.defense
+REF_103(uint32) -> _statUp[1]
+TMP_314(uint32) = REF_103 * gemDefenseConversion
+TMP_315(uint32) = REF_102 + TMP_314
+REF_101(uint256) (->stats) := TMP_315(uint32)"];
+27->28;
+28[label="Node Type: EXPRESSION 28
+
+EXPRESSION:
+stats[2] = challenger.hp + (_statUp[2] * gemHpConversion)
+
+IRs:
+REF_104(uint256) -> stats[2]
+REF_105(uint32) -> challenger.hp
+REF_106(uint32) -> _statUp[2]
+TMP_316(uint32) = REF_106 * gemHpConversion
+TMP_317(uint32) = REF_105 + TMP_316
+REF_104(uint256) (->stats) := TMP_317(uint32)"];
+28->29;
+29[label="Node Type: EXPRESSION 29
+
+EXPRESSION:
+stats[3] = challenger.speed + (_statUp[3] * gemSpeedConversion)
+
+IRs:
+REF_107(uint256) -> stats[3]
+REF_108(uint32) -> challenger.speed
+REF_109(uint32) -> _statUp[3]
+TMP_318(uint32) = REF_109 * gemSpeedConversion
+TMP_319(uint32) = REF_108 + TMP_318
+REF_107(uint256) (->stats) := TMP_319(uint32)"];
+29->30;
+30[label="Node Type: EXPRESSION 30
+
+EXPRESSION:
+stats[4] = challenger.criticalRate + (_statUp[4] * gemCriticalRateConversion)
+
+IRs:
+REF_110(uint256) -> stats[4]
+REF_111(uint16) -> challenger.criticalRate
+REF_112(uint32) -> _statUp[4]
+TMP_320(uint32) = REF_112 * gemCriticalRateConversion
+TMP_321(uint16) = REF_111 + TMP_320
+REF_110(uint256) (->stats) := TMP_321(uint16)"];
+30->31;
+31[label="Node Type: EXPRESSION 31
+
+EXPRESSION:
+stats[5] = defender.criticalRate
+
+IRs:
+REF_113(uint256) -> stats[5]
+REF_114(uint16) -> defender.criticalRate
+REF_113(uint256) (->stats) := REF_114(uint16)"];
+31->32;
+32[label="Node Type: EXPRESSION 32
+
+EXPRESSION:
+stats[6] = defender.hp
+
+IRs:
+REF_115(uint256) -> stats[6]
+REF_116(uint32) -> defender.hp
+REF_115(uint256) (->stats) := REF_116(uint32)"];
+32->33;
+33[label="Node Type: EXPRESSION 33
+
+EXPRESSION:
+stats[8] = challenger.hp + (_statUp[2] * gemHpConversion)
+
+IRs:
+REF_117(uint256) -> stats[8]
+REF_118(uint32) -> challenger.hp
+REF_119(uint32) -> _statUp[2]
+TMP_322(uint32) = REF_119 * gemHpConversion
+TMP_323(uint32) = REF_118 + TMP_322
+REF_117(uint256) (->stats) := TMP_323(uint32)"];
+33->34;
+34[label="Node Type: EXPRESSION 34
+
+EXPRESSION:
+stats[9] = challenger.rank
+
+IRs:
+REF_120(uint256) -> stats[9]
+REF_121(uint256) -> challenger.rank
+REF_120(uint256) (->stats) := REF_121(uint256)"];
+34->35;
+35[label="Node Type: EXPRESSION 35
+
+EXPRESSION:
+stats[10] = defender.rank
+
+IRs:
+REF_122(uint256) -> stats[10]
+REF_123(uint256) -> defender.rank
+REF_122(uint256) (->stats) := REF_123(uint256)"];
+35->36;
+36[label="Node Type: EXPRESSION 36
+
+EXPRESSION:
+stats[11] = 0
+
+IRs:
+REF_124(uint256) -> stats[11]
+REF_124(uint256) (->stats) := 0(uint256)"];
+36->37;
+37[label="Node Type: EXPRESSION 37
+
+EXPRESSION:
+stats[12] = _challengerCardId
+
+IRs:
+REF_125(uint256) -> stats[12]
+REF_125(uint256) (->stats) := _challengerCardId(uint256)"];
+37->38;
+38[label="Node Type: EXPRESSION 38
+
+EXPRESSION:
+stats[13] = _defenderCardId
+
+IRs:
+REF_126(uint256) -> stats[13]
+REF_126(uint256) (->stats) := _defenderCardId(uint256)"];
+38->39;
+39[label="Node Type: IF 39
+
+EXPRESSION:
+stats[4] > 7000
+
+IRs:
+REF_127(uint256) -> stats[4]
+TMP_324(bool) = REF_127 > 7000
+CONDITION TMP_324"];
+39->40[label="True"];
+39->41[label="False"];
+40[label="Node Type: EXPRESSION 40
+
+EXPRESSION:
+stats[4] = 7000
+
+IRs:
+REF_128(uint256) -> stats[4]
+REF_128(uint256) (->stats) := 7000(uint256)"];
+40->41;
+41[label="Node Type: END_IF 41
+"];
+41->42;
+42[label="Node Type: IF 42
+
+EXPRESSION:
+stats[5] > 7000
+
+IRs:
+REF_129(uint256) -> stats[5]
+TMP_325(bool) = REF_129 > 7000
+CONDITION TMP_325"];
+42->43[label="True"];
+42->44[label="False"];
+43[label="Node Type: EXPRESSION 43
+
+EXPRESSION:
+stats[5] = 7000
+
+IRs:
+REF_130(uint256) -> stats[5]
+REF_130(uint256) (->stats) := 7000(uint256)"];
+43->44;
+44[label="Node Type: END_IF 44
+"];
+44->45;
+45[label="Node Type: IF 45
+
+EXPRESSION:
+((challenger.element - 1) == defender.element) || ((challenger.element == 1) && (defender.element == 3)) || ((challenger.element == 8) && (defender.element == 9))
+
+IRs:
+REF_131(uint8) -> challenger.element
+TMP_326(uint8) = REF_131 - 1
+REF_132(uint8) -> defender.element
+TMP_327(bool) = TMP_326 == REF_132
+REF_133(uint8) -> challenger.element
+TMP_328(bool) = REF_133 == 1
+REF_134(uint8) -> defender.element
+TMP_329(bool) = REF_134 == 3
+TMP_330(bool) = TMP_328 && TMP_329
+TMP_331(bool) = TMP_327 || TMP_330
+REF_135(uint8) -> challenger.element
+TMP_332(bool) = REF_135 == 8
+REF_136(uint8) -> defender.element
+TMP_333(bool) = REF_136 == 9
+TMP_334(bool) = TMP_332 && TMP_333
+TMP_335(bool) = TMP_331 || TMP_334
+CONDITION TMP_335"];
+45->46[label="True"];
+45->50[label="False"];
+46[label="Node Type: EXPRESSION 46
+
+EXPRESSION:
+stats[4] += 3000
+
+IRs:
+REF_137(uint256) -> stats[4]
+REF_137(-> stats) = REF_137 + 3000"];
+46->47;
+47[label="Node Type: IF 47
+
+EXPRESSION:
+stats[4] > 8000
+
+IRs:
+REF_138(uint256) -> stats[4]
+TMP_336(bool) = REF_138 > 8000
+CONDITION TMP_336"];
+47->48[label="True"];
+47->49[label="False"];
+48[label="Node Type: EXPRESSION 48
+
+EXPRESSION:
+stats[4] = 8000
+
+IRs:
+REF_139(uint256) -> stats[4]
+REF_139(uint256) (->stats) := 8000(uint256)"];
+48->49;
+49[label="Node Type: END_IF 49
+"];
+49->50;
+50[label="Node Type: END_IF 50
+"];
+50->51;
+51[label="Node Type: IF 51
+
+EXPRESSION:
+((defender.element - 1) == challenger.element) || ((defender.element == 1) && (challenger.element == 3)) || ((defender.element == 8) && (challenger.element == 9))
+
+IRs:
+REF_140(uint8) -> defender.element
+TMP_337(uint8) = REF_140 - 1
+REF_141(uint8) -> challenger.element
+TMP_338(bool) = TMP_337 == REF_141
+REF_142(uint8) -> defender.element
+TMP_339(bool) = REF_142 == 1
+REF_143(uint8) -> challenger.element
+TMP_340(bool) = REF_143 == 3
+TMP_341(bool) = TMP_339 && TMP_340
+TMP_342(bool) = TMP_338 || TMP_341
+REF_144(uint8) -> defender.element
+TMP_343(bool) = REF_144 == 8
+REF_145(uint8) -> challenger.element
+TMP_344(bool) = REF_145 == 9
+TMP_345(bool) = TMP_343 && TMP_344
+TMP_346(bool) = TMP_342 || TMP_345
+CONDITION TMP_346"];
+51->52[label="True"];
+51->56[label="False"];
+52[label="Node Type: EXPRESSION 52
+
+EXPRESSION:
+stats[5] += 3000
+
+IRs:
+REF_146(uint256) -> stats[5]
+REF_146(-> stats) = REF_146 + 3000"];
+52->53;
+53[label="Node Type: IF 53
+
+EXPRESSION:
+stats[5] > 8000
+
+IRs:
+REF_147(uint256) -> stats[5]
+TMP_347(bool) = REF_147 > 8000
+CONDITION TMP_347"];
+53->54[label="True"];
+53->55[label="False"];
+54[label="Node Type: EXPRESSION 54
+
+EXPRESSION:
+stats[5] = 8000
+
+IRs:
+REF_148(uint256) -> stats[5]
+REF_148(uint256) (->stats) := 8000(uint256)"];
+54->55;
+55[label="Node Type: END_IF 55
+"];
+55->56;
+56[label="Node Type: END_IF 56
+"];
+56->57;
+57[label="Node Type: NEW VARIABLE 57
+
+EXPRESSION:
+battleSequence = _simulateBattle(challenger,defender,stats)
+
+IRs:
+TMP_348(uint256) = INTERNAL_CALL, Battle._simulateBattle(BattleBase.Card,BattleBase.Card,uint256[])(challenger,defender,stats)
+battleSequence(uint256) := TMP_348(uint256)"];
+57->58;
+58[label="Node Type: EXPRESSION 58
+
+EXPRESSION:
+stats[11] = _transferFees(_challengerCardId,stats,developerFee)
+
+IRs:
+REF_149(uint256) -> stats[11]
+TMP_349(uint256) = INTERNAL_CALL, Battle._transferFees(uint256,uint256[],uint256)(_challengerCardId,stats,developerFee)
+REF_149(uint256) (->stats) := TMP_349(uint256)"];
+58->59;
+59[label="Node Type: EXPRESSION 59
+
+EXPRESSION:
+BattleHistory(historyId,uint8(stats[7]),uint64(now),uint256(battleSequence),uint256(block.number),uint256(stats[11]))
+
+IRs:
+REF_150(uint256) -> stats[7]
+TMP_350 = CONVERT REF_150 to uint8
+TMP_351 = CONVERT now to uint64
+TMP_352 = CONVERT battleSequence to uint256
+TMP_353 = CONVERT block.number to uint256
+REF_151(uint256) -> stats[11]
+TMP_354 = CONVERT REF_151 to uint256
+Emit BattleHistory(historyId,TMP_350,TMP_351,TMP_352,TMP_353,TMP_354)"];
+59->60;
+60[label="Node Type: EXPRESSION 60
+
+EXPRESSION:
+BattleHistoryChallenger(historyId,uint256(_challengerCardId),uint8(challenger.element),uint16(challenger.level),uint32(stats[0]),uint32(stats[1]),uint32(stats[8]),uint32(stats[3]),uint16(stats[4]),uint256(stats[9]))
+
+IRs:
+TMP_356 = CONVERT _challengerCardId to uint256
+REF_152(uint8) -> challenger.element
+TMP_357 = CONVERT REF_152 to uint8
+REF_153(uint16) -> challenger.level
+TMP_358 = CONVERT REF_153 to uint16
+REF_154(uint256) -> stats[0]
+TMP_359 = CONVERT REF_154 to uint32
+REF_155(uint256) -> stats[1]
+TMP_360 = CONVERT REF_155 to uint32
+REF_156(uint256) -> stats[8]
+TMP_361 = CONVERT REF_156 to uint32
+REF_157(uint256) -> stats[3]
+TMP_362 = CONVERT REF_157 to uint32
+REF_158(uint256) -> stats[4]
+TMP_363 = CONVERT REF_158 to uint16
+REF_159(uint256) -> stats[9]
+TMP_364 = CONVERT REF_159 to uint256
+Emit BattleHistoryChallenger(historyId,TMP_356,TMP_357,TMP_358,TMP_359,TMP_360,TMP_361,TMP_362,TMP_363,TMP_364)"];
+60->61;
+61[label="Node Type: EXPRESSION 61
+
+EXPRESSION:
+BattleHistoryDefender(historyId,uint256(_defenderCardId),uint8(defender.element),uint16(defender.level),uint32(defender.attack),uint32(defender.defense),uint32(defender.hp),uint32(defender.speed),uint16(stats[5]),uint256(stats[10]))
+
+IRs:
+TMP_366 = CONVERT _defenderCardId to uint256
+REF_160(uint8) -> defender.element
+TMP_367 = CONVERT REF_160 to uint8
+REF_161(uint16) -> defender.level
+TMP_368 = CONVERT REF_161 to uint16
+REF_162(uint32) -> defender.attack
+TMP_369 = CONVERT REF_162 to uint32
+REF_163(uint32) -> defender.defense
+TMP_370 = CONVERT REF_163 to uint32
+REF_164(uint32) -> defender.hp
+TMP_371 = CONVERT REF_164 to uint32
+REF_165(uint32) -> defender.speed
+TMP_372 = CONVERT REF_165 to uint32
+REF_166(uint256) -> stats[5]
+TMP_373 = CONVERT REF_166 to uint16
+REF_167(uint256) -> stats[10]
+TMP_374 = CONVERT REF_167 to uint256
+Emit BattleHistoryDefender(historyId,TMP_366,TMP_367,TMP_368,TMP_369,TMP_370,TMP_371,TMP_372,TMP_373,TMP_374)"];
+61->62;
+62[label="Node Type: EXPRESSION 62
+
+EXPRESSION:
+historyId = historyId.add(1)
+
+IRs:
+TMP_376(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['historyId', '1'] 
+historyId(uint256) := TMP_376(uint256)"];
+63[label="Node Type: EXPRESSION 63
+
+EXPRESSION:
+whenNotPaused()
+
+IRs:
+MODIFIER_CALL, Pausable.whenNotPaused()()"];
+63->64;
+64[label="Node Type: EXPRESSION 64
+
+EXPRESSION:
+onlyOwnerOf(_challengerCardId)
+
+IRs:
+MODIFIER_CALL, Battle.onlyOwnerOf(uint256)(_challengerCardId)"];
+64->1;
+}
+// Function: 277.sol-Battle-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 277.sol-Battle-constructor(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+candidateContract = HogSmashToken(_tokenAddress)
+
+IRs:
+TMP_141 = CONVERT _tokenAddress to HogSmashToken
+candidateContract(HogSmashToken) := TMP_141(HogSmashToken)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+hogsmashToken = candidateContract
+
+IRs:
+hogsmashToken(HogSmashToken) := candidateContract(HogSmashToken)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+starterPackPrice = 30000000000000000
+
+IRs:
+starterPackPrice(uint256) := 30000000000000000(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+starterPackCardLevel = 5
+
+IRs:
+starterPackCardLevel(uint16) := 5(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+starterPackOnSale = true
+
+IRs:
+starterPackOnSale(bool) := True(bool)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+challengeFee = 10000000000000000
+
+IRs:
+challengeFee(uint256) := 10000000000000000(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+upgradeFee = 10000000000000000
+
+IRs:
+upgradeFee(uint256) := 10000000000000000(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+avatarFee = 50000000000000000
+
+IRs:
+avatarFee(uint256) := 50000000000000000(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+developerCut = 375
+
+IRs:
+developerCut(uint256) := 375(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+referrerFee = 2000
+
+IRs:
+referrerFee(uint256) := 2000(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+cardDrawPrice = 15000000000000000
+
+IRs:
+cardDrawPrice(uint256) := 15000000000000000(uint256)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+battleStart = true
+
+IRs:
+battleStart(bool) := True(bool)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+paused = false
+
+IRs:
+paused(bool) := False(bool)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+totalDeveloperCut = 0
+
+IRs:
+totalDeveloperCut(uint256) := 0(uint256)"];
+}
+// Function: 277.sol-Battle-distributeTokensToRank(uint256[],uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->10;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(msg.value == (tokensPerRank * ranks.length),tokens must be enough to distribute among ranks)
+
+IRs:
+REF_328 -> LENGTH ranks
+TMP_550(uint256) = tokensPerRank * REF_328
+TMP_551(bool) = msg.value == TMP_550
+TMP_552(None) = SOLIDITY_CALL require(bool,string)(TMP_551,tokens must be enough to distribute among ranks)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->5;
+3[label="Node Type: BEGIN_LOOP 3
+"];
+3->6;
+4[label="Node Type: END_LOOP 4
+"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+5->3;
+6[label="Node Type: IF_LOOP 6
+
+EXPRESSION:
+i < ranks.length
+
+IRs:
+REF_329 -> LENGTH ranks
+TMP_553(bool) = i < REF_329
+CONDITION TMP_553"];
+6->7[label="True"];
+6->4[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+rankTokens[ranks[i]] = rankTokens[ranks[i]].add(tokensPerRank)
+
+IRs:
+REF_330(uint256) -> ranks[i]
+REF_331(uint256) -> rankTokens[REF_330]
+REF_332(uint256) -> ranks[i]
+REF_333(uint256) -> rankTokens[REF_332]
+TMP_554(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_333', 'tokensPerRank'] 
+REF_331(uint256) (->rankTokens) := TMP_554(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+totalRankTokens = totalRankTokens.add(tokensPerRank)
+
+IRs:
+TMP_555(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['totalRankTokens', 'tokensPerRank'] 
+totalRankTokens(uint256) := TMP_555(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_556(uint256) := i(uint256)
+i(uint256) = i + 1"];
+9->6;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+10->1;
+}
+// Function: 277.sol-Battle-draftNewCard()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(msg.value == cardDrawPrice,fee must be equal to draw price)
+
+IRs:
+TMP_158(bool) = msg.value == cardDrawPrice
+TMP_159(None) = SOLIDITY_CALL require(bool,string)(TMP_158,fee must be equal to draw price)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(address(marketplace) != address(0),marketplace not set)
+
+IRs:
+TMP_160 = CONVERT marketplace to address
+TMP_161 = CONVERT 0 to address
+TMP_162(bool) = TMP_160 != TMP_161
+TMP_163(None) = SOLIDITY_CALL require(bool,string)(TMP_162,marketplace not set)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+hogsmashToken.setApprovalForAllByContract(msg.sender,marketplace,true)
+
+IRs:
+HIGH_LEVEL_CALL, dest:hogsmashToken(HogSmashToken), function:setApprovalForAllByContract, arguments:['msg.sender', 'marketplace', 'True']  "];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+totalDeveloperCut = totalDeveloperCut.add(cardDrawPrice)
+
+IRs:
+TMP_165(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['totalDeveloperCut', 'cardDrawPrice'] 
+totalDeveloperCut(uint256) := TMP_165(uint256)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+_createCard(msg.sender,1)
+
+IRs:
+TMP_166(uint256) = INTERNAL_CALL, Battle._createCard(address,uint16)(msg.sender,1)
+RETURN TMP_166"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+whenNotPaused()
+
+IRs:
+MODIFIER_CALL, Pausable.whenNotPaused()()"];
+6->1;
+}
+// Function: 277.sol-Battle-draftNewCardWithReferrer(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->12;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(msg.value == cardDrawPrice,fee must be equal to draw price)
+
+IRs:
+TMP_168(bool) = msg.value == cardDrawPrice
+TMP_169(None) = SOLIDITY_CALL require(bool,string)(TMP_168,fee must be equal to draw price)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(address(marketplace) != address(0),marketplace not set)
+
+IRs:
+TMP_170 = CONVERT marketplace to address
+TMP_171 = CONVERT 0 to address
+TMP_172(bool) = TMP_170 != TMP_171
+TMP_173(None) = SOLIDITY_CALL require(bool,string)(TMP_172,marketplace not set)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+hogsmashToken.setApprovalForAllByContract(msg.sender,marketplace,true)
+
+IRs:
+HIGH_LEVEL_CALL, dest:hogsmashToken(HogSmashToken), function:setApprovalForAllByContract, arguments:['msg.sender', 'marketplace', 'True']  "];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+cardId = _createCard(msg.sender,1)
+
+IRs:
+TMP_175(uint256) = INTERNAL_CALL, Battle._createCard(address,uint16)(msg.sender,1)
+cardId(uint256) := TMP_175(uint256)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+(referrer != address(0)) && (referrerFee != 0) && (referrer != msg.sender) && (hogsmashToken.balanceOf(referrer) > 0)
+
+IRs:
+TMP_176 = CONVERT 0 to address
+TMP_177(bool) = referrer != TMP_176
+TMP_178(bool) = referrerFee != 0
+TMP_179(bool) = TMP_177 && TMP_178
+TMP_180(bool) = referrer != msg.sender
+TMP_181(bool) = TMP_179 && TMP_180
+TMP_182(uint256) = HIGH_LEVEL_CALL, dest:hogsmashToken(HogSmashToken), function:balanceOf, arguments:['referrer']  
+TMP_183(bool) = TMP_182 > 0
+TMP_184(bool) = TMP_181 && TMP_183
+CONDITION TMP_184"];
+5->6[label="True"];
+5->10[label="False"];
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+referrerCut = msg.value.mul(referrerFee) / 10000
+
+IRs:
+TMP_185(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['msg.value', 'referrerFee'] 
+TMP_186(uint256) = TMP_185 / 10000
+referrerCut(uint256) := TMP_186(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+require(bool,string)(referrerCut <= msg.value,referre cut cannot be larger than fee)
+
+IRs:
+TMP_187(bool) = referrerCut <= msg.value
+TMP_188(None) = SOLIDITY_CALL require(bool,string)(TMP_187,referre cut cannot be larger than fee)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+referrer.transfer(referrerCut)
+
+IRs:
+Transfer dest:referrer value:referrerCut"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+totalDeveloperCut = totalDeveloperCut.add(cardDrawPrice.sub(referrerCut))
+
+IRs:
+TMP_190(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['cardDrawPrice', 'referrerCut'] 
+TMP_191(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['totalDeveloperCut', 'TMP_190'] 
+totalDeveloperCut(uint256) := TMP_191(uint256)"];
+9->11;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+totalDeveloperCut = totalDeveloperCut.add(cardDrawPrice)
+
+IRs:
+TMP_192(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['totalDeveloperCut', 'cardDrawPrice'] 
+totalDeveloperCut(uint256) := TMP_192(uint256)"];
+10->11;
+11[label="Node Type: END_IF 11
+"];
+11->13;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+whenNotPaused()
+
+IRs:
+MODIFIER_CALL, Pausable.whenNotPaused()()"];
+12->1;
+13[label="Node Type: RETURN 13
+
+EXPRESSION:
+cardId
+
+IRs:
+RETURN cardId"];
+}
+// Function: 277.sol-Battle-generateHash()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+hash = uint256((getRandom() % 1000000000000) / 10000000000)
+
+IRs:
+TMP_510(uint256) = INTERNAL_CALL, Random.getRandom()()
+TMP_511(uint256) = TMP_510 % 1000000000000
+TMP_512(uint256) = TMP_511 / 10000000000
+TMP_513 = CONVERT TMP_512 to uint256
+hash(uint256) := TMP_513(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+hash = hash.mul(10000000000)
+
+IRs:
+TMP_514(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['hash', '10000000000'] 
+hash(uint256) := TMP_514(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+tempHash = ((getRandom() % (eventCardRangeMax - eventCardRangeMin + 1)) + eventCardRangeMin) * 100
+
+IRs:
+TMP_515(uint256) = INTERNAL_CALL, Random.getRandom()()
+TMP_516(uint32) = eventCardRangeMax - eventCardRangeMin
+TMP_517(uint32) = TMP_516 + 1
+TMP_518(uint256) = TMP_515 % TMP_517
+TMP_519(uint256) = TMP_518 + eventCardRangeMin
+TMP_520(uint256) = TMP_519 * 100
+tempHash(uint256) := TMP_520(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+hash = hash.add(tempHash)
+
+IRs:
+TMP_521(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['hash', 'tempHash'] 
+hash(uint256) := TMP_521(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+tempHash = getRandom() % 100
+
+IRs:
+TMP_522(uint256) = INTERNAL_CALL, Random.getRandom()()
+TMP_523(uint256) = TMP_522 % 100
+tempHash(uint256) := TMP_523(uint256)"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+tempHash < goldPercentage
+
+IRs:
+TMP_524(bool) = tempHash < goldPercentage
+CONDITION TMP_524"];
+6->7[label="True"];
+6->8[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+hash = hash.add(90)
+
+IRs:
+TMP_525(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['hash', '90'] 
+hash(uint256) := TMP_525(uint256)"];
+7->12;
+8[label="Node Type: IF 8
+
+EXPRESSION:
+tempHash < (goldPercentage + silverPercentage)
+
+IRs:
+TMP_526(uint8) = goldPercentage + silverPercentage
+TMP_527(bool) = tempHash < TMP_526
+CONDITION TMP_527"];
+8->9[label="True"];
+8->10[label="False"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+hash = hash.add(70)
+
+IRs:
+TMP_528(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['hash', '70'] 
+hash(uint256) := TMP_528(uint256)"];
+9->11;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+hash = hash.add(50)
+
+IRs:
+TMP_529(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['hash', '50'] 
+hash(uint256) := TMP_529(uint256)"];
+10->11;
+11[label="Node Type: END_IF 11
+"];
+11->12;
+12[label="Node Type: END_IF 12
+"];
+12->13;
+13[label="Node Type: RETURN 13
+
+EXPRESSION:
+hash
+
+IRs:
+RETURN hash"];
+}
+// Function: 277.sol-Battle-generateInitialCard(uint16)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(address(marketplace) != address(0),marketplace not set)
+
+IRs:
+TMP_540 = CONVERT marketplace to address
+TMP_541 = CONVERT 0 to address
+TMP_542(bool) = TMP_540 != TMP_541
+TMP_543(None) = SOLIDITY_CALL require(bool,string)(TMP_542,marketplace not set)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(_cardLevel <= 20,maximum level cannot exceed 20)
+
+IRs:
+TMP_544(bool) = _cardLevel <= 20
+TMP_545(None) = SOLIDITY_CALL require(bool,string)(TMP_544,maximum level cannot exceed 20)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+hogsmashToken.setApprovalForAllByContract(msg.sender,marketplace,true)
+
+IRs:
+HIGH_LEVEL_CALL, dest:hogsmashToken(HogSmashToken), function:setApprovalForAllByContract, arguments:['msg.sender', 'marketplace', 'True']  "];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+_createCard(msg.sender,_cardLevel)
+
+IRs:
+TMP_547(uint256) = INTERNAL_CALL, Battle._createCard(address,uint16)(msg.sender,_cardLevel)
+RETURN TMP_547"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+whenNotPaused()
+
+IRs:
+MODIFIER_CALL, Pausable.whenNotPaused()()"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+6->1;
+}
+// Function: 277.sol-Battle-getCard(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+cardId = _id
+
+IRs:
+cardId(uint256) := _id(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = hogsmashToken.ownerOf(_id)
+
+IRs:
+TMP_142(address) = HIGH_LEVEL_CALL, dest:hogsmashToken(HogSmashToken), function:ownerOf, arguments:['_id']  
+owner(address) := TMP_142(address)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+card = cards[_id]
+
+IRs:
+REF_5(BattleBase.Card) -> cards[_id]
+card(BattleBase.Card) := REF_5(BattleBase.Card)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+tempStats = new uint32[](6)
+
+IRs:
+TMP_144(uint32[])  = new uint32[](6)
+tempStats(uint32[]) = ['TMP_144(uint32[])']"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+element = uint8(card.element)
+
+IRs:
+REF_6(uint8) -> card.element
+TMP_145 = CONVERT REF_6 to uint8
+element(uint8) := TMP_145(uint8)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+level = uint16(card.level)
+
+IRs:
+REF_7(uint16) -> card.level
+TMP_146 = CONVERT REF_7 to uint16
+level(uint16) := TMP_146(uint16)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+tempStats[0] = uint32(card.attack)
+
+IRs:
+REF_8(uint32) -> tempStats[0]
+REF_9(uint32) -> card.attack
+TMP_147 = CONVERT REF_9 to uint32
+REF_8(uint32) (->tempStats) := TMP_147(uint32)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+tempStats[1] = uint32(card.defense)
+
+IRs:
+REF_10(uint32) -> tempStats[1]
+REF_11(uint32) -> card.defense
+TMP_148 = CONVERT REF_11 to uint32
+REF_10(uint32) (->tempStats) := TMP_148(uint32)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+tempStats[2] = uint32(card.hp)
+
+IRs:
+REF_12(uint32) -> tempStats[2]
+REF_13(uint32) -> card.hp
+TMP_149 = CONVERT REF_13 to uint32
+REF_12(uint32) (->tempStats) := TMP_149(uint32)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+tempStats[3] = uint32(card.speed)
+
+IRs:
+REF_14(uint32) -> tempStats[3]
+REF_15(uint32) -> card.speed
+TMP_150 = CONVERT REF_15 to uint32
+REF_14(uint32) (->tempStats) := TMP_150(uint32)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+tempStats[4] = uint16(card.criticalRate)
+
+IRs:
+REF_16(uint32) -> tempStats[4]
+REF_17(uint16) -> card.criticalRate
+TMP_151 = CONVERT REF_17 to uint16
+REF_16(uint32) (->tempStats) := TMP_151(uint16)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+tempStats[5] = uint32(card.flexiGems)
+
+IRs:
+REF_18(uint32) -> tempStats[5]
+REF_19(uint32) -> card.flexiGems
+TMP_152 = CONVERT REF_19 to uint32
+REF_18(uint32) (->tempStats) := TMP_152(uint32)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+stats = tempStats
+
+IRs:
+stats(uint32[]) := tempStats(uint32[])"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+currentExp = uint32(card.currentExp)
+
+IRs:
+REF_20(uint32) -> card.currentExp
+TMP_153 = CONVERT REF_20 to uint32
+currentExp(uint32) := TMP_153(uint32)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+expToNextLevel = uint32(card.expToNextLevel)
+
+IRs:
+REF_21(uint32) -> card.expToNextLevel
+TMP_154 = CONVERT REF_21 to uint32
+expToNextLevel(uint32) := TMP_154(uint32)"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+cardHash = uint256(card.cardHash)
+
+IRs:
+REF_22(uint256) -> card.cardHash
+TMP_155 = CONVERT REF_22 to uint256
+cardHash(uint256) := TMP_155(uint256)"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+createdDatetime = uint64(card.createdDatetime)
+
+IRs:
+REF_23(uint64) -> card.createdDatetime
+TMP_156 = CONVERT REF_23 to uint64
+createdDatetime(uint64) := TMP_156(uint64)"];
+17->18;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+rank = uint256(card.rank)
+
+IRs:
+REF_24(uint256) -> card.rank
+TMP_157 = CONVERT REF_24 to uint256
+rank(uint256) := TMP_157(uint256)"];
+18->19;
+19[label="Node Type: RETURN 19
+
+EXPRESSION:
+(cardId,owner,element,level,stats,currentExp,expToNextLevel,cardHash,createdDatetime,rank)
+
+IRs:
+RETURN cardId,owner,element,level,stats,currentExp,expToNextLevel,cardHash,createdDatetime,rank"];
+}
+// Function: 277.sol-Battle-getCardIdByRank(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+ranking[_rank]
+
+IRs:
+REF_25(uint256) -> ranking[_rank]
+RETURN REF_25"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+cardId
+
+IRs:
+RETURN cardId"];
+}
+// Function: 277.sol-Battle-getRandom()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+(pSeed = uint256(keccak256()(abi.encodePacked(pSeed,blockhash(uint256)(block.number - 1),blockhash(uint256)(block.number - 3),blockhash(uint256)(block.number - 5),blockhash(uint256)(block.number - 7)))))
+
+IRs:
+TMP_97(uint256) = block.number - 1
+TMP_98(uint256) = SOLIDITY_CALL blockhash(uint256)(TMP_97)
+TMP_99(uint256) = block.number - 3
+TMP_100(uint256) = SOLIDITY_CALL blockhash(uint256)(TMP_99)
+TMP_101(uint256) = block.number - 5
+TMP_102(uint256) = SOLIDITY_CALL blockhash(uint256)(TMP_101)
+TMP_103(uint256) = block.number - 7
+TMP_104(uint256) = SOLIDITY_CALL blockhash(uint256)(TMP_103)
+TMP_105(bytes) = SOLIDITY_CALL abi.encodePacked()(pSeed,TMP_98,TMP_100,TMP_102,TMP_104)
+TMP_106(bytes32) = SOLIDITY_CALL keccak256()(TMP_105)
+TMP_107 = CONVERT TMP_106 to uint256
+pSeed(uint256) := TMP_107(uint256)
+RETURN pSeed"];
+}
+// Function: 277.sol-Battle-getSettingValues()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_upgradeGems = uint8(upgradeGems)
+
+IRs:
+TMP_133 = CONVERT upgradeGems to uint8
+_upgradeGems(uint8) := TMP_133(uint8)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_upgradeGemsSpecial = uint8(upgradeGemsSpecial)
+
+IRs:
+TMP_134 = CONVERT upgradeGemsSpecial to uint8
+_upgradeGemsSpecial(uint8) := TMP_134(uint8)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_gemAttackConversion = uint16(gemAttackConversion)
+
+IRs:
+TMP_135 = CONVERT gemAttackConversion to uint16
+_gemAttackConversion(uint16) := TMP_135(uint16)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+_gemDefenseConversion = uint16(gemDefenseConversion)
+
+IRs:
+TMP_136 = CONVERT gemDefenseConversion to uint16
+_gemDefenseConversion(uint16) := TMP_136(uint16)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+_gemHpConversion = uint16(gemHpConversion)
+
+IRs:
+TMP_137 = CONVERT gemHpConversion to uint16
+_gemHpConversion(uint16) := TMP_137(uint16)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+_gemSpeedConversion = uint16(gemSpeedConversion)
+
+IRs:
+TMP_138 = CONVERT gemSpeedConversion to uint16
+_gemSpeedConversion(uint16) := TMP_138(uint16)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+_gemCriticalRateConversion = uint16(gemCriticalRateConversion)
+
+IRs:
+TMP_139 = CONVERT gemCriticalRateConversion to uint16
+_gemCriticalRateConversion(uint16) := TMP_139(uint16)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+_maxBattleRounds = uint8(maxBattleRounds)
+
+IRs:
+TMP_140 = CONVERT maxBattleRounds to uint8
+_maxBattleRounds(uint8) := TMP_140(uint8)"];
+8->9;
+9[label="Node Type: RETURN 9
+
+EXPRESSION:
+(_upgradeGems,_upgradeGemsSpecial,_gemAttackConversion,_gemDefenseConversion,_gemHpConversion,_gemSpeedConversion,_gemCriticalRateConversion,_maxBattleRounds)
+
+IRs:
+RETURN _upgradeGems,_upgradeGemsSpecial,_gemAttackConversion,_gemDefenseConversion,_gemHpConversion,_gemSpeedConversion,_gemCriticalRateConversion,_maxBattleRounds"];
+}
+// Function: 277.sol-Battle-getTotalDeveloperCut()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+totalDeveloperCut
+
+IRs:
+RETURN totalDeveloperCut"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 277.sol-Battle-getTotalRankTokens()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+totalRankTokens
+
+IRs:
+RETURN totalRankTokens"];
+}
+// Function: 277.sol-Battle-levelUp(uint256,uint16,uint16,uint16,uint16,uint16,uint16)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->23;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(_attackLevelUp >= 0 && _defenseLevelUp >= 0 && _hpLevelUp >= 0 && _speedLevelUp >= 0 && _criticalRateLevelUp >= 0 && _flexiGemsLevelUp >= 0,level up attributes must be more than 0)
+
+IRs:
+TMP_194(bool) = _attackLevelUp >= 0
+TMP_195(bool) = _defenseLevelUp >= 0
+TMP_196(bool) = TMP_194 && TMP_195
+TMP_197(bool) = _hpLevelUp >= 0
+TMP_198(bool) = TMP_196 && TMP_197
+TMP_199(bool) = _speedLevelUp >= 0
+TMP_200(bool) = TMP_198 && TMP_199
+TMP_201(bool) = _criticalRateLevelUp >= 0
+TMP_202(bool) = TMP_200 && TMP_201
+TMP_203(bool) = _flexiGemsLevelUp >= 0
+TMP_204(bool) = TMP_202 && TMP_203
+TMP_205(None) = SOLIDITY_CALL require(bool,string)(TMP_204,level up attributes must be more than 0)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(msg.value == upgradeFee,fee must be equals to upgrade price)
+
+IRs:
+TMP_206(bool) = msg.value == upgradeFee
+TMP_207(None) = SOLIDITY_CALL require(bool,string)(TMP_206,fee must be equals to upgrade price)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+card = cards[_id]
+
+IRs:
+REF_35(BattleBase.Card) -> cards[_id]
+card(BattleBase.Card) := REF_35(BattleBase.Card)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool,string)(card.currentExp == card.expToNextLevel,exp is not max yet for level up)
+
+IRs:
+REF_36(uint32) -> card.currentExp
+REF_37(uint32) -> card.expToNextLevel
+TMP_208(bool) = REF_36 == REF_37
+TMP_209(None) = SOLIDITY_CALL require(bool,string)(TMP_208,exp is not max yet for level up)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool,string)(card.level < 65535,card level maximum has reached)
+
+IRs:
+REF_38(uint16) -> card.level
+TMP_210(bool) = REF_38 < 65535
+TMP_211(None) = SOLIDITY_CALL require(bool,string)(TMP_210,card level maximum has reached)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+require(bool,string)((card.criticalRate + (_criticalRateLevelUp * gemCriticalRateConversion)) <= 7000,critical rate max of 70 has reached)
+
+IRs:
+REF_39(uint16) -> card.criticalRate
+TMP_212(uint16) = _criticalRateLevelUp * gemCriticalRateConversion
+TMP_213(uint16) = REF_39 + TMP_212
+TMP_214(bool) = TMP_213 <= 7000
+TMP_215(None) = SOLIDITY_CALL require(bool,string)(TMP_214,critical rate max of 70 has reached)"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+totalInputGems = _attackLevelUp + _defenseLevelUp + _hpLevelUp
+
+IRs:
+TMP_216(uint16) = _attackLevelUp + _defenseLevelUp
+TMP_217(uint16) = TMP_216 + _hpLevelUp
+totalInputGems(uint256) := TMP_217(uint16)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+totalInputGems += _speedLevelUp + _criticalRateLevelUp + _flexiGemsLevelUp
+
+IRs:
+TMP_218(uint16) = _speedLevelUp + _criticalRateLevelUp
+TMP_219(uint16) = TMP_218 + _flexiGemsLevelUp
+totalInputGems(uint256) = totalInputGems + TMP_219"];
+8->9;
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+numOfSpecials = 0
+
+IRs:
+numOfSpecials(uint16) := 0(uint256)"];
+9->10;
+10[label="Node Type: IF 10
+
+EXPRESSION:
+(card.level > 1) && (card.attack == 1) && (card.defense == 1) && (card.hp == 3) && (card.speed == 1) && (card.criticalRate == 25) && (card.flexiGems == 1)
+
+IRs:
+REF_40(uint16) -> card.level
+TMP_220(bool) = REF_40 > 1
+REF_41(uint32) -> card.attack
+TMP_221(bool) = REF_41 == 1
+TMP_222(bool) = TMP_220 && TMP_221
+REF_42(uint32) -> card.defense
+TMP_223(bool) = REF_42 == 1
+TMP_224(bool) = TMP_222 && TMP_223
+REF_43(uint32) -> card.hp
+TMP_225(bool) = REF_43 == 3
+TMP_226(bool) = TMP_224 && TMP_225
+REF_44(uint32) -> card.speed
+TMP_227(bool) = REF_44 == 1
+TMP_228(bool) = TMP_226 && TMP_227
+REF_45(uint16) -> card.criticalRate
+TMP_229(bool) = REF_45 == 25
+TMP_230(bool) = TMP_228 && TMP_229
+REF_46(uint32) -> card.flexiGems
+TMP_231(bool) = REF_46 == 1
+TMP_232(bool) = TMP_230 && TMP_231
+CONDITION TMP_232"];
+10->11[label="True"];
+10->14[label="False"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+numOfSpecials = (card.level + 1) / 5
+
+IRs:
+REF_47(uint16) -> card.level
+TMP_233(uint16) = REF_47 + 1
+TMP_234(uint16) = TMP_233 / 5
+numOfSpecials(uint16) := TMP_234(uint16)"];
+11->12;
+12[label="Node Type: NEW VARIABLE 12
+
+EXPRESSION:
+totalGems = (numOfSpecials * upgradeGemsSpecial) + (((card.level) - numOfSpecials) * upgradeGems)
+
+IRs:
+TMP_235(uint16) = numOfSpecials * upgradeGemsSpecial
+REF_48(uint16) -> card.level
+TMP_236(uint16) = REF_48 - numOfSpecials
+TMP_237(uint16) = TMP_236 * upgradeGems
+TMP_238(uint16) = TMP_235 + TMP_237
+totalGems(uint256) := TMP_238(uint16)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+require(bool,string)(totalInputGems == totalGems,upgrade gems not used up)
+
+IRs:
+TMP_239(bool) = totalInputGems == totalGems
+TMP_240(None) = SOLIDITY_CALL require(bool,string)(TMP_239,upgrade gems not used up)"];
+13->19;
+14[label="Node Type: IF 14
+
+EXPRESSION:
+((card.level + 1) % 5) == 0
+
+IRs:
+REF_49(uint16) -> card.level
+TMP_241(uint16) = REF_49 + 1
+TMP_242(uint16) = TMP_241 % 5
+TMP_243(bool) = TMP_242 == 0
+CONDITION TMP_243"];
+14->15[label="True"];
+14->17[label="False"];
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+require(bool,string)(totalInputGems == upgradeGemsSpecial,upgrade gems not used up)
+
+IRs:
+TMP_244(bool) = totalInputGems == upgradeGemsSpecial
+TMP_245(None) = SOLIDITY_CALL require(bool,string)(TMP_244,upgrade gems not used up)"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+numOfSpecials = 1
+
+IRs:
+numOfSpecials(uint16) := 1(uint256)"];
+16->18;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+require(bool,string)(totalInputGems == upgradeGems,upgrade gems not used up)
+
+IRs:
+TMP_246(bool) = totalInputGems == upgradeGems
+TMP_247(None) = SOLIDITY_CALL require(bool,string)(TMP_246,upgrade gems not used up)"];
+17->18;
+18[label="Node Type: END_IF 18
+"];
+18->19;
+19[label="Node Type: END_IF 19
+"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+totalDeveloperCut = totalDeveloperCut.add(upgradeFee)
+
+IRs:
+TMP_248(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['totalDeveloperCut', 'upgradeFee'] 
+totalDeveloperCut(uint256) := TMP_248(uint256)"];
+20->21;
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+_upgradeLevel(_id,_attackLevelUp,_defenseLevelUp,_hpLevelUp,_speedLevelUp,_criticalRateLevelUp,_flexiGemsLevelUp,numOfSpecials)
+
+IRs:
+INTERNAL_CALL, Battle._upgradeLevel(uint256,uint16,uint16,uint16,uint16,uint16,uint16,uint16)(_id,_attackLevelUp,_defenseLevelUp,_hpLevelUp,_speedLevelUp,_criticalRateLevelUp,_flexiGemsLevelUp,numOfSpecials)"];
+21->22;
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+LevelUp(_id)
+
+IRs:
+Emit LevelUp(_id)"];
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+whenNotPaused()
+
+IRs:
+MODIFIER_CALL, Pausable.whenNotPaused()()"];
+23->24;
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+onlyOwnerOf(_id)
+
+IRs:
+MODIFIER_CALL, Battle.onlyOwnerOf(uint256)(_id)"];
+24->1;
+}
+// Function: 277.sol-Battle-max(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+a > b
+
+IRs:
+TMP_284(bool) = a > b
+CONDITION TMP_284"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+a
+
+IRs:
+RETURN a"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+b
+
+IRs:
+RETURN b"];
+}
+// Function: 277.sol-Battle-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_565(bool) = msg.sender == owner
+TMP_566(None) = SOLIDITY_CALL require(bool)(TMP_565)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 277.sol-Battle-onlyOwnerOf(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(hogsmashToken.ownerOf(_tokenId) == msg.sender,must be owner of token)
+
+IRs:
+TMP_567(address) = HIGH_LEVEL_CALL, dest:hogsmashToken(HogSmashToken), function:ownerOf, arguments:['_tokenId']  
+TMP_568(bool) = TMP_567 == msg.sender
+TMP_569(None) = SOLIDITY_CALL require(bool,string)(TMP_568,must be owner of token)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 277.sol-Battle-pause()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+paused = true
+
+IRs:
+paused(bool) := True(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Pause()
+
+IRs:
+Emit Pause()"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+whenNotPaused()
+
+IRs:
+MODIFIER_CALL, Pausable.whenNotPaused()()"];
+4->1;
+}
+// Function: 277.sol-Battle-setAvatarFee(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+avatarFee = _newAvatarFee
+
+IRs:
+avatarFee(uint256) := _newAvatarFee(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 277.sol-Battle-setBattleStart(bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+battleStart = _newBattleStart
+
+IRs:
+battleStart(bool) := _newBattleStart(bool)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 277.sol-Battle-setCardDrawPrice(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+cardDrawPrice = _newCardDrawPrice
+
+IRs:
+cardDrawPrice(uint256) := _newCardDrawPrice(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 277.sol-Battle-setChallengeFee(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+challengeFee = _newChallengeFee
+
+IRs:
+challengeFee(uint256) := _newChallengeFee(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 277.sol-Battle-setDeveloperCut(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+developerCut = _newDeveloperCut
+
+IRs:
+developerCut(uint256) := _newDeveloperCut(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 277.sol-Battle-setMarketplaceAddress(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+candidateContract = Marketplace(_address)
+
+IRs:
+TMP_108 = CONVERT _address to Marketplace
+candidateContract(Marketplace) := TMP_108(Marketplace)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(candidateContract.isMarketplace(),needs to be marketplace)
+
+IRs:
+TMP_109(bool) = HIGH_LEVEL_CALL, dest:candidateContract(Marketplace), function:isMarketplace, arguments:[]  
+TMP_110(None) = SOLIDITY_CALL require(bool,string)(TMP_109,needs to be marketplace)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+marketplace = candidateContract
+
+IRs:
+marketplace(Marketplace) := candidateContract(Marketplace)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->1;
+}
+// Function: 277.sol-Battle-setReferrerFee(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+referrerFee = _newReferrerFee
+
+IRs:
+referrerFee(uint256) := _newReferrerFee(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 277.sol-Battle-setSettingValues(uint8,uint8,uint16,uint16,uint16,uint16,uint16,uint8,uint8,uint32,uint32,uint8)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->16;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(_eventCardRangeMax >= _eventCardRangeMin,range max must be larger or equals range min)
+
+IRs:
+TMP_112(bool) = _eventCardRangeMax >= _eventCardRangeMin
+TMP_113(None) = SOLIDITY_CALL require(bool,string)(TMP_112,range max must be larger or equals range min)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(_eventCardRangeMax < 100000000,range max cannot exceed 99999999)
+
+IRs:
+TMP_114(bool) = _eventCardRangeMax < 100000000
+TMP_115(None) = SOLIDITY_CALL require(bool,string)(TMP_114,range max cannot exceed 99999999)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool,string)((_newMaxBattleRounds <= 128) && (_newMaxBattleRounds > 0),battle rounds must be between 0 and 128)
+
+IRs:
+TMP_116(bool) = _newMaxBattleRounds <= 128
+TMP_117(bool) = _newMaxBattleRounds > 0
+TMP_118(bool) = TMP_116 && TMP_117
+TMP_119(None) = SOLIDITY_CALL require(bool,string)(TMP_118,battle rounds must be between 0 and 128)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+upgradeGems = _upgradeGems
+
+IRs:
+upgradeGems(uint8) := _upgradeGems(uint8)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+upgradeGemsSpecial = _upgradeGemsSpecial
+
+IRs:
+upgradeGemsSpecial(uint8) := _upgradeGemsSpecial(uint8)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+gemAttackConversion = _gemAttackConversion
+
+IRs:
+gemAttackConversion(uint16) := _gemAttackConversion(uint16)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+gemDefenseConversion = _gemDefenseConversion
+
+IRs:
+gemDefenseConversion(uint16) := _gemDefenseConversion(uint16)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+gemHpConversion = _gemHpConversion
+
+IRs:
+gemHpConversion(uint16) := _gemHpConversion(uint16)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+gemSpeedConversion = _gemSpeedConversion
+
+IRs:
+gemSpeedConversion(uint16) := _gemSpeedConversion(uint16)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+gemCriticalRateConversion = _gemCriticalRateConversion
+
+IRs:
+gemCriticalRateConversion(uint16) := _gemCriticalRateConversion(uint16)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+goldPercentage = _goldPercentage
+
+IRs:
+goldPercentage(uint8) := _goldPercentage(uint8)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+silverPercentage = _silverPercentage
+
+IRs:
+silverPercentage(uint8) := _silverPercentage(uint8)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+eventCardRangeMin = _eventCardRangeMin
+
+IRs:
+eventCardRangeMin(uint32) := _eventCardRangeMin(uint32)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+eventCardRangeMax = _eventCardRangeMax
+
+IRs:
+eventCardRangeMax(uint32) := _eventCardRangeMax(uint32)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+maxBattleRounds = _newMaxBattleRounds
+
+IRs:
+maxBattleRounds(uint8) := _newMaxBattleRounds(uint8)"];
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+16->1;
+}
+// Function: 277.sol-Battle-setStarterPack(uint256,uint16)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(_newStarterPackCardLevel <= 20,starter pack level cannot exceed 20)
+
+IRs:
+TMP_121(bool) = _newStarterPackCardLevel <= 20
+TMP_122(None) = SOLIDITY_CALL require(bool,string)(TMP_121,starter pack level cannot exceed 20)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+starterPackPrice = _newStarterPackPrice
+
+IRs:
+starterPackPrice(uint256) := _newStarterPackPrice(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+starterPackCardLevel = _newStarterPackCardLevel
+
+IRs:
+starterPackCardLevel(uint16) := _newStarterPackCardLevel(uint16)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->1;
+}
+// Function: 277.sol-Battle-setStarterPackOnSale(bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+starterPackOnSale = _newStarterPackOnSale
+
+IRs:
+starterPackOnSale(bool) := _newStarterPackOnSale(bool)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 277.sol-Battle-setUpgradeFee(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+upgradeFee = _newUpgradeFee
+
+IRs:
+upgradeFee(uint256) := _newUpgradeFee(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 277.sol-Battle-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+expToNextLevelArr = (0,103,103,207,207,207,414,414,414,414,724,724,724,828,828,931,931,1035,1035,1138,1138,1242,1242,1345,1345,1449,1449,1552,1552,1656,1656,1759,1759,1863,1863,1966,1966,2070,2070,2173,2173,2173,2277,2277,2380,2380,2484,2484,2587,2587,2691,2691,2794,2794,2898,2898,3001,3001,3105,3105,3208,3208,3312,3312,3415,3415,3519,3519,3622,3622,3622,3726,3726,3829,3829,3933,3933,4036,4036,4140,4140,4243,4243,4347,4347,4450,4450,4554,4554,4657,4657,4761,4761,4864,4864,4968,4968,5071,5071,5175)
+
+IRs:
+expToNextLevelArr(uint32[]) = ['0(uint256)', '103(uint256)', '103(uint256)', '207(uint256)', '207(uint256)', '207(uint256)', '414(uint256)', '414(uint256)', '414(uint256)', '414(uint256)', '724(uint256)', '724(uint256)', '724(uint256)', '828(uint256)', '828(uint256)', '931(uint256)', '931(uint256)', '1035(uint256)', '1035(uint256)', '1138(uint256)', '1138(uint256)', '1242(uint256)', '1242(uint256)', '1345(uint256)', '1345(uint256)', '1449(uint256)', '1449(uint256)', '1552(uint256)', '1552(uint256)', '1656(uint256)', '1656(uint256)', '1759(uint256)', '1759(uint256)', '1863(uint256)', '1863(uint256)', '1966(uint256)', '1966(uint256)', '2070(uint256)', '2070(uint256)', '2173(uint256)', '2173(uint256)', '2173(uint256)', '2277(uint256)', '2277(uint256)', '2380(uint256)', '2380(uint256)', '2484(uint256)', '2484(uint256)', '2587(uint256)', '2587(uint256)', '2691(uint256)', '2691(uint256)', '2794(uint256)', '2794(uint256)', '2898(uint256)', '2898(uint256)', '3001(uint256)', '3001(uint256)', '3105(uint256)', '3105(uint256)', '3208(uint256)', '3208(uint256)', '3312(uint256)', '3312(uint256)', '3415(uint256)', '3415(uint256)', '3519(uint256)', '3519(uint256)', '3622(uint256)', '3622(uint256)', '3622(uint256)', '3726(uint256)', '3726(uint256)', '3829(uint256)', '3829(uint256)', '3933(uint256)', '3933(uint256)', '4036(uint256)', '4036(uint256)', '4140(uint256)', '4140(uint256)', '4243(uint256)', '4243(uint256)', '4347(uint256)', '4347(uint256)', '4450(uint256)', '4450(uint256)', '4554(uint256)', '4554(uint256)', '4657(uint256)', '4657(uint256)', '4761(uint256)', '4761(uint256)', '4864(uint256)', '4864(uint256)', '4968(uint256)', '4968(uint256)', '5071(uint256)', '5071(uint256)', '5175(uint256)']"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+activeWinExp = (10,11,14,19,26,35,46,59,74,91,100,103,108,116,125,135,146,158,171,185,200,215,231,248,265,283,302,321,341,361,382)
+
+IRs:
+activeWinExp(uint32[]) = ['10(uint256)', '11(uint256)', '14(uint256)', '19(uint256)', '26(uint256)', '35(uint256)', '46(uint256)', '59(uint256)', '74(uint256)', '91(uint256)', '100(uint256)', '103(uint256)', '108(uint256)', '116(uint256)', '125(uint256)', '135(uint256)', '146(uint256)', '158(uint256)', '171(uint256)', '185(uint256)', '200(uint256)', '215(uint256)', '231(uint256)', '248(uint256)', '265(uint256)', '283(uint256)', '302(uint256)', '321(uint256)', '341(uint256)', '361(uint256)', '382(uint256)']"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+currentElement = 0
+
+IRs:
+currentElement(uint8) := 0(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+historyId = 0
+
+IRs:
+historyId(uint256) := 0(uint256)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+paused = false
+
+IRs:
+paused(bool) := False(bool)"];
+}
+// Function: 277.sol-Battle-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newOwner != address(0))
+
+IRs:
+TMP_92 = CONVERT 0 to address
+TMP_93(bool) = newOwner != TMP_92
+TMP_94(None) = SOLIDITY_CALL require(bool)(TMP_93)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->1;
+}
+// Function: 277.sol-Battle-unpause()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+paused = false
+
+IRs:
+paused(bool) := False(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Unpause()
+
+IRs:
+Emit Unpause()"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+whenPaused()
+
+IRs:
+MODIFIER_CALL, Pausable.whenPaused()()"];
+4->1;
+}
+// Function: 277.sol-Battle-updateAvatar(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(msg.value == avatarFee,fee must be equals to avatar price)
+
+IRs:
+TMP_530(bool) = msg.value == avatarFee
+TMP_531(None) = SOLIDITY_CALL require(bool,string)(TMP_530,fee must be equals to avatar price)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+card = cards[_cardId]
+
+IRs:
+REF_320(BattleBase.Card) -> cards[_cardId]
+card(BattleBase.Card) := REF_320(BattleBase.Card)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+tempHash = card.cardHash % 1000000000000
+
+IRs:
+REF_321(uint256) -> card.cardHash
+TMP_532(uint256) = REF_321 % 1000000000000
+tempHash(uint256) := TMP_532(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+card.cardHash = tempHash.add(avatarHash.mul(1000000000000))
+
+IRs:
+REF_322(uint256) -> card.cardHash
+TMP_533(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['avatarHash', '1000000000000'] 
+TMP_534(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['tempHash', 'TMP_533'] 
+REF_322(uint256) (->card) := TMP_534(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+HashUpdated(_cardId,card.cardHash)
+
+IRs:
+REF_325(uint256) -> card.cardHash
+Emit HashUpdated(_cardId,REF_325)"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+whenNotPaused()
+
+IRs:
+MODIFIER_CALL, Pausable.whenNotPaused()()"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+onlyOwnerOf(_cardId)
+
+IRs:
+MODIFIER_CALL, Battle.onlyOwnerOf(uint256)(_cardId)"];
+7->1;
+}
+// Function: 277.sol-Battle-whenNotPaused()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! paused)
+
+IRs:
+TMP_562 = UnaryType.BANG paused 
+TMP_563(None) = SOLIDITY_CALL require(bool)(TMP_562)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 277.sol-Battle-whenPaused()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(paused)
+
+IRs:
+TMP_564(None) = SOLIDITY_CALL require(bool)(paused)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 277.sol-Battle-withdrawBalance()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->8;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+thisAddress = this
+
+IRs:
+thisAddress(address) := this(address)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+balance = thisAddress.balance
+
+IRs:
+TMP_558(uint256) = SOLIDITY_CALL balance(address)(thisAddress)
+balance(uint256) := TMP_558(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+withdrawalSum = totalDeveloperCut
+
+IRs:
+withdrawalSum(uint256) := totalDeveloperCut(uint256)"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+balance >= withdrawalSum
+
+IRs:
+TMP_559(bool) = balance >= withdrawalSum
+CONDITION TMP_559"];
+4->5[label="True"];
+4->7[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+totalDeveloperCut = 0
+
+IRs:
+totalDeveloperCut(uint256) := 0(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+owner.transfer(withdrawalSum)
+
+IRs:
+Transfer dest:owner value:withdrawalSum"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+8->1;
+}
+// Function: 277.sol-BattleBase-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 277.sol-BattleBase-getSettingValues()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_upgradeGems = uint8(upgradeGems)
+
+IRs:
+TMP_65 = CONVERT upgradeGems to uint8
+_upgradeGems(uint8) := TMP_65(uint8)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_upgradeGemsSpecial = uint8(upgradeGemsSpecial)
+
+IRs:
+TMP_66 = CONVERT upgradeGemsSpecial to uint8
+_upgradeGemsSpecial(uint8) := TMP_66(uint8)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_gemAttackConversion = uint16(gemAttackConversion)
+
+IRs:
+TMP_67 = CONVERT gemAttackConversion to uint16
+_gemAttackConversion(uint16) := TMP_67(uint16)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+_gemDefenseConversion = uint16(gemDefenseConversion)
+
+IRs:
+TMP_68 = CONVERT gemDefenseConversion to uint16
+_gemDefenseConversion(uint16) := TMP_68(uint16)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+_gemHpConversion = uint16(gemHpConversion)
+
+IRs:
+TMP_69 = CONVERT gemHpConversion to uint16
+_gemHpConversion(uint16) := TMP_69(uint16)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+_gemSpeedConversion = uint16(gemSpeedConversion)
+
+IRs:
+TMP_70 = CONVERT gemSpeedConversion to uint16
+_gemSpeedConversion(uint16) := TMP_70(uint16)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+_gemCriticalRateConversion = uint16(gemCriticalRateConversion)
+
+IRs:
+TMP_71 = CONVERT gemCriticalRateConversion to uint16
+_gemCriticalRateConversion(uint16) := TMP_71(uint16)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+_maxBattleRounds = uint8(maxBattleRounds)
+
+IRs:
+TMP_72 = CONVERT maxBattleRounds to uint8
+_maxBattleRounds(uint8) := TMP_72(uint8)"];
+8->9;
+9[label="Node Type: RETURN 9
+
+EXPRESSION:
+(_upgradeGems,_upgradeGemsSpecial,_gemAttackConversion,_gemDefenseConversion,_gemHpConversion,_gemSpeedConversion,_gemCriticalRateConversion,_maxBattleRounds)
+
+IRs:
+RETURN _upgradeGems,_upgradeGemsSpecial,_gemAttackConversion,_gemDefenseConversion,_gemHpConversion,_gemSpeedConversion,_gemCriticalRateConversion,_maxBattleRounds"];
+}
+// Function: 277.sol-BattleBase-getTotalDeveloperCut()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+totalDeveloperCut
+
+IRs:
+RETURN totalDeveloperCut"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 277.sol-BattleBase-getTotalRankTokens()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+totalRankTokens
+
+IRs:
+RETURN totalRankTokens"];
+}
+// Function: 277.sol-BattleBase-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_73(bool) = msg.sender == owner
+TMP_74(None) = SOLIDITY_CALL require(bool)(TMP_73)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 277.sol-BattleBase-setAvatarFee(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+avatarFee = _newAvatarFee
+
+IRs:
+avatarFee(uint256) := _newAvatarFee(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 277.sol-BattleBase-setBattleStart(bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+battleStart = _newBattleStart
+
+IRs:
+battleStart(bool) := _newBattleStart(bool)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 277.sol-BattleBase-setCardDrawPrice(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+cardDrawPrice = _newCardDrawPrice
+
+IRs:
+cardDrawPrice(uint256) := _newCardDrawPrice(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 277.sol-BattleBase-setChallengeFee(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+challengeFee = _newChallengeFee
+
+IRs:
+challengeFee(uint256) := _newChallengeFee(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 277.sol-BattleBase-setDeveloperCut(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+developerCut = _newDeveloperCut
+
+IRs:
+developerCut(uint256) := _newDeveloperCut(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 277.sol-BattleBase-setMarketplaceAddress(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+candidateContract = Marketplace(_address)
+
+IRs:
+TMP_40 = CONVERT _address to Marketplace
+candidateContract(Marketplace) := TMP_40(Marketplace)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(candidateContract.isMarketplace(),needs to be marketplace)
+
+IRs:
+TMP_41(bool) = HIGH_LEVEL_CALL, dest:candidateContract(Marketplace), function:isMarketplace, arguments:[]  
+TMP_42(None) = SOLIDITY_CALL require(bool,string)(TMP_41,needs to be marketplace)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+marketplace = candidateContract
+
+IRs:
+marketplace(Marketplace) := candidateContract(Marketplace)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->1;
+}
+// Function: 277.sol-BattleBase-setReferrerFee(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+referrerFee = _newReferrerFee
+
+IRs:
+referrerFee(uint256) := _newReferrerFee(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 277.sol-BattleBase-setSettingValues(uint8,uint8,uint16,uint16,uint16,uint16,uint16,uint8,uint8,uint32,uint32,uint8)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->16;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(_eventCardRangeMax >= _eventCardRangeMin,range max must be larger or equals range min)
+
+IRs:
+TMP_44(bool) = _eventCardRangeMax >= _eventCardRangeMin
+TMP_45(None) = SOLIDITY_CALL require(bool,string)(TMP_44,range max must be larger or equals range min)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(_eventCardRangeMax < 100000000,range max cannot exceed 99999999)
+
+IRs:
+TMP_46(bool) = _eventCardRangeMax < 100000000
+TMP_47(None) = SOLIDITY_CALL require(bool,string)(TMP_46,range max cannot exceed 99999999)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool,string)((_newMaxBattleRounds <= 128) && (_newMaxBattleRounds > 0),battle rounds must be between 0 and 128)
+
+IRs:
+TMP_48(bool) = _newMaxBattleRounds <= 128
+TMP_49(bool) = _newMaxBattleRounds > 0
+TMP_50(bool) = TMP_48 && TMP_49
+TMP_51(None) = SOLIDITY_CALL require(bool,string)(TMP_50,battle rounds must be between 0 and 128)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+upgradeGems = _upgradeGems
+
+IRs:
+upgradeGems(uint8) := _upgradeGems(uint8)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+upgradeGemsSpecial = _upgradeGemsSpecial
+
+IRs:
+upgradeGemsSpecial(uint8) := _upgradeGemsSpecial(uint8)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+gemAttackConversion = _gemAttackConversion
+
+IRs:
+gemAttackConversion(uint16) := _gemAttackConversion(uint16)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+gemDefenseConversion = _gemDefenseConversion
+
+IRs:
+gemDefenseConversion(uint16) := _gemDefenseConversion(uint16)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+gemHpConversion = _gemHpConversion
+
+IRs:
+gemHpConversion(uint16) := _gemHpConversion(uint16)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+gemSpeedConversion = _gemSpeedConversion
+
+IRs:
+gemSpeedConversion(uint16) := _gemSpeedConversion(uint16)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+gemCriticalRateConversion = _gemCriticalRateConversion
+
+IRs:
+gemCriticalRateConversion(uint16) := _gemCriticalRateConversion(uint16)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+goldPercentage = _goldPercentage
+
+IRs:
+goldPercentage(uint8) := _goldPercentage(uint8)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+silverPercentage = _silverPercentage
+
+IRs:
+silverPercentage(uint8) := _silverPercentage(uint8)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+eventCardRangeMin = _eventCardRangeMin
+
+IRs:
+eventCardRangeMin(uint32) := _eventCardRangeMin(uint32)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+eventCardRangeMax = _eventCardRangeMax
+
+IRs:
+eventCardRangeMax(uint32) := _eventCardRangeMax(uint32)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+maxBattleRounds = _newMaxBattleRounds
+
+IRs:
+maxBattleRounds(uint8) := _newMaxBattleRounds(uint8)"];
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+16->1;
+}
+// Function: 277.sol-BattleBase-setStarterPack(uint256,uint16)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(_newStarterPackCardLevel <= 20,starter pack level cannot exceed 20)
+
+IRs:
+TMP_53(bool) = _newStarterPackCardLevel <= 20
+TMP_54(None) = SOLIDITY_CALL require(bool,string)(TMP_53,starter pack level cannot exceed 20)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+starterPackPrice = _newStarterPackPrice
+
+IRs:
+starterPackPrice(uint256) := _newStarterPackPrice(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+starterPackCardLevel = _newStarterPackCardLevel
+
+IRs:
+starterPackCardLevel(uint16) := _newStarterPackCardLevel(uint16)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->1;
+}
+// Function: 277.sol-BattleBase-setStarterPackOnSale(bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+starterPackOnSale = _newStarterPackOnSale
+
+IRs:
+starterPackOnSale(bool) := _newStarterPackOnSale(bool)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 277.sol-BattleBase-setUpgradeFee(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+upgradeFee = _newUpgradeFee
+
+IRs:
+upgradeFee(uint256) := _newUpgradeFee(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 277.sol-BattleBase-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+expToNextLevelArr = (0,103,103,207,207,207,414,414,414,414,724,724,724,828,828,931,931,1035,1035,1138,1138,1242,1242,1345,1345,1449,1449,1552,1552,1656,1656,1759,1759,1863,1863,1966,1966,2070,2070,2173,2173,2173,2277,2277,2380,2380,2484,2484,2587,2587,2691,2691,2794,2794,2898,2898,3001,3001,3105,3105,3208,3208,3312,3312,3415,3415,3519,3519,3622,3622,3622,3726,3726,3829,3829,3933,3933,4036,4036,4140,4140,4243,4243,4347,4347,4450,4450,4554,4554,4657,4657,4761,4761,4864,4864,4968,4968,5071,5071,5175)
+
+IRs:
+expToNextLevelArr(uint32[]) = ['0(uint256)', '103(uint256)', '103(uint256)', '207(uint256)', '207(uint256)', '207(uint256)', '414(uint256)', '414(uint256)', '414(uint256)', '414(uint256)', '724(uint256)', '724(uint256)', '724(uint256)', '828(uint256)', '828(uint256)', '931(uint256)', '931(uint256)', '1035(uint256)', '1035(uint256)', '1138(uint256)', '1138(uint256)', '1242(uint256)', '1242(uint256)', '1345(uint256)', '1345(uint256)', '1449(uint256)', '1449(uint256)', '1552(uint256)', '1552(uint256)', '1656(uint256)', '1656(uint256)', '1759(uint256)', '1759(uint256)', '1863(uint256)', '1863(uint256)', '1966(uint256)', '1966(uint256)', '2070(uint256)', '2070(uint256)', '2173(uint256)', '2173(uint256)', '2173(uint256)', '2277(uint256)', '2277(uint256)', '2380(uint256)', '2380(uint256)', '2484(uint256)', '2484(uint256)', '2587(uint256)', '2587(uint256)', '2691(uint256)', '2691(uint256)', '2794(uint256)', '2794(uint256)', '2898(uint256)', '2898(uint256)', '3001(uint256)', '3001(uint256)', '3105(uint256)', '3105(uint256)', '3208(uint256)', '3208(uint256)', '3312(uint256)', '3312(uint256)', '3415(uint256)', '3415(uint256)', '3519(uint256)', '3519(uint256)', '3622(uint256)', '3622(uint256)', '3622(uint256)', '3726(uint256)', '3726(uint256)', '3829(uint256)', '3829(uint256)', '3933(uint256)', '3933(uint256)', '4036(uint256)', '4036(uint256)', '4140(uint256)', '4140(uint256)', '4243(uint256)', '4243(uint256)', '4347(uint256)', '4347(uint256)', '4450(uint256)', '4450(uint256)', '4554(uint256)', '4554(uint256)', '4657(uint256)', '4657(uint256)', '4761(uint256)', '4761(uint256)', '4864(uint256)', '4864(uint256)', '4968(uint256)', '4968(uint256)', '5071(uint256)', '5071(uint256)', '5175(uint256)']"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+activeWinExp = (10,11,14,19,26,35,46,59,74,91,100,103,108,116,125,135,146,158,171,185,200,215,231,248,265,283,302,321,341,361,382)
+
+IRs:
+activeWinExp(uint32[]) = ['10(uint256)', '11(uint256)', '14(uint256)', '19(uint256)', '26(uint256)', '35(uint256)', '46(uint256)', '59(uint256)', '74(uint256)', '91(uint256)', '100(uint256)', '103(uint256)', '108(uint256)', '116(uint256)', '125(uint256)', '135(uint256)', '146(uint256)', '158(uint256)', '171(uint256)', '185(uint256)', '200(uint256)', '215(uint256)', '231(uint256)', '248(uint256)', '265(uint256)', '283(uint256)', '302(uint256)', '321(uint256)', '341(uint256)', '361(uint256)', '382(uint256)']"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+currentElement = 0
+
+IRs:
+currentElement(uint8) := 0(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+historyId = 0
+
+IRs:
+historyId(uint256) := 0(uint256)"];
+}
+// Function: 277.sol-BattleBase-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newOwner != address(0))
+
+IRs:
+TMP_35 = CONVERT 0 to address
+TMP_36(bool) = newOwner != TMP_35
+TMP_37(None) = SOLIDITY_CALL require(bool)(TMP_36)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->1;
+}
+// Function: 277.sol-HogSmashToken-balanceOf(address)
+digraph{
+}
+// Function: 277.sol-HogSmashToken-mint(address)
+digraph{
+}
+// Function: 277.sol-HogSmashToken-ownerOf(uint256)
+digraph{
+}
+// Function: 277.sol-HogSmashToken-setApprovalForAllByContract(address,address,bool)
+digraph{
+}
+// Function: 277.sol-HogSmashToken-setTokenURI(uint256,string)
+digraph{
+}
+// Function: 277.sol-HogSmashToken-tokensOf(address)
+digraph{
+}
+// Function: 277.sol-Marketplace-isMarketplace()
+digraph{
+}
+// Function: 277.sol-Ownable-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 277.sol-Ownable-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_17(bool) = msg.sender == owner
+TMP_18(None) = SOLIDITY_CALL require(bool)(TMP_17)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 277.sol-Ownable-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newOwner != address(0))
+
+IRs:
+TMP_12 = CONVERT 0 to address
+TMP_13(bool) = newOwner != TMP_12
+TMP_14(None) = SOLIDITY_CALL require(bool)(TMP_13)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->1;
+}
+// Function: 277.sol-Pausable-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 277.sol-Pausable-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_30(bool) = msg.sender == owner
+TMP_31(None) = SOLIDITY_CALL require(bool)(TMP_30)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 277.sol-Pausable-pause()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+paused = true
+
+IRs:
+paused(bool) := True(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Pause()
+
+IRs:
+Emit Pause()"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+whenNotPaused()
+
+IRs:
+MODIFIER_CALL, Pausable.whenNotPaused()()"];
+4->1;
+}
+// Function: 277.sol-Pausable-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+paused = false
+
+IRs:
+paused(bool) := False(bool)"];
+}
+// Function: 277.sol-Pausable-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newOwner != address(0))
+
+IRs:
+TMP_19 = CONVERT 0 to address
+TMP_20(bool) = newOwner != TMP_19
+TMP_21(None) = SOLIDITY_CALL require(bool)(TMP_20)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->1;
+}
+// Function: 277.sol-Pausable-unpause()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+paused = false
+
+IRs:
+paused(bool) := False(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Unpause()
+
+IRs:
+Emit Unpause()"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+whenPaused()
+
+IRs:
+MODIFIER_CALL, Pausable.whenPaused()()"];
+4->1;
+}
+// Function: 277.sol-Pausable-whenNotPaused()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! paused)
+
+IRs:
+TMP_32 = UnaryType.BANG paused 
+TMP_33(None) = SOLIDITY_CALL require(bool)(TMP_32)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 277.sol-Pausable-whenPaused()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(paused)
+
+IRs:
+TMP_34(None) = SOLIDITY_CALL require(bool)(paused)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 277.sol-Random-getRandom()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+(pSeed = uint256(keccak256()(abi.encodePacked(pSeed,blockhash(uint256)(block.number - 1),blockhash(uint256)(block.number - 3),blockhash(uint256)(block.number - 5),blockhash(uint256)(block.number - 7)))))
+
+IRs:
+TMP_75(uint256) = block.number - 1
+TMP_76(uint256) = SOLIDITY_CALL blockhash(uint256)(TMP_75)
+TMP_77(uint256) = block.number - 3
+TMP_78(uint256) = SOLIDITY_CALL blockhash(uint256)(TMP_77)
+TMP_79(uint256) = block.number - 5
+TMP_80(uint256) = SOLIDITY_CALL blockhash(uint256)(TMP_79)
+TMP_81(uint256) = block.number - 7
+TMP_82(uint256) = SOLIDITY_CALL blockhash(uint256)(TMP_81)
+TMP_83(bytes) = SOLIDITY_CALL abi.encodePacked()(pSeed,TMP_76,TMP_78,TMP_80,TMP_82)
+TMP_84(bytes32) = SOLIDITY_CALL keccak256()(TMP_83)
+TMP_85 = CONVERT TMP_84 to uint256
+pSeed(uint256) := TMP_85(uint256)
+RETURN pSeed"];
+}
+// Function: 277.sol-Random-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+pSeed = block.number
+
+IRs:
+pSeed(uint256) := block.number(uint256)"];
+}
+// Function: 277.sol-SafeMath-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_9(uint256) = a + b
+c(uint256) := TMP_9(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(c >= a)
+
+IRs:
+TMP_10(bool) = c >= a
+TMP_11(None) = SOLIDITY_CALL assert(bool)(TMP_10)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 277.sol-SafeMath-div(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+a / b
+
+IRs:
+TMP_5(uint256) = a / b
+RETURN TMP_5"];
+}
+// Function: 277.sol-SafeMath-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+a == 0
+
+IRs:
+TMP_0(bool) = a == 0
+CONDITION TMP_0"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_1(uint256) = a * b
+c(uint256) := TMP_1(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+assert(bool)(c / a == b)
+
+IRs:
+TMP_2(uint256) = c / a
+TMP_3(bool) = TMP_2 == b
+TMP_4(None) = SOLIDITY_CALL assert(bool)(TMP_3)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 277.sol-SafeMath-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(b <= a)
+
+IRs:
+TMP_6(bool) = b <= a
+TMP_7(None) = SOLIDITY_CALL assert(bool)(TMP_6)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_8(uint256) = a - b
+RETURN TMP_8"];
+}
+}

@@ -1,0 +1,1423 @@
+digraph G {
+// Function: 347.sol-AddressesFilterFeature-_transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_newOwner != address(0))
+
+IRs:
+TMP_39 = CONVERT 0 to address
+TMP_40(bool) = _newOwner != TMP_39
+TMP_41(None) = SOLIDITY_CALL require(bool)(TMP_40)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,_newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,_newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = _newOwner
+
+IRs:
+owner(address) := _newOwner(address)"];
+}
+// Function: 347.sol-AddressesFilterFeature-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 347.sol-AddressesFilterFeature-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_43(bool) = msg.sender == owner
+TMP_44(None) = SOLIDITY_CALL require(bool)(TMP_43)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 347.sol-AddressesFilterFeature-renounceOwnership()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+OwnershipRenounced(owner)
+
+IRs:
+Emit OwnershipRenounced(owner)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = address(0)
+
+IRs:
+TMP_35 = CONVERT 0 to address
+owner(address) := TMP_35(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 347.sol-AddressesFilterFeature-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transferOwnership(_newOwner)
+
+IRs:
+INTERNAL_CALL, Ownable._transferOwnership(address)(_newOwner)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 347.sol-CrowdsaleWPTByRounds-_deliverTokens(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+token.safeTransfer(_beneficiary,_tokenAmount)
+
+IRs:
+LIBRARY_CALL, dest:SafeERC20, function:SafeERC20.safeTransfer(ERC20,address,uint256), arguments:['token', '_beneficiary', '_tokenAmount'] "];
+}
+// Function: 347.sol-CrowdsaleWPTByRounds-_forwardFunds()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+isTransferDone = wallet.call.value(msg.value).gas(gasAmount)()
+
+IRs:
+TMP_120(bool) = LOW_LEVEL_CALL, dest:wallet, function:call, arguments:[] value:msg.value gas:gasAmount
+isTransferDone(bool) := TMP_120(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+TokensTransfer(msg.sender,wallet,msg.value,isTransferDone)
+
+IRs:
+Emit TokensTransfer(msg.sender,wallet,msg.value,isTransferDone)"];
+}
+// Function: 347.sol-CrowdsaleWPTByRounds-_getTokenAmount(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+_weiAmount.mul(rate)
+
+IRs:
+TMP_117(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['_weiAmount', 'rate'] 
+RETURN TMP_117"];
+}
+// Function: 347.sol-CrowdsaleWPTByRounds-_preValidatePurchase(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_beneficiary != address(0))
+
+IRs:
+TMP_103 = CONVERT 0 to address
+TMP_104(bool) = _beneficiary != TMP_103
+TMP_105(None) = SOLIDITY_CALL require(bool)(TMP_104)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_weiAmount != 0 && _weiAmount > minInvestmentValue)
+
+IRs:
+TMP_106(bool) = _weiAmount != 0
+TMP_107(bool) = _weiAmount > minInvestmentValue
+TMP_108(bool) = TMP_106 && TMP_107
+TMP_109(None) = SOLIDITY_CALL require(bool)(TMP_108)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(tokensRaised.add(_getTokenAmount(_weiAmount)) <= cap)
+
+IRs:
+TMP_110(uint256) = INTERNAL_CALL, CrowdsaleWPTByRounds._getTokenAmount(uint256)(_weiAmount)
+TMP_111(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['tokensRaised', 'TMP_110'] 
+TMP_112(bool) = TMP_111 <= cap
+TMP_113(None) = SOLIDITY_CALL require(bool)(TMP_112)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyWhileOpen()
+
+IRs:
+MODIFIER_CALL, CrowdsaleWPTByRounds.onlyWhileOpen()()"];
+4->1;
+}
+// Function: 347.sol-CrowdsaleWPTByRounds-_processPurchase(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_deliverTokens(_beneficiary,_tokenAmount)
+
+IRs:
+INTERNAL_CALL, CrowdsaleWPTByRounds._deliverTokens(address,uint256)(_beneficiary,_tokenAmount)"];
+}
+// Function: 347.sol-CrowdsaleWPTByRounds-_transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_newOwner != address(0))
+
+IRs:
+TMP_72 = CONVERT 0 to address
+TMP_73(bool) = _newOwner != TMP_72
+TMP_74(None) = SOLIDITY_CALL require(bool)(TMP_73)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,_newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,_newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = _newOwner
+
+IRs:
+owner(address) := _newOwner(address)"];
+}
+// Function: 347.sol-CrowdsaleWPTByRounds-buyTokens(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+weiAmount = msg.value
+
+IRs:
+weiAmount(uint256) := msg.value(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+checksOn
+
+IRs:
+CONDITION checksOn"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_preValidatePurchase(_beneficiary,weiAmount)
+
+IRs:
+INTERNAL_CALL, CrowdsaleWPTByRounds._preValidatePurchase(address,uint256)(_beneficiary,weiAmount)"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+tokens = _getTokenAmount(weiAmount)
+
+IRs:
+TMP_98(uint256) = INTERNAL_CALL, CrowdsaleWPTByRounds._getTokenAmount(uint256)(weiAmount)
+tokens(uint256) := TMP_98(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+tokensRaised = tokensRaised.add(tokens)
+
+IRs:
+TMP_99(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['tokensRaised', 'tokens'] 
+tokensRaised(uint256) := TMP_99(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+minterContract.mint(_beneficiary,tokens)
+
+IRs:
+TMP_100(bool) = HIGH_LEVEL_CALL, dest:minterContract(Token), function:mint, arguments:['_beneficiary', 'tokens']  "];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+TokenPurchase(msg.sender,_beneficiary,weiAmount,tokens)
+
+IRs:
+Emit TokenPurchase(msg.sender,_beneficiary,weiAmount,tokens)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+_forwardFunds()
+
+IRs:
+INTERNAL_CALL, CrowdsaleWPTByRounds._forwardFunds()()"];
+}
+// Function: 347.sol-CrowdsaleWPTByRounds-capReached()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+tokensRaised >= cap
+
+IRs:
+TMP_78(bool) = tokensRaised >= cap
+RETURN TMP_78"];
+}
+// Function: 347.sol-CrowdsaleWPTByRounds-changeMinInvest(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+rate = newMinValue
+
+IRs:
+rate(uint256) := newMinValue(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 347.sol-CrowdsaleWPTByRounds-changeRate(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+rate = newRate
+
+IRs:
+rate(uint256) := newRate(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 347.sol-CrowdsaleWPTByRounds-closeRound()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+closingTime = block.timestamp + 1
+
+IRs:
+TMP_80(uint256) = block.timestamp + 1
+closingTime(uint256) := TMP_80(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 347.sol-CrowdsaleWPTByRounds-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+rate = 400
+
+IRs:
+rate(uint256) := 400(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+wallet = 0xeA9cbceD36a092C596e9c18313536D0EEFacff46
+
+IRs:
+wallet(address) := 1339399214453037413225627168603295105437997530950(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+cap = 400000000000000000000000
+
+IRs:
+cap(uint256) := 400000000000000000000000(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+openingTime = 1534558186
+
+IRs:
+openingTime(uint256) := 1534558186(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+closingTime = 1535320800
+
+IRs:
+closingTime(uint256) := 1535320800(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+minInvestmentValue = 20000000000000000
+
+IRs:
+minInvestmentValue(uint256) := 20000000000000000(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+checksOn = true
+
+IRs:
+checksOn(bool) := True(bool)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+gasAmount = 25000
+
+IRs:
+gasAmount(uint256) := 25000(uint256)"];
+}
+// Function: 347.sol-CrowdsaleWPTByRounds-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+buyTokens(msg.sender)
+
+IRs:
+INTERNAL_CALL, CrowdsaleWPTByRounds.buyTokens(address)(msg.sender)"];
+}
+// Function: 347.sol-CrowdsaleWPTByRounds-hasClosed()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+block.timestamp > closingTime
+
+IRs:
+TMP_92(bool) = block.timestamp > closingTime
+RETURN TMP_92"];
+}
+// Function: 347.sol-CrowdsaleWPTByRounds-hasOpened()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+(openingTime < block.timestamp && block.timestamp < closingTime)
+
+IRs:
+TMP_93(bool) = openingTime < block.timestamp
+TMP_94(bool) = block.timestamp < closingTime
+TMP_95(bool) = TMP_93 && TMP_94
+RETURN TMP_95"];
+}
+// Function: 347.sol-CrowdsaleWPTByRounds-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_122(bool) = msg.sender == owner
+TMP_123(None) = SOLIDITY_CALL require(bool)(TMP_122)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 347.sol-CrowdsaleWPTByRounds-onlyWhileOpen()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(block.timestamp >= openingTime && block.timestamp <= closingTime)
+
+IRs:
+TMP_124(bool) = block.timestamp >= openingTime
+TMP_125(bool) = block.timestamp <= closingTime
+TMP_126(bool) = TMP_124 && TMP_125
+TMP_127(None) = SOLIDITY_CALL require(bool)(TMP_126)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 347.sol-CrowdsaleWPTByRounds-renounceOwnership()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+OwnershipRenounced(owner)
+
+IRs:
+Emit OwnershipRenounced(owner)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = address(0)
+
+IRs:
+TMP_68 = CONVERT 0 to address
+owner(address) := TMP_68(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 347.sol-CrowdsaleWPTByRounds-setCap(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+cap = _newCap
+
+IRs:
+cap(uint256) := _newCap(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 347.sol-CrowdsaleWPTByRounds-setChecksOn(bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+checksOn = _checksOn
+
+IRs:
+checksOn(bool) := _checksOn(bool)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 347.sol-CrowdsaleWPTByRounds-setGasAmount(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+gasAmount = _gasAmount
+
+IRs:
+gasAmount(uint256) := _gasAmount(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 347.sol-CrowdsaleWPTByRounds-setMinter(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+minterContract = Token(_minterAddr)
+
+IRs:
+TMP_76 = CONVERT _minterAddr to Token
+minterContract(Token) := TMP_76(Token)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 347.sol-CrowdsaleWPTByRounds-setToken(ERC20)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+token = _token
+
+IRs:
+token(ERC20) := _token(ERC20)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 347.sol-CrowdsaleWPTByRounds-setWallet(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+wallet = _wallet
+
+IRs:
+wallet(address) := _wallet(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 347.sol-CrowdsaleWPTByRounds-startNewRound(uint256,address,ERC20,uint256,uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->8;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! hasOpened())
+
+IRs:
+TMP_88(bool) = INTERNAL_CALL, CrowdsaleWPTByRounds.hasOpened()()
+TMP_89 = UnaryType.BANG TMP_88 
+TMP_90(None) = SOLIDITY_CALL require(bool)(TMP_89)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+rate = _rate
+
+IRs:
+rate(uint256) := _rate(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+wallet = _wallet
+
+IRs:
+wallet(address) := _wallet(address)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+token = _token
+
+IRs:
+token(ERC20) := _token(ERC20)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+cap = _cap
+
+IRs:
+cap(uint256) := _cap(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+openingTime = _openingTime
+
+IRs:
+openingTime(uint256) := _openingTime(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+closingTime = _closingTime
+
+IRs:
+closingTime(uint256) := _closingTime(uint256)"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+8->1;
+}
+// Function: 347.sol-CrowdsaleWPTByRounds-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transferOwnership(_newOwner)
+
+IRs:
+INTERNAL_CALL, Ownable._transferOwnership(address)(_newOwner)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 347.sol-ERC20-allowance(address,address)
+digraph{
+}
+// Function: 347.sol-ERC20-approve(address,uint256)
+digraph{
+}
+// Function: 347.sol-ERC20-balanceOf(address)
+digraph{
+}
+// Function: 347.sol-ERC20-totalSupply()
+digraph{
+}
+// Function: 347.sol-ERC20-transfer(address,uint256)
+digraph{
+}
+// Function: 347.sol-ERC20-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 347.sol-MintableToken-_transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_newOwner != address(0))
+
+IRs:
+TMP_50 = CONVERT 0 to address
+TMP_51(bool) = _newOwner != TMP_50
+TMP_52(None) = SOLIDITY_CALL require(bool)(TMP_51)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,_newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,_newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = _newOwner
+
+IRs:
+owner(address) := _newOwner(address)"];
+}
+// Function: 347.sol-MintableToken-allowance(address,address)
+digraph{
+}
+// Function: 347.sol-MintableToken-approve(address,uint256)
+digraph{
+}
+// Function: 347.sol-MintableToken-balanceOf(address)
+digraph{
+}
+// Function: 347.sol-MintableToken-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 347.sol-MintableToken-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_54(bool) = msg.sender == owner
+TMP_55(None) = SOLIDITY_CALL require(bool)(TMP_54)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 347.sol-MintableToken-renounceOwnership()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+OwnershipRenounced(owner)
+
+IRs:
+Emit OwnershipRenounced(owner)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = address(0)
+
+IRs:
+TMP_46 = CONVERT 0 to address
+owner(address) := TMP_46(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 347.sol-MintableToken-totalSupply()
+digraph{
+}
+// Function: 347.sol-MintableToken-transfer(address,uint256)
+digraph{
+}
+// Function: 347.sol-MintableToken-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 347.sol-MintableToken-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transferOwnership(_newOwner)
+
+IRs:
+INTERNAL_CALL, Ownable._transferOwnership(address)(_newOwner)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 347.sol-Ownable-_transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_newOwner != address(0))
+
+IRs:
+TMP_28 = CONVERT 0 to address
+TMP_29(bool) = _newOwner != TMP_28
+TMP_30(None) = SOLIDITY_CALL require(bool)(TMP_29)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,_newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,_newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = _newOwner
+
+IRs:
+owner(address) := _newOwner(address)"];
+}
+// Function: 347.sol-Ownable-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 347.sol-Ownable-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_32(bool) = msg.sender == owner
+TMP_33(None) = SOLIDITY_CALL require(bool)(TMP_32)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 347.sol-Ownable-renounceOwnership()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+OwnershipRenounced(owner)
+
+IRs:
+Emit OwnershipRenounced(owner)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = address(0)
+
+IRs:
+TMP_24 = CONVERT 0 to address
+owner(address) := TMP_24(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 347.sol-Ownable-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transferOwnership(_newOwner)
+
+IRs:
+INTERNAL_CALL, Ownable._transferOwnership(address)(_newOwner)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 347.sol-SafeERC20-safeApprove(ERC20,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_token.approve(_spender,_value))
+
+IRs:
+TMP_21(bool) = HIGH_LEVEL_CALL, dest:_token(ERC20), function:approve, arguments:['_spender', '_value']  
+TMP_22(None) = SOLIDITY_CALL require(bool)(TMP_21)"];
+}
+// Function: 347.sol-SafeERC20-safeTransfer(ERC20,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_token.transfer(_to,_value))
+
+IRs:
+TMP_17(bool) = HIGH_LEVEL_CALL, dest:_token(ERC20), function:transfer, arguments:['_to', '_value']  
+TMP_18(None) = SOLIDITY_CALL require(bool)(TMP_17)"];
+}
+// Function: 347.sol-SafeERC20-safeTransferFrom(ERC20,address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_token.transferFrom(_from,_to,_value))
+
+IRs:
+TMP_19(bool) = HIGH_LEVEL_CALL, dest:_token(ERC20), function:transferFrom, arguments:['_from', '_to', '_value']  
+TMP_20(None) = SOLIDITY_CALL require(bool)(TMP_19)"];
+}
+// Function: 347.sol-SafeMath-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = _a + _b
+
+IRs:
+TMP_11(uint256) = _a + _b
+c(uint256) := TMP_11(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(c >= _a)
+
+IRs:
+TMP_12(bool) = c >= _a
+TMP_13(None) = SOLIDITY_CALL require(bool)(TMP_12)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 347.sol-SafeMath-div(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_b > 0)
+
+IRs:
+TMP_5(bool) = _b > 0
+TMP_6(None) = SOLIDITY_CALL require(bool)(TMP_5)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+c = _a / _b
+
+IRs:
+TMP_7(uint256) = _a / _b
+c(uint256) := TMP_7(uint256)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 347.sol-SafeMath-mod(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(b != 0)
+
+IRs:
+TMP_14(bool) = b != 0
+TMP_15(None) = SOLIDITY_CALL require(bool)(TMP_14)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a % b
+
+IRs:
+TMP_16(uint256) = a % b
+RETURN TMP_16"];
+}
+// Function: 347.sol-SafeMath-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_a == 0
+
+IRs:
+TMP_0(bool) = _a == 0
+CONDITION TMP_0"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+c = _a * _b
+
+IRs:
+TMP_1(uint256) = _a * _b
+c(uint256) := TMP_1(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool)(c / _a == _b)
+
+IRs:
+TMP_2(uint256) = c / _a
+TMP_3(bool) = TMP_2 == _b
+TMP_4(None) = SOLIDITY_CALL require(bool)(TMP_3)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 347.sol-SafeMath-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_b <= _a)
+
+IRs:
+TMP_8(bool) = _b <= _a
+TMP_9(None) = SOLIDITY_CALL require(bool)(TMP_8)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+c = _a - _b
+
+IRs:
+TMP_10(uint256) = _a - _b
+c(uint256) := TMP_10(uint256)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 347.sol-StandardToken-allowance(address,address)
+digraph{
+}
+// Function: 347.sol-StandardToken-approve(address,uint256)
+digraph{
+}
+// Function: 347.sol-StandardToken-balanceOf(address)
+digraph{
+}
+// Function: 347.sol-StandardToken-totalSupply()
+digraph{
+}
+// Function: 347.sol-StandardToken-transfer(address,uint256)
+digraph{
+}
+// Function: 347.sol-StandardToken-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 347.sol-Token-_transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_newOwner != address(0))
+
+IRs:
+TMP_61 = CONVERT 0 to address
+TMP_62(bool) = _newOwner != TMP_61
+TMP_63(None) = SOLIDITY_CALL require(bool)(TMP_62)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,_newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,_newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = _newOwner
+
+IRs:
+owner(address) := _newOwner(address)"];
+}
+// Function: 347.sol-Token-allowance(address,address)
+digraph{
+}
+// Function: 347.sol-Token-approve(address,uint256)
+digraph{
+}
+// Function: 347.sol-Token-balanceOf(address)
+digraph{
+}
+// Function: 347.sol-Token-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 347.sol-Token-mint(address,uint256)
+digraph{
+}
+// Function: 347.sol-Token-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_65(bool) = msg.sender == owner
+TMP_66(None) = SOLIDITY_CALL require(bool)(TMP_65)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 347.sol-Token-renounceOwnership()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+OwnershipRenounced(owner)
+
+IRs:
+Emit OwnershipRenounced(owner)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = address(0)
+
+IRs:
+TMP_57 = CONVERT 0 to address
+owner(address) := TMP_57(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 347.sol-Token-totalSupply()
+digraph{
+}
+// Function: 347.sol-Token-transfer(address,uint256)
+digraph{
+}
+// Function: 347.sol-Token-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 347.sol-Token-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transferOwnership(_newOwner)
+
+IRs:
+INTERNAL_CALL, Ownable._transferOwnership(address)(_newOwner)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+}

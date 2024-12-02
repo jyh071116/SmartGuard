@@ -1,0 +1,205 @@
+digraph G {
+// Function: 23792.sol-SimpleEthBank-SimpleEthBank()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+director = msg.sender
+
+IRs:
+director(address) := msg.sender(address)"];
+}
+// Function: 23792.sol-SimpleEthBank-deposit()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.value >= 500000000000000000)
+
+IRs:
+TMP_3(bool) = msg.value >= 500000000000000000
+TMP_4(None) = SOLIDITY_CALL require(bool)(TMP_3)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+accountBalances[msg.sender] += msg.value
+
+IRs:
+REF_2(uint256) -> accountBalances[msg.sender]
+REF_2(-> accountBalances) = REF_2 + msg.value"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+accountExists[msg.sender] = true
+
+IRs:
+REF_3(bool) -> accountExists[msg.sender]
+REF_3(bool) (->accountExists) := True(bool)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Deposit(msg.sender,msg.value)
+
+IRs:
+Emit Deposit(msg.sender,msg.value)"];
+}
+// Function: 23792.sol-SimpleEthBank-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+deposit()
+
+IRs:
+INTERNAL_CALL, SimpleEthBank.deposit()()"];
+}
+// Function: 23792.sol-SimpleEthBank-getBalanceOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+accountExists[addr]
+
+IRs:
+REF_0(bool) -> accountExists[addr]
+CONDITION REF_0"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+int256(accountBalances[addr])
+
+IRs:
+REF_1(uint256) -> accountBalances[addr]
+TMP_1 = CONVERT REF_1 to int256
+RETURN TMP_1"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+- 1
+
+IRs:
+TMP_2(uint256) = 0 - 1
+RETURN TMP_2"];
+}
+// Function: 23792.sol-SimpleEthBank-kill()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == director)
+
+IRs:
+TMP_16(bool) = msg.sender == director
+TMP_17(None) = SOLIDITY_CALL require(bool)(TMP_16)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+selfdestruct(address)(director)
+
+IRs:
+TMP_18(None) = SOLIDITY_CALL selfdestruct(address)(director)"];
+}
+// Function: 23792.sol-SimpleEthBank-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(accountExists[msg.sender] && accountExists[to] && accountBalances[msg.sender] >= amount)
+
+IRs:
+REF_9(bool) -> accountExists[msg.sender]
+REF_10(bool) -> accountExists[to]
+TMP_11(bool) = REF_9 && REF_10
+REF_11(uint256) -> accountBalances[msg.sender]
+TMP_12(bool) = REF_11 >= amount
+TMP_13(bool) = TMP_11 && TMP_12
+TMP_14(None) = SOLIDITY_CALL require(bool)(TMP_13)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+accountBalances[to] += amount
+
+IRs:
+REF_12(uint256) -> accountBalances[to]
+REF_12(-> accountBalances) = REF_12 + amount"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+Transfer(msg.sender,to,amount)
+
+IRs:
+Emit Transfer(msg.sender,to,amount)"];
+}
+// Function: 23792.sol-SimpleEthBank-withdraw(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(accountExists[msg.sender] && accountBalances[msg.sender] >= amount)
+
+IRs:
+REF_4(bool) -> accountExists[msg.sender]
+REF_5(uint256) -> accountBalances[msg.sender]
+TMP_6(bool) = REF_5 >= amount
+TMP_7(bool) = REF_4 && TMP_6
+TMP_8(None) = SOLIDITY_CALL require(bool)(TMP_7)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+accountBalances[msg.sender] -= amount
+
+IRs:
+REF_6(uint256) -> accountBalances[msg.sender]
+REF_6(-> accountBalances) = REF_6 - amount"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+msg.sender.call.value(amount)
+
+IRs:
+REF_7(None) -> msg.sender.call
+REF_8(None) -> REF_7.value"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Withdrawal(msg.sender,amount)
+
+IRs:
+Emit Withdrawal(msg.sender,amount)"];
+}
+}

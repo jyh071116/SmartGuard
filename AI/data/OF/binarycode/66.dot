@@ -1,0 +1,4182 @@
+digraph G {
+// Function: 66.sol-ConfigureSale-ADD_TIERS(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+(CROWDSALE_TIERS_ADDED,_exec_id)
+
+IRs:
+RETURN CROWDSALE_TIERS_ADDED,_exec_id"];
+}
+// Function: 66.sol-ConfigureSale-MIN_UPDATE(bytes32,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+(TIER_MIN_UPDATE,_exec_id,bytes32(_idx))
+
+IRs:
+TMP_269 = CONVERT _idx to bytes32
+RETURN TIER_MIN_UPDATE,_exec_id,TMP_269"];
+}
+// Function: 66.sol-ConfigureSale-createCrowdsaleTiers(bytes32[],uint256[],uint256[],uint256[],uint256[],bool[],bool[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_tier_names.length != _tier_durations.length || _tier_names.length != _tier_prices.length || _tier_names.length != _tier_caps.length || _tier_names.length != _tier_modifiable.length || _tier_names.length != _tier_whitelisted.length || _tier_names.length == 0
+
+IRs:
+REF_33 -> LENGTH _tier_names
+REF_34 -> LENGTH _tier_durations
+TMP_270(bool) = REF_33 != REF_34
+REF_35 -> LENGTH _tier_names
+REF_36 -> LENGTH _tier_prices
+TMP_271(bool) = REF_35 != REF_36
+TMP_272(bool) = TMP_270 || TMP_271
+REF_37 -> LENGTH _tier_names
+REF_38 -> LENGTH _tier_caps
+TMP_273(bool) = REF_37 != REF_38
+TMP_274(bool) = TMP_272 || TMP_273
+REF_39 -> LENGTH _tier_names
+REF_40 -> LENGTH _tier_modifiable
+TMP_275(bool) = REF_39 != REF_40
+TMP_276(bool) = TMP_274 || TMP_275
+REF_41 -> LENGTH _tier_names
+REF_42 -> LENGTH _tier_whitelisted
+TMP_277(bool) = REF_41 != REF_42
+TMP_278(bool) = TMP_276 || TMP_277
+REF_43 -> LENGTH _tier_names
+TMP_279(bool) = REF_43 == 0
+TMP_280(bool) = TMP_278 || TMP_279
+CONDITION TMP_280"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert(string)(array length mismatch)
+
+IRs:
+TMP_281(None) = SOLIDITY_CALL revert(string)(array length mismatch)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+durations_sum = uint256(Contract.read(SaleManager.totalDuration()))
+
+IRs:
+TMP_282(bytes32) = LIBRARY_CALL, dest:SaleManager, function:SaleManager.totalDuration(), arguments:[] 
+TMP_283(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.read(bytes32), arguments:['TMP_282'] 
+TMP_284 = CONVERT TMP_283 to uint256
+durations_sum(uint256) := TMP_284(uint256)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+num_tiers = uint256(Contract.read(SaleManager.saleTierList()))
+
+IRs:
+TMP_285(bytes32) = LIBRARY_CALL, dest:SaleManager, function:SaleManager.saleTierList(), arguments:[] 
+TMP_286(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.read(bytes32), arguments:['TMP_285'] 
+TMP_287 = CONVERT TMP_286 to uint256
+num_tiers(uint256) := TMP_287(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+Contract.storing()
+
+IRs:
+LIBRARY_CALL, dest:Contract, function:Contract.storing(), arguments:[] "];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+Contract.increase(SaleManager.saleTierList()).by(_tier_names.length)
+
+IRs:
+TMP_289(bytes32) = LIBRARY_CALL, dest:SaleManager, function:SaleManager.saleTierList(), arguments:[] 
+TMP_290(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.increase(bytes32), arguments:['TMP_289'] 
+REF_52 -> LENGTH _tier_names
+LIBRARY_CALL, dest:Contract, function:Contract.by(bytes32,uint256), arguments:['TMP_290', 'REF_52'] "];
+7->10;
+8[label="Node Type: BEGIN_LOOP 8
+"];
+8->11;
+9[label="Node Type: END_LOOP 9
+"];
+9->24;
+10[label="Node Type: NEW VARIABLE 10
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+10->8;
+11[label="Node Type: IF_LOOP 11
+
+EXPRESSION:
+i < _tier_names.length
+
+IRs:
+REF_53 -> LENGTH _tier_names
+TMP_292(bool) = i < REF_53
+CONDITION TMP_292"];
+11->12[label="True"];
+11->9[label="False"];
+12[label="Node Type: IF 12
+
+EXPRESSION:
+_tier_caps[i] == 0 || _tier_prices[i] == 0 || _tier_durations[i] == 0
+
+IRs:
+REF_54(uint256) -> _tier_caps[i]
+TMP_293(bool) = REF_54 == 0
+REF_55(uint256) -> _tier_prices[i]
+TMP_294(bool) = REF_55 == 0
+TMP_295(bool) = TMP_293 || TMP_294
+REF_56(uint256) -> _tier_durations[i]
+TMP_296(bool) = REF_56 == 0
+TMP_297(bool) = TMP_295 || TMP_296
+CONDITION TMP_297"];
+12->13[label="True"];
+12->14[label="False"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+revert(string)(invalid tier vals)
+
+IRs:
+TMP_298(None) = SOLIDITY_CALL revert(string)(invalid tier vals)"];
+13->14;
+14[label="Node Type: END_IF 14
+"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+durations_sum = durations_sum.add(_tier_durations[i])
+
+IRs:
+REF_58(uint256) -> _tier_durations[i]
+TMP_299(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['durations_sum', 'REF_58'] 
+durations_sum(uint256) := TMP_299(uint256)"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+Contract.set(SaleManager.tierName(num_tiers + i)).to(_tier_names[i])
+
+IRs:
+TMP_300(uint256) = num_tiers + i
+TMP_301(bytes32) = LIBRARY_CALL, dest:SaleManager, function:SaleManager.tierName(uint256), arguments:['TMP_300'] 
+TMP_302(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.set(bytes32), arguments:['TMP_301'] 
+REF_62(bytes32) -> _tier_names[i]
+LIBRARY_CALL, dest:Contract, function:Contract.to(bytes32,bytes32), arguments:['TMP_302', 'REF_62'] "];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+Contract.set(SaleManager.tierCap(num_tiers + i)).to(_tier_caps[i])
+
+IRs:
+TMP_304(uint256) = num_tiers + i
+TMP_305(bytes32) = LIBRARY_CALL, dest:SaleManager, function:SaleManager.tierCap(uint256), arguments:['TMP_304'] 
+TMP_306(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.set(bytes32), arguments:['TMP_305'] 
+REF_66(uint256) -> _tier_caps[i]
+LIBRARY_CALL, dest:Contract, function:Contract.to(bytes32,uint256), arguments:['TMP_306', 'REF_66'] "];
+17->18;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+Contract.set(SaleManager.tierPrice(num_tiers + i)).to(_tier_prices[i])
+
+IRs:
+TMP_308(uint256) = num_tiers + i
+TMP_309(bytes32) = LIBRARY_CALL, dest:SaleManager, function:SaleManager.tierPrice(uint256), arguments:['TMP_308'] 
+TMP_310(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.set(bytes32), arguments:['TMP_309'] 
+REF_70(uint256) -> _tier_prices[i]
+LIBRARY_CALL, dest:Contract, function:Contract.to(bytes32,uint256), arguments:['TMP_310', 'REF_70'] "];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+Contract.set(SaleManager.tierDuration(num_tiers + i)).to(_tier_durations[i])
+
+IRs:
+TMP_312(uint256) = num_tiers + i
+TMP_313(bytes32) = LIBRARY_CALL, dest:SaleManager, function:SaleManager.tierDuration(uint256), arguments:['TMP_312'] 
+TMP_314(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.set(bytes32), arguments:['TMP_313'] 
+REF_74(uint256) -> _tier_durations[i]
+LIBRARY_CALL, dest:Contract, function:Contract.to(bytes32,uint256), arguments:['TMP_314', 'REF_74'] "];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+Contract.set(SaleManager.tierMin(num_tiers + i)).to(_tier_minimums[i])
+
+IRs:
+TMP_316(uint256) = num_tiers + i
+TMP_317(bytes32) = LIBRARY_CALL, dest:SaleManager, function:SaleManager.tierMin(uint256), arguments:['TMP_316'] 
+TMP_318(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.set(bytes32), arguments:['TMP_317'] 
+REF_78(uint256) -> _tier_minimums[i]
+LIBRARY_CALL, dest:Contract, function:Contract.to(bytes32,uint256), arguments:['TMP_318', 'REF_78'] "];
+20->21;
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+Contract.set(SaleManager.tierModifiable(num_tiers + i)).to(_tier_modifiable[i])
+
+IRs:
+TMP_320(uint256) = num_tiers + i
+TMP_321(bytes32) = LIBRARY_CALL, dest:SaleManager, function:SaleManager.tierModifiable(uint256), arguments:['TMP_320'] 
+TMP_322(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.set(bytes32), arguments:['TMP_321'] 
+REF_82(bool) -> _tier_modifiable[i]
+LIBRARY_CALL, dest:Contract, function:Contract.to(bytes32,bool), arguments:['TMP_322', 'REF_82'] "];
+21->22;
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+Contract.set(SaleManager.tierWhitelisted(num_tiers + i)).to(_tier_whitelisted[i])
+
+IRs:
+TMP_324(uint256) = num_tiers + i
+TMP_325(bytes32) = LIBRARY_CALL, dest:SaleManager, function:SaleManager.tierWhitelisted(uint256), arguments:['TMP_324'] 
+TMP_326(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.set(bytes32), arguments:['TMP_325'] 
+REF_86(bool) -> _tier_whitelisted[i]
+LIBRARY_CALL, dest:Contract, function:Contract.to(bytes32,bool), arguments:['TMP_326', 'REF_86'] "];
+22->23;
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_328(uint256) := i(uint256)
+i(uint256) = i + 1"];
+23->11;
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+Contract.set(SaleManager.totalDuration()).to(durations_sum)
+
+IRs:
+TMP_329(bytes32) = LIBRARY_CALL, dest:SaleManager, function:SaleManager.totalDuration(), arguments:[] 
+TMP_330(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.set(bytes32), arguments:['TMP_329'] 
+LIBRARY_CALL, dest:Contract, function:Contract.to(bytes32,uint256), arguments:['TMP_330', 'durations_sum'] "];
+24->25;
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+Contract.emitting()
+
+IRs:
+LIBRARY_CALL, dest:Contract, function:Contract.emitting(), arguments:[] "];
+25->26;
+26[label="Node Type: EXPRESSION 26
+
+EXPRESSION:
+Contract.log(ADD_TIERS(Contract.execID()),bytes32(num_tiers.add(_tier_names.length)))
+
+IRs:
+TMP_333(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.execID(), arguments:[] 
+TMP_334(bytes32[2]) = INTERNAL_CALL, ConfigureSale.ADD_TIERS(bytes32)(TMP_333)
+REF_94 -> LENGTH _tier_names
+TMP_335(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['num_tiers', 'REF_94'] 
+TMP_336 = CONVERT TMP_335 to bytes32
+LIBRARY_CALL, dest:Contract, function:Contract.log(bytes32[2],bytes32), arguments:['TMP_334', 'TMP_336'] "];
+}
+// Function: 66.sol-ConfigureSale-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+TIER_MIN_UPDATE = keccak256()(TierMinUpdate(bytes32,uint256,uint256))
+
+IRs:
+TMP_461(bytes32) = SOLIDITY_CALL keccak256()(TierMinUpdate(bytes32,uint256,uint256))
+TIER_MIN_UPDATE(bytes32) := TMP_461(bytes32)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+CROWDSALE_TIERS_ADDED = keccak256()(CrowdsaleTiersAdded(bytes32,uint256))
+
+IRs:
+TMP_462(bytes32) = SOLIDITY_CALL keccak256()(CrowdsaleTiersAdded(bytes32,uint256))
+CROWDSALE_TIERS_ADDED(bytes32) := TMP_462(bytes32)"];
+}
+// Function: 66.sol-ConfigureSale-updateTierDuration(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_new_duration == 0
+
+IRs:
+TMP_375(bool) = _new_duration == 0
+CONDITION TMP_375"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert(string)(invalid duration)
+
+IRs:
+TMP_376(None) = SOLIDITY_CALL revert(string)(invalid duration)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+starts_at = uint256(Contract.read(SaleManager.startTime()))
+
+IRs:
+TMP_377(bytes32) = LIBRARY_CALL, dest:SaleManager, function:SaleManager.startTime(), arguments:[] 
+TMP_378(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.read(bytes32), arguments:['TMP_377'] 
+TMP_379 = CONVERT TMP_378 to uint256
+starts_at(uint256) := TMP_379(uint256)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+current_tier = uint256(Contract.read(SaleManager.currentTier()))
+
+IRs:
+TMP_380(bytes32) = LIBRARY_CALL, dest:SaleManager, function:SaleManager.currentTier(), arguments:[] 
+TMP_381(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.read(bytes32), arguments:['TMP_380'] 
+TMP_382 = CONVERT TMP_381 to uint256
+current_tier(uint256) := TMP_382(uint256)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+total_duration = uint256(Contract.read(SaleManager.totalDuration()))
+
+IRs:
+TMP_383(bytes32) = LIBRARY_CALL, dest:SaleManager, function:SaleManager.totalDuration(), arguments:[] 
+TMP_384(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.read(bytes32), arguments:['TMP_383'] 
+TMP_385 = CONVERT TMP_384 to uint256
+total_duration(uint256) := TMP_385(uint256)"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+cur_ends_at = uint256(Contract.read(SaleManager.currentEndsAt()))
+
+IRs:
+TMP_386(bytes32) = LIBRARY_CALL, dest:SaleManager, function:SaleManager.currentEndsAt(), arguments:[] 
+TMP_387(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.read(bytes32), arguments:['TMP_386'] 
+TMP_388 = CONVERT TMP_387 to uint256
+cur_ends_at(uint256) := TMP_388(uint256)"];
+7->8;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+previous_duration = uint256(Contract.read(SaleManager.tierDuration(_tier_index)))
+
+IRs:
+TMP_389(bytes32) = LIBRARY_CALL, dest:SaleManager, function:SaleManager.tierDuration(uint256), arguments:['_tier_index'] 
+TMP_390(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.read(bytes32), arguments:['TMP_389'] 
+TMP_391 = CONVERT TMP_390 to uint256
+previous_duration(uint256) := TMP_391(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+current_tier = current_tier.sub(1)
+
+IRs:
+TMP_392(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['current_tier', '1'] 
+current_tier(uint256) := TMP_392(uint256)"];
+9->10;
+10[label="Node Type: IF 10
+
+EXPRESSION:
+previous_duration == _new_duration
+
+IRs:
+TMP_393(bool) = previous_duration == _new_duration
+CONDITION TMP_393"];
+10->11[label="True"];
+10->12[label="False"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+revert(string)(duration unchanged)
+
+IRs:
+TMP_394(None) = SOLIDITY_CALL revert(string)(duration unchanged)"];
+11->12;
+12[label="Node Type: END_IF 12
+"];
+12->13;
+13[label="Node Type: IF 13
+
+EXPRESSION:
+total_duration < previous_duration
+
+IRs:
+TMP_395(bool) = total_duration < previous_duration
+CONDITION TMP_395"];
+13->14[label="True"];
+13->15[label="False"];
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+revert(string)(total duration invalid)
+
+IRs:
+TMP_396(None) = SOLIDITY_CALL revert(string)(total duration invalid)"];
+14->15;
+15[label="Node Type: END_IF 15
+"];
+15->16;
+16[label="Node Type: IF 16
+
+EXPRESSION:
+uint256(Contract.read(SaleManager.saleTierList())) <= _tier_index
+
+IRs:
+TMP_397(bytes32) = LIBRARY_CALL, dest:SaleManager, function:SaleManager.saleTierList(), arguments:[] 
+TMP_398(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.read(bytes32), arguments:['TMP_397'] 
+TMP_399 = CONVERT TMP_398 to uint256
+TMP_400(bool) = TMP_399 <= _tier_index
+CONDITION TMP_400"];
+16->17[label="True"];
+16->18[label="False"];
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+revert(string)(tier does not exist)
+
+IRs:
+TMP_401(None) = SOLIDITY_CALL revert(string)(tier does not exist)"];
+17->18;
+18[label="Node Type: END_IF 18
+"];
+18->19;
+19[label="Node Type: IF 19
+
+EXPRESSION:
+current_tier > _tier_index
+
+IRs:
+TMP_402(bool) = current_tier > _tier_index
+CONDITION TMP_402"];
+19->20[label="True"];
+19->21[label="False"];
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+revert(string)(tier has already completed)
+
+IRs:
+TMP_403(None) = SOLIDITY_CALL revert(string)(tier has already completed)"];
+20->21;
+21[label="Node Type: END_IF 21
+"];
+21->22;
+22[label="Node Type: IF 22
+
+EXPRESSION:
+Contract.read(SaleManager.tierModifiable(_tier_index)) == 0
+
+IRs:
+TMP_404(bytes32) = LIBRARY_CALL, dest:SaleManager, function:SaleManager.tierModifiable(uint256), arguments:['_tier_index'] 
+TMP_405(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.read(bytes32), arguments:['TMP_404'] 
+TMP_406(bool) = TMP_405 == 0
+CONDITION TMP_406"];
+22->23[label="True"];
+22->24[label="False"];
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+revert(string)(tier duration not modifiable)
+
+IRs:
+TMP_407(None) = SOLIDITY_CALL revert(string)(tier duration not modifiable)"];
+23->24;
+24[label="Node Type: END_IF 24
+"];
+24->25;
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+Contract.storing()
+
+IRs:
+LIBRARY_CALL, dest:Contract, function:Contract.storing(), arguments:[] "];
+25->26;
+26[label="Node Type: IF 26
+
+EXPRESSION:
+_tier_index == 0
+
+IRs:
+TMP_409(bool) = _tier_index == 0
+CONDITION TMP_409"];
+26->27[label="True"];
+26->31[label="False"];
+27[label="Node Type: IF 27
+
+EXPRESSION:
+now >= starts_at
+
+IRs:
+TMP_410(bool) = now >= starts_at
+CONDITION TMP_410"];
+27->28[label="True"];
+27->29[label="False"];
+28[label="Node Type: EXPRESSION 28
+
+EXPRESSION:
+revert(string)(cannot modify initial tier once sale has started)
+
+IRs:
+TMP_411(None) = SOLIDITY_CALL revert(string)(cannot modify initial tier once sale has started)"];
+28->29;
+29[label="Node Type: END_IF 29
+"];
+29->30;
+30[label="Node Type: EXPRESSION 30
+
+EXPRESSION:
+Contract.set(SaleManager.currentEndsAt()).to(_new_duration.add(starts_at))
+
+IRs:
+TMP_412(bytes32) = LIBRARY_CALL, dest:SaleManager, function:SaleManager.currentEndsAt(), arguments:[] 
+TMP_413(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.set(bytes32), arguments:['TMP_412'] 
+TMP_414(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['_new_duration', 'starts_at'] 
+LIBRARY_CALL, dest:Contract, function:Contract.to(bytes32,uint256), arguments:['TMP_413', 'TMP_414'] "];
+30->46;
+31[label="Node Type: IF 31
+
+EXPRESSION:
+_tier_index > current_tier
+
+IRs:
+TMP_416(bool) = _tier_index > current_tier
+CONDITION TMP_416"];
+31->32[label="True"];
+31->44[label="False"];
+32[label="Node Type: IF 32
+
+EXPRESSION:
+_tier_index - current_tier == 1 && now >= cur_ends_at
+
+IRs:
+TMP_417(uint256) = _tier_index - current_tier
+TMP_418(bool) = TMP_417 == 1
+TMP_419(bool) = now >= cur_ends_at
+TMP_420(bool) = TMP_418 && TMP_419
+CONDITION TMP_420"];
+32->33[label="True"];
+32->34[label="False"];
+33[label="Node Type: EXPRESSION 33
+
+EXPRESSION:
+revert(string)(cannot modify tier after it has begun)
+
+IRs:
+TMP_421(None) = SOLIDITY_CALL revert(string)(cannot modify tier after it has begun)"];
+33->34;
+34[label="Node Type: END_IF 34
+"];
+34->37;
+35[label="Node Type: BEGIN_LOOP 35
+"];
+35->38;
+36[label="Node Type: END_LOOP 36
+"];
+36->41;
+37[label="Node Type: NEW VARIABLE 37
+
+EXPRESSION:
+i = current_tier + 1
+
+IRs:
+TMP_422(uint256) = current_tier + 1
+i(uint256) := TMP_422(uint256)"];
+37->35;
+38[label="Node Type: IF_LOOP 38
+
+EXPRESSION:
+i < _tier_index
+
+IRs:
+TMP_423(bool) = i < _tier_index
+CONDITION TMP_423"];
+38->39[label="True"];
+38->36[label="False"];
+39[label="Node Type: EXPRESSION 39
+
+EXPRESSION:
+cur_ends_at = cur_ends_at.add(uint256(Contract.read(SaleManager.tierDuration(i))))
+
+IRs:
+TMP_424(bytes32) = LIBRARY_CALL, dest:SaleManager, function:SaleManager.tierDuration(uint256), arguments:['i'] 
+TMP_425(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.read(bytes32), arguments:['TMP_424'] 
+TMP_426 = CONVERT TMP_425 to uint256
+TMP_427(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['cur_ends_at', 'TMP_426'] 
+cur_ends_at(uint256) := TMP_427(uint256)"];
+39->40;
+40[label="Node Type: EXPRESSION 40
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_428(uint256) := i(uint256)
+i(uint256) = i + 1"];
+40->38;
+41[label="Node Type: IF 41
+
+EXPRESSION:
+cur_ends_at < now
+
+IRs:
+TMP_429(bool) = cur_ends_at < now
+CONDITION TMP_429"];
+41->42[label="True"];
+41->43[label="False"];
+42[label="Node Type: EXPRESSION 42
+
+EXPRESSION:
+revert(string)(cannot modify current tier)
+
+IRs:
+TMP_430(None) = SOLIDITY_CALL revert(string)(cannot modify current tier)"];
+42->43;
+43[label="Node Type: END_IF 43
+"];
+43->45;
+44[label="Node Type: EXPRESSION 44
+
+EXPRESSION:
+revert(string)(cannot update tier)
+
+IRs:
+TMP_431(None) = SOLIDITY_CALL revert(string)(cannot update tier)"];
+44->45;
+45[label="Node Type: END_IF 45
+"];
+45->46;
+46[label="Node Type: END_IF 46
+"];
+46->47;
+47[label="Node Type: IF 47
+
+EXPRESSION:
+previous_duration > _new_duration
+
+IRs:
+TMP_432(bool) = previous_duration > _new_duration
+CONDITION TMP_432"];
+47->48[label="True"];
+47->49[label="False"];
+48[label="Node Type: EXPRESSION 48
+
+EXPRESSION:
+total_duration = total_duration.sub(previous_duration - _new_duration)
+
+IRs:
+TMP_433(uint256) = previous_duration - _new_duration
+TMP_434(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['total_duration', 'TMP_433'] 
+total_duration(uint256) := TMP_434(uint256)"];
+48->50;
+49[label="Node Type: EXPRESSION 49
+
+EXPRESSION:
+total_duration = total_duration.add(_new_duration - previous_duration)
+
+IRs:
+TMP_435(uint256) = _new_duration - previous_duration
+TMP_436(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['total_duration', 'TMP_435'] 
+total_duration(uint256) := TMP_436(uint256)"];
+49->50;
+50[label="Node Type: END_IF 50
+"];
+50->51;
+51[label="Node Type: EXPRESSION 51
+
+EXPRESSION:
+Contract.set(SaleManager.tierDuration(_tier_index)).to(_new_duration)
+
+IRs:
+TMP_437(bytes32) = LIBRARY_CALL, dest:SaleManager, function:SaleManager.tierDuration(uint256), arguments:['_tier_index'] 
+TMP_438(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.set(bytes32), arguments:['TMP_437'] 
+LIBRARY_CALL, dest:Contract, function:Contract.to(bytes32,uint256), arguments:['TMP_438', '_new_duration'] "];
+51->52;
+52[label="Node Type: EXPRESSION 52
+
+EXPRESSION:
+Contract.set(SaleManager.totalDuration()).to(total_duration)
+
+IRs:
+TMP_440(bytes32) = LIBRARY_CALL, dest:SaleManager, function:SaleManager.totalDuration(), arguments:[] 
+TMP_441(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.set(bytes32), arguments:['TMP_440'] 
+LIBRARY_CALL, dest:Contract, function:Contract.to(bytes32,uint256), arguments:['TMP_441', 'total_duration'] "];
+}
+// Function: 66.sol-ConfigureSale-updateTierMinimum(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+uint256(Contract.read(SaleManager.saleTierList())) <= _tier_index
+
+IRs:
+TMP_443(bytes32) = LIBRARY_CALL, dest:SaleManager, function:SaleManager.saleTierList(), arguments:[] 
+TMP_444(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.read(bytes32), arguments:['TMP_443'] 
+TMP_445 = CONVERT TMP_444 to uint256
+TMP_446(bool) = TMP_445 <= _tier_index
+CONDITION TMP_446"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert(string)(tier does not exist)
+
+IRs:
+TMP_447(None) = SOLIDITY_CALL revert(string)(tier does not exist)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+Contract.read(SaleManager.tierModifiable(_tier_index)) == 0
+
+IRs:
+TMP_448(bytes32) = LIBRARY_CALL, dest:SaleManager, function:SaleManager.tierModifiable(uint256), arguments:['_tier_index'] 
+TMP_449(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.read(bytes32), arguments:['TMP_448'] 
+TMP_450(bool) = TMP_449 == 0
+CONDITION TMP_450"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+revert(string)(tier mincap not modifiable)
+
+IRs:
+TMP_451(None) = SOLIDITY_CALL revert(string)(tier mincap not modifiable)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+Contract.storing()
+
+IRs:
+LIBRARY_CALL, dest:Contract, function:Contract.storing(), arguments:[] "];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+Contract.set(SaleManager.tierMin(_tier_index)).to(_new_minimum)
+
+IRs:
+TMP_453(bytes32) = LIBRARY_CALL, dest:SaleManager, function:SaleManager.tierMin(uint256), arguments:['_tier_index'] 
+TMP_454(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.set(bytes32), arguments:['TMP_453'] 
+LIBRARY_CALL, dest:Contract, function:Contract.to(bytes32,uint256), arguments:['TMP_454', '_new_minimum'] "];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+Contract.emitting()
+
+IRs:
+LIBRARY_CALL, dest:Contract, function:Contract.emitting(), arguments:[] "];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+Contract.log(MIN_UPDATE(Contract.execID(),_tier_index),bytes32(_new_minimum))
+
+IRs:
+TMP_457(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.execID(), arguments:[] 
+TMP_458(bytes32[3]) = INTERNAL_CALL, ConfigureSale.MIN_UPDATE(bytes32,uint256)(TMP_457,_tier_index)
+TMP_459 = CONVERT _new_minimum to bytes32
+LIBRARY_CALL, dest:Contract, function:Contract.log(bytes32[3],bytes32), arguments:['TMP_458', 'TMP_459'] "];
+}
+// Function: 66.sol-ConfigureSale-whitelistMultiForTier(uint256,address[],uint256[],uint256[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_to_whitelist.length != _min_token_purchase.length || _to_whitelist.length != _max_purchase_amt.length || _to_whitelist.length == 0
+
+IRs:
+REF_95 -> LENGTH _to_whitelist
+REF_96 -> LENGTH _min_token_purchase
+TMP_338(bool) = REF_95 != REF_96
+REF_97 -> LENGTH _to_whitelist
+REF_98 -> LENGTH _max_purchase_amt
+TMP_339(bool) = REF_97 != REF_98
+TMP_340(bool) = TMP_338 || TMP_339
+REF_99 -> LENGTH _to_whitelist
+TMP_341(bool) = REF_99 == 0
+TMP_342(bool) = TMP_340 || TMP_341
+CONDITION TMP_342"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert(string)(mismatched input lengths)
+
+IRs:
+TMP_343(None) = SOLIDITY_CALL revert(string)(mismatched input lengths)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+tier_whitelist_length = uint256(Contract.read(SaleManager.tierWhitelist(_tier_index)))
+
+IRs:
+TMP_344(bytes32) = LIBRARY_CALL, dest:SaleManager, function:SaleManager.tierWhitelist(uint256), arguments:['_tier_index'] 
+TMP_345(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.read(bytes32), arguments:['TMP_344'] 
+TMP_346 = CONVERT TMP_345 to uint256
+tier_whitelist_length(uint256) := TMP_346(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Contract.storing()
+
+IRs:
+LIBRARY_CALL, dest:Contract, function:Contract.storing(), arguments:[] "];
+5->8;
+6[label="Node Type: BEGIN_LOOP 6
+"];
+6->9;
+7[label="Node Type: END_LOOP 7
+"];
+7->17;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+8->6;
+9[label="Node Type: IF_LOOP 9
+
+EXPRESSION:
+i < _to_whitelist.length
+
+IRs:
+REF_103 -> LENGTH _to_whitelist
+TMP_348(bool) = i < REF_103
+CONDITION TMP_348"];
+9->10[label="True"];
+9->7[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+Contract.set(SaleManager.whitelistMinTok(_tier_index,_to_whitelist[i])).to(_min_token_purchase[i])
+
+IRs:
+REF_106(address) -> _to_whitelist[i]
+TMP_349(bytes32) = LIBRARY_CALL, dest:SaleManager, function:SaleManager.whitelistMinTok(uint256,address), arguments:['_tier_index', 'REF_106'] 
+TMP_350(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.set(bytes32), arguments:['TMP_349'] 
+REF_108(uint256) -> _min_token_purchase[i]
+LIBRARY_CALL, dest:Contract, function:Contract.to(bytes32,uint256), arguments:['TMP_350', 'REF_108'] "];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+Contract.set(SaleManager.whitelistMaxTok(_tier_index,_to_whitelist[i])).to(_max_purchase_amt[i])
+
+IRs:
+REF_111(address) -> _to_whitelist[i]
+TMP_352(bytes32) = LIBRARY_CALL, dest:SaleManager, function:SaleManager.whitelistMaxTok(uint256,address), arguments:['_tier_index', 'REF_111'] 
+TMP_353(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.set(bytes32), arguments:['TMP_352'] 
+REF_113(uint256) -> _max_purchase_amt[i]
+LIBRARY_CALL, dest:Contract, function:Contract.to(bytes32,uint256), arguments:['TMP_353', 'REF_113'] "];
+11->12;
+12[label="Node Type: IF 12
+
+EXPRESSION:
+Contract.read(SaleManager.whitelistMinTok(_tier_index,_to_whitelist[i])) == 0 && Contract.read(SaleManager.whitelistMaxTok(_tier_index,_to_whitelist[i])) == 0
+
+IRs:
+REF_116(address) -> _to_whitelist[i]
+TMP_355(bytes32) = LIBRARY_CALL, dest:SaleManager, function:SaleManager.whitelistMinTok(uint256,address), arguments:['_tier_index', 'REF_116'] 
+TMP_356(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.read(bytes32), arguments:['TMP_355'] 
+TMP_357(bool) = TMP_356 == 0
+REF_119(address) -> _to_whitelist[i]
+TMP_358(bytes32) = LIBRARY_CALL, dest:SaleManager, function:SaleManager.whitelistMaxTok(uint256,address), arguments:['_tier_index', 'REF_119'] 
+TMP_359(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.read(bytes32), arguments:['TMP_358'] 
+TMP_360(bool) = TMP_359 == 0
+TMP_361(bool) = TMP_357 && TMP_360
+CONDITION TMP_361"];
+12->13[label="True"];
+12->15[label="False"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+Contract.set(bytes32(32 + (32 * tier_whitelist_length) + uint256(SaleManager.tierWhitelist(_tier_index)))).to(_to_whitelist[i])
+
+IRs:
+TMP_362(uint256) = 32 * tier_whitelist_length
+TMP_363(uint256) = 32 + TMP_362
+TMP_364(bytes32) = LIBRARY_CALL, dest:SaleManager, function:SaleManager.tierWhitelist(uint256), arguments:['_tier_index'] 
+TMP_365 = CONVERT TMP_364 to uint256
+TMP_366(uint256) = TMP_363 + TMP_365
+TMP_367 = CONVERT TMP_366 to bytes32
+TMP_368(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.set(bytes32), arguments:['TMP_367'] 
+REF_123(address) -> _to_whitelist[i]
+LIBRARY_CALL, dest:Contract, function:Contract.to(bytes32,address), arguments:['TMP_368', 'REF_123'] "];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+tier_whitelist_length ++
+
+IRs:
+TMP_370(uint256) := tier_whitelist_length(uint256)
+tier_whitelist_length(uint256) = tier_whitelist_length + 1"];
+14->15;
+15[label="Node Type: END_IF 15
+"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_371(uint256) := i(uint256)
+i(uint256) = i + 1"];
+16->9;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+Contract.set(SaleManager.tierWhitelist(_tier_index)).to(tier_whitelist_length)
+
+IRs:
+TMP_372(bytes32) = LIBRARY_CALL, dest:SaleManager, function:SaleManager.tierWhitelist(uint256), arguments:['_tier_index'] 
+TMP_373(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.set(bytes32), arguments:['TMP_372'] 
+LIBRARY_CALL, dest:Contract, function:Contract.to(bytes32,uint256), arguments:['TMP_373', 'tier_whitelist_length'] "];
+}
+// Function: 66.sol-Contract-authorize(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+initialize()
+
+IRs:
+INTERNAL_CALL, Contract.initialize()()"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+perms = EXEC_PERMISSIONS
+
+IRs:
+perms(bytes32) := EXEC_PERMISSIONS(bytes32)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+"];
+3->4;
+4[label="Node Type: INLINE ASM 4
+"];
+4->5;
+5[label="Node Type: END INLINE ASM 5
+"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+! authorized
+
+IRs:
+TMP_13 = UnaryType.BANG authorized 
+CONDITION TMP_13"];
+6->7[label="True"];
+6->8[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+revert(string)(Sender is not authorized as a script exec address)
+
+IRs:
+TMP_14(None) = SOLIDITY_CALL revert(string)(Sender is not authorized as a script exec address)"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+}
+// Function: 66.sol-Contract-buffPtr()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: INLINE ASM 1
+"];
+1->2;
+2[label="Node Type: END INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+ptr
+
+IRs:
+RETURN ptr"];
+}
+// Function: 66.sol-Contract-by(bytes32,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->11;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+expected() == NextFunction.VAL_INC
+
+IRs:
+TMP_161(Contract.NextFunction) = INTERNAL_CALL, Contract.expected()()
+REF_7(Contract.NextFunction) -> NextFunction.VAL_INC
+TMP_162(bool) = TMP_161 == REF_7
+CONDITION TMP_162"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_amt = _amt.add(uint256(_val))
+
+IRs:
+TMP_163 = CONVERT _val to uint256
+TMP_164(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['_amt', 'TMP_163'] 
+_amt(uint256) := TMP_164(uint256)"];
+2->7;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+expected() == NextFunction.VAL_DEC
+
+IRs:
+TMP_165(Contract.NextFunction) = INTERNAL_CALL, Contract.expected()()
+REF_9(Contract.NextFunction) -> NextFunction.VAL_DEC
+TMP_166(bool) = TMP_165 == REF_9
+CONDITION TMP_166"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+_amt = uint256(_val).sub(_amt)
+
+IRs:
+TMP_167 = CONVERT _val to uint256
+TMP_168(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['TMP_167', '_amt'] 
+_amt(uint256) := TMP_168(uint256)"];
+4->6;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+revert(string)(Expected VAL_INC or VAL_DEC)
+
+IRs:
+TMP_169(None) = SOLIDITY_CALL revert(string)(Expected VAL_INC or VAL_DEC)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: INLINE ASM 8
+"];
+8->9;
+9[label="Node Type: END INLINE ASM 9
+"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+setFreeMem()
+
+IRs:
+INTERNAL_CALL, Contract.setFreeMem()()"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+conditions(validStoreVal,validStoreDest)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validStoreVal,validStoreDest)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+conditions(validStoreVal,validStoreDest)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validStoreVal,validStoreDest)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+conditions(validStoreVal,validStoreDest)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validStoreVal,validStoreDest)"];
+13->1;
+}
+// Function: 66.sol-Contract-byMaximum(bytes32,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->11;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+expected() == NextFunction.VAL_DEC
+
+IRs:
+TMP_174(Contract.NextFunction) = INTERNAL_CALL, Contract.expected()()
+REF_11(Contract.NextFunction) -> NextFunction.VAL_DEC
+TMP_175(bool) = TMP_174 == REF_11
+CONDITION TMP_175"];
+1->2[label="True"];
+1->6[label="False"];
+2[label="Node Type: IF 2
+
+EXPRESSION:
+_amt >= uint256(_val)
+
+IRs:
+TMP_176 = CONVERT _val to uint256
+TMP_177(bool) = _amt >= TMP_176
+CONDITION TMP_177"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_amt = 0
+
+IRs:
+_amt(uint256) := 0(uint256)"];
+3->5;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+_amt = uint256(_val).sub(_amt)
+
+IRs:
+TMP_178 = CONVERT _val to uint256
+TMP_179(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['TMP_178', '_amt'] 
+_amt(uint256) := TMP_179(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->7;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+revert(string)(Expected VAL_DEC)
+
+IRs:
+TMP_180(None) = SOLIDITY_CALL revert(string)(Expected VAL_DEC)"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: INLINE ASM 8
+"];
+8->9;
+9[label="Node Type: END INLINE ASM 9
+"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+setFreeMem()
+
+IRs:
+INTERNAL_CALL, Contract.setFreeMem()()"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+conditions(validStoreVal,validStoreDest)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validStoreVal,validStoreDest)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+conditions(validStoreVal,validStoreDest)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validStoreVal,validStoreDest)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+conditions(validStoreVal,validStoreDest)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validStoreVal,validStoreDest)"];
+13->1;
+}
+// Function: 66.sol-Contract-checks(function())
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_check()
+
+IRs:
+INTERNAL_DYNAMIC_CALL _check()  "];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+conditions(validState,validState)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validState,validState)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+conditions(validState,validState)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validState,validState)"];
+3->1;
+}
+// Function: 66.sol-Contract-commit()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+ptr = buffPtr()
+
+IRs:
+TMP_29(bytes32) = INTERNAL_CALL, Contract.buffPtr()()
+ptr(bytes32) := TMP_29(bytes32)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(ptr >= 0x180,Invalid buffer pointer)
+
+IRs:
+TMP_30(bool) = ptr >= 384
+TMP_31(None) = SOLIDITY_CALL require(bool,string)(TMP_30,Invalid buffer pointer)"];
+2->3;
+3[label="Node Type: INLINE ASM 3
+"];
+3->4;
+4[label="Node Type: END INLINE ASM 4
+"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+conditions(validState,none)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validState,none)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+conditions(validState,none)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validState,none)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+conditions(validState,none)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validState,none)"];
+7->1;
+}
+// Function: 66.sol-Contract-conditions(function(),function())
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+first()
+
+IRs:
+INTERNAL_DYNAMIC_CALL first()  "];
+1->2;
+2[label="Node Type: _ 2
+"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+last()
+
+IRs:
+INTERNAL_DYNAMIC_CALL last()  "];
+}
+// Function: 66.sol-Contract-currentAction()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+buffPtr() == bytes32(0)
+
+IRs:
+TMP_52(bytes32) = INTERNAL_CALL, Contract.buffPtr()()
+TMP_53 = CONVERT 0 to bytes32
+TMP_54(bool) = TMP_52 == TMP_53
+CONDITION TMP_54"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+bytes4(0)
+
+IRs:
+TMP_55 = CONVERT 0 to bytes4
+RETURN TMP_55"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: INLINE ASM 4
+"];
+4->5;
+5[label="Node Type: END INLINE ASM 5
+"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+action
+
+IRs:
+RETURN action"];
+}
+// Function: 66.sol-Contract-decrease(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+val = keccak256()(_field,execID())
+
+IRs:
+TMP_155(bytes32) = INTERNAL_CALL, Contract.execID()()
+TMP_156(bytes32) = SOLIDITY_CALL keccak256()(_field,TMP_155)
+val(bytes32) := TMP_156(bytes32)"];
+1->2;
+2[label="Node Type: INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: END INLINE ASM 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+setFreeMem()
+
+IRs:
+INTERNAL_CALL, Contract.setFreeMem()()"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+val
+
+IRs:
+RETURN val"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+conditions(validStoreDest,validStoreVal)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validStoreDest,validStoreVal)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+conditions(validStoreDest,validStoreVal)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validStoreDest,validStoreVal)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+conditions(validStoreDest,validStoreVal)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validStoreDest,validStoreVal)"];
+8->1;
+9[label="Node Type: RETURN 9
+
+EXPRESSION:
+val
+
+IRs:
+RETURN val"];
+}
+// Function: 66.sol-Contract-emitted()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+buffPtr() == bytes32(0)
+
+IRs:
+TMP_216(bytes32) = INTERNAL_CALL, Contract.buffPtr()()
+TMP_217 = CONVERT 0 to bytes32
+TMP_218(bool) = TMP_216 == TMP_217
+CONDITION TMP_218"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: INLINE ASM 4
+"];
+4->5;
+5[label="Node Type: END INLINE ASM 5
+"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+num_emitted
+
+IRs:
+RETURN num_emitted"];
+}
+// Function: 66.sol-Contract-emitting()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+action_req = EMITS
+
+IRs:
+action_req(bytes4) := EMITS(bytes4)"];
+1->2;
+2[label="Node Type: INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: END INLINE ASM 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+setFreeMem()
+
+IRs:
+INTERNAL_CALL, Contract.setFreeMem()()"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+conditions(validEmitBuff,isEmitting)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validEmitBuff,isEmitting)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+conditions(validEmitBuff,isEmitting)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validEmitBuff,isEmitting)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+conditions(validEmitBuff,isEmitting)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validEmitBuff,isEmitting)"];
+7->1;
+}
+// Function: 66.sol-Contract-execID()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: INLINE ASM 1
+"];
+1->2;
+2[label="Node Type: END INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool,string)(exec_id != bytes32(0),Execution id overwritten, or not read)
+
+IRs:
+TMP_95 = CONVERT 0 to bytes32
+TMP_96(bool) = exec_id != TMP_95
+TMP_97(None) = SOLIDITY_CALL require(bool,string)(TMP_96,Execution id overwritten, or not read)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+exec_id
+
+IRs:
+RETURN exec_id"];
+}
+// Function: 66.sol-Contract-expected()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: INLINE ASM 1
+"];
+1->2;
+2[label="Node Type: END INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+next
+
+IRs:
+RETURN next"];
+}
+// Function: 66.sol-Contract-freeMem()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: INLINE ASM 1
+"];
+1->2;
+2[label="Node Type: END INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+ptr
+
+IRs:
+RETURN ptr"];
+}
+// Function: 66.sol-Contract-increase(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+val = keccak256()(_field,execID())
+
+IRs:
+TMP_149(bytes32) = INTERNAL_CALL, Contract.execID()()
+TMP_150(bytes32) = SOLIDITY_CALL keccak256()(_field,TMP_149)
+val(bytes32) := TMP_150(bytes32)"];
+1->2;
+2[label="Node Type: INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: END INLINE ASM 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+setFreeMem()
+
+IRs:
+INTERNAL_CALL, Contract.setFreeMem()()"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+val
+
+IRs:
+RETURN val"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+conditions(validStoreDest,validStoreVal)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validStoreDest,validStoreVal)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+conditions(validStoreDest,validStoreVal)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validStoreDest,validStoreVal)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+conditions(validStoreDest,validStoreVal)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validStoreDest,validStoreVal)"];
+8->1;
+9[label="Node Type: RETURN 9
+
+EXPRESSION:
+val
+
+IRs:
+RETURN val"];
+}
+// Function: 66.sol-Contract-initialize()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(freeMem() == 0x80,Memory allocated prior to execution)
+
+IRs:
+TMP_15(bytes32) = INTERNAL_CALL, Contract.freeMem()()
+TMP_16(bool) = TMP_15 == 128
+TMP_17(None) = SOLIDITY_CALL require(bool,string)(TMP_16,Memory allocated prior to execution)"];
+1->2;
+2[label="Node Type: INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: END INLINE ASM 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+assert(bool)(execID() != bytes32(0) && sender() != address(0))
+
+IRs:
+TMP_18(bytes32) = INTERNAL_CALL, Contract.execID()()
+TMP_19 = CONVERT 0 to bytes32
+TMP_20(bool) = TMP_18 != TMP_19
+TMP_21(address) = INTERNAL_CALL, Contract.sender()()
+TMP_22 = CONVERT 0 to address
+TMP_23(bool) = TMP_21 != TMP_22
+TMP_24(bool) = TMP_20 && TMP_23
+TMP_25(None) = SOLIDITY_CALL assert(bool)(TMP_24)"];
+}
+// Function: 66.sol-Contract-isEmitting()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+currentAction() != EMITS
+
+IRs:
+TMP_59(bytes4) = INTERNAL_CALL, Contract.currentAction()()
+TMP_60(bool) = TMP_59 != EMITS
+CONDITION TMP_60"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert(string)(Invalid current action - expected EMITS)
+
+IRs:
+TMP_61(None) = SOLIDITY_CALL revert(string)(Invalid current action - expected EMITS)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 66.sol-Contract-isPaying()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+currentAction() != PAYS
+
+IRs:
+TMP_62(bytes4) = INTERNAL_CALL, Contract.currentAction()()
+TMP_63(bool) = TMP_62 != PAYS
+CONDITION TMP_63"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert(string)(Invalid current action - expected PAYS)
+
+IRs:
+TMP_64(None) = SOLIDITY_CALL revert(string)(Invalid current action - expected PAYS)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 66.sol-Contract-isStoring()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+currentAction() != STORES
+
+IRs:
+TMP_56(bytes4) = INTERNAL_CALL, Contract.currentAction()()
+TMP_57(bool) = TMP_56 != STORES
+CONDITION TMP_57"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert(string)(Invalid current action - expected STORES)
+
+IRs:
+TMP_58(None) = SOLIDITY_CALL revert(string)(Invalid current action - expected STORES)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 66.sol-Contract-log(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: INLINE ASM 1
+"];
+1->2;
+2[label="Node Type: END INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+setFreeMem()
+
+IRs:
+INTERNAL_CALL, Contract.setFreeMem()()"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+conditions(validEvent,validEvent)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validEvent,validEvent)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+conditions(validEvent,validEvent)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validEvent,validEvent)"];
+5->1;
+}
+// Function: 66.sol-Contract-log(bytes32[1],bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: INLINE ASM 1
+"];
+1->2;
+2[label="Node Type: END INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+setFreeMem()
+
+IRs:
+INTERNAL_CALL, Contract.setFreeMem()()"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+conditions(validEvent,validEvent)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validEvent,validEvent)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+conditions(validEvent,validEvent)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validEvent,validEvent)"];
+5->1;
+}
+// Function: 66.sol-Contract-log(bytes32[2],bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: INLINE ASM 1
+"];
+1->2;
+2[label="Node Type: END INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+setFreeMem()
+
+IRs:
+INTERNAL_CALL, Contract.setFreeMem()()"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+conditions(validEvent,validEvent)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validEvent,validEvent)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+conditions(validEvent,validEvent)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validEvent,validEvent)"];
+5->1;
+}
+// Function: 66.sol-Contract-log(bytes32[3],bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: INLINE ASM 1
+"];
+1->2;
+2[label="Node Type: END INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+setFreeMem()
+
+IRs:
+INTERNAL_CALL, Contract.setFreeMem()()"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+conditions(validEvent,validEvent)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validEvent,validEvent)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+conditions(validEvent,validEvent)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validEvent,validEvent)"];
+5->1;
+}
+// Function: 66.sol-Contract-log(bytes32[4],bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: INLINE ASM 1
+"];
+1->2;
+2[label="Node Type: END INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+setFreeMem()
+
+IRs:
+INTERNAL_CALL, Contract.setFreeMem()()"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+conditions(validEvent,validEvent)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validEvent,validEvent)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+conditions(validEvent,validEvent)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validEvent,validEvent)"];
+5->1;
+}
+// Function: 66.sol-Contract-none()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 66.sol-Contract-paid()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+buffPtr() == bytes32(0)
+
+IRs:
+TMP_222(bytes32) = INTERNAL_CALL, Contract.buffPtr()()
+TMP_223 = CONVERT 0 to bytes32
+TMP_224(bool) = TMP_222 == TMP_223
+CONDITION TMP_224"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: INLINE ASM 4
+"];
+4->5;
+5[label="Node Type: END INLINE ASM 5
+"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+num_paid
+
+IRs:
+RETURN num_paid"];
+}
+// Function: 66.sol-Contract-pay(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: INLINE ASM 1
+"];
+1->2;
+2[label="Node Type: END INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+setFreeMem()
+
+IRs:
+INTERNAL_CALL, Contract.setFreeMem()()"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+_amount
+
+IRs:
+RETURN _amount"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+conditions(validPayAmt,validPayDest)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validPayAmt,validPayDest)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+conditions(validPayAmt,validPayDest)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validPayAmt,validPayDest)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+conditions(validPayAmt,validPayDest)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validPayAmt,validPayDest)"];
+7->1;
+}
+// Function: 66.sol-Contract-paying()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+action_req = PAYS
+
+IRs:
+action_req(bytes4) := PAYS(bytes4)"];
+1->2;
+2[label="Node Type: INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: END INLINE ASM 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+setFreeMem()
+
+IRs:
+INTERNAL_CALL, Contract.setFreeMem()()"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+conditions(validPayBuff,isPaying)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validPayBuff,isPaying)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+conditions(validPayBuff,isPaying)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validPayBuff,isPaying)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+conditions(validPayBuff,isPaying)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validPayBuff,isPaying)"];
+7->1;
+}
+// Function: 66.sol-Contract-read(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+data = keccak256()(_location,execID())
+
+IRs:
+TMP_101(bytes32) = INTERNAL_CALL, Contract.execID()()
+TMP_102(bytes32) = SOLIDITY_CALL keccak256()(_location,TMP_101)
+data(bytes32) := TMP_102(bytes32)"];
+1->2;
+2[label="Node Type: INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: END INLINE ASM 3
+"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+data
+
+IRs:
+RETURN data"];
+}
+// Function: 66.sol-Contract-sender()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: INLINE ASM 1
+"];
+1->2;
+2[label="Node Type: END INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool,string)(addr != address(0),Sender address overwritten, or not read)
+
+IRs:
+TMP_98 = CONVERT 0 to address
+TMP_99(bool) = addr != TMP_98
+TMP_100(None) = SOLIDITY_CALL require(bool,string)(TMP_99,Sender address overwritten, or not read)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+addr
+
+IRs:
+RETURN addr"];
+}
+// Function: 66.sol-Contract-set(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: INLINE ASM 1
+"];
+1->2;
+2[label="Node Type: END INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+setFreeMem()
+
+IRs:
+INTERNAL_CALL, Contract.setFreeMem()()"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+_field
+
+IRs:
+RETURN _field"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+conditions(validStoreDest,validStoreVal)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validStoreDest,validStoreVal)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+conditions(validStoreDest,validStoreVal)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validStoreDest,validStoreVal)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+conditions(validStoreDest,validStoreVal)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validStoreDest,validStoreVal)"];
+7->1;
+}
+// Function: 66.sol-Contract-setFreeMem()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: INLINE ASM 1
+"];
+1->2;
+2[label="Node Type: END INLINE ASM 2
+"];
+}
+// Function: 66.sol-Contract-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+EXEC_PERMISSIONS = keccak256()(script_exec_permissions)
+
+IRs:
+TMP_225(bytes32) = SOLIDITY_CALL keccak256()(script_exec_permissions)
+EXEC_PERMISSIONS(bytes32) := TMP_225(bytes32)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+EMITS = bytes4(keccak256()(Emit((bytes32[],bytes)[])))
+
+IRs:
+TMP_226(bytes32) = SOLIDITY_CALL keccak256()(Emit((bytes32[],bytes)[]))
+TMP_227 = CONVERT TMP_226 to bytes4
+EMITS(bytes4) := TMP_227(bytes4)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+STORES = bytes4(keccak256()(Store(bytes32[])))
+
+IRs:
+TMP_228(bytes32) = SOLIDITY_CALL keccak256()(Store(bytes32[]))
+TMP_229 = CONVERT TMP_228 to bytes4
+STORES(bytes4) := TMP_229(bytes4)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+PAYS = bytes4(keccak256()(Pay(bytes32[])))
+
+IRs:
+TMP_230(bytes32) = SOLIDITY_CALL keccak256()(Pay(bytes32[]))
+TMP_231 = CONVERT TMP_230 to bytes4
+PAYS(bytes4) := TMP_231(bytes4)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+THROWS = bytes4(keccak256()(Error(string)))
+
+IRs:
+TMP_232(bytes32) = SOLIDITY_CALL keccak256()(Error(string))
+TMP_233 = CONVERT TMP_232 to bytes4
+THROWS(bytes4) := TMP_233(bytes4)"];
+}
+// Function: 66.sol-Contract-startBuffer()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: INLINE ASM 1
+"];
+1->2;
+2[label="Node Type: END INLINE ASM 2
+"];
+}
+// Function: 66.sol-Contract-stored()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+buffPtr() == bytes32(0)
+
+IRs:
+TMP_219(bytes32) = INTERNAL_CALL, Contract.buffPtr()()
+TMP_220 = CONVERT 0 to bytes32
+TMP_221(bool) = TMP_219 == TMP_220
+CONDITION TMP_221"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: INLINE ASM 4
+"];
+4->5;
+5[label="Node Type: END INLINE ASM 5
+"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+num_stored
+
+IRs:
+RETURN num_stored"];
+}
+// Function: 66.sol-Contract-storing()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+action_req = STORES
+
+IRs:
+action_req(bytes4) := STORES(bytes4)"];
+1->2;
+2[label="Node Type: INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: END INLINE ASM 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+setFreeMem()
+
+IRs:
+INTERNAL_CALL, Contract.setFreeMem()()"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+conditions(validStoreBuff,isStoring)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validStoreBuff,isStoring)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+conditions(validStoreBuff,isStoring)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validStoreBuff,isStoring)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+conditions(validStoreBuff,isStoring)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validStoreBuff,isStoring)"];
+7->1;
+}
+// Function: 66.sol-Contract-to(bytes32,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+to(_field,bytes32(_val))
+
+IRs:
+TMP_143 = CONVERT _val to bytes32
+INTERNAL_CALL, Contract.to(bytes32,bytes32)(_field,TMP_143)"];
+}
+// Function: 66.sol-Contract-to(bytes32,bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+_val
+
+IRs:
+CONDITION _val"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+to(_field,bytes32(1))
+
+IRs:
+TMP_145 = CONVERT 1 to bytes32
+INTERNAL_CALL, Contract.to(bytes32,bytes32)(_field,TMP_145)"];
+3->5;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+to(_field,bytes32(0))
+
+IRs:
+TMP_147 = CONVERT 0 to bytes32
+INTERNAL_CALL, Contract.to(bytes32,bytes32)(_field,TMP_147)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+}
+// Function: 66.sol-Contract-to(bytes32,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: INLINE ASM 1
+"];
+1->2;
+2[label="Node Type: END INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+setFreeMem()
+
+IRs:
+INTERNAL_CALL, Contract.setFreeMem()()"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+conditions(validStoreVal,validStoreDest)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validStoreVal,validStoreDest)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+conditions(validStoreVal,validStoreDest)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validStoreVal,validStoreDest)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+conditions(validStoreVal,validStoreDest)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validStoreVal,validStoreDest)"];
+6->1;
+}
+// Function: 66.sol-Contract-to(bytes32,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+to(_field,bytes32(_val))
+
+IRs:
+TMP_141 = CONVERT _val to bytes32
+INTERNAL_CALL, Contract.to(bytes32,bytes32)(_field,TMP_141)"];
+}
+// Function: 66.sol-Contract-toAcc(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: INLINE ASM 1
+"];
+1->2;
+2[label="Node Type: END INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+setFreeMem()
+
+IRs:
+INTERNAL_CALL, Contract.setFreeMem()()"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+conditions(validPayDest,validPayAmt)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validPayDest,validPayAmt)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+conditions(validPayDest,validPayAmt)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validPayDest,validPayAmt)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+conditions(validPayDest,validPayAmt)
+
+IRs:
+MODIFIER_CALL, Contract.conditions(function(),function())(validPayDest,validPayAmt)"];
+6->1;
+}
+// Function: 66.sol-Contract-validEmitBuff()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+buffPtr() == bytes32(0)
+
+IRs:
+TMP_75(bytes32) = INTERNAL_CALL, Contract.buffPtr()()
+TMP_76 = CONVERT 0 to bytes32
+TMP_77(bool) = TMP_75 == TMP_76
+CONDITION TMP_77"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+startBuffer()
+
+IRs:
+INTERNAL_CALL, Contract.startBuffer()()"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+emitted() != 0 || currentAction() == EMITS
+
+IRs:
+TMP_79(uint256) = INTERNAL_CALL, Contract.emitted()()
+TMP_80(bool) = TMP_79 != 0
+TMP_81(bytes4) = INTERNAL_CALL, Contract.currentAction()()
+TMP_82(bool) = TMP_81 == EMITS
+TMP_83(bool) = TMP_80 || TMP_82
+CONDITION TMP_83"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+revert(string)(Duplicate request - emits)
+
+IRs:
+TMP_84(None) = SOLIDITY_CALL revert(string)(Duplicate request - emits)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+}
+// Function: 66.sol-Contract-validEvent()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+expected() != NextFunction.EMIT_LOG
+
+IRs:
+TMP_125(Contract.NextFunction) = INTERNAL_CALL, Contract.expected()()
+REF_6(Contract.NextFunction) -> NextFunction.EMIT_LOG
+TMP_126(bool) = TMP_125 != REF_6
+CONDITION TMP_126"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert(string)(Unexpected function order - expected event to be pushed)
+
+IRs:
+TMP_127(None) = SOLIDITY_CALL revert(string)(Unexpected function order - expected event to be pushed)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+isEmitting()
+
+IRs:
+INTERNAL_CALL, Contract.isEmitting()()"];
+}
+// Function: 66.sol-Contract-validPayAmt()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+expected() != NextFunction.PAY_AMT
+
+IRs:
+TMP_121(Contract.NextFunction) = INTERNAL_CALL, Contract.expected()()
+REF_5(Contract.NextFunction) -> NextFunction.PAY_AMT
+TMP_122(bool) = TMP_121 != REF_5
+CONDITION TMP_122"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert(string)(Unexpected function order - expected payment amount to be pushed)
+
+IRs:
+TMP_123(None) = SOLIDITY_CALL revert(string)(Unexpected function order - expected payment amount to be pushed)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+isPaying()
+
+IRs:
+INTERNAL_CALL, Contract.isPaying()()"];
+}
+// Function: 66.sol-Contract-validPayBuff()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+buffPtr() == bytes32(0)
+
+IRs:
+TMP_85(bytes32) = INTERNAL_CALL, Contract.buffPtr()()
+TMP_86 = CONVERT 0 to bytes32
+TMP_87(bool) = TMP_85 == TMP_86
+CONDITION TMP_87"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+startBuffer()
+
+IRs:
+INTERNAL_CALL, Contract.startBuffer()()"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+paid() != 0 || currentAction() == PAYS
+
+IRs:
+TMP_89(uint256) = INTERNAL_CALL, Contract.paid()()
+TMP_90(bool) = TMP_89 != 0
+TMP_91(bytes4) = INTERNAL_CALL, Contract.currentAction()()
+TMP_92(bool) = TMP_91 == PAYS
+TMP_93(bool) = TMP_90 || TMP_92
+CONDITION TMP_93"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+revert(string)(Duplicate request - pays)
+
+IRs:
+TMP_94(None) = SOLIDITY_CALL revert(string)(Duplicate request - pays)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+}
+// Function: 66.sol-Contract-validPayDest()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+expected() != NextFunction.PAY_DEST
+
+IRs:
+TMP_117(Contract.NextFunction) = INTERNAL_CALL, Contract.expected()()
+REF_4(Contract.NextFunction) -> NextFunction.PAY_DEST
+TMP_118(bool) = TMP_117 != REF_4
+CONDITION TMP_118"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert(string)(Unexpected function order - expected payment destination to be pushed)
+
+IRs:
+TMP_119(None) = SOLIDITY_CALL revert(string)(Unexpected function order - expected payment destination to be pushed)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+isPaying()
+
+IRs:
+INTERNAL_CALL, Contract.isPaying()()"];
+}
+// Function: 66.sol-Contract-validState()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+freeMem() < 0x180
+
+IRs:
+TMP_35(bytes32) = INTERNAL_CALL, Contract.freeMem()()
+TMP_36(bool) = TMP_35 < 384
+CONDITION TMP_36"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert(string)(Expected Contract.execute())
+
+IRs:
+TMP_37(None) = SOLIDITY_CALL revert(string)(Expected Contract.execute())"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+buffPtr() != 0 && buffPtr() < 0x180
+
+IRs:
+TMP_38(bytes32) = INTERNAL_CALL, Contract.buffPtr()()
+TMP_39(bool) = TMP_38 != 0
+TMP_40(bytes32) = INTERNAL_CALL, Contract.buffPtr()()
+TMP_41(bool) = TMP_40 < 384
+TMP_42(bool) = TMP_39 && TMP_41
+CONDITION TMP_42"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+revert(string)(Invalid buffer pointer)
+
+IRs:
+TMP_43(None) = SOLIDITY_CALL revert(string)(Invalid buffer pointer)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+assert(bool)(execID() != bytes32(0) && sender() != address(0))
+
+IRs:
+TMP_44(bytes32) = INTERNAL_CALL, Contract.execID()()
+TMP_45 = CONVERT 0 to bytes32
+TMP_46(bool) = TMP_44 != TMP_45
+TMP_47(address) = INTERNAL_CALL, Contract.sender()()
+TMP_48 = CONVERT 0 to address
+TMP_49(bool) = TMP_47 != TMP_48
+TMP_50(bool) = TMP_46 && TMP_49
+TMP_51(None) = SOLIDITY_CALL assert(bool)(TMP_50)"];
+}
+// Function: 66.sol-Contract-validStoreBuff()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+buffPtr() == bytes32(0)
+
+IRs:
+TMP_65(bytes32) = INTERNAL_CALL, Contract.buffPtr()()
+TMP_66 = CONVERT 0 to bytes32
+TMP_67(bool) = TMP_65 == TMP_66
+CONDITION TMP_67"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+startBuffer()
+
+IRs:
+INTERNAL_CALL, Contract.startBuffer()()"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+stored() != 0 || currentAction() == STORES
+
+IRs:
+TMP_69(uint256) = INTERNAL_CALL, Contract.stored()()
+TMP_70(bool) = TMP_69 != 0
+TMP_71(bytes4) = INTERNAL_CALL, Contract.currentAction()()
+TMP_72(bool) = TMP_71 == STORES
+TMP_73(bool) = TMP_70 || TMP_72
+CONDITION TMP_73"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+revert(string)(Duplicate request - stores)
+
+IRs:
+TMP_74(None) = SOLIDITY_CALL revert(string)(Duplicate request - stores)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+}
+// Function: 66.sol-Contract-validStoreDest()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+expected() != NextFunction.STORE_DEST
+
+IRs:
+TMP_103(Contract.NextFunction) = INTERNAL_CALL, Contract.expected()()
+REF_0(Contract.NextFunction) -> NextFunction.STORE_DEST
+TMP_104(bool) = TMP_103 != REF_0
+CONDITION TMP_104"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert(string)(Unexpected function order - expected storage destination to be pushed)
+
+IRs:
+TMP_105(None) = SOLIDITY_CALL revert(string)(Unexpected function order - expected storage destination to be pushed)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+isStoring()
+
+IRs:
+INTERNAL_CALL, Contract.isStoring()()"];
+}
+// Function: 66.sol-Contract-validStoreVal()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+expected() != NextFunction.VAL_SET && expected() != NextFunction.VAL_INC && expected() != NextFunction.VAL_DEC
+
+IRs:
+TMP_107(Contract.NextFunction) = INTERNAL_CALL, Contract.expected()()
+REF_1(Contract.NextFunction) -> NextFunction.VAL_SET
+TMP_108(bool) = TMP_107 != REF_1
+TMP_109(Contract.NextFunction) = INTERNAL_CALL, Contract.expected()()
+REF_2(Contract.NextFunction) -> NextFunction.VAL_INC
+TMP_110(bool) = TMP_109 != REF_2
+TMP_111(bool) = TMP_108 && TMP_110
+TMP_112(Contract.NextFunction) = INTERNAL_CALL, Contract.expected()()
+REF_3(Contract.NextFunction) -> NextFunction.VAL_DEC
+TMP_113(bool) = TMP_112 != REF_3
+TMP_114(bool) = TMP_111 && TMP_113
+CONDITION TMP_114"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert(string)(Unexpected function order - expected storage value to be pushed)
+
+IRs:
+TMP_115(None) = SOLIDITY_CALL revert(string)(Unexpected function order - expected storage value to be pushed)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+isStoring()
+
+IRs:
+INTERNAL_CALL, Contract.isStoring()()"];
+}
+// Function: 66.sol-ManageSale-CONFIGURE(bytes32,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+(CROWDSALE_CONFIGURED,_exec_id,_name)
+
+IRs:
+RETURN CROWDSALE_CONFIGURED,_exec_id,_name"];
+}
+// Function: 66.sol-ManageSale-FINALIZE(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+(CROWDSALE_FINALIZED,_exec_id)
+
+IRs:
+RETURN CROWDSALE_FINALIZED,_exec_id"];
+}
+// Function: 66.sol-ManageSale-finalizeCrowdsale()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+Contract.read(SaleManager.isConfigured()) == 0
+
+IRs:
+TMP_254(bytes32) = LIBRARY_CALL, dest:SaleManager, function:SaleManager.isConfigured(), arguments:[] 
+TMP_255(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.read(bytes32), arguments:['TMP_254'] 
+TMP_256(bool) = TMP_255 == 0
+CONDITION TMP_256"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert(string)(crowdsale has not been configured)
+
+IRs:
+TMP_257(None) = SOLIDITY_CALL revert(string)(crowdsale has not been configured)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Contract.storing()
+
+IRs:
+LIBRARY_CALL, dest:Contract, function:Contract.storing(), arguments:[] "];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Contract.set(SaleManager.isFinished()).to(true)
+
+IRs:
+TMP_259(bytes32) = LIBRARY_CALL, dest:SaleManager, function:SaleManager.isFinished(), arguments:[] 
+TMP_260(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.set(bytes32), arguments:['TMP_259'] 
+LIBRARY_CALL, dest:Contract, function:Contract.to(bytes32,bool), arguments:['TMP_260', 'True'] "];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+Contract.emitting()
+
+IRs:
+LIBRARY_CALL, dest:Contract, function:Contract.emitting(), arguments:[] "];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+Contract.log(FINALIZE(Contract.execID()),bytes32(0))
+
+IRs:
+TMP_263(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.execID(), arguments:[] 
+TMP_264(bytes32[2]) = INTERNAL_CALL, ManageSale.FINALIZE(bytes32)(TMP_263)
+TMP_265 = CONVERT 0 to bytes32
+LIBRARY_CALL, dest:Contract, function:Contract.log(bytes32[2],bytes32), arguments:['TMP_264', 'TMP_265'] "];
+}
+// Function: 66.sol-ManageSale-initializeCrowdsale()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+start_time = uint256(Contract.read(SaleManager.startTime()))
+
+IRs:
+TMP_236(bytes32) = LIBRARY_CALL, dest:SaleManager, function:SaleManager.startTime(), arguments:[] 
+TMP_237(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.read(bytes32), arguments:['TMP_236'] 
+TMP_238 = CONVERT TMP_237 to uint256
+start_time(uint256) := TMP_238(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+token_name = Contract.read(SaleManager.tokenName())
+
+IRs:
+TMP_239(bytes32) = LIBRARY_CALL, dest:SaleManager, function:SaleManager.tokenName(), arguments:[] 
+TMP_240(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.read(bytes32), arguments:['TMP_239'] 
+token_name(bytes32) := TMP_240(bytes32)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+start_time < now
+
+IRs:
+TMP_241(bool) = start_time < now
+CONDITION TMP_241"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+revert(string)(crowdsale already started)
+
+IRs:
+TMP_242(None) = SOLIDITY_CALL revert(string)(crowdsale already started)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+token_name == 0
+
+IRs:
+TMP_243(bool) = token_name == 0
+CONDITION TMP_243"];
+6->7[label="True"];
+6->8[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+revert(string)(token not init)
+
+IRs:
+TMP_244(None) = SOLIDITY_CALL revert(string)(token not init)"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+Contract.storing()
+
+IRs:
+LIBRARY_CALL, dest:Contract, function:Contract.storing(), arguments:[] "];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+Contract.set(SaleManager.isConfigured()).to(true)
+
+IRs:
+TMP_246(bytes32) = LIBRARY_CALL, dest:SaleManager, function:SaleManager.isConfigured(), arguments:[] 
+TMP_247(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.set(bytes32), arguments:['TMP_246'] 
+LIBRARY_CALL, dest:Contract, function:Contract.to(bytes32,bool), arguments:['TMP_247', 'True'] "];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+Contract.emitting()
+
+IRs:
+LIBRARY_CALL, dest:Contract, function:Contract.emitting(), arguments:[] "];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+Contract.log(CONFIGURE(Contract.execID(),token_name),bytes32(start_time))
+
+IRs:
+TMP_250(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.execID(), arguments:[] 
+TMP_251(bytes32[3]) = INTERNAL_CALL, ManageSale.CONFIGURE(bytes32,bytes32)(TMP_250,token_name)
+TMP_252 = CONVERT start_time to bytes32
+LIBRARY_CALL, dest:Contract, function:Contract.log(bytes32[3],bytes32), arguments:['TMP_251', 'TMP_252'] "];
+}
+// Function: 66.sol-ManageSale-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+CROWDSALE_CONFIGURED = keccak256()(CrowdsaleConfigured(bytes32,bytes32,uint256))
+
+IRs:
+TMP_267(bytes32) = SOLIDITY_CALL keccak256()(CrowdsaleConfigured(bytes32,bytes32,uint256))
+CROWDSALE_CONFIGURED(bytes32) := TMP_267(bytes32)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+CROWDSALE_FINALIZED = keccak256()(CrowdsaleFinalized(bytes32))
+
+IRs:
+TMP_268(bytes32) = SOLIDITY_CALL keccak256()(CrowdsaleFinalized(bytes32))
+CROWDSALE_FINALIZED(bytes32) := TMP_268(bytes32)"];
+}
+// Function: 66.sol-SafeMath-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_9(uint256) = a + b
+c(uint256) := TMP_9(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(c >= a,Overflow - Addition)
+
+IRs:
+TMP_10(bool) = c >= a
+TMP_11(None) = SOLIDITY_CALL require(bool,string)(TMP_10,Overflow - Addition)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 66.sol-SafeMath-div(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+a / b
+
+IRs:
+TMP_5(uint256) = a / b
+RETURN TMP_5"];
+}
+// Function: 66.sol-SafeMath-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+a == 0
+
+IRs:
+TMP_0(bool) = a == 0
+CONDITION TMP_0"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_1(uint256) = a * b
+c(uint256) := TMP_1(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool,string)(c / a == b,Overflow - Multiplication)
+
+IRs:
+TMP_2(uint256) = c / a
+TMP_3(bool) = TMP_2 == b
+TMP_4(None) = SOLIDITY_CALL require(bool,string)(TMP_3,Overflow - Multiplication)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 66.sol-SafeMath-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(b <= a,Underflow - Subtraction)
+
+IRs:
+TMP_6(bool) = b <= a
+TMP_7(None) = SOLIDITY_CALL require(bool,string)(TMP_6,Underflow - Subtraction)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_8(uint256) = a - b
+RETURN TMP_8"];
+}
+// Function: 66.sol-SaleManager-admin()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+keccak256()(sale_admin)
+
+IRs:
+TMP_463(bytes32) = SOLIDITY_CALL keccak256()(sale_admin)
+RETURN TMP_463"];
+}
+// Function: 66.sol-SaleManager-balances(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+keccak256()(_owner,TOKEN_BALANCES)
+
+IRs:
+TMP_494(bytes32) = SOLIDITY_CALL keccak256()(_owner,TOKEN_BALANCES)
+RETURN TMP_494"];
+}
+// Function: 66.sol-SaleManager-createCrowdsaleTiers(bytes32[],uint256[],uint256[],uint256[],uint256[],bool[],bool[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+Contract.authorize(msg.sender)
+
+IRs:
+LIBRARY_CALL, dest:Contract, function:Contract.authorize(address), arguments:['msg.sender'] "];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Contract.checks(onlyAdminAndNotInit)
+
+IRs:
+LIBRARY_CALL, dest:Contract, function:Contract.checks(function()), arguments:['onlyAdminAndNotInit'] "];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+ConfigureSale.createCrowdsaleTiers(_tier_names,_tier_durations,_tier_prices,_tier_caps,_tier_minimums,_tier_modifiable,_tier_whitelisted)
+
+IRs:
+LIBRARY_CALL, dest:ConfigureSale, function:ConfigureSale.createCrowdsaleTiers(bytes32[],uint256[],uint256[],uint256[],uint256[],bool[],bool[]), arguments:['_tier_names', '_tier_durations', '_tier_prices', '_tier_caps', '_tier_minimums', '_tier_modifiable', '_tier_whitelisted'] "];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Contract.checks(emitAndStore)
+
+IRs:
+LIBRARY_CALL, dest:Contract, function:Contract.checks(function()), arguments:['emitAndStore'] "];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Contract.commit()
+
+IRs:
+LIBRARY_CALL, dest:Contract, function:Contract.commit(), arguments:[] "];
+}
+// Function: 66.sol-SaleManager-currentEndsAt()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+keccak256()(current_tier_ends_at)
+
+IRs:
+TMP_484(bytes32) = SOLIDITY_CALL keccak256()(current_tier_ends_at)
+RETURN TMP_484"];
+}
+// Function: 66.sol-SaleManager-currentTier()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+keccak256()(sale_current_tier)
+
+IRs:
+TMP_483(bytes32) = SOLIDITY_CALL keccak256()(sale_current_tier)
+RETURN TMP_483"];
+}
+// Function: 66.sol-SaleManager-emitAndStore()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+Contract.emitted() == 0 || Contract.stored() == 0
+
+IRs:
+TMP_522(uint256) = LIBRARY_CALL, dest:Contract, function:Contract.emitted(), arguments:[] 
+TMP_523(bool) = TMP_522 == 0
+TMP_524(uint256) = LIBRARY_CALL, dest:Contract, function:Contract.stored(), arguments:[] 
+TMP_525(bool) = TMP_524 == 0
+TMP_526(bool) = TMP_523 || TMP_525
+CONDITION TMP_526"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert(string)(invalid state change)
+
+IRs:
+TMP_527(None) = SOLIDITY_CALL revert(string)(invalid state change)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 66.sol-SaleManager-finalizeCrowdsale()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+Contract.authorize(msg.sender)
+
+IRs:
+LIBRARY_CALL, dest:Contract, function:Contract.authorize(address), arguments:['msg.sender'] "];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Contract.checks(onlyAdminAndNotFinal)
+
+IRs:
+LIBRARY_CALL, dest:Contract, function:Contract.checks(function()), arguments:['onlyAdminAndNotFinal'] "];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+ManageSale.finalizeCrowdsale()
+
+IRs:
+LIBRARY_CALL, dest:ManageSale, function:ManageSale.finalizeCrowdsale(), arguments:[] "];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Contract.checks(emitAndStore)
+
+IRs:
+LIBRARY_CALL, dest:Contract, function:Contract.checks(function()), arguments:['emitAndStore'] "];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Contract.commit()
+
+IRs:
+LIBRARY_CALL, dest:Contract, function:Contract.commit(), arguments:[] "];
+}
+// Function: 66.sol-SaleManager-initializeCrowdsale()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+Contract.authorize(msg.sender)
+
+IRs:
+LIBRARY_CALL, dest:Contract, function:Contract.authorize(address), arguments:['msg.sender'] "];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Contract.checks(onlyAdminAndNotInit)
+
+IRs:
+LIBRARY_CALL, dest:Contract, function:Contract.checks(function()), arguments:['onlyAdminAndNotInit'] "];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+ManageSale.initializeCrowdsale()
+
+IRs:
+LIBRARY_CALL, dest:ManageSale, function:ManageSale.initializeCrowdsale(), arguments:[] "];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Contract.checks(emitAndStore)
+
+IRs:
+LIBRARY_CALL, dest:Contract, function:Contract.checks(function()), arguments:['emitAndStore'] "];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Contract.commit()
+
+IRs:
+LIBRARY_CALL, dest:Contract, function:Contract.commit(), arguments:[] "];
+}
+// Function: 66.sol-SaleManager-isConfigured()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+keccak256()(sale_is_configured)
+
+IRs:
+TMP_464(bytes32) = SOLIDITY_CALL keccak256()(sale_is_configured)
+RETURN TMP_464"];
+}
+// Function: 66.sol-SaleManager-isFinished()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+keccak256()(sale_is_completed)
+
+IRs:
+TMP_465(bytes32) = SOLIDITY_CALL keccak256()(sale_is_completed)
+RETURN TMP_465"];
+}
+// Function: 66.sol-SaleManager-onlyAdmin()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+address(Contract.read(admin())) != Contract.sender()
+
+IRs:
+TMP_516(bytes32) = INTERNAL_CALL, SaleManager.admin()()
+TMP_517(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.read(bytes32), arguments:['TMP_516'] 
+TMP_518 = CONVERT TMP_517 to address
+TMP_519(address) = LIBRARY_CALL, dest:Contract, function:Contract.sender(), arguments:[] 
+TMP_520(bool) = TMP_518 != TMP_519
+CONDITION TMP_520"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert(string)(sender is not admin)
+
+IRs:
+TMP_521(None) = SOLIDITY_CALL revert(string)(sender is not admin)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 66.sol-SaleManager-onlyAdminAndNotFinal()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+address(Contract.read(admin())) != Contract.sender()
+
+IRs:
+TMP_506(bytes32) = INTERNAL_CALL, SaleManager.admin()()
+TMP_507(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.read(bytes32), arguments:['TMP_506'] 
+TMP_508 = CONVERT TMP_507 to address
+TMP_509(address) = LIBRARY_CALL, dest:Contract, function:Contract.sender(), arguments:[] 
+TMP_510(bool) = TMP_508 != TMP_509
+CONDITION TMP_510"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert(string)(sender is not admin)
+
+IRs:
+TMP_511(None) = SOLIDITY_CALL revert(string)(sender is not admin)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+Contract.read(isFinished()) != 0
+
+IRs:
+TMP_512(bytes32) = INTERNAL_CALL, SaleManager.isFinished()()
+TMP_513(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.read(bytes32), arguments:['TMP_512'] 
+TMP_514(bool) = TMP_513 != 0
+CONDITION TMP_514"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+revert(string)(sale has already been finalized)
+
+IRs:
+TMP_515(None) = SOLIDITY_CALL revert(string)(sale has already been finalized)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+}
+// Function: 66.sol-SaleManager-onlyAdminAndNotInit()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+address(Contract.read(admin())) != Contract.sender()
+
+IRs:
+TMP_496(bytes32) = INTERNAL_CALL, SaleManager.admin()()
+TMP_497(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.read(bytes32), arguments:['TMP_496'] 
+TMP_498 = CONVERT TMP_497 to address
+TMP_499(address) = LIBRARY_CALL, dest:Contract, function:Contract.sender(), arguments:[] 
+TMP_500(bool) = TMP_498 != TMP_499
+CONDITION TMP_500"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert(string)(sender is not admin)
+
+IRs:
+TMP_501(None) = SOLIDITY_CALL revert(string)(sender is not admin)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+Contract.read(isConfigured()) != 0
+
+IRs:
+TMP_502(bytes32) = INTERNAL_CALL, SaleManager.isConfigured()()
+TMP_503(bytes32) = LIBRARY_CALL, dest:Contract, function:Contract.read(bytes32), arguments:['TMP_502'] 
+TMP_504(bool) = TMP_503 != 0
+CONDITION TMP_504"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+revert(string)(sale has already been configured)
+
+IRs:
+TMP_505(None) = SOLIDITY_CALL revert(string)(sale has already been configured)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+}
+// Function: 66.sol-SaleManager-onlyStores()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+Contract.paid() != 0 || Contract.emitted() != 0
+
+IRs:
+TMP_528(uint256) = LIBRARY_CALL, dest:Contract, function:Contract.paid(), arguments:[] 
+TMP_529(bool) = TMP_528 != 0
+TMP_530(uint256) = LIBRARY_CALL, dest:Contract, function:Contract.emitted(), arguments:[] 
+TMP_531(bool) = TMP_530 != 0
+TMP_532(bool) = TMP_529 || TMP_531
+CONDITION TMP_532"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert(string)(expected only storage)
+
+IRs:
+TMP_533(None) = SOLIDITY_CALL revert(string)(expected only storage)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+Contract.stored() == 0
+
+IRs:
+TMP_534(uint256) = LIBRARY_CALL, dest:Contract, function:Contract.stored(), arguments:[] 
+TMP_535(bool) = TMP_534 == 0
+CONDITION TMP_535"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+revert(string)(expected storage)
+
+IRs:
+TMP_536(None) = SOLIDITY_CALL revert(string)(expected storage)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+}
+// Function: 66.sol-SaleManager-saleTierList()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+keccak256()(sale_tier_list)
+
+IRs:
+TMP_468(bytes32) = SOLIDITY_CALL keccak256()(sale_tier_list)
+RETURN TMP_468"];
+}
+// Function: 66.sol-SaleManager-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+TOKEN_BALANCES = keccak256()(token_balances)
+
+IRs:
+TMP_567(bytes32) = SOLIDITY_CALL keccak256()(token_balances)
+TOKEN_BALANCES(bytes32) := TMP_567(bytes32)"];
+}
+// Function: 66.sol-SaleManager-startTime()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+keccak256()(sale_start_time)
+
+IRs:
+TMP_466(bytes32) = SOLIDITY_CALL keccak256()(sale_start_time)
+RETURN TMP_466"];
+}
+// Function: 66.sol-SaleManager-tierCap(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+keccak256()(_idx,cap,saleTierList())
+
+IRs:
+TMP_471(bytes32) = INTERNAL_CALL, SaleManager.saleTierList()()
+TMP_472(bytes32) = SOLIDITY_CALL keccak256()(_idx,cap,TMP_471)
+RETURN TMP_472"];
+}
+// Function: 66.sol-SaleManager-tierDuration(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+keccak256()(_idx,duration,saleTierList())
+
+IRs:
+TMP_477(bytes32) = INTERNAL_CALL, SaleManager.saleTierList()()
+TMP_478(bytes32) = SOLIDITY_CALL keccak256()(_idx,duration,TMP_477)
+RETURN TMP_478"];
+}
+// Function: 66.sol-SaleManager-tierMin(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+keccak256()(_idx,minimum,saleTierList())
+
+IRs:
+TMP_475(bytes32) = INTERNAL_CALL, SaleManager.saleTierList()()
+TMP_476(bytes32) = SOLIDITY_CALL keccak256()(_idx,minimum,TMP_475)
+RETURN TMP_476"];
+}
+// Function: 66.sol-SaleManager-tierModifiable(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+keccak256()(_idx,mod_stat,saleTierList())
+
+IRs:
+TMP_479(bytes32) = INTERNAL_CALL, SaleManager.saleTierList()()
+TMP_480(bytes32) = SOLIDITY_CALL keccak256()(_idx,mod_stat,TMP_479)
+RETURN TMP_480"];
+}
+// Function: 66.sol-SaleManager-tierName(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+keccak256()(_idx,name,saleTierList())
+
+IRs:
+TMP_469(bytes32) = INTERNAL_CALL, SaleManager.saleTierList()()
+TMP_470(bytes32) = SOLIDITY_CALL keccak256()(_idx,name,TMP_469)
+RETURN TMP_470"];
+}
+// Function: 66.sol-SaleManager-tierPrice(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+keccak256()(_idx,price,saleTierList())
+
+IRs:
+TMP_473(bytes32) = INTERNAL_CALL, SaleManager.saleTierList()()
+TMP_474(bytes32) = SOLIDITY_CALL keccak256()(_idx,price,TMP_473)
+RETURN TMP_474"];
+}
+// Function: 66.sol-SaleManager-tierWhitelist(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+keccak256()(_idx,tier_whitelists)
+
+IRs:
+TMP_485(bytes32) = SOLIDITY_CALL keccak256()(_idx,tier_whitelists)
+RETURN TMP_485"];
+}
+// Function: 66.sol-SaleManager-tierWhitelisted(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+keccak256()(_idx,wl_stat,saleTierList())
+
+IRs:
+TMP_481(bytes32) = INTERNAL_CALL, SaleManager.saleTierList()()
+TMP_482(bytes32) = SOLIDITY_CALL keccak256()(_idx,wl_stat,TMP_481)
+RETURN TMP_482"];
+}
+// Function: 66.sol-SaleManager-tokenDecimals()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+keccak256()(token_decimals)
+
+IRs:
+TMP_492(bytes32) = SOLIDITY_CALL keccak256()(token_decimals)
+RETURN TMP_492"];
+}
+// Function: 66.sol-SaleManager-tokenName()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+keccak256()(token_name)
+
+IRs:
+TMP_490(bytes32) = SOLIDITY_CALL keccak256()(token_name)
+RETURN TMP_490"];
+}
+// Function: 66.sol-SaleManager-tokenSymbol()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+keccak256()(token_symbol)
+
+IRs:
+TMP_491(bytes32) = SOLIDITY_CALL keccak256()(token_symbol)
+RETURN TMP_491"];
+}
+// Function: 66.sol-SaleManager-tokenTotalSupply()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+keccak256()(token_total_supply)
+
+IRs:
+TMP_493(bytes32) = SOLIDITY_CALL keccak256()(token_total_supply)
+RETURN TMP_493"];
+}
+// Function: 66.sol-SaleManager-tokensUnlocked()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+keccak256()(sale_tokens_unlocked)
+
+IRs:
+TMP_495(bytes32) = SOLIDITY_CALL keccak256()(sale_tokens_unlocked)
+RETURN TMP_495"];
+}
+// Function: 66.sol-SaleManager-totalDuration()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+keccak256()(sale_total_duration)
+
+IRs:
+TMP_467(bytes32) = SOLIDITY_CALL keccak256()(sale_total_duration)
+RETURN TMP_467"];
+}
+// Function: 66.sol-SaleManager-updateTierDuration(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+Contract.authorize(msg.sender)
+
+IRs:
+LIBRARY_CALL, dest:Contract, function:Contract.authorize(address), arguments:['msg.sender'] "];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Contract.checks(onlyAdminAndNotFinal)
+
+IRs:
+LIBRARY_CALL, dest:Contract, function:Contract.checks(function()), arguments:['onlyAdminAndNotFinal'] "];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+ConfigureSale.updateTierDuration(_tier_index,_new_duration)
+
+IRs:
+LIBRARY_CALL, dest:ConfigureSale, function:ConfigureSale.updateTierDuration(uint256,uint256), arguments:['_tier_index', '_new_duration'] "];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Contract.checks(onlyStores)
+
+IRs:
+LIBRARY_CALL, dest:Contract, function:Contract.checks(function()), arguments:['onlyStores'] "];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Contract.commit()
+
+IRs:
+LIBRARY_CALL, dest:Contract, function:Contract.commit(), arguments:[] "];
+}
+// Function: 66.sol-SaleManager-updateTierMinimum(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+Contract.authorize(msg.sender)
+
+IRs:
+LIBRARY_CALL, dest:Contract, function:Contract.authorize(address), arguments:['msg.sender'] "];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Contract.checks(onlyAdminAndNotFinal)
+
+IRs:
+LIBRARY_CALL, dest:Contract, function:Contract.checks(function()), arguments:['onlyAdminAndNotFinal'] "];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+ConfigureSale.updateTierMinimum(_tier_index,_new_minimum)
+
+IRs:
+LIBRARY_CALL, dest:ConfigureSale, function:ConfigureSale.updateTierMinimum(uint256,uint256), arguments:['_tier_index', '_new_minimum'] "];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Contract.checks(emitAndStore)
+
+IRs:
+LIBRARY_CALL, dest:Contract, function:Contract.checks(function()), arguments:['emitAndStore'] "];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Contract.commit()
+
+IRs:
+LIBRARY_CALL, dest:Contract, function:Contract.commit(), arguments:[] "];
+}
+// Function: 66.sol-SaleManager-whitelistMaxTok(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+keccak256()(_spender,max_tok,tierWhitelist(_idx))
+
+IRs:
+TMP_486(bytes32) = INTERNAL_CALL, SaleManager.tierWhitelist(uint256)(_idx)
+TMP_487(bytes32) = SOLIDITY_CALL keccak256()(_spender,max_tok,TMP_486)
+RETURN TMP_487"];
+}
+// Function: 66.sol-SaleManager-whitelistMinTok(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+keccak256()(_spender,min_tok,tierWhitelist(_idx))
+
+IRs:
+TMP_488(bytes32) = INTERNAL_CALL, SaleManager.tierWhitelist(uint256)(_idx)
+TMP_489(bytes32) = SOLIDITY_CALL keccak256()(_spender,min_tok,TMP_488)
+RETURN TMP_489"];
+}
+// Function: 66.sol-SaleManager-whitelistMultiForTier(uint256,address[],uint256[],uint256[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+Contract.authorize(msg.sender)
+
+IRs:
+LIBRARY_CALL, dest:Contract, function:Contract.authorize(address), arguments:['msg.sender'] "];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Contract.checks(onlyAdmin)
+
+IRs:
+LIBRARY_CALL, dest:Contract, function:Contract.checks(function()), arguments:['onlyAdmin'] "];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+ConfigureSale.whitelistMultiForTier(_tier_index,_to_whitelist,_min_token_purchase,_max_purchase_amt)
+
+IRs:
+LIBRARY_CALL, dest:ConfigureSale, function:ConfigureSale.whitelistMultiForTier(uint256,address[],uint256[],uint256[]), arguments:['_tier_index', '_to_whitelist', '_min_token_purchase', '_max_purchase_amt'] "];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Contract.checks(onlyStores)
+
+IRs:
+LIBRARY_CALL, dest:Contract, function:Contract.checks(function()), arguments:['onlyStores'] "];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Contract.commit()
+
+IRs:
+LIBRARY_CALL, dest:Contract, function:Contract.commit(), arguments:[] "];
+}
+}

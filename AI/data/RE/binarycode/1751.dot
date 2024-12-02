@@ -1,0 +1,225 @@
+digraph G {
+// Function: 1751.sol-Proxy-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender == Owner
+
+IRs:
+TMP_3(bool) = msg.sender == Owner
+CONDITION TMP_3"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: _ 2
+"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 1751.sol-Proxy-proxy(address,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+target.call.value(msg.value)(data)
+
+IRs:
+TMP_2(bool) = LOW_LEVEL_CALL, dest:target, function:call, arguments:['data'] value:msg.value "];
+}
+// Function: 1751.sol-Proxy-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+Owner = msg.sender
+
+IRs:
+Owner(address) := msg.sender(address)"];
+}
+// Function: 1751.sol-Proxy-transferOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+Owner = _owner
+
+IRs:
+Owner(address) := _owner(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Proxy.onlyOwner()()"];
+2->1;
+}
+// Function: 1751.sol-VaultProxy-Vault()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender == tx.origin
+
+IRs:
+TMP_7(bool) = msg.sender == tx.origin
+CONDITION TMP_7"];
+1->2[label="True"];
+1->4[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Owner = msg.sender
+
+IRs:
+Owner(address) := msg.sender(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+deposit()
+
+IRs:
+INTERNAL_CALL, VaultProxy.deposit()()"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+}
+// Function: 1751.sol-VaultProxy-deposit()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.value > 500000000000000000
+
+IRs:
+TMP_9(bool) = msg.value > 500000000000000000
+CONDITION TMP_9"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Deposits[msg.sender] += msg.value
+
+IRs:
+REF_4(uint256) -> Deposits[msg.sender]
+REF_4(-> Deposits) = REF_4 + msg.value"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 1751.sol-VaultProxy-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 1751.sol-VaultProxy-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender == Owner
+
+IRs:
+TMP_15(bool) = msg.sender == Owner
+CONDITION TMP_15"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: _ 2
+"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 1751.sol-VaultProxy-proxy(address,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+target.call.value(msg.value)(data)
+
+IRs:
+TMP_6(bool) = LOW_LEVEL_CALL, dest:target, function:call, arguments:['data'] value:msg.value "];
+}
+// Function: 1751.sol-VaultProxy-transferOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+Owner = _owner
+
+IRs:
+Owner(address) := _owner(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Proxy.onlyOwner()()"];
+2->1;
+}
+// Function: 1751.sol-VaultProxy-withdraw(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+amount > 0 && Deposits[msg.sender] >= amount
+
+IRs:
+TMP_10(bool) = amount > 0
+REF_5(uint256) -> Deposits[msg.sender]
+TMP_11(bool) = REF_5 >= amount
+TMP_12(bool) = TMP_10 && TMP_11
+CONDITION TMP_12"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+msg.sender.transfer(amount)
+
+IRs:
+Transfer dest:msg.sender value:amount"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Proxy.onlyOwner()()"];
+4->1;
+}
+}

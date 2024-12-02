@@ -1,0 +1,1789 @@
+digraph G {
+// Function: 372.sol-MntToken-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_value == 0 || allowance[msg.sender][_spender] == 0)
+
+IRs:
+TMP_17(bool) = _value == 0
+REF_1(mapping(address => uint256)) -> allowance[msg.sender]
+REF_2(uint256) -> REF_1[_spender]
+TMP_18(bool) = REF_2 == 0
+TMP_19(bool) = TMP_17 || TMP_18
+TMP_20(None) = SOLIDITY_CALL require(bool)(TMP_19)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+allowance[msg.sender][_spender] = _value
+
+IRs:
+REF_3(mapping(address => uint256)) -> allowance[msg.sender]
+REF_4(uint256) -> REF_3[_spender]
+REF_4(uint256) (->allowance) := _value(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+Approval(msg.sender,_spender,_value)
+
+IRs:
+Emit Approval(msg.sender,_spender,_value)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+isNotFrozen()
+
+IRs:
+MODIFIER_CALL, MntToken.isNotFrozen()()"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+isValidAddress()
+
+IRs:
+MODIFIER_CALL, MntToken.isValidAddress()()"];
+6->1;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 372.sol-MntToken-available(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+ownerance[_owner]
+
+IRs:
+REF_21(uint256) -> ownerance[_owner]
+RETURN REF_21"];
+}
+// Function: 372.sol-MntToken-balanceOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+balance = ownerance[_owner] + lockedance[_owner]
+
+IRs:
+REF_19(uint256) -> ownerance[_owner]
+REF_20(uint256) -> lockedance[_owner]
+TMP_35(uint256) = REF_19 + REF_20
+balance(uint256) := TMP_35(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+balance
+
+IRs:
+RETURN balance"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+balance
+
+IRs:
+RETURN balance"];
+}
+// Function: 372.sol-MntToken-burn(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->7;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+ownerance[msg.sender] = ownerance[msg.sender].sub(_value)
+
+IRs:
+REF_28(uint256) -> ownerance[msg.sender]
+REF_29(uint256) -> ownerance[msg.sender]
+TMP_49(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_29', '_value'] 
+REF_28(uint256) (->ownerance) := TMP_49(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+ownerance[0x0] = ownerance[0x0].add(_value)
+
+IRs:
+REF_31(uint256) -> ownerance[0]
+REF_32(uint256) -> ownerance[0]
+TMP_50(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_32', '_value'] 
+REF_31(uint256) (->ownerance) := TMP_50(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+totalSupply = totalSupply.sub(_value)
+
+IRs:
+TMP_51(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['totalSupply', '_value'] 
+totalSupply(uint256) := TMP_51(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+totalCirculating = totalCirculating.sub(_value)
+
+IRs:
+TMP_52(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['totalCirculating', '_value'] 
+totalCirculating(uint256) := TMP_52(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Burn(msg.sender,_value)
+
+IRs:
+Emit Burn(msg.sender,_value)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+isNotFrozen()
+
+IRs:
+MODIFIER_CALL, MntToken.isNotFrozen()()"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+isValidAddress()
+
+IRs:
+MODIFIER_CALL, MntToken.isValidAddress()()"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+hasEnoughBalance(_value)
+
+IRs:
+MODIFIER_CALL, MntToken.hasEnoughBalance(uint256)(_value)"];
+9->1;
+10[label="Node Type: RETURN 10
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 372.sol-MntToken-checkLockedType(uint8)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_locktype > 0 && _locktype <= LOCKED_TYPE_MAX)
+
+IRs:
+TMP_170(bool) = _locktype > 0
+TMP_171(bool) = _locktype <= LOCKED_TYPE_MAX
+TMP_172(bool) = TMP_170 && TMP_171
+TMP_173(None) = SOLIDITY_CALL require(bool)(TMP_172)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 372.sol-MntToken-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+ownerance[msg.sender] = totalSupply
+
+IRs:
+REF_0(uint256) -> ownerance[msg.sender]
+REF_0(uint256) (->ownerance) := totalSupply(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+totalCirculating = totalSupply
+
+IRs:
+totalCirculating(uint256) := totalSupply(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Transfer(address(0),msg.sender,totalSupply)
+
+IRs:
+TMP_15 = CONVERT 0 to address
+Emit Transfer(TMP_15,msg.sender,totalSupply)"];
+}
+// Function: 372.sol-MntToken-freeze()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+frozen = true
+
+IRs:
+frozen(bool) := True(bool)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+isOwner()
+
+IRs:
+MODIFIER_CALL, MntToken.isOwner()()"];
+3->1;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 372.sol-MntToken-hasAllowBalance(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(allowance[_owner][_allower] >= _amount)
+
+IRs:
+REF_109(mapping(address => uint256)) -> allowance[_owner]
+REF_110(uint256) -> REF_109[_allower]
+TMP_159(bool) = REF_110 >= _amount
+TMP_160(None) = SOLIDITY_CALL require(bool)(TMP_159)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 372.sol-MntToken-hasEnoughBalance(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(ownerance[msg.sender] >= _amount)
+
+IRs:
+REF_106(uint256) -> ownerance[msg.sender]
+TMP_154(bool) = REF_106 >= _amount
+TMP_155(None) = SOLIDITY_CALL require(bool)(TMP_154)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 372.sol-MntToken-hasntLockedBalance(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(lockedtype[_checker] == 0)
+
+IRs:
+REF_111(uint8) -> lockedtype[_checker]
+TMP_168(bool) = REF_111 == 0
+TMP_169(None) = SOLIDITY_CALL require(bool)(TMP_168)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 372.sol-MntToken-isNotEmpty(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_addr != address(0))
+
+IRs:
+TMP_161 = CONVERT 0 to address
+TMP_162(bool) = _addr != TMP_161
+TMP_163(None) = SOLIDITY_CALL require(bool)(TMP_162)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_value != 0)
+
+IRs:
+TMP_164(bool) = _value != 0
+TMP_165(None) = SOLIDITY_CALL require(bool)(TMP_164)"];
+2->3;
+3[label="Node Type: _ 3
+"];
+}
+// Function: 372.sol-MntToken-isNotFrozen()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! frozen)
+
+IRs:
+TMP_152 = UnaryType.BANG frozen 
+TMP_153(None) = SOLIDITY_CALL require(bool)(TMP_152)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 372.sol-MntToken-isOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_150(bool) = msg.sender == owner
+TMP_151(None) = SOLIDITY_CALL require(bool)(TMP_150)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 372.sol-MntToken-isValidAddress()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(0x0 != msg.sender)
+
+IRs:
+TMP_166(bool) = 0 != msg.sender
+TMP_167(None) = SOLIDITY_CALL assert(bool)(TMP_166)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 372.sol-MntToken-lockedCounts()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+lockedOwner.length
+
+IRs:
+REF_94 -> LENGTH lockedOwner
+RETURN REF_94"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+counts
+
+IRs:
+RETURN counts"];
+}
+// Function: 372.sol-MntToken-overflowDetected(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(ownerance[_owner] + _amount >= ownerance[_owner])
+
+IRs:
+REF_107(uint256) -> ownerance[_owner]
+TMP_156(uint256) = REF_107 + _amount
+REF_108(uint256) -> ownerance[_owner]
+TMP_157(bool) = TMP_156 >= REF_108
+TMP_158(None) = SOLIDITY_CALL require(bool)(TMP_157)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 372.sol-MntToken-releaseLocked()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->15;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(now > RELEASE_BASE_TIME)
+
+IRs:
+TMP_136(bool) = now > RELEASE_BASE_TIME
+TMP_137(None) = SOLIDITY_CALL require(bool)(TMP_136)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+delta = now - RELEASE_BASE_TIME
+
+IRs:
+TMP_138(uint256) = now - RELEASE_BASE_TIME
+delta(uint256) := TMP_138(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+"];
+3->6;
+4[label="Node Type: BEGIN_LOOP 4
+"];
+4->7;
+5[label="Node Type: END_LOOP 5
+"];
+5->14;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+6->4;
+7[label="Node Type: IF_LOOP 7
+
+EXPRESSION:
+i < lockedOwner.length
+
+IRs:
+REF_95 -> LENGTH lockedOwner
+TMP_139(bool) = i < REF_95
+CONDITION TMP_139"];
+7->8[label="True"];
+7->5[label="False"];
+8[label="Node Type: IF 8
+
+EXPRESSION:
+lockedance[lockedOwner[i]] > 0
+
+IRs:
+REF_96(address) -> lockedOwner[i]
+REF_97(uint256) -> lockedance[REF_96]
+TMP_140(bool) = REF_97 > 0
+CONDITION TMP_140"];
+8->9[label="True"];
+8->12[label="False"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+lockedAmount = lockedance[lockedOwner[i]]
+
+IRs:
+REF_98(address) -> lockedOwner[i]
+REF_99(uint256) -> lockedance[REF_98]
+lockedAmount(uint256) := REF_99(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+unlock(lockedOwner[i],delta,lockedtype[lockedOwner[i]])
+
+IRs:
+REF_100(address) -> lockedOwner[i]
+REF_101(address) -> lockedOwner[i]
+REF_102(uint8) -> lockedtype[REF_101]
+TMP_141(bool) = INTERNAL_CALL, MntToken.unlock(address,uint256,uint8)(REF_100,delta,REF_102)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+totalCirculating = totalCirculating.add(lockedAmount - lockedance[lockedOwner[i]])
+
+IRs:
+REF_104(address) -> lockedOwner[i]
+REF_105(uint256) -> lockedance[REF_104]
+TMP_142(uint256) = lockedAmount - REF_105
+TMP_143(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['totalCirculating', 'TMP_142'] 
+totalCirculating(uint256) := TMP_143(uint256)"];
+11->12;
+12[label="Node Type: END_IF 12
+"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_144(uint256) := i(uint256)
+i(uint256) = i + 1"];
+13->7;
+14[label="Node Type: RETURN 14
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+isNotFrozen()
+
+IRs:
+MODIFIER_CALL, MntToken.isNotFrozen()()"];
+15->1;
+16[label="Node Type: RETURN 16
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 372.sol-MntToken-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+decimals = 6
+
+IRs:
+decimals(uint8) := 6(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+name = MDEX Platform Token | Mongolia National Blockchain Digital Assets Exchange Token
+
+IRs:
+name(string) := MDEX Platform Token | Mongolia National Blockchain Digital Assets Exchange Token(string)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+symbol = MNT
+
+IRs:
+symbol(string) := MNT(string)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+RELEASE_BASE_TIME = 1533686888
+
+IRs:
+RELEASE_BASE_TIME(uint256) := 1533686888(uint256)"];
+}
+// Function: 372.sol-MntToken-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+frozen = false
+
+IRs:
+frozen(bool) := False(bool)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+totalSupply = 100 * 10 ** (8 + uint256(decimals))
+
+IRs:
+TMP_146 = CONVERT decimals to uint256
+TMP_147(uint256) = 8 + TMP_146
+TMP_148(uint256) = 10 ** TMP_147
+TMP_149(uint256) = 100 * TMP_148
+totalSupply(uint256) := TMP_149(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+LOCKED_TYPE_MAX = 2
+
+IRs:
+LOCKED_TYPE_MAX(uint8) := 2(uint256)"];
+}
+// Function: 372.sol-MntToken-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+ownerance[msg.sender] = ownerance[msg.sender].sub(_value)
+
+IRs:
+REF_22(uint256) -> ownerance[msg.sender]
+REF_23(uint256) -> ownerance[msg.sender]
+TMP_36(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_23', '_value'] 
+REF_22(uint256) (->ownerance) := TMP_36(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+ownerance[_to] = ownerance[_to].add(_value)
+
+IRs:
+REF_25(uint256) -> ownerance[_to]
+REF_26(uint256) -> ownerance[_to]
+TMP_37(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_26', '_value'] 
+REF_25(uint256) (->ownerance) := TMP_37(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+Transfer(msg.sender,_to,_value)
+
+IRs:
+Emit Transfer(msg.sender,_to,_value)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+isNotFrozen()
+
+IRs:
+MODIFIER_CALL, MntToken.isNotFrozen()()"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+isValidAddress()
+
+IRs:
+MODIFIER_CALL, MntToken.isValidAddress()()"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+isNotEmpty(_to,_value)
+
+IRs:
+MODIFIER_CALL, MntToken.isNotEmpty(address,uint256)(_to,_value)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+hasEnoughBalance(_value)
+
+IRs:
+MODIFIER_CALL, MntToken.hasEnoughBalance(uint256)(_value)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+overflowDetected(_to,_value)
+
+IRs:
+MODIFIER_CALL, MntToken.overflowDetected(address,uint256)(_to,_value)"];
+9->1;
+10[label="Node Type: RETURN 10
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 372.sol-MntToken-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->8;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(ownerance[_from] >= _value)
+
+IRs:
+REF_5(uint256) -> ownerance[_from]
+TMP_24(bool) = REF_5 >= _value
+TMP_25(None) = SOLIDITY_CALL require(bool)(TMP_24)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(allowance[_from][msg.sender] >= _value)
+
+IRs:
+REF_6(mapping(address => uint256)) -> allowance[_from]
+REF_7(uint256) -> REF_6[msg.sender]
+TMP_26(bool) = REF_7 >= _value
+TMP_27(None) = SOLIDITY_CALL require(bool)(TMP_26)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+ownerance[_to] = ownerance[_to].add(_value)
+
+IRs:
+REF_8(uint256) -> ownerance[_to]
+REF_9(uint256) -> ownerance[_to]
+TMP_28(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_9', '_value'] 
+REF_8(uint256) (->ownerance) := TMP_28(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+ownerance[_from] = ownerance[_from].sub(_value)
+
+IRs:
+REF_11(uint256) -> ownerance[_from]
+REF_12(uint256) -> ownerance[_from]
+TMP_29(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_12', '_value'] 
+REF_11(uint256) (->ownerance) := TMP_29(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+allowance[_from][msg.sender] = allowance[_from][msg.sender].sub(_value)
+
+IRs:
+REF_14(mapping(address => uint256)) -> allowance[_from]
+REF_15(uint256) -> REF_14[msg.sender]
+REF_16(mapping(address => uint256)) -> allowance[_from]
+REF_17(uint256) -> REF_16[msg.sender]
+TMP_30(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_17', '_value'] 
+REF_15(uint256) (->allowance) := TMP_30(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+Transfer(_from,_to,_value)
+
+IRs:
+Emit Transfer(_from,_to,_value)"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+isNotFrozen()
+
+IRs:
+MODIFIER_CALL, MntToken.isNotFrozen()()"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+isValidAddress()
+
+IRs:
+MODIFIER_CALL, MntToken.isValidAddress()()"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+overflowDetected(_to,_value)
+
+IRs:
+MODIFIER_CALL, MntToken.overflowDetected(address,uint256)(_to,_value)"];
+10->1;
+11[label="Node Type: RETURN 11
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 372.sol-MntToken-transferLocked(address,uint256,uint8)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->21;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender != _to)
+
+IRs:
+TMP_57(bool) = msg.sender != _to
+TMP_58(None) = SOLIDITY_CALL require(bool)(TMP_57)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+ownerance[msg.sender] = ownerance[msg.sender].sub(_value)
+
+IRs:
+REF_36(uint256) -> ownerance[msg.sender]
+REF_37(uint256) -> ownerance[msg.sender]
+TMP_59(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_37', '_value'] 
+REF_36(uint256) (->ownerance) := TMP_59(uint256)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+_locktype == 1
+
+IRs:
+TMP_60(bool) = _locktype == 1
+CONDITION TMP_60"];
+3->4[label="True"];
+3->9[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+lockedance[_to] = _value
+
+IRs:
+REF_39(uint256) -> lockedance[_to]
+REF_39(uint256) (->lockedance) := _value(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+lockedtype[_to] = _locktype
+
+IRs:
+REF_40(uint8) -> lockedtype[_to]
+REF_40(uint8) (->lockedtype) := _locktype(uint8)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+lockedOwner.push(_to)
+
+IRs:
+REF_42 -> LENGTH lockedOwner
+TMP_62(uint256) := REF_42(uint256)
+TMP_63(uint256) = TMP_62 + 1
+REF_42(uint256) (->lockedOwner) := TMP_63(uint256)
+REF_43(address) -> lockedOwner[TMP_62]
+REF_43(address) (->lockedOwner) := _to(address)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+totalCirculating = totalCirculating.sub(_value)
+
+IRs:
+TMP_64(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['totalCirculating', '_value'] 
+totalCirculating(uint256) := TMP_64(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+TransferLocked(msg.sender,_to,_value,_locktype)
+
+IRs:
+Emit TransferLocked(msg.sender,_to,_value,_locktype)"];
+8->19;
+9[label="Node Type: IF 9
+
+EXPRESSION:
+_locktype == 2
+
+IRs:
+TMP_66(bool) = _locktype == 2
+CONDITION TMP_66"];
+9->10[label="True"];
+9->18[label="False"];
+10[label="Node Type: NEW VARIABLE 10
+
+EXPRESSION:
+_first = _value / 100 * 8
+
+IRs:
+TMP_67(uint256) = _value / 100
+TMP_68(uint256) = TMP_67 * 8
+_first(uint256) := TMP_68(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+ownerance[_to] = ownerance[_to].add(_first)
+
+IRs:
+REF_45(uint256) -> ownerance[_to]
+REF_46(uint256) -> ownerance[_to]
+TMP_69(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_46', '_first'] 
+REF_45(uint256) (->ownerance) := TMP_69(uint256)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+lockedance[_to] = _value.sub(_first)
+
+IRs:
+REF_48(uint256) -> lockedance[_to]
+TMP_70(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['_value', '_first'] 
+REF_48(uint256) (->lockedance) := TMP_70(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+lockedtype[_to] = _locktype
+
+IRs:
+REF_50(uint8) -> lockedtype[_to]
+REF_50(uint8) (->lockedtype) := _locktype(uint8)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+lockedOwner.push(_to)
+
+IRs:
+REF_52 -> LENGTH lockedOwner
+TMP_72(uint256) := REF_52(uint256)
+TMP_73(uint256) = TMP_72 + 1
+REF_52(uint256) (->lockedOwner) := TMP_73(uint256)
+REF_53(address) -> lockedOwner[TMP_72]
+REF_53(address) (->lockedOwner) := _to(address)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+totalCirculating = totalCirculating.sub(_value.sub(_first))
+
+IRs:
+TMP_74(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['_value', '_first'] 
+TMP_75(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['totalCirculating', 'TMP_74'] 
+totalCirculating(uint256) := TMP_75(uint256)"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+Transfer(msg.sender,_to,_first)
+
+IRs:
+Emit Transfer(msg.sender,_to,_first)"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+TransferLocked(msg.sender,_to,_value.sub(_first),_locktype)
+
+IRs:
+TMP_77(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['_value', '_first'] 
+Emit TransferLocked(msg.sender,_to,TMP_77,_locktype)"];
+17->18;
+18[label="Node Type: END_IF 18
+"];
+18->19;
+19[label="Node Type: END_IF 19
+"];
+19->20;
+20[label="Node Type: RETURN 20
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+isNotFrozen()
+
+IRs:
+MODIFIER_CALL, MntToken.isNotFrozen()()"];
+21->22;
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+isOwner()
+
+IRs:
+MODIFIER_CALL, MntToken.isOwner()()"];
+22->23;
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+isValidAddress()
+
+IRs:
+MODIFIER_CALL, MntToken.isValidAddress()()"];
+23->24;
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+isNotEmpty(_to,_value)
+
+IRs:
+MODIFIER_CALL, MntToken.isNotEmpty(address,uint256)(_to,_value)"];
+24->25;
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+hasEnoughBalance(_value)
+
+IRs:
+MODIFIER_CALL, MntToken.hasEnoughBalance(uint256)(_value)"];
+25->26;
+26[label="Node Type: EXPRESSION 26
+
+EXPRESSION:
+hasntLockedBalance(_to)
+
+IRs:
+MODIFIER_CALL, MntToken.hasntLockedBalance(address)(_to)"];
+26->27;
+27[label="Node Type: EXPRESSION 27
+
+EXPRESSION:
+checkLockedType(_locktype)
+
+IRs:
+MODIFIER_CALL, MntToken.checkLockedType(uint8)(_locktype)"];
+27->1;
+28[label="Node Type: RETURN 28
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 372.sol-MntToken-transferOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_newOwner != address(0)
+
+IRs:
+TMP_44 = CONVERT 0 to address
+TMP_45(bool) = _newOwner != TMP_44
+CONDITION TMP_45"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = _newOwner
+
+IRs:
+owner(address) := _newOwner(address)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+isOwner()
+
+IRs:
+MODIFIER_CALL, MntToken.isOwner()()"];
+5->1;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 372.sol-MntToken-unfreeze()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+frozen = false
+
+IRs:
+frozen(bool) := False(bool)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+isOwner()
+
+IRs:
+MODIFIER_CALL, MntToken.isOwner()()"];
+3->1;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 372.sol-MntToken-unlock(address,uint256,uint8)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_locktype == 1
+
+IRs:
+TMP_86(bool) = _locktype == 1
+CONDITION TMP_86"];
+1->2[label="True"];
+1->23[label="False"];
+2[label="Node Type: IF 2
+
+EXPRESSION:
+_delta < 6 * 2592000
+
+IRs:
+TMP_87(uint256) = 6 * 2592000
+TMP_88(bool) = _delta < TMP_87
+CONDITION TMP_88"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+_more1 = _delta.sub(6 * 2592000)
+
+IRs:
+TMP_89(uint256) = 6 * 2592000
+TMP_90(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['_delta', 'TMP_89'] 
+_more1(uint256) := TMP_90(uint256)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+_step1 = _more1 / 2592000
+
+IRs:
+TMP_91(uint256) = _more1 / 2592000
+_step1(uint256) := TMP_91(uint256)"];
+6->9;
+7[label="Node Type: BEGIN_LOOP 7
+"];
+7->10;
+8[label="Node Type: END_LOOP 8
+"];
+8->46;
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint8) := 0(uint256)"];
+9->7;
+10[label="Node Type: IF_LOOP 10
+
+EXPRESSION:
+i < 10
+
+IRs:
+TMP_92(bool) = i < 10
+CONDITION TMP_92"];
+10->11[label="True"];
+10->8[label="False"];
+11[label="Node Type: IF 11
+
+EXPRESSION:
+unlockedstep[_locker] == i && i < 9 && i <= _step1
+
+IRs:
+REF_58(uint8) -> unlockedstep[_locker]
+TMP_93(bool) = REF_58 == i
+TMP_94(bool) = i < 9
+TMP_95(bool) = TMP_93 && TMP_94
+TMP_96(bool) = i <= _step1
+TMP_97(bool) = TMP_95 && TMP_96
+CONDITION TMP_97"];
+11->12[label="True"];
+11->15[label="False"];
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+ownerance[_locker] = ownerance[_locker].add(lockedance[_locker] / (10 - i))
+
+IRs:
+REF_59(uint256) -> ownerance[_locker]
+REF_60(uint256) -> ownerance[_locker]
+REF_62(uint256) -> lockedance[_locker]
+TMP_98(uint256) = 10 - i
+TMP_99(uint256) = REF_62 / TMP_98
+TMP_100(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_60', 'TMP_99'] 
+REF_59(uint256) (->ownerance) := TMP_100(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+lockedance[_locker] = lockedance[_locker].sub(lockedance[_locker] / (10 - i))
+
+IRs:
+REF_63(uint256) -> lockedance[_locker]
+REF_64(uint256) -> lockedance[_locker]
+REF_66(uint256) -> lockedance[_locker]
+TMP_101(uint256) = 10 - i
+TMP_102(uint256) = REF_66 / TMP_101
+TMP_103(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_64', 'TMP_102'] 
+REF_63(uint256) (->lockedance) := TMP_103(uint256)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+unlockedstep[_locker] = i + 1
+
+IRs:
+REF_67(uint8) -> unlockedstep[_locker]
+TMP_104(uint8) = i + 1
+REF_67(uint8) (->unlockedstep) := TMP_104(uint8)"];
+14->21;
+15[label="Node Type: IF 15
+
+EXPRESSION:
+i == 9 && unlockedstep[_locker] == 9 && _step1 == 9
+
+IRs:
+TMP_105(bool) = i == 9
+REF_68(uint8) -> unlockedstep[_locker]
+TMP_106(bool) = REF_68 == 9
+TMP_107(bool) = TMP_105 && TMP_106
+TMP_108(bool) = _step1 == 9
+TMP_109(bool) = TMP_107 && TMP_108
+CONDITION TMP_109"];
+15->16[label="True"];
+15->20[label="False"];
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+ownerance[_locker] = ownerance[_locker].add(lockedance[_locker])
+
+IRs:
+REF_69(uint256) -> ownerance[_locker]
+REF_70(uint256) -> ownerance[_locker]
+REF_72(uint256) -> lockedance[_locker]
+TMP_110(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_70', 'REF_72'] 
+REF_69(uint256) (->ownerance) := TMP_110(uint256)"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+lockedance[_locker] = 0
+
+IRs:
+REF_73(uint256) -> lockedance[_locker]
+REF_73(uint256) (->lockedance) := 0(uint256)"];
+17->18;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+unlockedstep[_locker] = 0
+
+IRs:
+REF_74(uint8) -> unlockedstep[_locker]
+REF_74(uint8) (->unlockedstep) := 0(uint256)"];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+lockedtype[_locker] = 0
+
+IRs:
+REF_75(uint8) -> lockedtype[_locker]
+REF_75(uint8) (->lockedtype) := 0(uint256)"];
+19->20;
+20[label="Node Type: END_IF 20
+"];
+20->21;
+21[label="Node Type: END_IF 21
+"];
+21->22;
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_111(uint8) := i(uint8)
+i(uint8) = i + 1"];
+22->10;
+23[label="Node Type: IF 23
+
+EXPRESSION:
+_locktype == 2
+
+IRs:
+TMP_112(bool) = _locktype == 2
+CONDITION TMP_112"];
+23->24[label="True"];
+23->45[label="False"];
+24[label="Node Type: IF 24
+
+EXPRESSION:
+_delta < 2592000
+
+IRs:
+TMP_113(bool) = _delta < 2592000
+CONDITION TMP_113"];
+24->25[label="True"];
+24->26[label="False"];
+25[label="Node Type: RETURN 25
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+26[label="Node Type: END_IF 26
+"];
+26->27;
+27[label="Node Type: NEW VARIABLE 27
+
+EXPRESSION:
+_more2 = _delta - 2592000
+
+IRs:
+TMP_114(uint256) = _delta - 2592000
+_more2(uint256) := TMP_114(uint256)"];
+27->28;
+28[label="Node Type: NEW VARIABLE 28
+
+EXPRESSION:
+_step2 = _more2 / 2592000
+
+IRs:
+TMP_115(uint256) = _more2 / 2592000
+_step2(uint256) := TMP_115(uint256)"];
+28->31;
+29[label="Node Type: BEGIN_LOOP 29
+"];
+29->32;
+30[label="Node Type: END_LOOP 30
+"];
+30->45;
+31[label="Node Type: NEW VARIABLE 31
+
+EXPRESSION:
+j = 0
+
+IRs:
+j(uint8) := 0(uint256)"];
+31->29;
+32[label="Node Type: IF_LOOP 32
+
+EXPRESSION:
+j < 11
+
+IRs:
+TMP_116(bool) = j < 11
+CONDITION TMP_116"];
+32->33[label="True"];
+32->30[label="False"];
+33[label="Node Type: IF 33
+
+EXPRESSION:
+unlockedstep[_locker] == j && j < 10 && j <= _step2
+
+IRs:
+REF_76(uint8) -> unlockedstep[_locker]
+TMP_117(bool) = REF_76 == j
+TMP_118(bool) = j < 10
+TMP_119(bool) = TMP_117 && TMP_118
+TMP_120(bool) = j <= _step2
+TMP_121(bool) = TMP_119 && TMP_120
+CONDITION TMP_121"];
+33->34[label="True"];
+33->37[label="False"];
+34[label="Node Type: EXPRESSION 34
+
+EXPRESSION:
+ownerance[_locker] = ownerance[_locker].add(lockedance[_locker] / (11 - j))
+
+IRs:
+REF_77(uint256) -> ownerance[_locker]
+REF_78(uint256) -> ownerance[_locker]
+REF_80(uint256) -> lockedance[_locker]
+TMP_122(uint256) = 11 - j
+TMP_123(uint256) = REF_80 / TMP_122
+TMP_124(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_78', 'TMP_123'] 
+REF_77(uint256) (->ownerance) := TMP_124(uint256)"];
+34->35;
+35[label="Node Type: EXPRESSION 35
+
+EXPRESSION:
+lockedance[_locker] = lockedance[_locker].sub(lockedance[_locker] / (11 - j))
+
+IRs:
+REF_81(uint256) -> lockedance[_locker]
+REF_82(uint256) -> lockedance[_locker]
+REF_84(uint256) -> lockedance[_locker]
+TMP_125(uint256) = 11 - j
+TMP_126(uint256) = REF_84 / TMP_125
+TMP_127(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_82', 'TMP_126'] 
+REF_81(uint256) (->lockedance) := TMP_127(uint256)"];
+35->36;
+36[label="Node Type: EXPRESSION 36
+
+EXPRESSION:
+unlockedstep[_locker] = j + 1
+
+IRs:
+REF_85(uint8) -> unlockedstep[_locker]
+TMP_128(uint8) = j + 1
+REF_85(uint8) (->unlockedstep) := TMP_128(uint8)"];
+36->43;
+37[label="Node Type: IF 37
+
+EXPRESSION:
+j == 10 && unlockedstep[_locker] == 10 && _step2 == 10
+
+IRs:
+TMP_129(bool) = j == 10
+REF_86(uint8) -> unlockedstep[_locker]
+TMP_130(bool) = REF_86 == 10
+TMP_131(bool) = TMP_129 && TMP_130
+TMP_132(bool) = _step2 == 10
+TMP_133(bool) = TMP_131 && TMP_132
+CONDITION TMP_133"];
+37->38[label="True"];
+37->42[label="False"];
+38[label="Node Type: EXPRESSION 38
+
+EXPRESSION:
+ownerance[_locker] = ownerance[_locker].add(lockedance[_locker])
+
+IRs:
+REF_87(uint256) -> ownerance[_locker]
+REF_88(uint256) -> ownerance[_locker]
+REF_90(uint256) -> lockedance[_locker]
+TMP_134(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_88', 'REF_90'] 
+REF_87(uint256) (->ownerance) := TMP_134(uint256)"];
+38->39;
+39[label="Node Type: EXPRESSION 39
+
+EXPRESSION:
+lockedance[_locker] = 0
+
+IRs:
+REF_91(uint256) -> lockedance[_locker]
+REF_91(uint256) (->lockedance) := 0(uint256)"];
+39->40;
+40[label="Node Type: EXPRESSION 40
+
+EXPRESSION:
+unlockedstep[_locker] = 0
+
+IRs:
+REF_92(uint8) -> unlockedstep[_locker]
+REF_92(uint8) (->unlockedstep) := 0(uint256)"];
+40->41;
+41[label="Node Type: EXPRESSION 41
+
+EXPRESSION:
+lockedtype[_locker] = 0
+
+IRs:
+REF_93(uint8) -> lockedtype[_locker]
+REF_93(uint8) (->lockedtype) := 0(uint256)"];
+41->42;
+42[label="Node Type: END_IF 42
+"];
+42->43;
+43[label="Node Type: END_IF 43
+"];
+43->44;
+44[label="Node Type: EXPRESSION 44
+
+EXPRESSION:
+j ++
+
+IRs:
+TMP_135(uint8) := j(uint8)
+j(uint8) = j + 1"];
+44->32;
+45[label="Node Type: END_IF 45
+"];
+45->46;
+46[label="Node Type: END_IF 46
+"];
+46->47;
+47[label="Node Type: RETURN 47
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+48[label="Node Type: RETURN 48
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 372.sol-SafeMath-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_10(uint256) = a + b
+c(uint256) := TMP_10(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(c >= a)
+
+IRs:
+TMP_11(bool) = c >= a
+TMP_12(None) = SOLIDITY_CALL require(bool)(TMP_11)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 372.sol-SafeMath-div(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a / b
+
+IRs:
+TMP_6(uint256) = a / b
+c(uint256) := TMP_6(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 372.sol-SafeMath-max(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+a >= b
+
+IRs:
+TMP_13(bool) = a >= b
+CONDITION TMP_13"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+a
+
+IRs:
+RETURN a"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+b
+
+IRs:
+RETURN b"];
+}
+// Function: 372.sol-SafeMath-min(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+a < b
+
+IRs:
+TMP_14(bool) = a < b
+CONDITION TMP_14"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+a
+
+IRs:
+RETURN a"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+b
+
+IRs:
+RETURN b"];
+}
+// Function: 372.sol-SafeMath-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_0(uint256) = a * b
+c(uint256) := TMP_0(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(a == 0 || c / a == b)
+
+IRs:
+TMP_1(bool) = a == 0
+TMP_2(uint256) = c / a
+TMP_3(bool) = TMP_2 == b
+TMP_4(bool) = TMP_1 || TMP_3
+TMP_5(None) = SOLIDITY_CALL require(bool)(TMP_4)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 372.sol-SafeMath-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(b <= a)
+
+IRs:
+TMP_7(bool) = b <= a
+TMP_8(None) = SOLIDITY_CALL require(bool)(TMP_7)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_9(uint256) = a - b
+RETURN TMP_9"];
+}
+}

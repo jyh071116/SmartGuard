@@ -1,0 +1,247 @@
+digraph G {
+// Function: 929.sol-Golem-Gnosis()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+totalSupply = GolemSupply * 10 ** uint256(decimals)
+
+IRs:
+TMP_0 = CONVERT decimals to uint256
+TMP_1(uint256) = 10 ** TMP_0
+TMP_2(uint256) = GolemSupply * TMP_1
+totalSupply(uint256) := TMP_2(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balanceOf[msg.sender] = totalSupply
+
+IRs:
+REF_0(uint256) -> balanceOf[msg.sender]
+REF_0(uint256) (->balanceOf) := totalSupply(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+creator = msg.sender
+
+IRs:
+creator(address) := msg.sender(address)"];
+}
+// Function: 929.sol-Golem-_transfer(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_to != 0x8c26348f63f9e008f0dd09a0ce1ed7caf6c1366b)
+
+IRs:
+TMP_3(bool) = _to != 800110714865019615767646381907579159088950490731
+TMP_4(None) = SOLIDITY_CALL require(bool)(TMP_3)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(balanceOf[_from] >= _value)
+
+IRs:
+REF_1(uint256) -> balanceOf[_from]
+TMP_5(bool) = REF_1 >= _value
+TMP_6(None) = SOLIDITY_CALL require(bool)(TMP_5)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(balanceOf[_to] + _value >= balanceOf[_to])
+
+IRs:
+REF_2(uint256) -> balanceOf[_to]
+TMP_7(uint256) = REF_2 + _value
+REF_3(uint256) -> balanceOf[_to]
+TMP_8(bool) = TMP_7 >= REF_3
+TMP_9(None) = SOLIDITY_CALL require(bool)(TMP_8)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+balanceOf[_from] -= _value
+
+IRs:
+REF_4(uint256) -> balanceOf[_from]
+REF_4(-> balanceOf) = REF_4 - _value"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balanceOf[_to] += _value
+
+IRs:
+REF_5(uint256) -> balanceOf[_to]
+REF_5(-> balanceOf) = REF_5 + _value"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+Transfer(_from,_to,_value)
+
+IRs:
+Emit Transfer(_from,_to,_value)"];
+}
+// Function: 929.sol-Golem-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+price == 0
+
+IRs:
+TMP_12(bool) = price == 0
+CONDITION TMP_12"];
+1->2[label="True"];
+1->12[label="False"];
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+ammount = 1
+
+IRs:
+ammount(uint256) := 1(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+ammountRaised += msg.value
+
+IRs:
+ammountRaised(uint256) = ammountRaised + msg.value"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool)(balanceOf[creator] >= 6000000)
+
+IRs:
+REF_6(uint256) -> balanceOf[creator]
+TMP_13(bool) = REF_6 >= 6000000
+TMP_14(None) = SOLIDITY_CALL require(bool)(TMP_13)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+require(bool)(msg.value < 500000000000000000)
+
+IRs:
+TMP_15(bool) = msg.value < 500000000000000000
+TMP_16(None) = SOLIDITY_CALL require(bool)(TMP_15)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+require(bool)(balanceOf[msg.sender] == 0)
+
+IRs:
+REF_7(uint256) -> balanceOf[msg.sender]
+TMP_17(bool) = REF_7 == 0
+TMP_18(None) = SOLIDITY_CALL require(bool)(TMP_17)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+balanceOf[msg.sender] += ammount
+
+IRs:
+REF_8(uint256) -> balanceOf[msg.sender]
+REF_8(-> balanceOf) = REF_8 + ammount"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+balanceOf[creator] -= ammount
+
+IRs:
+REF_9(uint256) -> balanceOf[creator]
+REF_9(-> balanceOf) = REF_9 - ammount"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+Transfer(creator,msg.sender,ammount)
+
+IRs:
+Emit Transfer(creator,msg.sender,ammount)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+creator.transfer(ammountRaised)
+
+IRs:
+Transfer dest:creator value:ammountRaised"];
+11->12;
+12[label="Node Type: END_IF 12
+"];
+}
+// Function: 929.sol-Golem-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+name = Golem
+
+IRs:
+name(string) := Golem(string)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+symbol = ZNX
+
+IRs:
+symbol(string) := ZNX(string)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+decimals = 18
+
+IRs:
+decimals(uint8) := 18(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+GolemSupply = 1000000000000000000000000000
+
+IRs:
+GolemSupply(uint256) := 1000000000000000000000000000(uint256)"];
+}
+// Function: 929.sol-Golem-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transfer(msg.sender,_to,_value)
+
+IRs:
+INTERNAL_CALL, Golem._transfer(address,address,uint256)(msg.sender,_to,_value)"];
+}
+// Function: 929.sol-tokenRecipient-receiveApproval(address,uint256,address,bytes)
+digraph{
+}
+}

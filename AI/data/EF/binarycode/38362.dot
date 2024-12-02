@@ -1,0 +1,347 @@
+digraph G {
+// Function: 38362.sol-AbstractENS-setResolver(bytes32,address)
+digraph{
+}
+// Function: 38362.sol-Registrar-entries(bytes32)
+digraph{
+}
+// Function: 38362.sol-Registrar-transfer(bytes32,address)
+digraph{
+}
+// Function: 38362.sol-Resolver-setAddr(bytes32,address)
+digraph{
+}
+// Function: 38362.sol-SellENS-SellENS()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+factory = SellENSFactory(msg.sender)
+
+IRs:
+TMP_0 = CONVERT msg.sender to SellENSFactory
+factory(SellENSFactory) := TMP_0(SellENSFactory)"];
+}
+// Function: 38362.sol-SellENS-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+factory.transfer(msg.value)
+
+IRs:
+Transfer dest:factory value:msg.value"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+factory.sell_label(msg.sender,msg.value)
+
+IRs:
+HIGH_LEVEL_CALL, dest:factory(SellENSFactory), function:sell_label, arguments:['msg.sender', 'msg.value']  "];
+}
+// Function: 38362.sol-SellENSFactory-createSellENS(string,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+sell_ens = new SellENS()
+
+IRs:
+TMP_4(SellENS) = new SellENS() 
+sell_ens(SellENS) := TMP_4(SellENS)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+get_info[sell_ens] = SellENSInfo(label,price,msg.sender)
+
+IRs:
+REF_2(SellENSFactory.SellENSInfo) -> get_info[sell_ens]
+TMP_5(SellENSFactory.SellENSInfo) = new SellENSInfo(label,price,msg.sender)
+REF_2(SellENSFactory.SellENSInfo) (->get_info) := TMP_5(SellENSFactory.SellENSInfo)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+SellENSCreated(sell_ens)
+
+IRs:
+Emit SellENSCreated(sell_ens)"];
+}
+// Function: 38362.sol-SellENSFactory-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 38362.sol-SellENSFactory-sell_label(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+sell_ens = SellENS(msg.sender)
+
+IRs:
+TMP_7 = CONVERT msg.sender to SellENS
+sell_ens(SellENS) := TMP_7(SellENS)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+get_info[sell_ens].owner == 0x0
+
+IRs:
+REF_3(SellENSFactory.SellENSInfo) -> get_info[sell_ens]
+REF_4(address) -> REF_3.owner
+TMP_8(bool) = REF_4 == 0
+CONDITION TMP_8"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: THROW 3
+"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+label = get_info[sell_ens].label
+
+IRs:
+REF_5(SellENSFactory.SellENSInfo) -> get_info[sell_ens]
+REF_6(string) -> REF_5.label
+label(string) := REF_6(string)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+price = get_info[sell_ens].price
+
+IRs:
+REF_7(SellENSFactory.SellENSInfo) -> get_info[sell_ens]
+REF_8(uint256) -> REF_7.price
+price(uint256) := REF_8(uint256)"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+owner = get_info[sell_ens].owner
+
+IRs:
+REF_9(SellENSFactory.SellENSInfo) -> get_info[sell_ens]
+REF_10(address) -> REF_9.owner
+owner(address) := REF_10(address)"];
+7->8;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+label_hash = sha3()(label)
+
+IRs:
+TMP_9(bytes32) = SOLIDITY_CALL sha3()(label)
+label_hash(bytes32) := TMP_9(bytes32)"];
+8->9;
+9[label="Node Type: NEW VARIABLE 9
+"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+(deed) = registrar.entries(label_hash)
+
+IRs:
+TUPLE_0(uint256,Deed,uint256,uint256,uint256) = HIGH_LEVEL_CALL, dest:registrar(Registrar), function:entries, arguments:['label_hash']  
+deed(Deed) := TUPLE_0([<slither.core.solidity_types.elementary_type.ElementaryType object at 0x7fe5965f7b80>, <slither.core.solidity_types.user_defined_type.UserDefinedType object at 0x7fe5965f78e0>, <slither.core.solidity_types.elementary_type.ElementaryType object at 0x7fe5965f7ca0>, <slither.core.solidity_types.elementary_type.ElementaryType object at 0x7fe5965f7dc0>, <slither.core.solidity_types.elementary_type.ElementaryType object at 0x7fe5965f7e20>])"];
+10->11;
+11[label="Node Type: IF 11
+
+EXPRESSION:
+deed.previousOwner() != owner
+
+IRs:
+TMP_10(address) = HIGH_LEVEL_CALL, dest:deed(Deed), function:previousOwner, arguments:[]  
+TMP_11(bool) = TMP_10 != owner
+CONDITION TMP_11"];
+11->12[label="True"];
+11->13[label="False"];
+12[label="Node Type: THROW 12
+"];
+13[label="Node Type: END_IF 13
+"];
+13->14;
+14[label="Node Type: NEW VARIABLE 14
+
+EXPRESSION:
+node = sha3()(root_node,label_hash)
+
+IRs:
+TMP_12(bytes32) = SOLIDITY_CALL sha3()(root_node,label_hash)
+node(bytes32) := TMP_12(bytes32)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+ens.setResolver(node,resolver)
+
+IRs:
+HIGH_LEVEL_CALL, dest:ens(AbstractENS), function:setResolver, arguments:['node', 'resolver']  "];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+resolver.setAddr(node,buyer)
+
+IRs:
+HIGH_LEVEL_CALL, dest:resolver(Resolver), function:setAddr, arguments:['node', 'buyer']  "];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+registrar.transfer(label_hash,buyer)
+
+IRs:
+HIGH_LEVEL_CALL, dest:registrar(Registrar), function:transfer, arguments:['label_hash', 'buyer']  "];
+17->18;
+18[label="Node Type: NEW VARIABLE 18
+
+EXPRESSION:
+fee = price / 20
+
+IRs:
+TMP_16(uint256) = price / 20
+fee(uint256) := TMP_16(uint256)"];
+18->19;
+19[label="Node Type: IF 19
+
+EXPRESSION:
+buyer == owner
+
+IRs:
+TMP_17(bool) = buyer == owner
+CONDITION TMP_17"];
+19->20[label="True"];
+19->22[label="False"];
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+price = 0
+
+IRs:
+price(uint256) := 0(uint256)"];
+20->21;
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+fee = 0
+
+IRs:
+fee(uint256) := 0(uint256)"];
+21->22;
+22[label="Node Type: END_IF 22
+"];
+22->23;
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+developer.transfer(fee)
+
+IRs:
+Transfer dest:developer value:fee"];
+23->24;
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+owner.transfer(price - fee)
+
+IRs:
+TMP_19(uint256) = price - fee
+Transfer dest:owner value:TMP_19"];
+24->25;
+25[label="Node Type: IF 25
+
+EXPRESSION:
+amount_paid > price
+
+IRs:
+TMP_21(bool) = amount_paid > price
+CONDITION TMP_21"];
+25->26[label="True"];
+25->27[label="False"];
+26[label="Node Type: EXPRESSION 26
+
+EXPRESSION:
+buyer.transfer(amount_paid - price)
+
+IRs:
+TMP_22(uint256) = amount_paid - price
+Transfer dest:buyer value:TMP_22"];
+26->27;
+27[label="Node Type: END_IF 27
+"];
+27->28;
+28[label="Node Type: EXPRESSION 28
+
+EXPRESSION:
+LabelSold(sell_ens)
+
+IRs:
+Emit LabelSold(sell_ens)"];
+}
+// Function: 38362.sol-SellENSFactory-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+developer = 0x4e6A1c57CdBfd97e8efe831f8f4418b1F2A09e6e
+
+IRs:
+developer(address) := 447667628137363619497515368385033273022055751278(address)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+ens = AbstractENS(0x314159265dD8dbb310642f98f50C066173C1259b)
+
+IRs:
+TMP_25 = CONVERT 281197862257194692613294899063960188897491756443 to AbstractENS
+ens(AbstractENS) := TMP_25(AbstractENS)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+registrar = Registrar(0x6090A6e47849629b7245Dfa1Ca21D94cd15878Ef)
+
+IRs:
+TMP_26 = CONVERT 551288959691409731390411022730012243228160981231 to Registrar
+registrar(Registrar) := TMP_26(Registrar)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+resolver = Resolver(0x1da022710dF5002339274AaDEe8D58218e9D6AB5)
+
+IRs:
+TMP_27 = CONVERT 169131851873837467286058017400047767534534748853 to Resolver
+resolver(Resolver) := TMP_27(Resolver)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+root_node = 0x93cdeb708b7545dc668eb9280176169d1c33cfd8ed6f04690a0bcc88a93fc4ae
+
+IRs:
+root_node(bytes32) := 66853817334611902194238164484889819180315942402426128563245745834960013477038(uint256)"];
+}
+}

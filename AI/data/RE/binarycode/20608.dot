@@ -1,0 +1,513 @@
+digraph G {
+// Function: 20608.sol-Distribution-Distribution(address,ERC20,bytes32[],uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+expectedTotalTokens = _expectedTotalTokens
+
+IRs:
+expectedTotalTokens(uint256) := _expectedTotalTokens(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+contributionHashes = _contributionHashes
+
+IRs:
+contributionHashes(bytes32[]) := _contributionHashes(bytes32[])"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+tokenContract = _tokenContract
+
+IRs:
+tokenContract(ERC20) := _tokenContract(ERC20)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+admin = _admin
+
+IRs:
+admin(address) := _admin(address)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+state = State.AwaitingTokens
+
+IRs:
+REF_0(Distribution.State) -> State.AwaitingTokens
+state(Distribution.State) := REF_0(Distribution.State)"];
+}
+// Function: 20608.sol-Distribution-_handleTokensReceived(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(state == State.AwaitingTokens)
+
+IRs:
+REF_1(Distribution.State) -> State.AwaitingTokens
+TMP_5(bool) = state == REF_1
+TMP_6(None) = SOLIDITY_CALL require(bool)(TMP_5)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(totalTokens > 0)
+
+IRs:
+TMP_7(bool) = totalTokens > 0
+TMP_8(None) = SOLIDITY_CALL require(bool)(TMP_7)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+tokensTransferred = 0
+
+IRs:
+tokensTransferred(uint256) := 0(uint256)"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+totalTokens == expectedTotalTokens
+
+IRs:
+TMP_9(bool) = totalTokens == expectedTotalTokens
+CONDITION TMP_9"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+state = State.DistributingNormally
+
+IRs:
+REF_2(Distribution.State) -> State.DistributingNormally
+state(Distribution.State) := REF_2(Distribution.State)"];
+5->8;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+actualTotalTokens = totalTokens
+
+IRs:
+actualTotalTokens(uint256) := totalTokens(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+state = State.DistributingProRata
+
+IRs:
+REF_3(Distribution.State) -> State.DistributingProRata
+state(Distribution.State) := REF_3(Distribution.State)"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+}
+// Function: 20608.sol-Distribution-_numTokensForContributor(uint256,uint256,Distribution.State)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_state == State.DistributingNormally
+
+IRs:
+REF_5(Distribution.State) -> State.DistributingNormally
+TMP_16(bool) = _state == REF_5
+CONDITION TMP_16"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+contributorExpectedTokens
+
+IRs:
+RETURN contributorExpectedTokens"];
+3[label="Node Type: IF 3
+
+EXPRESSION:
+_state == State.DistributingProRata
+
+IRs:
+REF_6(Distribution.State) -> State.DistributingProRata
+TMP_17(bool) = _state == REF_6
+CONDITION TMP_17"];
+3->4[label="True"];
+3->10[label="False"];
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+tokens = actualTotalTokens.mul(contributorExpectedTokens) / expectedTotalTokens
+
+IRs:
+TMP_18(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['actualTotalTokens', 'contributorExpectedTokens'] 
+TMP_19(uint256) = TMP_18 / expectedTotalTokens
+tokens(uint256) := TMP_19(uint256)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+tokensRemaining = actualTotalTokens - _tokensTransferred
+
+IRs:
+TMP_20(uint256) = actualTotalTokens - _tokensTransferred
+tokensRemaining(uint256) := TMP_20(uint256)"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+tokens < tokensRemaining
+
+IRs:
+TMP_21(bool) = tokens < tokensRemaining
+CONDITION TMP_21"];
+6->7[label="True"];
+6->8[label="False"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+tokens
+
+IRs:
+RETURN tokens"];
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+tokensRemaining
+
+IRs:
+RETURN tokensRemaining"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_22(None) = SOLIDITY_CALL revert()()"];
+10->11;
+11[label="Node Type: END_IF 11
+"];
+11->12;
+12[label="Node Type: END_IF 12
+"];
+}
+// Function: 20608.sol-Distribution-doDistributionRange(uint256,address[],uint256[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(contributors.length == contributorExpectedTokens.length)
+
+IRs:
+REF_8 -> LENGTH contributors
+REF_9 -> LENGTH contributorExpectedTokens
+TMP_23(bool) = REF_8 == REF_9
+TMP_24(None) = SOLIDITY_CALL require(bool)(TMP_23)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+tokensTransferredSoFar = tokensTransferred
+
+IRs:
+tokensTransferredSoFar(uint256) := tokensTransferred(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+end = start + contributors.length
+
+IRs:
+REF_10 -> LENGTH contributors
+TMP_25(uint256) = start + REF_10
+end(uint256) := TMP_25(uint256)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+_state = state
+
+IRs:
+_state(Distribution.State) := state(Distribution.State)"];
+4->7;
+5[label="Node Type: BEGIN_LOOP 5
+"];
+5->8;
+6[label="Node Type: END_LOOP 6
+"];
+6->17;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+i = start
+
+IRs:
+i(uint256) := start(uint256)"];
+7->5;
+8[label="Node Type: IF_LOOP 8
+
+EXPRESSION:
+i < end
+
+IRs:
+TMP_26(bool) = i < end
+CONDITION TMP_26"];
+8->9[label="True"];
+8->6[label="False"];
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+contributor = contributors[i]
+
+IRs:
+REF_11(address) -> contributors[i]
+contributor(address) := REF_11(address)"];
+9->10;
+10[label="Node Type: NEW VARIABLE 10
+
+EXPRESSION:
+expectedTokens = contributorExpectedTokens[i]
+
+IRs:
+REF_12(uint256) -> contributorExpectedTokens[i]
+expectedTokens(uint256) := REF_12(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+require(bool)(contributionHashes[i] == keccak256()(contributor,expectedTokens))
+
+IRs:
+REF_13(bytes32) -> contributionHashes[i]
+TMP_27(bytes32) = SOLIDITY_CALL keccak256()(contributor,expectedTokens)
+TMP_28(bool) = REF_13 == TMP_27
+TMP_29(None) = SOLIDITY_CALL require(bool)(TMP_28)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+contributionHashes[i] = 0x00000000000000000000000000000000
+
+IRs:
+REF_14(bytes32) -> contributionHashes[i]
+REF_14(bytes32) (->contributionHashes) := 0(uint256)"];
+12->13;
+13[label="Node Type: NEW VARIABLE 13
+
+EXPRESSION:
+numTokens = _numTokensForContributor(expectedTokens,tokensTransferredSoFar,_state)
+
+IRs:
+TMP_30(uint256) = INTERNAL_CALL, Distribution._numTokensForContributor(uint256,uint256,Distribution.State)(expectedTokens,tokensTransferredSoFar,_state)
+numTokens(uint256) := TMP_30(uint256)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+tokensTransferredSoFar += numTokens
+
+IRs:
+tokensTransferredSoFar(uint256) = tokensTransferredSoFar + numTokens"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+require(bool)(tokenContract.transfer(contributor,numTokens))
+
+IRs:
+TMP_31(bool) = HIGH_LEVEL_CALL, dest:tokenContract(ERC20), function:transfer, arguments:['contributor', 'numTokens']  
+TMP_32(None) = SOLIDITY_CALL require(bool)(TMP_31)"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+++ i
+
+IRs:
+i(uint256) = i + 1"];
+16->8;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+tokensTransferred = tokensTransferredSoFar
+
+IRs:
+tokensTransferred(uint256) := tokensTransferredSoFar(uint256)"];
+17->18;
+18[label="Node Type: IF 18
+
+EXPRESSION:
+tokensTransferred == actualTotalTokens
+
+IRs:
+TMP_33(bool) = tokensTransferred == actualTotalTokens
+CONDITION TMP_33"];
+18->19[label="True"];
+18->20[label="False"];
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+state = State.Done
+
+IRs:
+REF_16(Distribution.State) -> State.Done
+state(Distribution.State) := REF_16(Distribution.State)"];
+19->20;
+20[label="Node Type: END_IF 20
+"];
+}
+// Function: 20608.sol-Distribution-handleTokensReceived()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_handleTokensReceived(tokenContract.balanceOf(this))
+
+IRs:
+TMP_10(uint256) = HIGH_LEVEL_CALL, dest:tokenContract(ERC20), function:balanceOf, arguments:['this']  
+INTERNAL_CALL, Distribution._handleTokensReceived(uint256)(TMP_10)"];
+}
+// Function: 20608.sol-Distribution-numTokensForContributor(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+_numTokensForContributor(contributorExpectedTokens,tokensTransferred,state)
+
+IRs:
+TMP_34(uint256) = INTERNAL_CALL, Distribution._numTokensForContributor(uint256,uint256,Distribution.State)(contributorExpectedTokens,tokensTransferred,state)
+RETURN TMP_34"];
+}
+// Function: 20608.sol-Distribution-temporaryEscapeHatch(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == admin)
+
+IRs:
+TMP_35(bool) = msg.sender == admin
+TMP_36(None) = SOLIDITY_CALL require(bool)(TMP_35)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(to.call.value(value)(data))
+
+IRs:
+TMP_38(bool) = LOW_LEVEL_CALL, dest:to, function:call, arguments:['data'] value:value 
+TMP_39(None) = SOLIDITY_CALL require(bool)(TMP_38)"];
+}
+// Function: 20608.sol-Distribution-tokenFallback(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == address(tokenContract))
+
+IRs:
+TMP_12 = CONVERT tokenContract to address
+TMP_13(bool) = msg.sender == TMP_12
+TMP_14(None) = SOLIDITY_CALL require(bool)(TMP_13)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_handleTokensReceived(_value)
+
+IRs:
+INTERNAL_CALL, Distribution._handleTokensReceived(uint256)(_value)"];
+}
+// Function: 20608.sol-ERC20-balanceOf(address)
+digraph{
+}
+// Function: 20608.sol-ERC20-transfer(address,uint256)
+digraph{
+}
+// Function: 20608.sol-ERC223ReceivingContract-tokenFallback(address,uint256,bytes)
+digraph{
+}
+// Function: 20608.sol-SafeMath-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+a == 0
+
+IRs:
+TMP_0(bool) = a == 0
+CONDITION TMP_0"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_1(uint256) = a * b
+c(uint256) := TMP_1(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool)(c / a == b)
+
+IRs:
+TMP_2(uint256) = c / a
+TMP_3(bool) = TMP_2 == b
+TMP_4(None) = SOLIDITY_CALL require(bool)(TMP_3)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+}

@@ -1,0 +1,123 @@
+digraph G {
+// Function: 44861.sol-Reentrance-addToBalance()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+userBalance[msg.sender] += msg.value
+
+IRs:
+REF_1(uint256) -> userBalance[msg.sender]
+REF_1(-> userBalance) = REF_1 + msg.value"];
+}
+// Function: 44861.sol-Reentrance-getBalance(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+userBalance[u]
+
+IRs:
+REF_0(uint256) -> userBalance[u]
+RETURN REF_0"];
+}
+// Function: 44861.sol-Reentrance-withdrawBalance()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! (msg.sender.call.value(userBalance[msg.sender])())
+
+IRs:
+REF_4(uint256) -> userBalance[msg.sender]
+TMP_1(bool) = LOW_LEVEL_CALL, dest:msg.sender, function:call, arguments:[] value:REF_4 
+TMP_2 = UnaryType.BANG TMP_1 
+CONDITION TMP_2"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+userBalance[msg.sender] = 0
+
+IRs:
+REF_5(uint256) -> userBalance[msg.sender]
+REF_5(uint256) (->userBalance) := 0(uint256)"];
+}
+// Function: 44861.sol-Reentrance-withdrawBalance_fixed()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+amount = userBalance[msg.sender]
+
+IRs:
+REF_6(uint256) -> userBalance[msg.sender]
+amount(uint256) := REF_6(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+userBalance[msg.sender] = 0
+
+IRs:
+REF_7(uint256) -> userBalance[msg.sender]
+REF_7(uint256) (->userBalance) := 0(uint256)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+! (msg.sender.call.value(amount)())
+
+IRs:
+TMP_4(bool) = LOW_LEVEL_CALL, dest:msg.sender, function:call, arguments:[] value:amount 
+TMP_5 = UnaryType.BANG TMP_4 
+CONDITION TMP_5"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: THROW 4
+"];
+5[label="Node Type: END_IF 5
+"];
+}
+// Function: 44861.sol-Reentrance-withdrawBalance_fixed_2()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+msg.sender.transfer(userBalance[msg.sender])
+
+IRs:
+REF_11(uint256) -> userBalance[msg.sender]
+Transfer dest:msg.sender value:REF_11"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+userBalance[msg.sender] = 0
+
+IRs:
+REF_12(uint256) -> userBalance[msg.sender]
+REF_12(uint256) (->userBalance) := 0(uint256)"];
+}
+}

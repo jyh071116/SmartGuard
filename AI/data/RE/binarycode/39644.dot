@@ -1,0 +1,432 @@
+digraph G {
+// Function: 39644.sol-AddressOwnershipVerification-AddressOwnershipVerification()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 39644.sol-AddressOwnershipVerification-_deleteRequest(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+deposit = _requestsReverse[transactee][transactor]
+
+IRs:
+REF_17(mapping(address => uint32)) -> _requestsReverse[transactee]
+REF_18(uint32) -> REF_17[transactor]
+deposit(uint32) := REF_18(uint32)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+delete _requests[transactee][deposit]
+
+IRs:
+REF_19(mapping(uint32 => address)) -> _requests[transactee]
+REF_20(address) -> REF_19[deposit]
+REF_19 = delete REF_20 "];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+delete _requestsReverse[transactee][transactor]
+
+IRs:
+REF_21(mapping(address => uint32)) -> _requestsReverse[transactee]
+REF_22(uint32) -> REF_21[transactor]
+REF_21 = delete REF_22 "];
+}
+// Function: 39644.sol-AddressOwnershipVerification-_requestExists(address,uint32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+_requests[transactee][deposit] != 0x0000000000000000000000000000000000000000
+
+IRs:
+REF_23(mapping(uint32 => address)) -> _requests[transactee]
+REF_24(address) -> REF_23[deposit]
+TMP_29(bool) = REF_24 != 0
+RETURN TMP_29"];
+}
+// Function: 39644.sol-AddressOwnershipVerification-_requestExistsReverse(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+_requestsReverse[transactee][transactor] != 0
+
+IRs:
+REF_25(mapping(address => uint32)) -> _requestsReverse[transactee]
+REF_26(uint32) -> REF_25[transactor]
+TMP_30(bool) = REF_26 != 0
+RETURN TMP_30"];
+}
+// Function: 39644.sol-AddressOwnershipVerification-_saveRequest(address,address,uint32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_requests[transactee][deposit] = transactor
+
+IRs:
+REF_13(mapping(uint32 => address)) -> _requests[transactee]
+REF_14(address) -> REF_13[deposit]
+REF_14(address) (->_requests) := transactor(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_requestsReverse[transactee][transactor] = deposit
+
+IRs:
+REF_15(mapping(address => uint32)) -> _requestsReverse[transactee]
+REF_16(uint32) -> REF_15[transactor]
+REF_16(uint32) (->_requestsReverse) := deposit(uint32)"];
+}
+// Function: 39644.sol-AddressOwnershipVerification-_saveVerification(address,address,uint32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_verifications[transactor][transactee] = deposit
+
+IRs:
+REF_27(mapping(address => uint32)) -> _verifications[transactor]
+REF_28(uint32) -> REF_27[transactee]
+REF_28(uint32) (->_verifications) := deposit(uint32)"];
+}
+// Function: 39644.sol-AddressOwnershipVerification-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+value = uint32(msg.value)
+
+IRs:
+TMP_0 = CONVERT msg.value to uint32
+value(uint32) := TMP_0(uint32)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+! _requestExists(msg.sender,value)
+
+IRs:
+TMP_1(bool) = INTERNAL_CALL, AddressOwnershipVerification._requestExists(address,uint32)(msg.sender,value)
+TMP_2 = UnaryType.BANG TMP_1 
+CONDITION TMP_2"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: THROW 3
+"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+transactor = _requests[msg.sender][value]
+
+IRs:
+REF_0(mapping(uint32 => address)) -> _requests[msg.sender]
+REF_1(address) -> REF_0[value]
+transactor(address) := REF_1(address)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+_saveVerification(transactor,msg.sender,value)
+
+IRs:
+INTERNAL_CALL, AddressOwnershipVerification._saveVerification(address,address,uint32)(transactor,msg.sender,value)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+_deleteRequest(transactor,msg.sender)
+
+IRs:
+INTERNAL_CALL, AddressOwnershipVerification._deleteRequest(address,address)(transactor,msg.sender)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+VerificationEvent(transactor,msg.sender,value)
+
+IRs:
+Emit VerificationEvent(transactor,msg.sender,value)"];
+}
+// Function: 39644.sol-AddressOwnershipVerification-getRequest(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+_requestsReverse[transactee][transactor]
+
+IRs:
+REF_2(mapping(address => uint32)) -> _requestsReverse[transactee]
+REF_3(uint32) -> REF_2[transactor]
+RETURN REF_3"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+deposit
+
+IRs:
+RETURN deposit"];
+}
+// Function: 39644.sol-AddressOwnershipVerification-removeRequest(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != transactor && msg.sender != transactee
+
+IRs:
+TMP_13(bool) = msg.sender != transactor
+TMP_14(bool) = msg.sender != transactee
+TMP_15(bool) = TMP_13 && TMP_14
+CONDITION TMP_15"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+_deleteRequest(transactor,transactee)
+
+IRs:
+INTERNAL_CALL, AddressOwnershipVerification._deleteRequest(address,address)(transactor,transactee)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+RemoveRequestEvent(transactor,transactee)
+
+IRs:
+Emit RemoveRequestEvent(transactor,transactee)"];
+}
+// Function: 39644.sol-AddressOwnershipVerification-request(address,uint32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+transactee == msg.sender
+
+IRs:
+TMP_6(bool) = transactee == msg.sender
+CONDITION TMP_6"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+deposit == 0
+
+IRs:
+TMP_7(bool) = deposit == 0
+CONDITION TMP_7"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: THROW 5
+"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: IF 7
+
+EXPRESSION:
+verify(msg.sender,transactee)
+
+IRs:
+TMP_8(bool) = INTERNAL_CALL, AddressOwnershipVerification.verify(address,address)(msg.sender,transactee)
+CONDITION TMP_8"];
+7->8[label="True"];
+7->9[label="False"];
+8[label="Node Type: THROW 8
+"];
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: IF 10
+
+EXPRESSION:
+_requestExists(transactee,deposit)
+
+IRs:
+TMP_9(bool) = INTERNAL_CALL, AddressOwnershipVerification._requestExists(address,uint32)(transactee,deposit)
+CONDITION TMP_9"];
+10->11[label="True"];
+10->12[label="False"];
+11[label="Node Type: THROW 11
+"];
+12[label="Node Type: END_IF 12
+"];
+12->13;
+13[label="Node Type: IF 13
+
+EXPRESSION:
+_requestExistsReverse(msg.sender,transactee)
+
+IRs:
+TMP_10(bool) = INTERNAL_CALL, AddressOwnershipVerification._requestExistsReverse(address,address)(msg.sender,transactee)
+CONDITION TMP_10"];
+13->14[label="True"];
+13->15[label="False"];
+14[label="Node Type: THROW 14
+"];
+15[label="Node Type: END_IF 15
+"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+_saveRequest(msg.sender,transactee,deposit)
+
+IRs:
+INTERNAL_CALL, AddressOwnershipVerification._saveRequest(address,address,uint32)(msg.sender,transactee,deposit)"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+RequestEvent(msg.sender,transactee,deposit)
+
+IRs:
+Emit RequestEvent(msg.sender,transactee,deposit)"];
+}
+// Function: 39644.sol-AddressOwnershipVerification-revoke(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != transactor && msg.sender != transactee
+
+IRs:
+TMP_19(bool) = msg.sender != transactor
+TMP_20(bool) = msg.sender != transactee
+TMP_21(bool) = TMP_19 && TMP_20
+CONDITION TMP_21"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+! verify(transactor,transactee)
+
+IRs:
+TMP_22(bool) = INTERNAL_CALL, AddressOwnershipVerification.verify(address,address)(transactor,transactee)
+TMP_23 = UnaryType.BANG TMP_22 
+CONDITION TMP_23"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: THROW 5
+"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+deposit = _verifications[transactor][transactee]
+
+IRs:
+REF_6(mapping(address => uint32)) -> _verifications[transactor]
+REF_7(uint32) -> REF_6[transactee]
+deposit(uint32) := REF_7(uint32)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+delete _verifications[transactor][transactee]
+
+IRs:
+REF_8(mapping(address => uint32)) -> _verifications[transactor]
+REF_9(uint32) -> REF_8[transactee]
+REF_8 = delete REF_9 "];
+8->9;
+9[label="Node Type: IF 9
+
+EXPRESSION:
+! transactee.call.value(deposit).gas(23000)()
+
+IRs:
+TMP_26(bool) = LOW_LEVEL_CALL, dest:transactee, function:call, arguments:[] value:deposit gas:23000
+TMP_27 = UnaryType.BANG TMP_26 
+CONDITION TMP_27"];
+9->10[label="True"];
+9->11[label="False"];
+10[label="Node Type: THROW 10
+"];
+11[label="Node Type: END_IF 11
+"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+RevokeEvent(transactor,transactee,deposit)
+
+IRs:
+Emit RevokeEvent(transactor,transactee,deposit)"];
+}
+// Function: 39644.sol-AddressOwnershipVerification-verify(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+_verifications[transactor][transactee] != 0
+
+IRs:
+REF_4(mapping(address => uint32)) -> _verifications[transactor]
+REF_5(uint32) -> REF_4[transactee]
+TMP_18(bool) = REF_5 != 0
+RETURN TMP_18"];
+}
+}

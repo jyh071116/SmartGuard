@@ -1,0 +1,2162 @@
+digraph G {
+// Function: 33746.sol-blackjack-authorize(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+authorized[addr] = true
+
+IRs:
+REF_3(bool) -> authorized[addr]
+REF_3(bool) (->authorized) := True(bool)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+2->1;
+}
+// Function: 33746.sol-blackjack-blackjack(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+casino(minBet,maxBet)
+
+IRs:
+INTERNAL_CALL, casino.casino(uint256,uint256)(minBet,maxBet)"];
+}
+// Function: 33746.sol-blackjack-casino(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+minimumBet = minBet
+
+IRs:
+minimumBet(uint256) := minBet(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+maximumBet = maxBet
+
+IRs:
+maximumBet(uint256) := maxBet(uint256)"];
+}
+// Function: 33746.sol-blackjack-changeOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+2->1;
+}
+// Function: 33746.sol-blackjack-checkBet(bytes32,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+factor = splits[gameId].length + 1
+
+IRs:
+REF_45(uint8[]) -> splits[gameId]
+REF_46 -> LENGTH REF_45
+TMP_128(uint256) = REF_46 + 1
+factor(uint256) := TMP_128(uint256)"];
+1->4;
+2[label="Node Type: BEGIN_LOOP 2
+"];
+2->5;
+3[label="Node Type: END_LOOP 3
+"];
+3->10;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint8) := 0(uint256)"];
+4->2;
+5[label="Node Type: IF_LOOP 5
+
+EXPRESSION:
+i < splits[gameId].length + 1
+
+IRs:
+REF_47(uint8[]) -> splits[gameId]
+REF_48 -> LENGTH REF_47
+TMP_129(uint256) = REF_48 + 1
+TMP_130(bool) = i < TMP_129
+CONDITION TMP_130"];
+5->6[label="True"];
+5->3[label="False"];
+6[label="Node Type: IF 6
+
+EXPRESSION:
+doubled[gameId][i]
+
+IRs:
+REF_49(mapping(uint8 => bool)) -> doubled[gameId]
+REF_50(bool) -> REF_49[i]
+CONDITION REF_50"];
+6->7[label="True"];
+6->8[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+factor ++
+
+IRs:
+TMP_131(uint256) := factor(uint256)
+factor(uint256) = factor + 1"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_132(uint8) := i(uint8)
+i(uint8) = i + 1"];
+9->5;
+10[label="Node Type: RETURN 10
+
+EXPRESSION:
+bets[gameId] == bet * factor
+
+IRs:
+REF_51(uint256) -> bets[gameId]
+TMP_133(uint256) = bet * factor
+TMP_134(bool) = REF_51 == TMP_133
+RETURN TMP_134"];
+11[label="Node Type: RETURN 11
+
+EXPRESSION:
+correct
+
+IRs:
+RETURN correct"];
+}
+// Function: 33746.sol-blackjack-checkDeck(uint8[],bytes32,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+keccak256()(convertToBytes(deck),seed) != deckHash
+
+IRs:
+TMP_120(bytes) = INTERNAL_CALL, blackjack.convertToBytes(uint8[])(deck)
+TMP_121(bytes32) = SOLIDITY_CALL keccak256()(TMP_120,seed)
+TMP_122(bool) = TMP_121 != deckHash
+CONDITION TMP_122"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+correct
+
+IRs:
+RETURN correct"];
+}
+// Function: 33746.sol-blackjack-close()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+selfdestruct(address)(owner)
+
+IRs:
+TMP_22(None) = SOLIDITY_CALL selfdestruct(address)(owner)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+2->1;
+}
+// Function: 33746.sol-blackjack-convertToBytes(uint8[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+b = new bytes(byteArray.length)
+
+IRs:
+REF_41 -> LENGTH byteArray
+TMP_124 = new bytes(REF_41)
+b(bytes) := TMP_124(bytes)"];
+1->4;
+2[label="Node Type: BEGIN_LOOP 2
+"];
+2->5;
+3[label="Node Type: END_LOOP 3
+"];
+3->8;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint8) := 0(uint256)"];
+4->2;
+5[label="Node Type: IF_LOOP 5
+
+EXPRESSION:
+i < byteArray.length
+
+IRs:
+REF_42 -> LENGTH byteArray
+TMP_125(bool) = i < REF_42
+CONDITION TMP_125"];
+5->6[label="True"];
+5->3[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+b[i] = bytes1(byteArray[i])
+
+IRs:
+REF_43(bytes1) -> b[i]
+REF_44(uint8) -> byteArray[i]
+TMP_126 = CONVERT REF_44 to bytes1
+REF_43(bytes1) (->b) := TMP_126(bytes1)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_127(uint8) := i(uint8)
+i(uint8) = i + 1"];
+7->5;
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+b
+
+IRs:
+RETURN b"];
+}
+// Function: 33746.sol-blackjack-deauthorize(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+authorized[addr] = false
+
+IRs:
+REF_4(bool) -> authorized[addr]
+REF_4(bool) (->authorized) := False(bool)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+2->1;
+}
+// Function: 33746.sol-blackjack-determineOutcome(uint8[],uint8[],uint8[],bool[],uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+playerValues = getPlayerValues(cards,numCards,splits)
+
+IRs:
+TMP_135(uint8[5]) = INTERNAL_CALL, blackjack.getPlayerValues(uint8[],uint8[],uint8[])(cards,numCards,splits)
+playerValues(uint8[1]) = ['TMP_135(uint8[5])']"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+(dealerValue,dealerBJ) = getDealerValue(cards,sum(numCards))
+
+IRs:
+TMP_136(uint8) = INTERNAL_CALL, blackjack.sum(uint8[])(numCards)
+TUPLE_1(uint8,bool) = INTERNAL_CALL, blackjack.getDealerValue(uint8[],uint8)(cards,TMP_136)
+dealerValue(uint8)= UNPACK TUPLE_1 index: 0 
+dealerBJ(bool)= UNPACK TUPLE_1 index: 1 "];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+"];
+6->9;
+7[label="Node Type: BEGIN_LOOP 7
+"];
+7->10;
+8[label="Node Type: END_LOOP 8
+"];
+8->37;
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+h = 0
+
+IRs:
+h(uint8) := 0(uint256)"];
+9->7;
+10[label="Node Type: IF_LOOP 10
+
+EXPRESSION:
+h < numCards.length
+
+IRs:
+REF_52 -> LENGTH numCards
+TMP_137(bool) = h < REF_52
+CONDITION TMP_137"];
+10->11[label="True"];
+10->8[label="False"];
+11[label="Node Type: NEW VARIABLE 11
+
+EXPRESSION:
+playerValue = playerValues[h]
+
+IRs:
+REF_53(uint8) -> playerValues[h]
+playerValue(uint8) := REF_53(uint8)"];
+11->12;
+12[label="Node Type: IF 12
+
+EXPRESSION:
+playerValue > 21
+
+IRs:
+TMP_138(bool) = playerValue > 21
+CONDITION TMP_138"];
+12->13[label="True"];
+12->15[label="False"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+win = 0
+
+IRs:
+win(uint256) := 0(uint256)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+loss = bet
+
+IRs:
+loss(uint256) := bet(uint256)"];
+14->29;
+15[label="Node Type: IF 15
+
+EXPRESSION:
+numCards.length == 1 && playerValue == 21 && numCards[h] == 2 && ! dealerBJ
+
+IRs:
+REF_54 -> LENGTH numCards
+TMP_139(bool) = REF_54 == 1
+TMP_140(bool) = playerValue == 21
+TMP_141(bool) = TMP_139 && TMP_140
+REF_55(uint8) -> numCards[h]
+TMP_142(bool) = REF_55 == 2
+TMP_143(bool) = TMP_141 && TMP_142
+TMP_144 = UnaryType.BANG dealerBJ 
+TMP_145(bool) = TMP_143 && TMP_144
+CONDITION TMP_145"];
+15->16[label="True"];
+15->18[label="False"];
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+win = bet * 3 / 2
+
+IRs:
+TMP_146(uint256) = bet * 3
+TMP_147(uint256) = TMP_146 / 2
+win(uint256) := TMP_147(uint256)"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+loss = 0
+
+IRs:
+loss(uint256) := 0(uint256)"];
+17->28;
+18[label="Node Type: IF 18
+
+EXPRESSION:
+playerValue > dealerValue || dealerValue > 21
+
+IRs:
+TMP_148(bool) = playerValue > dealerValue
+TMP_149(bool) = dealerValue > 21
+TMP_150(bool) = TMP_148 || TMP_149
+CONDITION TMP_150"];
+18->19[label="True"];
+18->21[label="False"];
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+win = bet
+
+IRs:
+win(uint256) := bet(uint256)"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+loss = 0
+
+IRs:
+loss(uint256) := 0(uint256)"];
+20->27;
+21[label="Node Type: IF 21
+
+EXPRESSION:
+playerValue == dealerValue
+
+IRs:
+TMP_151(bool) = playerValue == dealerValue
+CONDITION TMP_151"];
+21->22[label="True"];
+21->24[label="False"];
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+win = 0
+
+IRs:
+win(uint256) := 0(uint256)"];
+22->23;
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+loss = 0
+
+IRs:
+loss(uint256) := 0(uint256)"];
+23->26;
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+win = 0
+
+IRs:
+win(uint256) := 0(uint256)"];
+24->25;
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+loss = bet
+
+IRs:
+loss(uint256) := bet(uint256)"];
+25->26;
+26[label="Node Type: END_IF 26
+"];
+26->27;
+27[label="Node Type: END_IF 27
+"];
+27->28;
+28[label="Node Type: END_IF 28
+"];
+28->29;
+29[label="Node Type: END_IF 29
+"];
+29->30;
+30[label="Node Type: IF 30
+
+EXPRESSION:
+doubled[h]
+
+IRs:
+REF_56(bool) -> doubled[h]
+CONDITION REF_56"];
+30->31[label="True"];
+30->33[label="False"];
+31[label="Node Type: EXPRESSION 31
+
+EXPRESSION:
+win *= 2
+
+IRs:
+win(uint256) = win * 2"];
+31->32;
+32[label="Node Type: EXPRESSION 32
+
+EXPRESSION:
+loss *= 2
+
+IRs:
+loss(uint256) = loss * 2"];
+32->33;
+33[label="Node Type: END_IF 33
+"];
+33->34;
+34[label="Node Type: EXPRESSION 34
+
+EXPRESSION:
+totalWin += win
+
+IRs:
+totalWin(uint256) = totalWin + win"];
+34->35;
+35[label="Node Type: EXPRESSION 35
+
+EXPRESSION:
+totalLoss += loss
+
+IRs:
+totalLoss(uint256) = totalLoss + loss"];
+35->36;
+36[label="Node Type: EXPRESSION 36
+
+EXPRESSION:
+h ++
+
+IRs:
+TMP_152(uint8) := h(uint8)
+h(uint8) = h + 1"];
+36->10;
+37[label="Node Type: RETURN 37
+
+EXPRESSION:
+(totalWin,totalLoss)
+
+IRs:
+RETURN totalWin,totalLoss"];
+}
+// Function: 33746.sol-blackjack-double(address,bytes32,uint8,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->8;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! over[id])
+
+IRs:
+REF_9(bool) -> over[id]
+TMP_40 = UnaryType.BANG REF_9 
+TMP_41(None) = SOLIDITY_CALL require(bool)(TMP_40)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(checkBet(id,value))
+
+IRs:
+TMP_42(bool) = INTERNAL_CALL, blackjack.checkBet(bytes32,uint256)(id,value)
+TMP_43(None) = SOLIDITY_CALL require(bool)(TMP_42)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(hand <= splits[id].length && ! doubled[id][hand])
+
+IRs:
+REF_10(uint8[]) -> splits[id]
+REF_11 -> LENGTH REF_10
+TMP_44(bool) = hand <= REF_11
+REF_12(mapping(uint8 => bool)) -> doubled[id]
+REF_13(bool) -> REF_12[hand]
+TMP_45 = UnaryType.BANG REF_13 
+TMP_46(bool) = TMP_44 && TMP_45
+TMP_47(None) = SOLIDITY_CALL require(bool)(TMP_46)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+doubled[id][hand] = true
+
+IRs:
+REF_14(mapping(uint8 => bool)) -> doubled[id]
+REF_15(bool) -> REF_14[hand]
+REF_15(bool) (->doubled) := True(bool)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+bets[id] += value
+
+IRs:
+REF_16(uint256) -> bets[id]
+REF_16(-> bets) = REF_16 + value"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+assert(bool)(msg.sender.call(bytes4(keccak256()(shift(address,uint256,bool))),player,value,false))
+
+IRs:
+TMP_48(bytes32) = SOLIDITY_CALL keccak256()(shift(address,uint256,bool))
+TMP_49 = CONVERT TMP_48 to bytes4
+TMP_50(bool) = LOW_LEVEL_CALL, dest:msg.sender, function:call, arguments:['TMP_49', 'player', 'value', 'False']  
+TMP_51(None) = SOLIDITY_CALL assert(bool)(TMP_50)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+Double(id,hand)
+
+IRs:
+Emit Double(id,hand)"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+onlyAuthorized()
+
+IRs:
+MODIFIER_CALL, casino.onlyAuthorized()()"];
+8->1;
+}
+// Function: 33746.sol-blackjack-getDealerValue(uint8[],uint8)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+card = cards[1] % 13
+
+IRs:
+REF_69(uint8) -> cards[1]
+TMP_174(uint8) = REF_69 % 13
+card(uint8) := TMP_174(uint8)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+card2 = cards[3] % 13
+
+IRs:
+REF_70(uint8) -> cards[3]
+TMP_175(uint8) = REF_70 % 13
+card2(uint8) := TMP_175(uint8)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+dealerValue = cardValues[card] + cardValues[card2]
+
+IRs:
+REF_71(uint8) -> cardValues[card]
+REF_72(uint8) -> cardValues[card2]
+TMP_176(uint8) = REF_71 + REF_72
+dealerValue(uint8) := TMP_176(uint8)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+card == 0
+
+IRs:
+TMP_177(bool) = card == 0
+CONDITION TMP_177"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+numAces ++
+
+IRs:
+TMP_178(uint8) := numAces(uint8)
+numAces(uint8) = numAces + 1"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: IF 8
+
+EXPRESSION:
+card2 == 0
+
+IRs:
+TMP_179(bool) = card2 == 0
+CONDITION TMP_179"];
+8->9[label="True"];
+8->10[label="False"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+numAces ++
+
+IRs:
+TMP_180(uint8) := numAces(uint8)
+numAces(uint8) = numAces + 1"];
+9->10;
+10[label="Node Type: END_IF 10
+"];
+10->11;
+11[label="Node Type: IF 11
+
+EXPRESSION:
+dealerValue > 21
+
+IRs:
+TMP_181(bool) = dealerValue > 21
+CONDITION TMP_181"];
+11->12[label="True"];
+11->14[label="False"];
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+dealerValue -= 10
+
+IRs:
+dealerValue(uint8) = dealerValue - 10"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+numAces --
+
+IRs:
+TMP_182(uint8) := numAces(uint8)
+numAces(uint8) = numAces - 1"];
+13->17;
+14[label="Node Type: IF 14
+
+EXPRESSION:
+dealerValue == 21
+
+IRs:
+TMP_183(bool) = dealerValue == 21
+CONDITION TMP_183"];
+14->15[label="True"];
+14->16[label="False"];
+15[label="Node Type: RETURN 15
+
+EXPRESSION:
+(21,true)
+
+IRs:
+RETURN 21,True"];
+16[label="Node Type: END_IF 16
+"];
+16->17;
+17[label="Node Type: END_IF 17
+"];
+17->18;
+18[label="Node Type: NEW VARIABLE 18
+"];
+18->19;
+19[label="Node Type: BEGIN_LOOP 19
+"];
+19->20;
+20[label="Node Type: IF_LOOP 20
+
+EXPRESSION:
+dealerValue < 17
+
+IRs:
+TMP_184(bool) = dealerValue < 17
+CONDITION TMP_184"];
+20->21[label="True"];
+20->31[label="False"];
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+card = cards[numCards + i + 2] % 13
+
+IRs:
+TMP_185(uint8) = numCards + i
+TMP_186(uint8) = TMP_185 + 2
+REF_73(uint8) -> cards[TMP_186]
+TMP_187(uint8) = REF_73 % 13
+card(uint8) := TMP_187(uint8)"];
+21->22;
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+dealerValue += cardValues[card]
+
+IRs:
+REF_74(uint8) -> cardValues[card]
+dealerValue(uint8) = dealerValue + REF_74"];
+22->23;
+23[label="Node Type: IF 23
+
+EXPRESSION:
+card == 0
+
+IRs:
+TMP_188(bool) = card == 0
+CONDITION TMP_188"];
+23->24[label="True"];
+23->25[label="False"];
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+numAces ++
+
+IRs:
+TMP_189(uint8) := numAces(uint8)
+numAces(uint8) = numAces + 1"];
+24->25;
+25[label="Node Type: END_IF 25
+"];
+25->26;
+26[label="Node Type: IF 26
+
+EXPRESSION:
+dealerValue > 21 && numAces > 0
+
+IRs:
+TMP_190(bool) = dealerValue > 21
+TMP_191(bool) = numAces > 0
+TMP_192(bool) = TMP_190 && TMP_191
+CONDITION TMP_192"];
+26->27[label="True"];
+26->29[label="False"];
+27[label="Node Type: EXPRESSION 27
+
+EXPRESSION:
+dealerValue -= 10
+
+IRs:
+dealerValue(uint8) = dealerValue - 10"];
+27->28;
+28[label="Node Type: EXPRESSION 28
+
+EXPRESSION:
+numAces --
+
+IRs:
+TMP_193(uint8) := numAces(uint8)
+numAces(uint8) = numAces - 1"];
+28->29;
+29[label="Node Type: END_IF 29
+"];
+29->30;
+30[label="Node Type: EXPRESSION 30
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_194(uint8) := i(uint8)
+i(uint8) = i + 1"];
+30->20;
+31[label="Node Type: END_LOOP 31
+"];
+31->32;
+32[label="Node Type: RETURN 32
+
+EXPRESSION:
+(dealerValue,bj)
+
+IRs:
+RETURN dealerValue,bj"];
+}
+// Function: 33746.sol-blackjack-getPlayerValues(uint8[],uint8[],uint8[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+(cardIndex,splitIndex,playerValues) = playHand(0,0,0,playerValues,cards,numCards,pSplits)
+
+IRs:
+TUPLE_2(uint8,uint8,uint8[5]) = INTERNAL_CALL, blackjack.playHand(uint8,uint8,uint8,uint8[5],uint8[],uint8[],uint8[])(0,0,0,playerValues,cards,numCards,pSplits)
+cardIndex(uint8)= UNPACK TUPLE_2 index: 0 
+splitIndex(uint8)= UNPACK TUPLE_2 index: 1 
+playerValues(uint8[5])= UNPACK TUPLE_2 index: 2 "];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+playerValues
+
+IRs:
+RETURN playerValues"];
+}
+// Function: 33746.sol-blackjack-initGame(address,uint256,bytes32,bytes32,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(value >= minimumBet && value <= maximumBet)
+
+IRs:
+TMP_26(bool) = value >= minimumBet
+TMP_27(bool) = value <= maximumBet
+TMP_28(bool) = TMP_26 && TMP_27
+TMP_29(None) = SOLIDITY_CALL assert(bool)(TMP_28)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(! over[srvSeed] && bets[srvSeed] == 0)
+
+IRs:
+REF_5(bool) -> over[srvSeed]
+TMP_30 = UnaryType.BANG REF_5 
+REF_6(uint256) -> bets[srvSeed]
+TMP_31(bool) = REF_6 == 0
+TMP_32(bool) = TMP_30 && TMP_31
+TMP_33(None) = SOLIDITY_CALL assert(bool)(TMP_32)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+bets[srvSeed] = value
+
+IRs:
+REF_7(uint256) -> bets[srvSeed]
+REF_7(uint256) (->bets) := value(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+assert(bool)(msg.sender.call(bytes4(keccak256()(shift(address,uint256,bool))),player,value,false))
+
+IRs:
+TMP_34(bytes32) = SOLIDITY_CALL keccak256()(shift(address,uint256,bool))
+TMP_35 = CONVERT TMP_34 to bytes4
+TMP_36(bool) = LOW_LEVEL_CALL, dest:msg.sender, function:call, arguments:['TMP_35', 'player', 'value', 'False']  
+TMP_37(None) = SOLIDITY_CALL assert(bool)(TMP_36)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+NewGame(srvSeed,deck,cSeed,player,value)
+
+IRs:
+Emit NewGame(srvSeed,deck,cSeed,player,value)"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyAuthorized()
+
+IRs:
+MODIFIER_CALL, casino.onlyAuthorized()()"];
+6->1;
+}
+// Function: 33746.sol-blackjack-onlyAuthorized()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(authorized[msg.sender])
+
+IRs:
+REF_77(bool) -> authorized[msg.sender]
+TMP_197(None) = SOLIDITY_CALL require(bool)(REF_77)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 33746.sol-blackjack-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_198(bool) = msg.sender == owner
+TMP_199(None) = SOLIDITY_CALL require(bool)(TMP_198)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 33746.sol-blackjack-owned()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 33746.sol-blackjack-playHand(uint8,uint8,uint8,uint8[5],uint8[],uint8[],uint8[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+playerValues[hIndex] = cardValues[cards[cIndex] % 13]
+
+IRs:
+REF_57(uint8) -> playerValues[hIndex]
+REF_58(uint8) -> cards[cIndex]
+TMP_153(uint8) = REF_58 % 13
+REF_59(uint8) -> cardValues[TMP_153]
+REF_57(uint8) (->playerValues) := REF_59(uint8)"];
+1->27;
+3[label="Node Type: BEGIN_LOOP 3
+"];
+3->4;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+sIndex < pSplits.length && pSplits[sIndex] == hIndex
+
+IRs:
+REF_60 -> LENGTH pSplits
+TMP_154(bool) = sIndex < REF_60
+REF_61(uint8) -> pSplits[sIndex]
+TMP_155(bool) = REF_61 == hIndex
+TMP_156(bool) = TMP_154 && TMP_155
+CONDITION TMP_156"];
+4->5[label="True"];
+4->7[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+sIndex ++
+
+IRs:
+TMP_157(uint8) := sIndex(uint8)
+sIndex(uint8) = sIndex + 1"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+(cIndex,sIndex,playerValues) = playHand(sIndex,cIndex,sIndex,playerValues,cards,numCards,pSplits)
+
+IRs:
+TUPLE_3(uint8,uint8,uint8[5]) = INTERNAL_CALL, blackjack.playHand(uint8,uint8,uint8,uint8[5],uint8[],uint8[],uint8[])(sIndex,cIndex,sIndex,playerValues,cards,numCards,pSplits)
+cIndex(uint8)= UNPACK TUPLE_3 index: 0 
+sIndex(uint8)= UNPACK TUPLE_3 index: 1 
+playerValues(uint8[5])= UNPACK TUPLE_3 index: 2 "];
+6->4;
+7[label="Node Type: END_LOOP 7
+"];
+7->31;
+9[label="Node Type: NEW VARIABLE 9
+"];
+9->12;
+10[label="Node Type: BEGIN_LOOP 10
+"];
+10->13;
+11[label="Node Type: END_LOOP 11
+"];
+11->21;
+12[label="Node Type: NEW VARIABLE 12
+
+EXPRESSION:
+i = 1
+
+IRs:
+i(uint8) := 1(uint256)"];
+12->10;
+13[label="Node Type: IF_LOOP 13
+
+EXPRESSION:
+i < numCards[hIndex]
+
+IRs:
+REF_62(uint8) -> numCards[hIndex]
+TMP_158(bool) = i < REF_62
+CONDITION TMP_158"];
+13->14[label="True"];
+13->11[label="False"];
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+card = cards[cIndex] % 13
+
+IRs:
+REF_63(uint8) -> cards[cIndex]
+TMP_159(uint8) = REF_63 % 13
+card(uint8) := TMP_159(uint8)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+playerValues[hIndex] += cardValues[card]
+
+IRs:
+REF_64(uint8) -> playerValues[hIndex]
+REF_65(uint8) -> cardValues[card]
+REF_64(-> playerValues) = REF_64 + REF_65"];
+15->16;
+16[label="Node Type: IF 16
+
+EXPRESSION:
+card == 0
+
+IRs:
+TMP_160(bool) = card == 0
+CONDITION TMP_160"];
+16->17[label="True"];
+16->18[label="False"];
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+numAces ++
+
+IRs:
+TMP_161(uint8) := numAces(uint8)
+numAces(uint8) = numAces + 1"];
+17->18;
+18[label="Node Type: END_IF 18
+"];
+18->35;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_162(uint8) := i(uint8)
+i(uint8) = i + 1"];
+20->13;
+21[label="Node Type: BEGIN_LOOP 21
+"];
+21->22;
+22[label="Node Type: IF_LOOP 22
+
+EXPRESSION:
+numAces > 0 && playerValues[hIndex] > 21
+
+IRs:
+TMP_163(bool) = numAces > 0
+REF_66(uint8) -> playerValues[hIndex]
+TMP_164(bool) = REF_66 > 21
+TMP_165(bool) = TMP_163 && TMP_164
+CONDITION TMP_165"];
+22->23[label="True"];
+22->25[label="False"];
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+playerValues[hIndex] -= 10
+
+IRs:
+REF_67(uint8) -> playerValues[hIndex]
+REF_67(-> playerValues) = REF_67 - 10"];
+23->24;
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+numAces --
+
+IRs:
+TMP_166(uint8) := numAces(uint8)
+numAces(uint8) = numAces - 1"];
+24->22;
+25[label="Node Type: END_LOOP 25
+"];
+25->26;
+26[label="Node Type: RETURN 26
+
+EXPRESSION:
+(cIndex,sIndex,playerValues)
+
+IRs:
+RETURN cIndex,sIndex,playerValues"];
+27[label="Node Type: IF 27
+
+EXPRESSION:
+cIndex < 4
+
+IRs:
+TMP_167(bool) = cIndex < 4
+CONDITION TMP_167"];
+27->28[label="True"];
+27->29[label="False"];
+28[label="Node Type: EXPRESSION 28
+
+EXPRESSION:
+cIndex = cIndex + 2
+
+IRs:
+TMP_168(uint8) = cIndex + 2
+cIndex(uint8) := TMP_168(uint8)"];
+28->30;
+29[label="Node Type: EXPRESSION 29
+
+EXPRESSION:
+cIndex = cIndex + 1
+
+IRs:
+TMP_169(uint8) = cIndex + 1
+cIndex(uint8) := TMP_169(uint8)"];
+29->30;
+30[label="Node Type: END_IF 30
+"];
+30->3;
+31[label="Node Type: IF 31
+
+EXPRESSION:
+playerValues[hIndex] == 11
+
+IRs:
+REF_68(uint8) -> playerValues[hIndex]
+TMP_170(bool) = REF_68 == 11
+CONDITION TMP_170"];
+31->32[label="True"];
+31->33[label="False"];
+32[label="Node Type: EXPRESSION 32
+
+EXPRESSION:
+numAces = 1
+
+IRs:
+numAces(uint8) := 1(uint256)"];
+32->34;
+33[label="Node Type: EXPRESSION 33
+
+EXPRESSION:
+numAces = 0
+
+IRs:
+numAces(uint8) := 0(uint256)"];
+33->34;
+34[label="Node Type: END_IF 34
+"];
+34->9;
+35[label="Node Type: IF 35
+
+EXPRESSION:
+cIndex < 4
+
+IRs:
+TMP_171(bool) = cIndex < 4
+CONDITION TMP_171"];
+35->36[label="True"];
+35->37[label="False"];
+36[label="Node Type: EXPRESSION 36
+
+EXPRESSION:
+cIndex = cIndex + 2
+
+IRs:
+TMP_172(uint8) = cIndex + 2
+cIndex(uint8) := TMP_172(uint8)"];
+36->38;
+37[label="Node Type: EXPRESSION 37
+
+EXPRESSION:
+cIndex = cIndex + 1
+
+IRs:
+TMP_173(uint8) = cIndex + 1
+cIndex(uint8) := TMP_173(uint8)"];
+37->38;
+38[label="Node Type: END_IF 38
+"];
+38->20;
+}
+// Function: 33746.sol-blackjack-setMaximumBet(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+maximumBet = newMax
+
+IRs:
+maximumBet(uint256) := newMax(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+2->1;
+}
+// Function: 33746.sol-blackjack-setMinimumBet(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+minimumBet = newMin
+
+IRs:
+minimumBet(uint256) := newMin(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+2->1;
+}
+// Function: 33746.sol-blackjack-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+cardValues = (11,2,3,4,5,6,7,8,9,10,10,10,10)
+
+IRs:
+cardValues(uint8[13]) = ['11(uint256)', '2(uint256)', '3(uint256)', '4(uint256)', '5(uint256)', '6(uint256)', '7(uint256)', '8(uint256)', '9(uint256)', '10(uint256)', '10(uint256)', '10(uint256)', '10(uint256)']"];
+}
+// Function: 33746.sol-blackjack-split(address,bytes32,uint8,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->8;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! over[id])
+
+IRs:
+REF_18(bool) -> over[id]
+TMP_54 = UnaryType.BANG REF_18 
+TMP_55(None) = SOLIDITY_CALL require(bool)(TMP_54)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(checkBet(id,value))
+
+IRs:
+TMP_56(bool) = INTERNAL_CALL, blackjack.checkBet(bytes32,uint256)(id,value)
+TMP_57(None) = SOLIDITY_CALL require(bool)(TMP_56)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(splits[id].length < 3)
+
+IRs:
+REF_19(uint8[]) -> splits[id]
+REF_20 -> LENGTH REF_19
+TMP_58(bool) = REF_20 < 3
+TMP_59(None) = SOLIDITY_CALL require(bool)(TMP_58)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+splits[id].push(hand)
+
+IRs:
+REF_21(uint8[]) -> splits[id]
+REF_23 -> LENGTH REF_21
+TMP_61(uint256) := REF_23(uint256)
+TMP_62(uint256) = TMP_61 + 1
+REF_23(uint256) (->splits) := TMP_62(uint256)
+REF_24(uint8) -> REF_21[TMP_61]
+REF_24(uint8) (->splits) := hand(uint8)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+bets[id] += value
+
+IRs:
+REF_25(uint256) -> bets[id]
+REF_25(-> bets) = REF_25 + value"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+assert(bool)(msg.sender.call(bytes4(keccak256()(shift(address,uint256,bool))),player,value,false))
+
+IRs:
+TMP_63(bytes32) = SOLIDITY_CALL keccak256()(shift(address,uint256,bool))
+TMP_64 = CONVERT TMP_63 to bytes4
+TMP_65(bool) = LOW_LEVEL_CALL, dest:msg.sender, function:call, arguments:['TMP_64', 'player', 'value', 'False']  
+TMP_66(None) = SOLIDITY_CALL assert(bool)(TMP_65)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+Split(id,hand)
+
+IRs:
+Emit Split(id,hand)"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+onlyAuthorized()
+
+IRs:
+MODIFIER_CALL, casino.onlyAuthorized()()"];
+8->1;
+}
+// Function: 33746.sol-blackjack-stand(address,uint8[],bytes32,uint8[],uint8[],bool[],uint256,bytes32,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->24;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+gameId = keccak256()(seed)
+
+IRs:
+TMP_90(bytes32) = SOLIDITY_CALL keccak256()(seed)
+gameId(bytes32) := TMP_90(bytes32)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+assert(bool)(! over[gameId])
+
+IRs:
+REF_33(bool) -> over[gameId]
+TMP_91 = UnaryType.BANG REF_33 
+TMP_92(None) = SOLIDITY_CALL assert(bool)(TMP_91)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+assert(bool)(splits.length == numCards.length - 1)
+
+IRs:
+REF_34 -> LENGTH splits
+REF_35 -> LENGTH numCards
+TMP_93(uint256) = REF_35 - 1
+TMP_94(bool) = REF_34 == TMP_93
+TMP_95(None) = SOLIDITY_CALL assert(bool)(TMP_94)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+over[gameId] = true
+
+IRs:
+REF_36(bool) -> over[gameId]
+REF_36(bool) (->over) := True(bool)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+assert(bool)(checkDeck(deck,seed,deckHash))
+
+IRs:
+TMP_96(bool) = INTERNAL_CALL, blackjack.checkDeck(uint8[],bytes32,bytes32)(deck,seed,deckHash)
+TMP_97(None) = SOLIDITY_CALL assert(bool)(TMP_96)"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+"];
+7->8;
+8[label="Node Type: NEW VARIABLE 8
+"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+(win,loss) = determineOutcome(deck,numCards,splits,doubled,bet)
+
+IRs:
+TUPLE_0(uint256,uint256) = INTERNAL_CALL, blackjack.determineOutcome(uint8[],uint8[],uint8[],bool[],uint256)(deck,numCards,splits,doubled,bet)
+win(uint256)= UNPACK TUPLE_0 index: 0 
+loss(uint256)= UNPACK TUPLE_0 index: 1 "];
+9->10;
+10[label="Node Type: IF 10
+
+EXPRESSION:
+bets[gameId] > 0
+
+IRs:
+REF_37(uint256) -> bets[gameId]
+TMP_98(bool) = REF_37 > 0
+CONDITION TMP_98"];
+10->11[label="True"];
+10->13[label="False"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+assert(bool)(checkBet(gameId,bet))
+
+IRs:
+TMP_99(bool) = INTERNAL_CALL, blackjack.checkBet(bytes32,uint256)(gameId,bet)
+TMP_100(None) = SOLIDITY_CALL assert(bool)(TMP_99)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+win += bets[gameId]
+
+IRs:
+REF_38(uint256) -> bets[gameId]
+win(uint256) = win + REF_38"];
+12->14;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+NewGame(gameId,deckHash,cSeed,player,bet)
+
+IRs:
+Emit NewGame(gameId,deckHash,cSeed,player,bet)"];
+13->14;
+14[label="Node Type: END_IF 14
+"];
+14->15;
+15[label="Node Type: IF 15
+
+EXPRESSION:
+win > loss
+
+IRs:
+TMP_102(bool) = win > loss
+CONDITION TMP_102"];
+15->16[label="True"];
+15->18[label="False"];
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+assert(bool)(msg.sender.call(bytes4(keccak256()(shift(address,uint256,bool))),player,win - loss,true))
+
+IRs:
+TMP_103(bytes32) = SOLIDITY_CALL keccak256()(shift(address,uint256,bool))
+TMP_104 = CONVERT TMP_103 to bytes4
+TMP_105(uint256) = win - loss
+TMP_106(bool) = LOW_LEVEL_CALL, dest:msg.sender, function:call, arguments:['TMP_104', 'player', 'TMP_105', 'True']  
+TMP_107(None) = SOLIDITY_CALL assert(bool)(TMP_106)"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+Result(gameId,player,win - loss,true)
+
+IRs:
+TMP_108(uint256) = win - loss
+Emit Result(gameId,player,TMP_108,True)"];
+17->23;
+18[label="Node Type: IF 18
+
+EXPRESSION:
+loss > win
+
+IRs:
+TMP_110(bool) = loss > win
+CONDITION TMP_110"];
+18->19[label="True"];
+18->21[label="False"];
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+assert(bool)(msg.sender.call(bytes4(keccak256()(shift(address,uint256,bool))),player,loss - win,false))
+
+IRs:
+TMP_111(bytes32) = SOLIDITY_CALL keccak256()(shift(address,uint256,bool))
+TMP_112 = CONVERT TMP_111 to bytes4
+TMP_113(uint256) = loss - win
+TMP_114(bool) = LOW_LEVEL_CALL, dest:msg.sender, function:call, arguments:['TMP_112', 'player', 'TMP_113', 'False']  
+TMP_115(None) = SOLIDITY_CALL assert(bool)(TMP_114)"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+Result(gameId,player,loss - win,false)
+
+IRs:
+TMP_116(uint256) = loss - win
+Emit Result(gameId,player,TMP_116,False)"];
+20->22;
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+Result(gameId,player,0,false)
+
+IRs:
+Emit Result(gameId,player,0,False)"];
+21->22;
+22[label="Node Type: END_IF 22
+"];
+22->23;
+23[label="Node Type: END_IF 23
+"];
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+onlyAuthorized()
+
+IRs:
+MODIFIER_CALL, casino.onlyAuthorized()()"];
+24->1;
+}
+// Function: 33746.sol-blackjack-sum(uint8[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: BEGIN_LOOP 1
+"];
+1->4;
+2[label="Node Type: END_LOOP 2
+"];
+2->7;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+3->1;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+i < numbers.length
+
+IRs:
+REF_75 -> LENGTH numbers
+TMP_195(bool) = i < REF_75
+CONDITION TMP_195"];
+4->5[label="True"];
+4->2[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+s += numbers[i]
+
+IRs:
+REF_76(uint8) -> numbers[i]
+s(uint8) = s + REF_76"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_196(uint256) := i(uint256)
+i(uint256) = i + 1"];
+6->4;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+s
+
+IRs:
+RETURN s"];
+}
+// Function: 33746.sol-blackjack-surrender(address,bytes32,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->11;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+id = keccak256()(seed)
+
+IRs:
+TMP_69(bytes32) = SOLIDITY_CALL keccak256()(seed)
+id(bytes32) := TMP_69(bytes32)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(! over[id])
+
+IRs:
+REF_27(bool) -> over[id]
+TMP_70 = UnaryType.BANG REF_27 
+TMP_71(None) = SOLIDITY_CALL require(bool)(TMP_70)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+over[id] = true
+
+IRs:
+REF_28(bool) -> over[id]
+REF_28(bool) (->over) := True(bool)"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+bets[id] > 0
+
+IRs:
+REF_29(uint256) -> bets[id]
+TMP_72(bool) = REF_29 > 0
+CONDITION TMP_72"];
+4->5[label="True"];
+4->8[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+assert(bool)(bets[id] == bet)
+
+IRs:
+REF_30(uint256) -> bets[id]
+TMP_73(bool) = REF_30 == bet
+TMP_74(None) = SOLIDITY_CALL assert(bool)(TMP_73)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+assert(bool)(msg.sender.call(bytes4(keccak256()(shift(address,uint256,bool))),player,bet / 2,true))
+
+IRs:
+TMP_75(bytes32) = SOLIDITY_CALL keccak256()(shift(address,uint256,bool))
+TMP_76 = CONVERT TMP_75 to bytes4
+TMP_77(uint256) = bet / 2
+TMP_78(bool) = LOW_LEVEL_CALL, dest:msg.sender, function:call, arguments:['TMP_76', 'player', 'TMP_77', 'True']  
+TMP_79(None) = SOLIDITY_CALL assert(bool)(TMP_78)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+Result(id,player,bet / 2,true)
+
+IRs:
+TMP_80(uint256) = bet / 2
+Emit Result(id,player,TMP_80,True)"];
+7->10;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+assert(bool)(msg.sender.call(bytes4(keccak256()(shift(address,uint256,bool))),player,bet / 2,false))
+
+IRs:
+TMP_82(bytes32) = SOLIDITY_CALL keccak256()(shift(address,uint256,bool))
+TMP_83 = CONVERT TMP_82 to bytes4
+TMP_84(uint256) = bet / 2
+TMP_85(bool) = LOW_LEVEL_CALL, dest:msg.sender, function:call, arguments:['TMP_83', 'player', 'TMP_84', 'False']  
+TMP_86(None) = SOLIDITY_CALL assert(bool)(TMP_85)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+Result(id,player,bet / 2,false)
+
+IRs:
+TMP_87(uint256) = bet / 2
+Emit Result(id,player,TMP_87,False)"];
+9->10;
+10[label="Node Type: END_IF 10
+"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+onlyAuthorized()
+
+IRs:
+MODIFIER_CALL, casino.onlyAuthorized()()"];
+11->1;
+}
+// Function: 33746.sol-casino-authorize(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+authorized[addr] = true
+
+IRs:
+REF_0(bool) -> authorized[addr]
+REF_0(bool) (->authorized) := True(bool)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+2->1;
+}
+// Function: 33746.sol-casino-casino(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+minimumBet = minBet
+
+IRs:
+minimumBet(uint256) := minBet(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+maximumBet = maxBet
+
+IRs:
+maximumBet(uint256) := maxBet(uint256)"];
+}
+// Function: 33746.sol-casino-changeOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+2->1;
+}
+// Function: 33746.sol-casino-close()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+selfdestruct(address)(owner)
+
+IRs:
+TMP_8(None) = SOLIDITY_CALL selfdestruct(address)(owner)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+2->1;
+}
+// Function: 33746.sol-casino-deauthorize(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+authorized[addr] = false
+
+IRs:
+REF_1(bool) -> authorized[addr]
+REF_1(bool) (->authorized) := False(bool)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+2->1;
+}
+// Function: 33746.sol-casino-onlyAuthorized()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(authorized[msg.sender])
+
+IRs:
+REF_2(bool) -> authorized[msg.sender]
+TMP_17(None) = SOLIDITY_CALL require(bool)(REF_2)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 33746.sol-casino-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_15(bool) = msg.sender == owner
+TMP_16(None) = SOLIDITY_CALL require(bool)(TMP_15)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 33746.sol-casino-owned()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 33746.sol-casino-setMaximumBet(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+maximumBet = newMax
+
+IRs:
+maximumBet(uint256) := newMax(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+2->1;
+}
+// Function: 33746.sol-casino-setMinimumBet(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+minimumBet = newMin
+
+IRs:
+minimumBet(uint256) := newMin(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+2->1;
+}
+// Function: 33746.sol-mortal-changeOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+2->1;
+}
+// Function: 33746.sol-mortal-close()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+selfdestruct(address)(owner)
+
+IRs:
+TMP_4(None) = SOLIDITY_CALL selfdestruct(address)(owner)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+2->1;
+}
+// Function: 33746.sol-mortal-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_6(bool) = msg.sender == owner
+TMP_7(None) = SOLIDITY_CALL require(bool)(TMP_6)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 33746.sol-mortal-owned()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 33746.sol-owned-changeOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+2->1;
+}
+// Function: 33746.sol-owned-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_1(bool) = msg.sender == owner
+TMP_2(None) = SOLIDITY_CALL require(bool)(TMP_1)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 33746.sol-owned-owned()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+}

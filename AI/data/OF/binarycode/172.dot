@@ -1,0 +1,965 @@
+digraph G {
+// Function: 172.sol-RTB2-_transfer(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(_to != address(0),Receiver address cannot be null)
+
+IRs:
+TMP_36 = CONVERT 0 to address
+TMP_37(bool) = _to != TMP_36
+TMP_38(None) = SOLIDITY_CALL require(bool,string)(TMP_37,Receiver address cannot be null)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_from != _to)
+
+IRs:
+TMP_39(bool) = _from != _to
+TMP_40(None) = SOLIDITY_CALL require(bool)(TMP_39)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(_value > 0 && _value <= balances[_from])
+
+IRs:
+TMP_41(bool) = _value > 0
+REF_16(uint256) -> balances[_from]
+TMP_42(bool) = _value <= REF_16
+TMP_43(bool) = TMP_41 && TMP_42
+TMP_44(None) = SOLIDITY_CALL require(bool)(TMP_43)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+newToVal = balances[_to] + _value
+
+IRs:
+REF_17(uint256) -> balances[_to]
+TMP_45(uint256) = REF_17 + _value
+newToVal(uint256) := TMP_45(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+assert(bool)(newToVal >= balances[_to])
+
+IRs:
+REF_18(uint256) -> balances[_to]
+TMP_46(bool) = newToVal >= REF_18
+TMP_47(None) = SOLIDITY_CALL assert(bool)(TMP_46)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+newFromVal = balances[_from] - _value
+
+IRs:
+REF_19(uint256) -> balances[_from]
+TMP_48(uint256) = REF_19 - _value
+newFromVal(uint256) := TMP_48(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+balances[_to] = newToVal
+
+IRs:
+REF_20(uint256) -> balances[_to]
+REF_20(uint256) (->balances) := newToVal(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+balances[_from] = newFromVal
+
+IRs:
+REF_21(uint256) -> balances[_from]
+REF_21(uint256) (->balances) := newFromVal(uint256)"];
+8->9;
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+temp = _value.mul(profit)
+
+IRs:
+TMP_49(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['_value', 'profit'] 
+temp(uint256) := TMP_49(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+changeProfit[_from] = changeProfit[_from].add(temp)
+
+IRs:
+REF_23(uint256) -> changeProfit[_from]
+REF_24(uint256) -> changeProfit[_from]
+TMP_50(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_24', 'temp'] 
+REF_23(uint256) (->changeProfit) := TMP_50(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+received[_to] = received[_to].add(temp)
+
+IRs:
+REF_26(uint256) -> received[_to]
+REF_27(uint256) -> received[_to]
+TMP_51(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_27', 'temp'] 
+REF_26(uint256) (->received) := TMP_51(uint256)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+Transfer(_from,_to,_value)
+
+IRs:
+Emit Transfer(_from,_to,_value)"];
+12->13;
+13[label="Node Type: RETURN 13
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 172.sol-RTB2-allowance(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+allowed[_owner][_spender]
+
+IRs:
+REF_14(mapping(address => uint256)) -> allowed[_owner]
+REF_15(uint256) -> REF_14[_spender]
+RETURN REF_15"];
+}
+// Function: 172.sol-RTB2-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_value > 0 && allowed[msg.sender][_spender] == 0)
+
+IRs:
+TMP_27(bool) = _value > 0
+REF_6(mapping(address => uint256)) -> allowed[msg.sender]
+REF_7(uint256) -> REF_6[_spender]
+TMP_28(bool) = REF_7 == 0
+TMP_29(bool) = TMP_27 && TMP_28
+TMP_30(None) = SOLIDITY_CALL require(bool)(TMP_29)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+allowed[msg.sender][_spender] = _value
+
+IRs:
+REF_8(mapping(address => uint256)) -> allowed[msg.sender]
+REF_9(uint256) -> REF_8[_spender]
+REF_9(uint256) (->allowed) := _value(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+Approval(msg.sender,_spender,_value)
+
+IRs:
+Emit Approval(msg.sender,_spender,_value)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 172.sol-RTB2-balanceOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+balances[_owner]
+
+IRs:
+REF_5(uint256) -> balances[_owner]
+RETURN REF_5"];
+}
+// Function: 172.sol-RTB2-buy(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->11;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_amount > 0)
+
+IRs:
+TMP_53(bool) = _amount > 0
+TMP_54(None) = SOLIDITY_CALL require(bool)(TMP_53)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+_money = _amount.mul(price)
+
+IRs:
+TMP_55(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['_amount', 'price'] 
+_money(uint256) := TMP_55(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(msg.value == _money)
+
+IRs:
+TMP_56(bool) = msg.value == _money
+TMP_57(None) = SOLIDITY_CALL require(bool)(TMP_56)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool)(balances[this] >= _amount)
+
+IRs:
+REF_30(uint256) -> balances[this]
+TMP_58(bool) = REF_30 >= _amount
+TMP_59(None) = SOLIDITY_CALL require(bool)(TMP_58)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool,string)((totalSupply - totalSold) >= _amount,Sold out)
+
+IRs:
+TMP_60(uint256) = totalSupply - totalSold
+TMP_61(bool) = TMP_60 >= _amount
+TMP_62(None) = SOLIDITY_CALL require(bool,string)(TMP_61,Sold out)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+_transfer(this,msg.sender,_amount)
+
+IRs:
+TMP_63(bool) = INTERNAL_CALL, RTB2._transfer(address,address,uint256)(this,msg.sender,_amount)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+finance.transfer(_money.mul(60).div(100))
+
+IRs:
+TMP_64(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['_money', '60'] 
+TMP_65(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['TMP_64', '100'] 
+Transfer dest:finance value:TMP_65"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+jackpot.transfer(_money.mul(20).div(100))
+
+IRs:
+TMP_67(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['_money', '20'] 
+TMP_68(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['TMP_67', '100'] 
+Transfer dest:jackpot value:TMP_68"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+shareContract.increaseProfit.value(_money.mul(20).div(100))()
+
+IRs:
+TMP_70(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['_money', '20'] 
+TMP_71(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['TMP_70', '100'] 
+TMP_73(bool) = HIGH_LEVEL_CALL, dest:shareContract(shareProfit), function:increaseProfit, arguments:[] value:TMP_71 "];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+totalSold += _amount
+
+IRs:
+totalSold(uint256) = totalSold + _amount"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+onlyHuman()
+
+IRs:
+MODIFIER_CALL, RTB2.onlyHuman()()"];
+11->1;
+}
+// Function: 172.sol-RTB2-constructor(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+finance = 0x28Dd611d5d2cAA117239bD3f3A548DcE5Fa873b0
+
+IRs:
+finance(address) := 233296555405602984196380497513429730445071250352(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+jackpot = 0x119ea7f823588D2Db81d86cEFe4F3BE25e4C34DC
+
+IRs:
+jackpot(address) := 100590993034133476140280500199491807344033805532(address)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+shareContract = shareProfit(_shareAddr)
+
+IRs:
+TMP_17 = CONVERT _shareAddr to shareProfit
+shareContract(shareProfit) := TMP_17(shareProfit)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balances[this] = 700
+
+IRs:
+REF_0(uint256) -> balances[this]
+REF_0(uint256) (->balances) := 700(uint256)"];
+}
+// Function: 172.sol-RTB2-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(msg.value > 0,Amount must be provided)
+
+IRs:
+TMP_18(bool) = msg.value > 0
+TMP_19(None) = SOLIDITY_CALL require(bool,string)(TMP_18,Amount must be provided)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+profit = msg.value.div(totalSupply).add(profit)
+
+IRs:
+TMP_20(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['msg.value', 'totalSupply'] 
+TMP_21(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['TMP_20', 'profit'] 
+profit(uint256) := TMP_21(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+AddProfit(msg.sender,msg.value,profit)
+
+IRs:
+Emit AddProfit(msg.sender,msg.value,profit)"];
+}
+// Function: 172.sol-RTB2-getProfit(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+profit.mul(balances[_addr]).add(changeProfit[_addr]).sub(received[_addr])
+
+IRs:
+REF_46(uint256) -> balances[_addr]
+TMP_81(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['profit', 'REF_46'] 
+REF_48(uint256) -> changeProfit[_addr]
+TMP_82(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['TMP_81', 'REF_48'] 
+REF_50(uint256) -> received[_addr]
+TMP_83(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['TMP_82', 'REF_50'] 
+RETURN TMP_83"];
+}
+// Function: 172.sol-RTB2-increaseProfit()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.value > 0
+
+IRs:
+TMP_23(bool) = msg.value > 0
+CONDITION TMP_23"];
+1->2[label="True"];
+1->5[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+profit = msg.value.div(totalSupply).add(profit)
+
+IRs:
+TMP_24(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['msg.value', 'totalSupply'] 
+TMP_25(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['TMP_24', 'profit'] 
+profit(uint256) := TMP_25(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+AddProfit(msg.sender,msg.value,profit)
+
+IRs:
+Emit AddProfit(msg.sender,msg.value,profit)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+}
+// Function: 172.sol-RTB2-onlyHuman()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+_addr = msg.sender
+
+IRs:
+_addr(address) := msg.sender(address)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: INLINE ASM 3
+"];
+3->4;
+4[label="Node Type: END INLINE ASM 4
+"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool,string)(_codeLength == 0,sorry humans only)
+
+IRs:
+TMP_90(bool) = _codeLength == 0
+TMP_91(None) = SOLIDITY_CALL require(bool,string)(TMP_90,sorry humans only)"];
+5->6;
+6[label="Node Type: _ 6
+"];
+}
+// Function: 172.sol-RTB2-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(msg.sender == owner,only owner)
+
+IRs:
+TMP_88(bool) = msg.sender == owner
+TMP_89(None) = SOLIDITY_CALL require(bool,string)(TMP_88,only owner)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 172.sol-RTB2-setFinance(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+finance = _addr
+
+IRs:
+finance(address) := _addr(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, RTB2.onlyOwner()()"];
+2->1;
+}
+// Function: 172.sol-RTB2-setJackpot(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+jackpot = _addr
+
+IRs:
+jackpot(address) := _addr(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, RTB2.onlyOwner()()"];
+2->1;
+}
+// Function: 172.sol-RTB2-setShare(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+shareContract = shareProfit(_addr)
+
+IRs:
+TMP_85 = CONVERT _addr to shareProfit
+shareContract(shareProfit) := TMP_85(shareProfit)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, RTB2.onlyOwner()()"];
+2->1;
+}
+// Function: 172.sol-RTB2-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+price = 1000000000000000000
+
+IRs:
+price(uint256) := 1000000000000000000(uint256)"];
+}
+// Function: 172.sol-RTB2-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+decimals = 0
+
+IRs:
+decimals(uint8) := 0(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+totalSupply = 700
+
+IRs:
+totalSupply(uint256) := 700(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+totalSold = 0
+
+IRs:
+totalSold(uint256) := 0(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+name = Retro Block Token 2
+
+IRs:
+name(string) := Retro Block Token 2(string)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+symbol = RTB2
+
+IRs:
+symbol(string) := RTB2(string)"];
+}
+// Function: 172.sol-RTB2-totalSupply()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+totalSupply
+
+IRs:
+RETURN totalSupply"];
+}
+// Function: 172.sol-RTB2-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+_transfer(msg.sender,_to,_value)
+
+IRs:
+TMP_35(bool) = INTERNAL_CALL, RTB2._transfer(address,address,uint256)(msg.sender,_to,_value)
+RETURN TMP_35"];
+}
+// Function: 172.sol-RTB2-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_value <= allowed[_from][msg.sender])
+
+IRs:
+REF_10(mapping(address => uint256)) -> allowed[_from]
+REF_11(uint256) -> REF_10[msg.sender]
+TMP_32(bool) = _value <= REF_11
+TMP_33(None) = SOLIDITY_CALL require(bool)(TMP_32)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+allowed[_from][msg.sender] -= _value
+
+IRs:
+REF_12(mapping(address => uint256)) -> allowed[_from]
+REF_13(uint256) -> REF_12[msg.sender]
+REF_13(-> allowed) = REF_13 - _value"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+_transfer(_from,_to,_value)
+
+IRs:
+TMP_34(bool) = INTERNAL_CALL, RTB2._transfer(address,address,uint256)(_from,_to,_value)
+RETURN TMP_34"];
+}
+// Function: 172.sol-RTB2-withdraw()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+value = getProfit(msg.sender)
+
+IRs:
+TMP_75(uint256) = INTERNAL_CALL, RTB2.getProfit(address)(msg.sender)
+value(uint256) := TMP_75(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(value > 0,No cash available)
+
+IRs:
+TMP_76(bool) = value > 0
+TMP_77(None) = SOLIDITY_CALL require(bool,string)(TMP_76,No cash available)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+Withdraw(msg.sender,value)
+
+IRs:
+Emit Withdraw(msg.sender,value)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+received[msg.sender] = received[msg.sender].add(value)
+
+IRs:
+REF_41(uint256) -> received[msg.sender]
+REF_42(uint256) -> received[msg.sender]
+TMP_79(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_42', 'value'] 
+REF_41(uint256) (->received) := TMP_79(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+msg.sender.transfer(value)
+
+IRs:
+Transfer dest:msg.sender value:value"];
+}
+// Function: 172.sol-SafeMath-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_9(uint256) = a + b
+c(uint256) := TMP_9(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(c >= a)
+
+IRs:
+TMP_10(bool) = c >= a
+TMP_11(None) = SOLIDITY_CALL assert(bool)(TMP_10)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 172.sol-SafeMath-div(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a / b
+
+IRs:
+TMP_5(uint256) = a / b
+c(uint256) := TMP_5(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 172.sol-SafeMath-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+a == 0
+
+IRs:
+TMP_0(bool) = a == 0
+CONDITION TMP_0"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_1(uint256) = a * b
+c(uint256) := TMP_1(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+assert(bool)(c / a == b)
+
+IRs:
+TMP_2(uint256) = c / a
+TMP_3(bool) = TMP_2 == b
+TMP_4(None) = SOLIDITY_CALL assert(bool)(TMP_3)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 172.sol-SafeMath-pwr(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+x == 0
+
+IRs:
+TMP_12(bool) = x == 0
+CONDITION TMP_12"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+(0)
+
+IRs:
+RETURN 0"];
+3[label="Node Type: IF 3
+
+EXPRESSION:
+y == 0
+
+IRs:
+TMP_13(bool) = y == 0
+CONDITION TMP_13"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+(1)
+
+IRs:
+RETURN 1"];
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+z = x
+
+IRs:
+z(uint256) := x(uint256)"];
+5->8;
+6[label="Node Type: BEGIN_LOOP 6
+"];
+6->9;
+7[label="Node Type: END_LOOP 7
+"];
+7->12;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+i = 1
+
+IRs:
+i(uint256) := 1(uint256)"];
+8->6;
+9[label="Node Type: IF_LOOP 9
+
+EXPRESSION:
+i < y
+
+IRs:
+TMP_14(bool) = i < y
+CONDITION TMP_14"];
+9->10[label="True"];
+9->7[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+z = mul(z,x)
+
+IRs:
+TMP_15(uint256) = INTERNAL_CALL, SafeMath.mul(uint256,uint256)(z,x)
+z(uint256) := TMP_15(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_16(uint256) := i(uint256)
+i(uint256) = i + 1"];
+11->9;
+12[label="Node Type: RETURN 12
+
+EXPRESSION:
+(z)
+
+IRs:
+RETURN z"];
+}
+// Function: 172.sol-SafeMath-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(b <= a)
+
+IRs:
+TMP_6(bool) = b <= a
+TMP_7(None) = SOLIDITY_CALL assert(bool)(TMP_6)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_8(uint256) = a - b
+RETURN TMP_8"];
+}
+// Function: 172.sol-shareProfit-increaseProfit()
+digraph{
+}
+}

@@ -1,0 +1,5895 @@
+digraph G {
+// Function: 43327.sol-CERC20Interface-borrowBalanceCurrent(address)
+digraph{
+}
+// Function: 43327.sol-CERC20Interface-mint(uint256)
+digraph{
+}
+// Function: 43327.sol-CERC20Interface-repayBorrow(uint256)
+digraph{
+}
+// Function: 43327.sol-CETHInterface-borrowBalanceCurrent(address)
+digraph{
+}
+// Function: 43327.sol-CETHInterface-mint()
+digraph{
+}
+// Function: 43327.sol-CETHInterface-repayBorrow()
+digraph{
+}
+// Function: 43327.sol-CTokenInterface-allowance(address,address)
+digraph{
+}
+// Function: 43327.sol-CTokenInterface-approve(address,uint256)
+digraph{
+}
+// Function: 43327.sol-CTokenInterface-balanceOf(address)
+digraph{
+}
+// Function: 43327.sol-CTokenInterface-borrow(uint256)
+digraph{
+}
+// Function: 43327.sol-CTokenInterface-borrowBalanceCurrent(address)
+digraph{
+}
+// Function: 43327.sol-CTokenInterface-exchangeRateCurrent()
+digraph{
+}
+// Function: 43327.sol-CTokenInterface-redeemUnderlying(uint256)
+digraph{
+}
+// Function: 43327.sol-CTokenInterface-totalSupply()
+digraph{
+}
+// Function: 43327.sol-CTokenInterface-transfer(address,uint256)
+digraph{
+}
+// Function: 43327.sol-CTokenInterface-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 43327.sol-CompOracleInterface-getUnderlyingPrice(address)
+digraph{
+}
+// Function: 43327.sol-CompoundHelper-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)((z = x + y) >= x,math-not-safe)
+
+IRs:
+TMP_76(uint256) = x + y
+z(uint256) := TMP_76(uint256)
+TMP_77(bool) = z >= x
+TMP_78(None) = SOLIDITY_CALL require(bool,string)(TMP_77,math-not-safe)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 43327.sol-CompoundHelper-compSupplyBorrow(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+cTokenContract = CTokenInterface(cTokenAdd)
+
+IRs:
+TMP_105 = CONVERT cTokenAdd to CTokenInterface
+cTokenContract(CTokenInterface) := TMP_105(CTokenInterface)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+tokenPriceInEth = CompOracleInterface(getCompOracleAddress()).getUnderlyingPrice(cTokenAdd)
+
+IRs:
+TMP_106(address) = INTERNAL_CALL, Helpers.getCompOracleAddress()()
+TMP_107 = CONVERT TMP_106 to CompOracleInterface
+TMP_108(uint256) = HIGH_LEVEL_CALL, dest:TMP_107(CompOracleInterface), function:getUnderlyingPrice, arguments:['cTokenAdd']  
+tokenPriceInEth(uint256) := TMP_108(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+cTokenBal = sub(cTokenContract.balanceOf(user),1)
+
+IRs:
+TMP_109(uint256) = HIGH_LEVEL_CALL, dest:cTokenContract(CTokenInterface), function:balanceOf, arguments:['user']  
+TMP_110(uint256) = INTERNAL_CALL, DSMath.sub(uint256,uint256)(TMP_109,1)
+cTokenBal(uint256) := TMP_110(uint256)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+cTokenExchangeRate = cTokenContract.exchangeRateCurrent()
+
+IRs:
+TMP_111(uint256) = HIGH_LEVEL_CALL, dest:cTokenContract(CTokenInterface), function:exchangeRateCurrent, arguments:[]  
+cTokenExchangeRate(uint256) := TMP_111(uint256)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+tokenSupply = sub(wmul(cTokenBal,cTokenExchangeRate),1)
+
+IRs:
+TMP_112(uint256) = INTERNAL_CALL, DSMath.wmul(uint256,uint256)(cTokenBal,cTokenExchangeRate)
+TMP_113(uint256) = INTERNAL_CALL, DSMath.sub(uint256,uint256)(TMP_112,1)
+tokenSupply(uint256) := TMP_113(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+supplyInEth = sub(wmul(tokenSupply,tokenPriceInEth),10)
+
+IRs:
+TMP_114(uint256) = INTERNAL_CALL, DSMath.wmul(uint256,uint256)(tokenSupply,tokenPriceInEth)
+TMP_115(uint256) = INTERNAL_CALL, DSMath.sub(uint256,uint256)(TMP_114,10)
+supplyInEth(uint256) := TMP_115(uint256)"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+tokenBorrowed = cTokenContract.borrowBalanceCurrent(user)
+
+IRs:
+TMP_116(uint256) = HIGH_LEVEL_CALL, dest:cTokenContract(CTokenInterface), function:borrowBalanceCurrent, arguments:['user']  
+tokenBorrowed(uint256) := TMP_116(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+borrowInEth = add(wmul(tokenBorrowed,tokenPriceInEth),10)
+
+IRs:
+TMP_117(uint256) = INTERNAL_CALL, DSMath.wmul(uint256,uint256)(tokenBorrowed,tokenPriceInEth)
+TMP_118(uint256) = INTERNAL_CALL, DSMath.add(uint256,uint256)(TMP_117,10)
+borrowInEth(uint256) := TMP_118(uint256)"];
+8->9;
+9[label="Node Type: RETURN 9
+
+EXPRESSION:
+(supplyInEth,borrowInEth)
+
+IRs:
+RETURN supplyInEth,borrowInEth"];
+}
+// Function: 43327.sol-CompoundHelper-enterMarket(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+troller = ComptrollerInterface(getComptrollerAddress())
+
+IRs:
+TMP_59(address) = INTERNAL_CALL, Helpers.getComptrollerAddress()()
+TMP_60 = CONVERT TMP_59 to ComptrollerInterface
+troller(ComptrollerInterface) := TMP_60(ComptrollerInterface)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+markets = troller.getAssetsIn(address(this))
+
+IRs:
+TMP_61 = CONVERT this to address
+TMP_62(address[]) = HIGH_LEVEL_CALL, dest:troller(ComptrollerInterface), function:getAssetsIn, arguments:['TMP_61']  
+markets(address[]) = ['TMP_62(address[])']"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+isEntered = false
+
+IRs:
+isEntered(bool) := False(bool)"];
+3->6;
+4[label="Node Type: BEGIN_LOOP 4
+"];
+4->7;
+5[label="Node Type: END_LOOP 5
+"];
+5->12;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+6->4;
+7[label="Node Type: IF_LOOP 7
+
+EXPRESSION:
+i < markets.length
+
+IRs:
+REF_8 -> LENGTH markets
+TMP_63(bool) = i < REF_8
+CONDITION TMP_63"];
+7->8[label="True"];
+7->5[label="False"];
+8[label="Node Type: IF 8
+
+EXPRESSION:
+markets[i] == cErc20
+
+IRs:
+REF_9(address) -> markets[i]
+TMP_64(bool) = REF_9 == cErc20
+CONDITION TMP_64"];
+8->9[label="True"];
+8->10[label="False"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+isEntered = true
+
+IRs:
+isEntered(bool) := True(bool)"];
+9->10;
+10[label="Node Type: END_IF 10
+"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_65(uint256) := i(uint256)
+i(uint256) = i + 1"];
+11->7;
+12[label="Node Type: IF 12
+
+EXPRESSION:
+! isEntered
+
+IRs:
+TMP_66 = UnaryType.BANG isEntered 
+CONDITION TMP_66"];
+12->13[label="True"];
+12->16[label="False"];
+13[label="Node Type: NEW VARIABLE 13
+
+EXPRESSION:
+toEnter = new address[](1)
+
+IRs:
+TMP_68(address[])  = new address[](1)
+toEnter(address[]) = ['TMP_68(address[])']"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+toEnter[0] = cErc20
+
+IRs:
+REF_10(address) -> toEnter[0]
+REF_10(address) (->toEnter) := cErc20(address)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+troller.enterMarkets(toEnter)
+
+IRs:
+TMP_69(uint256[]) = HIGH_LEVEL_CALL, dest:troller(ComptrollerInterface), function:enterMarkets, arguments:['toEnter']  "];
+15->16;
+16[label="Node Type: END_IF 16
+"];
+}
+// Function: 43327.sol-CompoundHelper-getAddressAdmin()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+admin = 0xa7615CD307F323172331865181DC8b80a2834324
+
+IRs:
+admin(address) := 955572717152290849076965359305670882361260327716(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+admin
+
+IRs:
+RETURN admin"];
+}
+// Function: 43327.sol-CompoundHelper-getAddressETH()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+eth = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE
+
+IRs:
+eth(address) := 1364068194842176056990105843868530818345537040110(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+eth
+
+IRs:
+RETURN eth"];
+}
+// Function: 43327.sol-CompoundHelper-getAddressKyberProxy()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+kyberProxy = 0x818E6FECD516Ecc3849DAf6845e3EC868087B755
+
+IRs:
+kyberProxy(address) := 739636265308088261613304435039741210358033397589(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+kyberProxy
+
+IRs:
+RETURN kyberProxy"];
+}
+// Function: 43327.sol-CompoundHelper-getAddressUSDC()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+usdc = 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48
+
+IRs:
+usdc(address) := 917551056842671309452305380979543736893630245704(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+usdc
+
+IRs:
+RETURN usdc"];
+}
+// Function: 43327.sol-CompoundHelper-getAddressWETH()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+eth = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
+
+IRs:
+eth(address) := 1097077688018008265106216665536940668749033598146(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+eth
+
+IRs:
+RETURN eth"];
+}
+// Function: 43327.sol-CompoundHelper-getAddressZRXERC20()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+zrxerc20 = 0x95E6F48254609A6ee006F7D493c8e5fB97094ceF
+
+IRs:
+zrxerc20(address) := 855790095995045926075335861268145962193449995503(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+zrxerc20
+
+IRs:
+RETURN zrxerc20"];
+}
+// Function: 43327.sol-CompoundHelper-getAddressZRXExchange()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+zrxExchange = 0x080bf510FCbF18b91105470639e9561022937712
+
+IRs:
+zrxExchange(address) := 45938582654303390121953012219490797938814449426(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+zrxExchange
+
+IRs:
+RETURN zrxExchange"];
+}
+// Function: 43327.sol-CompoundHelper-getCETHAddress()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+cEth = 0x4Ddc2D193948926D02f9B1fE9e1daa0718270ED5
+
+IRs:
+cEth(address) := 444502381933181293693798013918196478499009007317(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+cEth
+
+IRs:
+RETURN cEth"];
+}
+// Function: 43327.sol-CompoundHelper-getCUSDCAddress()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+cUsdc = 0x39AA39c021dfbaE8faC545936693aC917d5E7563
+
+IRs:
+cUsdc(address) := 329208631400247815016679327962194980497879102819(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+cUsdc
+
+IRs:
+RETURN cUsdc"];
+}
+// Function: 43327.sol-CompoundHelper-getCompOracleAddress()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+troller = 0xe7664229833AE4Abf4E269b8F23a86B657E2338D
+
+IRs:
+troller(address) := 1321057307607440252271861038975558718163773436813(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+troller
+
+IRs:
+RETURN troller"];
+}
+// Function: 43327.sol-CompoundHelper-getCompStats(address,address[],uint256[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: BEGIN_LOOP 1
+"];
+1->4;
+2[label="Node Type: END_LOOP 2
+"];
+2->14;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+3->1;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+i < cTokenAddr.length
+
+IRs:
+REF_14 -> LENGTH cTokenAddr
+TMP_96(bool) = i < REF_14
+CONDITION TMP_96"];
+4->5[label="True"];
+4->2[label="False"];
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+cTokenAdd = cTokenAddr[i]
+
+IRs:
+REF_15(address) -> cTokenAddr[i]
+cTokenAdd(address) := REF_15(address)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+factor = cTokenFactor[i]
+
+IRs:
+REF_16(uint256) -> cTokenFactor[i]
+factor(uint256) := REF_16(uint256)"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+"];
+7->8;
+8[label="Node Type: NEW VARIABLE 8
+"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+(supplyInEth,borrowInEth) = compSupplyBorrow(cTokenAdd,user)
+
+IRs:
+TUPLE_0(uint256,uint256) = INTERNAL_CALL, CompoundHelper.compSupplyBorrow(address,address)(cTokenAdd,user)
+supplyInEth(uint256)= UNPACK TUPLE_0 index: 0 
+borrowInEth(uint256)= UNPACK TUPLE_0 index: 1 "];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+totalSupply += supplyInEth
+
+IRs:
+totalSupply(uint256) = totalSupply + supplyInEth"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+totalBorrow += borrowInEth
+
+IRs:
+totalBorrow(uint256) = totalBorrow + borrowInEth"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+maxBorrow += wmul(supplyInEth,factor)
+
+IRs:
+TMP_97(uint256) = INTERNAL_CALL, DSMath.wmul(uint256,uint256)(supplyInEth,factor)
+maxBorrow(uint256) = maxBorrow + TMP_97"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_98(uint256) := i(uint256)
+i(uint256) = i + 1"];
+13->4;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+borrowRemain = sub(maxBorrow,totalBorrow)
+
+IRs:
+TMP_99(uint256) = INTERNAL_CALL, DSMath.sub(uint256,uint256)(maxBorrow,totalBorrow)
+borrowRemain(uint256) := TMP_99(uint256)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+maxWithdraw = sub(wdiv(borrowRemain,750000000000000000),10)
+
+IRs:
+TMP_100(uint256) = INTERNAL_CALL, DSMath.wdiv(uint256,uint256)(borrowRemain,750000000000000000)
+TMP_101(uint256) = INTERNAL_CALL, DSMath.sub(uint256,uint256)(TMP_100,10)
+maxWithdraw(uint256) := TMP_101(uint256)"];
+15->16;
+16[label="Node Type: NEW VARIABLE 16
+
+EXPRESSION:
+userEthSupply = getEthSupply(user)
+
+IRs:
+TMP_102(uint256) = INTERNAL_CALL, CompoundHelper.getEthSupply(address)(user)
+userEthSupply(uint256) := TMP_102(uint256)"];
+16->19;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+ratio = wdiv(totalBorrow,totalSupply)
+
+IRs:
+TMP_103(uint256) = INTERNAL_CALL, DSMath.wdiv(uint256,uint256)(totalBorrow,totalSupply)
+ratio(uint256) := TMP_103(uint256)"];
+18->23;
+19[label="Node Type: IF 19
+
+EXPRESSION:
+userEthSupply > maxWithdraw
+
+IRs:
+TMP_104(bool) = userEthSupply > maxWithdraw
+CONDITION TMP_104"];
+19->20[label="True"];
+19->21[label="False"];
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+maxWithdraw = maxWithdraw
+
+IRs:
+maxWithdraw(uint256) := maxWithdraw(uint256)"];
+20->22;
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+maxWithdraw = userEthSupply
+
+IRs:
+maxWithdraw(uint256) := userEthSupply(uint256)"];
+21->22;
+22[label="Node Type: END_IF 22
+"];
+22->18;
+23[label="Node Type: RETURN 23
+
+EXPRESSION:
+(totalSupply,totalBorrow,maxBorrow,borrowRemain,maxWithdraw,ratio)
+
+IRs:
+RETURN totalSupply,totalBorrow,maxBorrow,borrowRemain,maxWithdraw,ratio"];
+}
+// Function: 43327.sol-CompoundHelper-getComptrollerAddress()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+troller = 0x3d9819210A31b4961b30EF54bE2aeD79B9c9Cd3B
+
+IRs:
+troller(address) := 351640339340447633323156319248468740267018145083(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+troller
+
+IRs:
+RETURN troller"];
+}
+// Function: 43327.sol-CompoundHelper-getEthSupply(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+cTokenContract = CTokenInterface(getCETHAddress())
+
+IRs:
+TMP_119(address) = INTERNAL_CALL, Helpers.getCETHAddress()()
+TMP_120 = CONVERT TMP_119 to CTokenInterface
+cTokenContract(CTokenInterface) := TMP_120(CTokenInterface)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+cTokenBal = sub(cTokenContract.balanceOf(user),1)
+
+IRs:
+TMP_121(uint256) = HIGH_LEVEL_CALL, dest:cTokenContract(CTokenInterface), function:balanceOf, arguments:['user']  
+TMP_122(uint256) = INTERNAL_CALL, DSMath.sub(uint256,uint256)(TMP_121,1)
+cTokenBal(uint256) := TMP_122(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+cTokenExchangeRate = cTokenContract.exchangeRateCurrent()
+
+IRs:
+TMP_123(uint256) = HIGH_LEVEL_CALL, dest:cTokenContract(CTokenInterface), function:exchangeRateCurrent, arguments:[]  
+cTokenExchangeRate(uint256) := TMP_123(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+ethSupply = wmul(cTokenBal,cTokenExchangeRate)
+
+IRs:
+TMP_124(uint256) = INTERNAL_CALL, DSMath.wmul(uint256,uint256)(cTokenBal,cTokenExchangeRate)
+ethSupply(uint256) := TMP_124(uint256)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+ethSupply
+
+IRs:
+RETURN ethSupply"];
+}
+// Function: 43327.sol-CompoundHelper-getUsdcRemainBorrow(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+tokenPriceInEth = CompOracleInterface(getCompOracleAddress()).getUnderlyingPrice(getCUSDCAddress())
+
+IRs:
+TMP_128(address) = INTERNAL_CALL, Helpers.getCompOracleAddress()()
+TMP_129 = CONVERT TMP_128 to CompOracleInterface
+TMP_130(address) = INTERNAL_CALL, Helpers.getCUSDCAddress()()
+TMP_131(uint256) = HIGH_LEVEL_CALL, dest:TMP_129(CompOracleInterface), function:getUnderlyingPrice, arguments:['TMP_130']  
+tokenPriceInEth(uint256) := TMP_131(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+usdcAmt = sub(wdiv(usdcInEth,tokenPriceInEth),10)
+
+IRs:
+TMP_132(uint256) = INTERNAL_CALL, DSMath.wdiv(uint256,uint256)(usdcInEth,tokenPriceInEth)
+TMP_133(uint256) = INTERNAL_CALL, DSMath.sub(uint256,uint256)(TMP_132,10)
+usdcAmt(uint256) := TMP_133(uint256)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+usdcAmt
+
+IRs:
+RETURN usdcAmt"];
+}
+// Function: 43327.sol-CompoundHelper-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(y == 0 || (z = x * y) / y == x,math-not-safe)
+
+IRs:
+TMP_82(bool) = y == 0
+TMP_83(uint256) = x * y
+z(uint256) := TMP_83(uint256)
+TMP_84(uint256) = z / y
+TMP_85(bool) = TMP_84 == x
+TMP_86(bool) = TMP_82 || TMP_85
+TMP_87(None) = SOLIDITY_CALL require(bool,string)(TMP_86,math-not-safe)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 43327.sol-CompoundHelper-setApproval(address,uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+erc20Contract = ERC20Interface(erc20)
+
+IRs:
+TMP_70 = CONVERT erc20 to ERC20Interface
+erc20Contract(ERC20Interface) := TMP_70(ERC20Interface)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+tokenAllowance = erc20Contract.allowance(address(this),to)
+
+IRs:
+TMP_71 = CONVERT this to address
+TMP_72(uint256) = HIGH_LEVEL_CALL, dest:erc20Contract(ERC20Interface), function:allowance, arguments:['TMP_71', 'to']  
+tokenAllowance(uint256) := TMP_72(uint256)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+srcAmt > tokenAllowance
+
+IRs:
+TMP_73(bool) = srcAmt > tokenAllowance
+CONDITION TMP_73"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+erc20Contract.approve(to,2 ** 255)
+
+IRs:
+TMP_74(uint256) = 2 ** 255
+HIGH_LEVEL_CALL, dest:erc20Contract(ERC20Interface), function:approve, arguments:['to', 'TMP_74']  "];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+}
+// Function: 43327.sol-CompoundHelper-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+WAD = 10 ** 18
+
+IRs:
+TMP_134(uint256) = 10 ** 18
+WAD(uint256) := TMP_134(uint256)"];
+}
+// Function: 43327.sol-CompoundHelper-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+x - y <= x
+
+IRs:
+TMP_79(uint256) = x - y
+TMP_80(bool) = TMP_79 <= x
+CONDITION TMP_80"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+z = x - y
+
+IRs:
+TMP_81(uint256) = x - y
+z(uint256) := TMP_81(uint256)"];
+3->5;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+z = 0
+
+IRs:
+z(uint256) := 0(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 43327.sol-CompoundHelper-usdcBorrowed(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+cTokenContract = CTokenInterface(getCUSDCAddress())
+
+IRs:
+TMP_125(address) = INTERNAL_CALL, Helpers.getCUSDCAddress()()
+TMP_126 = CONVERT TMP_125 to CTokenInterface
+cTokenContract(CTokenInterface) := TMP_126(CTokenInterface)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+usdcAmt = cTokenContract.borrowBalanceCurrent(user)
+
+IRs:
+TMP_127(uint256) = HIGH_LEVEL_CALL, dest:cTokenContract(CTokenInterface), function:borrowBalanceCurrent, arguments:['user']  
+usdcAmt(uint256) := TMP_127(uint256)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+usdcAmt
+
+IRs:
+RETURN usdcAmt"];
+}
+// Function: 43327.sol-CompoundHelper-wdiv(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+z = add(mul(x,WAD),y / 2) / y
+
+IRs:
+TMP_92(uint256) = INTERNAL_CALL, DSMath.mul(uint256,uint256)(x,WAD)
+TMP_93(uint256) = y / 2
+TMP_94(uint256) = INTERNAL_CALL, DSMath.add(uint256,uint256)(TMP_92,TMP_93)
+TMP_95(uint256) = TMP_94 / y
+z(uint256) := TMP_95(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 43327.sol-CompoundHelper-wmul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+z = add(mul(x,y),WAD / 2) / WAD
+
+IRs:
+TMP_88(uint256) = INTERNAL_CALL, DSMath.mul(uint256,uint256)(x,y)
+TMP_89(uint256) = WAD / 2
+TMP_90(uint256) = INTERNAL_CALL, DSMath.add(uint256,uint256)(TMP_88,TMP_89)
+TMP_91(uint256) = TMP_90 / WAD
+z(uint256) := TMP_91(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 43327.sol-CompoundResolver-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)((z = x + y) >= x,math-not-safe)
+
+IRs:
+TMP_190(uint256) = x + y
+z(uint256) := TMP_190(uint256)
+TMP_191(bool) = z >= x
+TMP_192(None) = SOLIDITY_CALL require(bool,string)(TMP_191,math-not-safe)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 43327.sol-CompoundResolver-borrow(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(CTokenInterface(getCUSDCAddress()).borrow(tokenAmt) == 0,got collateral?)
+
+IRs:
+TMP_230(address) = INTERNAL_CALL, Helpers.getCUSDCAddress()()
+TMP_231 = CONVERT TMP_230 to CTokenInterface
+TMP_232(uint256) = HIGH_LEVEL_CALL, dest:TMP_231(CTokenInterface), function:borrow, arguments:['tokenAmt']  
+TMP_233(bool) = TMP_232 == 0
+TMP_234(None) = SOLIDITY_CALL require(bool,string)(TMP_233,got collateral?)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+LogBorrow(getAddressUSDC(),getCUSDCAddress(),tokenAmt,address(this))
+
+IRs:
+TMP_235(address) = INTERNAL_CALL, Helpers.getAddressUSDC()()
+TMP_236(address) = INTERNAL_CALL, Helpers.getCUSDCAddress()()
+TMP_237 = CONVERT this to address
+Emit LogBorrow(TMP_235,TMP_236,tokenAmt,TMP_237)"];
+}
+// Function: 43327.sol-CompoundResolver-compSupplyBorrow(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+cTokenContract = CTokenInterface(cTokenAdd)
+
+IRs:
+TMP_144 = CONVERT cTokenAdd to CTokenInterface
+cTokenContract(CTokenInterface) := TMP_144(CTokenInterface)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+tokenPriceInEth = CompOracleInterface(getCompOracleAddress()).getUnderlyingPrice(cTokenAdd)
+
+IRs:
+TMP_145(address) = INTERNAL_CALL, Helpers.getCompOracleAddress()()
+TMP_146 = CONVERT TMP_145 to CompOracleInterface
+TMP_147(uint256) = HIGH_LEVEL_CALL, dest:TMP_146(CompOracleInterface), function:getUnderlyingPrice, arguments:['cTokenAdd']  
+tokenPriceInEth(uint256) := TMP_147(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+cTokenBal = sub(cTokenContract.balanceOf(user),1)
+
+IRs:
+TMP_148(uint256) = HIGH_LEVEL_CALL, dest:cTokenContract(CTokenInterface), function:balanceOf, arguments:['user']  
+TMP_149(uint256) = INTERNAL_CALL, DSMath.sub(uint256,uint256)(TMP_148,1)
+cTokenBal(uint256) := TMP_149(uint256)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+cTokenExchangeRate = cTokenContract.exchangeRateCurrent()
+
+IRs:
+TMP_150(uint256) = HIGH_LEVEL_CALL, dest:cTokenContract(CTokenInterface), function:exchangeRateCurrent, arguments:[]  
+cTokenExchangeRate(uint256) := TMP_150(uint256)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+tokenSupply = sub(wmul(cTokenBal,cTokenExchangeRate),1)
+
+IRs:
+TMP_151(uint256) = INTERNAL_CALL, DSMath.wmul(uint256,uint256)(cTokenBal,cTokenExchangeRate)
+TMP_152(uint256) = INTERNAL_CALL, DSMath.sub(uint256,uint256)(TMP_151,1)
+tokenSupply(uint256) := TMP_152(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+supplyInEth = sub(wmul(tokenSupply,tokenPriceInEth),10)
+
+IRs:
+TMP_153(uint256) = INTERNAL_CALL, DSMath.wmul(uint256,uint256)(tokenSupply,tokenPriceInEth)
+TMP_154(uint256) = INTERNAL_CALL, DSMath.sub(uint256,uint256)(TMP_153,10)
+supplyInEth(uint256) := TMP_154(uint256)"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+tokenBorrowed = cTokenContract.borrowBalanceCurrent(user)
+
+IRs:
+TMP_155(uint256) = HIGH_LEVEL_CALL, dest:cTokenContract(CTokenInterface), function:borrowBalanceCurrent, arguments:['user']  
+tokenBorrowed(uint256) := TMP_155(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+borrowInEth = add(wmul(tokenBorrowed,tokenPriceInEth),10)
+
+IRs:
+TMP_156(uint256) = INTERNAL_CALL, DSMath.wmul(uint256,uint256)(tokenBorrowed,tokenPriceInEth)
+TMP_157(uint256) = INTERNAL_CALL, DSMath.add(uint256,uint256)(TMP_156,10)
+borrowInEth(uint256) := TMP_157(uint256)"];
+8->9;
+9[label="Node Type: RETURN 9
+
+EXPRESSION:
+(supplyInEth,borrowInEth)
+
+IRs:
+RETURN supplyInEth,borrowInEth"];
+}
+// Function: 43327.sol-CompoundResolver-enterMarket(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+troller = ComptrollerInterface(getComptrollerAddress())
+
+IRs:
+TMP_173(address) = INTERNAL_CALL, Helpers.getComptrollerAddress()()
+TMP_174 = CONVERT TMP_173 to ComptrollerInterface
+troller(ComptrollerInterface) := TMP_174(ComptrollerInterface)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+markets = troller.getAssetsIn(address(this))
+
+IRs:
+TMP_175 = CONVERT this to address
+TMP_176(address[]) = HIGH_LEVEL_CALL, dest:troller(ComptrollerInterface), function:getAssetsIn, arguments:['TMP_175']  
+markets(address[]) = ['TMP_176(address[])']"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+isEntered = false
+
+IRs:
+isEntered(bool) := False(bool)"];
+3->6;
+4[label="Node Type: BEGIN_LOOP 4
+"];
+4->7;
+5[label="Node Type: END_LOOP 5
+"];
+5->12;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+6->4;
+7[label="Node Type: IF_LOOP 7
+
+EXPRESSION:
+i < markets.length
+
+IRs:
+REF_37 -> LENGTH markets
+TMP_177(bool) = i < REF_37
+CONDITION TMP_177"];
+7->8[label="True"];
+7->5[label="False"];
+8[label="Node Type: IF 8
+
+EXPRESSION:
+markets[i] == cErc20
+
+IRs:
+REF_38(address) -> markets[i]
+TMP_178(bool) = REF_38 == cErc20
+CONDITION TMP_178"];
+8->9[label="True"];
+8->10[label="False"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+isEntered = true
+
+IRs:
+isEntered(bool) := True(bool)"];
+9->10;
+10[label="Node Type: END_IF 10
+"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_179(uint256) := i(uint256)
+i(uint256) = i + 1"];
+11->7;
+12[label="Node Type: IF 12
+
+EXPRESSION:
+! isEntered
+
+IRs:
+TMP_180 = UnaryType.BANG isEntered 
+CONDITION TMP_180"];
+12->13[label="True"];
+12->16[label="False"];
+13[label="Node Type: NEW VARIABLE 13
+
+EXPRESSION:
+toEnter = new address[](1)
+
+IRs:
+TMP_182(address[])  = new address[](1)
+toEnter(address[]) = ['TMP_182(address[])']"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+toEnter[0] = cErc20
+
+IRs:
+REF_39(address) -> toEnter[0]
+REF_39(address) (->toEnter) := cErc20(address)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+troller.enterMarkets(toEnter)
+
+IRs:
+TMP_183(uint256[]) = HIGH_LEVEL_CALL, dest:troller(ComptrollerInterface), function:enterMarkets, arguments:['toEnter']  "];
+15->16;
+16[label="Node Type: END_IF 16
+"];
+}
+// Function: 43327.sol-CompoundResolver-getAddressAdmin()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+admin = 0xa7615CD307F323172331865181DC8b80a2834324
+
+IRs:
+admin(address) := 955572717152290849076965359305670882361260327716(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+admin
+
+IRs:
+RETURN admin"];
+}
+// Function: 43327.sol-CompoundResolver-getAddressETH()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+eth = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE
+
+IRs:
+eth(address) := 1364068194842176056990105843868530818345537040110(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+eth
+
+IRs:
+RETURN eth"];
+}
+// Function: 43327.sol-CompoundResolver-getAddressKyberProxy()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+kyberProxy = 0x818E6FECD516Ecc3849DAf6845e3EC868087B755
+
+IRs:
+kyberProxy(address) := 739636265308088261613304435039741210358033397589(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+kyberProxy
+
+IRs:
+RETURN kyberProxy"];
+}
+// Function: 43327.sol-CompoundResolver-getAddressUSDC()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+usdc = 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48
+
+IRs:
+usdc(address) := 917551056842671309452305380979543736893630245704(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+usdc
+
+IRs:
+RETURN usdc"];
+}
+// Function: 43327.sol-CompoundResolver-getAddressWETH()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+eth = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
+
+IRs:
+eth(address) := 1097077688018008265106216665536940668749033598146(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+eth
+
+IRs:
+RETURN eth"];
+}
+// Function: 43327.sol-CompoundResolver-getAddressZRXERC20()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+zrxerc20 = 0x95E6F48254609A6ee006F7D493c8e5fB97094ceF
+
+IRs:
+zrxerc20(address) := 855790095995045926075335861268145962193449995503(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+zrxerc20
+
+IRs:
+RETURN zrxerc20"];
+}
+// Function: 43327.sol-CompoundResolver-getAddressZRXExchange()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+zrxExchange = 0x080bf510FCbF18b91105470639e9561022937712
+
+IRs:
+zrxExchange(address) := 45938582654303390121953012219490797938814449426(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+zrxExchange
+
+IRs:
+RETURN zrxExchange"];
+}
+// Function: 43327.sol-CompoundResolver-getCETHAddress()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+cEth = 0x4Ddc2D193948926D02f9B1fE9e1daa0718270ED5
+
+IRs:
+cEth(address) := 444502381933181293693798013918196478499009007317(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+cEth
+
+IRs:
+RETURN cEth"];
+}
+// Function: 43327.sol-CompoundResolver-getCUSDCAddress()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+cUsdc = 0x39AA39c021dfbaE8faC545936693aC917d5E7563
+
+IRs:
+cUsdc(address) := 329208631400247815016679327962194980497879102819(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+cUsdc
+
+IRs:
+RETURN cUsdc"];
+}
+// Function: 43327.sol-CompoundResolver-getCompOracleAddress()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+troller = 0xe7664229833AE4Abf4E269b8F23a86B657E2338D
+
+IRs:
+troller(address) := 1321057307607440252271861038975558718163773436813(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+troller
+
+IRs:
+RETURN troller"];
+}
+// Function: 43327.sol-CompoundResolver-getCompStats(address,address[],uint256[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: BEGIN_LOOP 1
+"];
+1->4;
+2[label="Node Type: END_LOOP 2
+"];
+2->14;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+3->1;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+i < cTokenAddr.length
+
+IRs:
+REF_25 -> LENGTH cTokenAddr
+TMP_135(bool) = i < REF_25
+CONDITION TMP_135"];
+4->5[label="True"];
+4->2[label="False"];
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+cTokenAdd = cTokenAddr[i]
+
+IRs:
+REF_26(address) -> cTokenAddr[i]
+cTokenAdd(address) := REF_26(address)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+factor = cTokenFactor[i]
+
+IRs:
+REF_27(uint256) -> cTokenFactor[i]
+factor(uint256) := REF_27(uint256)"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+"];
+7->8;
+8[label="Node Type: NEW VARIABLE 8
+"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+(supplyInEth,borrowInEth) = compSupplyBorrow(cTokenAdd,user)
+
+IRs:
+TUPLE_1(uint256,uint256) = INTERNAL_CALL, CompoundHelper.compSupplyBorrow(address,address)(cTokenAdd,user)
+supplyInEth(uint256)= UNPACK TUPLE_1 index: 0 
+borrowInEth(uint256)= UNPACK TUPLE_1 index: 1 "];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+totalSupply += supplyInEth
+
+IRs:
+totalSupply(uint256) = totalSupply + supplyInEth"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+totalBorrow += borrowInEth
+
+IRs:
+totalBorrow(uint256) = totalBorrow + borrowInEth"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+maxBorrow += wmul(supplyInEth,factor)
+
+IRs:
+TMP_136(uint256) = INTERNAL_CALL, DSMath.wmul(uint256,uint256)(supplyInEth,factor)
+maxBorrow(uint256) = maxBorrow + TMP_136"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_137(uint256) := i(uint256)
+i(uint256) = i + 1"];
+13->4;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+borrowRemain = sub(maxBorrow,totalBorrow)
+
+IRs:
+TMP_138(uint256) = INTERNAL_CALL, DSMath.sub(uint256,uint256)(maxBorrow,totalBorrow)
+borrowRemain(uint256) := TMP_138(uint256)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+maxWithdraw = sub(wdiv(borrowRemain,750000000000000000),10)
+
+IRs:
+TMP_139(uint256) = INTERNAL_CALL, DSMath.wdiv(uint256,uint256)(borrowRemain,750000000000000000)
+TMP_140(uint256) = INTERNAL_CALL, DSMath.sub(uint256,uint256)(TMP_139,10)
+maxWithdraw(uint256) := TMP_140(uint256)"];
+15->16;
+16[label="Node Type: NEW VARIABLE 16
+
+EXPRESSION:
+userEthSupply = getEthSupply(user)
+
+IRs:
+TMP_141(uint256) = INTERNAL_CALL, CompoundHelper.getEthSupply(address)(user)
+userEthSupply(uint256) := TMP_141(uint256)"];
+16->19;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+ratio = wdiv(totalBorrow,totalSupply)
+
+IRs:
+TMP_142(uint256) = INTERNAL_CALL, DSMath.wdiv(uint256,uint256)(totalBorrow,totalSupply)
+ratio(uint256) := TMP_142(uint256)"];
+18->23;
+19[label="Node Type: IF 19
+
+EXPRESSION:
+userEthSupply > maxWithdraw
+
+IRs:
+TMP_143(bool) = userEthSupply > maxWithdraw
+CONDITION TMP_143"];
+19->20[label="True"];
+19->21[label="False"];
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+maxWithdraw = maxWithdraw
+
+IRs:
+maxWithdraw(uint256) := maxWithdraw(uint256)"];
+20->22;
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+maxWithdraw = userEthSupply
+
+IRs:
+maxWithdraw(uint256) := userEthSupply(uint256)"];
+21->22;
+22[label="Node Type: END_IF 22
+"];
+22->18;
+23[label="Node Type: RETURN 23
+
+EXPRESSION:
+(totalSupply,totalBorrow,maxBorrow,borrowRemain,maxWithdraw,ratio)
+
+IRs:
+RETURN totalSupply,totalBorrow,maxBorrow,borrowRemain,maxWithdraw,ratio"];
+}
+// Function: 43327.sol-CompoundResolver-getComptrollerAddress()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+troller = 0x3d9819210A31b4961b30EF54bE2aeD79B9c9Cd3B
+
+IRs:
+troller(address) := 351640339340447633323156319248468740267018145083(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+troller
+
+IRs:
+RETURN troller"];
+}
+// Function: 43327.sol-CompoundResolver-getEthSupply(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+cTokenContract = CTokenInterface(getCETHAddress())
+
+IRs:
+TMP_158(address) = INTERNAL_CALL, Helpers.getCETHAddress()()
+TMP_159 = CONVERT TMP_158 to CTokenInterface
+cTokenContract(CTokenInterface) := TMP_159(CTokenInterface)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+cTokenBal = sub(cTokenContract.balanceOf(user),1)
+
+IRs:
+TMP_160(uint256) = HIGH_LEVEL_CALL, dest:cTokenContract(CTokenInterface), function:balanceOf, arguments:['user']  
+TMP_161(uint256) = INTERNAL_CALL, DSMath.sub(uint256,uint256)(TMP_160,1)
+cTokenBal(uint256) := TMP_161(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+cTokenExchangeRate = cTokenContract.exchangeRateCurrent()
+
+IRs:
+TMP_162(uint256) = HIGH_LEVEL_CALL, dest:cTokenContract(CTokenInterface), function:exchangeRateCurrent, arguments:[]  
+cTokenExchangeRate(uint256) := TMP_162(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+ethSupply = wmul(cTokenBal,cTokenExchangeRate)
+
+IRs:
+TMP_163(uint256) = INTERNAL_CALL, DSMath.wmul(uint256,uint256)(cTokenBal,cTokenExchangeRate)
+ethSupply(uint256) := TMP_163(uint256)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+ethSupply
+
+IRs:
+RETURN ethSupply"];
+}
+// Function: 43327.sol-CompoundResolver-getUsdcRemainBorrow(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+tokenPriceInEth = CompOracleInterface(getCompOracleAddress()).getUnderlyingPrice(getCUSDCAddress())
+
+IRs:
+TMP_167(address) = INTERNAL_CALL, Helpers.getCompOracleAddress()()
+TMP_168 = CONVERT TMP_167 to CompOracleInterface
+TMP_169(address) = INTERNAL_CALL, Helpers.getCUSDCAddress()()
+TMP_170(uint256) = HIGH_LEVEL_CALL, dest:TMP_168(CompOracleInterface), function:getUnderlyingPrice, arguments:['TMP_169']  
+tokenPriceInEth(uint256) := TMP_170(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+usdcAmt = sub(wdiv(usdcInEth,tokenPriceInEth),10)
+
+IRs:
+TMP_171(uint256) = INTERNAL_CALL, DSMath.wdiv(uint256,uint256)(usdcInEth,tokenPriceInEth)
+TMP_172(uint256) = INTERNAL_CALL, DSMath.sub(uint256,uint256)(TMP_171,10)
+usdcAmt(uint256) := TMP_172(uint256)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+usdcAmt
+
+IRs:
+RETURN usdcAmt"];
+}
+// Function: 43327.sol-CompoundResolver-mintCEth(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+cToken = CETHInterface(getCETHAddress())
+
+IRs:
+TMP_210(address) = INTERNAL_CALL, Helpers.getCETHAddress()()
+TMP_211 = CONVERT TMP_210 to CETHInterface
+cToken(CETHInterface) := TMP_211(CETHInterface)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+cToken.mint.value(tokenAmt)()
+
+IRs:
+HIGH_LEVEL_CALL, dest:cToken(CETHInterface), function:mint, arguments:[] value:tokenAmt "];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+LogMint(getAddressETH(),getCETHAddress(),tokenAmt,msg.sender)
+
+IRs:
+TMP_214(address) = INTERNAL_CALL, Helpers.getAddressETH()()
+TMP_215(address) = INTERNAL_CALL, Helpers.getCETHAddress()()
+Emit LogMint(TMP_214,TMP_215,tokenAmt,msg.sender)"];
+}
+// Function: 43327.sol-CompoundResolver-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(y == 0 || (z = x * y) / y == x,math-not-safe)
+
+IRs:
+TMP_196(bool) = y == 0
+TMP_197(uint256) = x * y
+z(uint256) := TMP_197(uint256)
+TMP_198(uint256) = z / y
+TMP_199(bool) = TMP_198 == x
+TMP_200(bool) = TMP_196 || TMP_199
+TMP_201(None) = SOLIDITY_CALL require(bool,string)(TMP_200,math-not-safe)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 43327.sol-CompoundResolver-redeemEth(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+cToken = CTokenInterface(getCETHAddress())
+
+IRs:
+TMP_217(address) = INTERNAL_CALL, Helpers.getCETHAddress()()
+TMP_218 = CONVERT TMP_217 to CTokenInterface
+cToken(CTokenInterface) := TMP_218(CTokenInterface)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+setApproval(getCETHAddress(),10 ** 30,getCETHAddress())
+
+IRs:
+TMP_219(address) = INTERNAL_CALL, Helpers.getCETHAddress()()
+TMP_220(uint256) = 10 ** 30
+TMP_221(address) = INTERNAL_CALL, Helpers.getCETHAddress()()
+INTERNAL_CALL, Helpers.setApproval(address,uint256,address)(TMP_219,TMP_220,TMP_221)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool,string)(cToken.redeemUnderlying(tokenAmt) == 0,something went wrong)
+
+IRs:
+TMP_223(uint256) = HIGH_LEVEL_CALL, dest:cToken(CTokenInterface), function:redeemUnderlying, arguments:['tokenAmt']  
+TMP_224(bool) = TMP_223 == 0
+TMP_225(None) = SOLIDITY_CALL require(bool,string)(TMP_224,something went wrong)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+LogRedeem(getAddressETH(),getCETHAddress(),tokenAmt,address(this))
+
+IRs:
+TMP_226(address) = INTERNAL_CALL, Helpers.getAddressETH()()
+TMP_227(address) = INTERNAL_CALL, Helpers.getCETHAddress()()
+TMP_228 = CONVERT this to address
+Emit LogRedeem(TMP_226,TMP_227,tokenAmt,TMP_228)"];
+}
+// Function: 43327.sol-CompoundResolver-repayUsdc(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+cToken = CERC20Interface(getCUSDCAddress())
+
+IRs:
+TMP_239(address) = INTERNAL_CALL, Helpers.getCUSDCAddress()()
+TMP_240 = CONVERT TMP_239 to CERC20Interface
+cToken(CERC20Interface) := TMP_240(CERC20Interface)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+setApproval(getAddressUSDC(),tokenAmt,getCUSDCAddress())
+
+IRs:
+TMP_241(address) = INTERNAL_CALL, Helpers.getAddressUSDC()()
+TMP_242(address) = INTERNAL_CALL, Helpers.getCUSDCAddress()()
+INTERNAL_CALL, Helpers.setApproval(address,uint256,address)(TMP_241,tokenAmt,TMP_242)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool,string)(cToken.repayBorrow(tokenAmt) == 0,transfer approved?)
+
+IRs:
+TMP_244(uint256) = HIGH_LEVEL_CALL, dest:cToken(CERC20Interface), function:repayBorrow, arguments:['tokenAmt']  
+TMP_245(bool) = TMP_244 == 0
+TMP_246(None) = SOLIDITY_CALL require(bool,string)(TMP_245,transfer approved?)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+LogRepay(getAddressUSDC(),getCUSDCAddress(),tokenAmt,address(this))
+
+IRs:
+TMP_247(address) = INTERNAL_CALL, Helpers.getAddressUSDC()()
+TMP_248(address) = INTERNAL_CALL, Helpers.getCUSDCAddress()()
+TMP_249 = CONVERT this to address
+Emit LogRepay(TMP_247,TMP_248,tokenAmt,TMP_249)"];
+}
+// Function: 43327.sol-CompoundResolver-setApproval(address,uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+erc20Contract = ERC20Interface(erc20)
+
+IRs:
+TMP_184 = CONVERT erc20 to ERC20Interface
+erc20Contract(ERC20Interface) := TMP_184(ERC20Interface)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+tokenAllowance = erc20Contract.allowance(address(this),to)
+
+IRs:
+TMP_185 = CONVERT this to address
+TMP_186(uint256) = HIGH_LEVEL_CALL, dest:erc20Contract(ERC20Interface), function:allowance, arguments:['TMP_185', 'to']  
+tokenAllowance(uint256) := TMP_186(uint256)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+srcAmt > tokenAllowance
+
+IRs:
+TMP_187(bool) = srcAmt > tokenAllowance
+CONDITION TMP_187"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+erc20Contract.approve(to,2 ** 255)
+
+IRs:
+TMP_188(uint256) = 2 ** 255
+HIGH_LEVEL_CALL, dest:erc20Contract(ERC20Interface), function:approve, arguments:['to', 'TMP_188']  "];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+}
+// Function: 43327.sol-CompoundResolver-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+WAD = 10 ** 18
+
+IRs:
+TMP_251(uint256) = 10 ** 18
+WAD(uint256) := TMP_251(uint256)"];
+}
+// Function: 43327.sol-CompoundResolver-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+x - y <= x
+
+IRs:
+TMP_193(uint256) = x - y
+TMP_194(bool) = TMP_193 <= x
+CONDITION TMP_194"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+z = x - y
+
+IRs:
+TMP_195(uint256) = x - y
+z(uint256) := TMP_195(uint256)"];
+3->5;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+z = 0
+
+IRs:
+z(uint256) := 0(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 43327.sol-CompoundResolver-usdcBorrowed(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+cTokenContract = CTokenInterface(getCUSDCAddress())
+
+IRs:
+TMP_164(address) = INTERNAL_CALL, Helpers.getCUSDCAddress()()
+TMP_165 = CONVERT TMP_164 to CTokenInterface
+cTokenContract(CTokenInterface) := TMP_165(CTokenInterface)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+usdcAmt = cTokenContract.borrowBalanceCurrent(user)
+
+IRs:
+TMP_166(uint256) = HIGH_LEVEL_CALL, dest:cTokenContract(CTokenInterface), function:borrowBalanceCurrent, arguments:['user']  
+usdcAmt(uint256) := TMP_166(uint256)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+usdcAmt
+
+IRs:
+RETURN usdcAmt"];
+}
+// Function: 43327.sol-CompoundResolver-wdiv(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+z = add(mul(x,WAD),y / 2) / y
+
+IRs:
+TMP_206(uint256) = INTERNAL_CALL, DSMath.mul(uint256,uint256)(x,WAD)
+TMP_207(uint256) = y / 2
+TMP_208(uint256) = INTERNAL_CALL, DSMath.add(uint256,uint256)(TMP_206,TMP_207)
+TMP_209(uint256) = TMP_208 / y
+z(uint256) := TMP_209(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 43327.sol-CompoundResolver-wmul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+z = add(mul(x,y),WAD / 2) / WAD
+
+IRs:
+TMP_202(uint256) = INTERNAL_CALL, DSMath.mul(uint256,uint256)(x,y)
+TMP_203(uint256) = WAD / 2
+TMP_204(uint256) = INTERNAL_CALL, DSMath.add(uint256,uint256)(TMP_202,TMP_203)
+TMP_205(uint256) = TMP_204 / WAD
+z(uint256) := TMP_205(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 43327.sol-CompoundSave-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)((z = x + y) >= x,math-not-safe)
+
+IRs:
+TMP_348(uint256) = x + y
+z(uint256) := TMP_348(uint256)
+TMP_349(bool) = z >= x
+TMP_350(None) = SOLIDITY_CALL require(bool,string)(TMP_349,math-not-safe)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 43327.sol-CompoundSave-borrow(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(CTokenInterface(getCUSDCAddress()).borrow(tokenAmt) == 0,got collateral?)
+
+IRs:
+TMP_272(address) = INTERNAL_CALL, Helpers.getCUSDCAddress()()
+TMP_273 = CONVERT TMP_272 to CTokenInterface
+TMP_274(uint256) = HIGH_LEVEL_CALL, dest:TMP_273(CTokenInterface), function:borrow, arguments:['tokenAmt']  
+TMP_275(bool) = TMP_274 == 0
+TMP_276(None) = SOLIDITY_CALL require(bool,string)(TMP_275,got collateral?)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+LogBorrow(getAddressUSDC(),getCUSDCAddress(),tokenAmt,address(this))
+
+IRs:
+TMP_277(address) = INTERNAL_CALL, Helpers.getAddressUSDC()()
+TMP_278(address) = INTERNAL_CALL, Helpers.getCUSDCAddress()()
+TMP_279 = CONVERT this to address
+Emit LogBorrow(TMP_277,TMP_278,tokenAmt,TMP_279)"];
+}
+// Function: 43327.sol-CompoundSave-compSupplyBorrow(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+cTokenContract = CTokenInterface(cTokenAdd)
+
+IRs:
+TMP_302 = CONVERT cTokenAdd to CTokenInterface
+cTokenContract(CTokenInterface) := TMP_302(CTokenInterface)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+tokenPriceInEth = CompOracleInterface(getCompOracleAddress()).getUnderlyingPrice(cTokenAdd)
+
+IRs:
+TMP_303(address) = INTERNAL_CALL, Helpers.getCompOracleAddress()()
+TMP_304 = CONVERT TMP_303 to CompOracleInterface
+TMP_305(uint256) = HIGH_LEVEL_CALL, dest:TMP_304(CompOracleInterface), function:getUnderlyingPrice, arguments:['cTokenAdd']  
+tokenPriceInEth(uint256) := TMP_305(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+cTokenBal = sub(cTokenContract.balanceOf(user),1)
+
+IRs:
+TMP_306(uint256) = HIGH_LEVEL_CALL, dest:cTokenContract(CTokenInterface), function:balanceOf, arguments:['user']  
+TMP_307(uint256) = INTERNAL_CALL, DSMath.sub(uint256,uint256)(TMP_306,1)
+cTokenBal(uint256) := TMP_307(uint256)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+cTokenExchangeRate = cTokenContract.exchangeRateCurrent()
+
+IRs:
+TMP_308(uint256) = HIGH_LEVEL_CALL, dest:cTokenContract(CTokenInterface), function:exchangeRateCurrent, arguments:[]  
+cTokenExchangeRate(uint256) := TMP_308(uint256)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+tokenSupply = sub(wmul(cTokenBal,cTokenExchangeRate),1)
+
+IRs:
+TMP_309(uint256) = INTERNAL_CALL, DSMath.wmul(uint256,uint256)(cTokenBal,cTokenExchangeRate)
+TMP_310(uint256) = INTERNAL_CALL, DSMath.sub(uint256,uint256)(TMP_309,1)
+tokenSupply(uint256) := TMP_310(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+supplyInEth = sub(wmul(tokenSupply,tokenPriceInEth),10)
+
+IRs:
+TMP_311(uint256) = INTERNAL_CALL, DSMath.wmul(uint256,uint256)(tokenSupply,tokenPriceInEth)
+TMP_312(uint256) = INTERNAL_CALL, DSMath.sub(uint256,uint256)(TMP_311,10)
+supplyInEth(uint256) := TMP_312(uint256)"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+tokenBorrowed = cTokenContract.borrowBalanceCurrent(user)
+
+IRs:
+TMP_313(uint256) = HIGH_LEVEL_CALL, dest:cTokenContract(CTokenInterface), function:borrowBalanceCurrent, arguments:['user']  
+tokenBorrowed(uint256) := TMP_313(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+borrowInEth = add(wmul(tokenBorrowed,tokenPriceInEth),10)
+
+IRs:
+TMP_314(uint256) = INTERNAL_CALL, DSMath.wmul(uint256,uint256)(tokenBorrowed,tokenPriceInEth)
+TMP_315(uint256) = INTERNAL_CALL, DSMath.add(uint256,uint256)(TMP_314,10)
+borrowInEth(uint256) := TMP_315(uint256)"];
+8->9;
+9[label="Node Type: RETURN 9
+
+EXPRESSION:
+(supplyInEth,borrowInEth)
+
+IRs:
+RETURN supplyInEth,borrowInEth"];
+}
+// Function: 43327.sol-CompoundSave-enterMarket(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+troller = ComptrollerInterface(getComptrollerAddress())
+
+IRs:
+TMP_331(address) = INTERNAL_CALL, Helpers.getComptrollerAddress()()
+TMP_332 = CONVERT TMP_331 to ComptrollerInterface
+troller(ComptrollerInterface) := TMP_332(ComptrollerInterface)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+markets = troller.getAssetsIn(address(this))
+
+IRs:
+TMP_333 = CONVERT this to address
+TMP_334(address[]) = HIGH_LEVEL_CALL, dest:troller(ComptrollerInterface), function:getAssetsIn, arguments:['TMP_333']  
+markets(address[]) = ['TMP_334(address[])']"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+isEntered = false
+
+IRs:
+isEntered(bool) := False(bool)"];
+3->6;
+4[label="Node Type: BEGIN_LOOP 4
+"];
+4->7;
+5[label="Node Type: END_LOOP 5
+"];
+5->12;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+6->4;
+7[label="Node Type: IF_LOOP 7
+
+EXPRESSION:
+i < markets.length
+
+IRs:
+REF_65 -> LENGTH markets
+TMP_335(bool) = i < REF_65
+CONDITION TMP_335"];
+7->8[label="True"];
+7->5[label="False"];
+8[label="Node Type: IF 8
+
+EXPRESSION:
+markets[i] == cErc20
+
+IRs:
+REF_66(address) -> markets[i]
+TMP_336(bool) = REF_66 == cErc20
+CONDITION TMP_336"];
+8->9[label="True"];
+8->10[label="False"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+isEntered = true
+
+IRs:
+isEntered(bool) := True(bool)"];
+9->10;
+10[label="Node Type: END_IF 10
+"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_337(uint256) := i(uint256)
+i(uint256) = i + 1"];
+11->7;
+12[label="Node Type: IF 12
+
+EXPRESSION:
+! isEntered
+
+IRs:
+TMP_338 = UnaryType.BANG isEntered 
+CONDITION TMP_338"];
+12->13[label="True"];
+12->16[label="False"];
+13[label="Node Type: NEW VARIABLE 13
+
+EXPRESSION:
+toEnter = new address[](1)
+
+IRs:
+TMP_340(address[])  = new address[](1)
+toEnter(address[]) = ['TMP_340(address[])']"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+toEnter[0] = cErc20
+
+IRs:
+REF_67(address) -> toEnter[0]
+REF_67(address) (->toEnter) := cErc20(address)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+troller.enterMarkets(toEnter)
+
+IRs:
+TMP_341(uint256[]) = HIGH_LEVEL_CALL, dest:troller(ComptrollerInterface), function:enterMarkets, arguments:['toEnter']  "];
+15->16;
+16[label="Node Type: END_IF 16
+"];
+}
+// Function: 43327.sol-CompoundSave-getAddressAdmin()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+admin = 0xa7615CD307F323172331865181DC8b80a2834324
+
+IRs:
+admin(address) := 955572717152290849076965359305670882361260327716(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+admin
+
+IRs:
+RETURN admin"];
+}
+// Function: 43327.sol-CompoundSave-getAddressETH()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+eth = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE
+
+IRs:
+eth(address) := 1364068194842176056990105843868530818345537040110(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+eth
+
+IRs:
+RETURN eth"];
+}
+// Function: 43327.sol-CompoundSave-getAddressKyberProxy()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+kyberProxy = 0x818E6FECD516Ecc3849DAf6845e3EC868087B755
+
+IRs:
+kyberProxy(address) := 739636265308088261613304435039741210358033397589(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+kyberProxy
+
+IRs:
+RETURN kyberProxy"];
+}
+// Function: 43327.sol-CompoundSave-getAddressUSDC()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+usdc = 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48
+
+IRs:
+usdc(address) := 917551056842671309452305380979543736893630245704(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+usdc
+
+IRs:
+RETURN usdc"];
+}
+// Function: 43327.sol-CompoundSave-getAddressWETH()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+eth = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
+
+IRs:
+eth(address) := 1097077688018008265106216665536940668749033598146(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+eth
+
+IRs:
+RETURN eth"];
+}
+// Function: 43327.sol-CompoundSave-getAddressZRXERC20()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+zrxerc20 = 0x95E6F48254609A6ee006F7D493c8e5fB97094ceF
+
+IRs:
+zrxerc20(address) := 855790095995045926075335861268145962193449995503(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+zrxerc20
+
+IRs:
+RETURN zrxerc20"];
+}
+// Function: 43327.sol-CompoundSave-getAddressZRXExchange()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+zrxExchange = 0x080bf510FCbF18b91105470639e9561022937712
+
+IRs:
+zrxExchange(address) := 45938582654303390121953012219490797938814449426(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+zrxExchange
+
+IRs:
+RETURN zrxExchange"];
+}
+// Function: 43327.sol-CompoundSave-getCETHAddress()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+cEth = 0x4Ddc2D193948926D02f9B1fE9e1daa0718270ED5
+
+IRs:
+cEth(address) := 444502381933181293693798013918196478499009007317(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+cEth
+
+IRs:
+RETURN cEth"];
+}
+// Function: 43327.sol-CompoundSave-getCUSDCAddress()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+cUsdc = 0x39AA39c021dfbaE8faC545936693aC917d5E7563
+
+IRs:
+cUsdc(address) := 329208631400247815016679327962194980497879102819(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+cUsdc
+
+IRs:
+RETURN cUsdc"];
+}
+// Function: 43327.sol-CompoundSave-getCompOracleAddress()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+troller = 0xe7664229833AE4Abf4E269b8F23a86B657E2338D
+
+IRs:
+troller(address) := 1321057307607440252271861038975558718163773436813(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+troller
+
+IRs:
+RETURN troller"];
+}
+// Function: 43327.sol-CompoundSave-getCompStats(address,address[],uint256[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: BEGIN_LOOP 1
+"];
+1->4;
+2[label="Node Type: END_LOOP 2
+"];
+2->14;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+3->1;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+i < cTokenAddr.length
+
+IRs:
+REF_53 -> LENGTH cTokenAddr
+TMP_293(bool) = i < REF_53
+CONDITION TMP_293"];
+4->5[label="True"];
+4->2[label="False"];
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+cTokenAdd = cTokenAddr[i]
+
+IRs:
+REF_54(address) -> cTokenAddr[i]
+cTokenAdd(address) := REF_54(address)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+factor = cTokenFactor[i]
+
+IRs:
+REF_55(uint256) -> cTokenFactor[i]
+factor(uint256) := REF_55(uint256)"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+"];
+7->8;
+8[label="Node Type: NEW VARIABLE 8
+"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+(supplyInEth,borrowInEth) = compSupplyBorrow(cTokenAdd,user)
+
+IRs:
+TUPLE_2(uint256,uint256) = INTERNAL_CALL, CompoundHelper.compSupplyBorrow(address,address)(cTokenAdd,user)
+supplyInEth(uint256)= UNPACK TUPLE_2 index: 0 
+borrowInEth(uint256)= UNPACK TUPLE_2 index: 1 "];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+totalSupply += supplyInEth
+
+IRs:
+totalSupply(uint256) = totalSupply + supplyInEth"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+totalBorrow += borrowInEth
+
+IRs:
+totalBorrow(uint256) = totalBorrow + borrowInEth"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+maxBorrow += wmul(supplyInEth,factor)
+
+IRs:
+TMP_294(uint256) = INTERNAL_CALL, DSMath.wmul(uint256,uint256)(supplyInEth,factor)
+maxBorrow(uint256) = maxBorrow + TMP_294"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_295(uint256) := i(uint256)
+i(uint256) = i + 1"];
+13->4;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+borrowRemain = sub(maxBorrow,totalBorrow)
+
+IRs:
+TMP_296(uint256) = INTERNAL_CALL, DSMath.sub(uint256,uint256)(maxBorrow,totalBorrow)
+borrowRemain(uint256) := TMP_296(uint256)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+maxWithdraw = sub(wdiv(borrowRemain,750000000000000000),10)
+
+IRs:
+TMP_297(uint256) = INTERNAL_CALL, DSMath.wdiv(uint256,uint256)(borrowRemain,750000000000000000)
+TMP_298(uint256) = INTERNAL_CALL, DSMath.sub(uint256,uint256)(TMP_297,10)
+maxWithdraw(uint256) := TMP_298(uint256)"];
+15->16;
+16[label="Node Type: NEW VARIABLE 16
+
+EXPRESSION:
+userEthSupply = getEthSupply(user)
+
+IRs:
+TMP_299(uint256) = INTERNAL_CALL, CompoundHelper.getEthSupply(address)(user)
+userEthSupply(uint256) := TMP_299(uint256)"];
+16->19;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+ratio = wdiv(totalBorrow,totalSupply)
+
+IRs:
+TMP_300(uint256) = INTERNAL_CALL, DSMath.wdiv(uint256,uint256)(totalBorrow,totalSupply)
+ratio(uint256) := TMP_300(uint256)"];
+18->23;
+19[label="Node Type: IF 19
+
+EXPRESSION:
+userEthSupply > maxWithdraw
+
+IRs:
+TMP_301(bool) = userEthSupply > maxWithdraw
+CONDITION TMP_301"];
+19->20[label="True"];
+19->21[label="False"];
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+maxWithdraw = maxWithdraw
+
+IRs:
+maxWithdraw(uint256) := maxWithdraw(uint256)"];
+20->22;
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+maxWithdraw = userEthSupply
+
+IRs:
+maxWithdraw(uint256) := userEthSupply(uint256)"];
+21->22;
+22[label="Node Type: END_IF 22
+"];
+22->18;
+23[label="Node Type: RETURN 23
+
+EXPRESSION:
+(totalSupply,totalBorrow,maxBorrow,borrowRemain,maxWithdraw,ratio)
+
+IRs:
+RETURN totalSupply,totalBorrow,maxBorrow,borrowRemain,maxWithdraw,ratio"];
+}
+// Function: 43327.sol-CompoundSave-getComptrollerAddress()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+troller = 0x3d9819210A31b4961b30EF54bE2aeD79B9c9Cd3B
+
+IRs:
+troller(address) := 351640339340447633323156319248468740267018145083(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+troller
+
+IRs:
+RETURN troller"];
+}
+// Function: 43327.sol-CompoundSave-getEthSupply(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+cTokenContract = CTokenInterface(getCETHAddress())
+
+IRs:
+TMP_316(address) = INTERNAL_CALL, Helpers.getCETHAddress()()
+TMP_317 = CONVERT TMP_316 to CTokenInterface
+cTokenContract(CTokenInterface) := TMP_317(CTokenInterface)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+cTokenBal = sub(cTokenContract.balanceOf(user),1)
+
+IRs:
+TMP_318(uint256) = HIGH_LEVEL_CALL, dest:cTokenContract(CTokenInterface), function:balanceOf, arguments:['user']  
+TMP_319(uint256) = INTERNAL_CALL, DSMath.sub(uint256,uint256)(TMP_318,1)
+cTokenBal(uint256) := TMP_319(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+cTokenExchangeRate = cTokenContract.exchangeRateCurrent()
+
+IRs:
+TMP_320(uint256) = HIGH_LEVEL_CALL, dest:cTokenContract(CTokenInterface), function:exchangeRateCurrent, arguments:[]  
+cTokenExchangeRate(uint256) := TMP_320(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+ethSupply = wmul(cTokenBal,cTokenExchangeRate)
+
+IRs:
+TMP_321(uint256) = INTERNAL_CALL, DSMath.wmul(uint256,uint256)(cTokenBal,cTokenExchangeRate)
+ethSupply(uint256) := TMP_321(uint256)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+ethSupply
+
+IRs:
+RETURN ethSupply"];
+}
+// Function: 43327.sol-CompoundSave-getUsdcRemainBorrow(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+tokenPriceInEth = CompOracleInterface(getCompOracleAddress()).getUnderlyingPrice(getCUSDCAddress())
+
+IRs:
+TMP_325(address) = INTERNAL_CALL, Helpers.getCompOracleAddress()()
+TMP_326 = CONVERT TMP_325 to CompOracleInterface
+TMP_327(address) = INTERNAL_CALL, Helpers.getCUSDCAddress()()
+TMP_328(uint256) = HIGH_LEVEL_CALL, dest:TMP_326(CompOracleInterface), function:getUnderlyingPrice, arguments:['TMP_327']  
+tokenPriceInEth(uint256) := TMP_328(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+usdcAmt = sub(wdiv(usdcInEth,tokenPriceInEth),10)
+
+IRs:
+TMP_329(uint256) = INTERNAL_CALL, DSMath.wdiv(uint256,uint256)(usdcInEth,tokenPriceInEth)
+TMP_330(uint256) = INTERNAL_CALL, DSMath.sub(uint256,uint256)(TMP_329,10)
+usdcAmt(uint256) := TMP_330(uint256)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+usdcAmt
+
+IRs:
+RETURN usdcAmt"];
+}
+// Function: 43327.sol-CompoundSave-leverage(uint256,uint256,bytes,bool,address[],uint256[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+enterMarket(getCETHAddress())
+
+IRs:
+TMP_401(address) = INTERNAL_CALL, Helpers.getCETHAddress()()
+INTERNAL_CALL, Helpers.enterMarket(address)(TMP_401)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+enterMarket(getCUSDCAddress())
+
+IRs:
+TMP_403(address) = INTERNAL_CALL, Helpers.getCUSDCAddress()()
+INTERNAL_CALL, Helpers.enterMarket(address)(TMP_403)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+(None,None,None,borrowRemain,None,None) = getCompStats(address(this),cTokenAddr,ctokenFactor)
+
+IRs:
+TMP_405 = CONVERT this to address
+TUPLE_5(uint256,uint256,uint256,uint256,uint256,uint256) = INTERNAL_CALL, CompoundHelper.getCompStats(address,address[],uint256[])(TMP_405,cTokenAddr,ctokenFactor)
+borrowRemain(uint256)= UNPACK TUPLE_5 index: 3 "];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+usdcToSwap = getUsdcRemainBorrow(borrowRemain)
+
+IRs:
+TMP_406(uint256) = INTERNAL_CALL, CompoundHelper.getUsdcRemainBorrow(uint256)(borrowRemain)
+usdcToSwap(uint256) := TMP_406(uint256)"];
+5->24;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+borrow(usdcToSwap)
+
+IRs:
+INTERNAL_CALL, CompoundResolver.borrow(uint256)(usdcToSwap)"];
+7->8;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+usdcContract = ERC20Interface(getAddressUSDC())
+
+IRs:
+TMP_408(address) = INTERNAL_CALL, Helpers.getAddressUSDC()()
+TMP_409 = CONVERT TMP_408 to ERC20Interface
+usdcContract(ERC20Interface) := TMP_409(ERC20Interface)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+usdcContract.approve(getAddressZRXERC20(),zrxUsdcAmt)
+
+IRs:
+TMP_410(address) = INTERNAL_CALL, Helpers.getAddressZRXERC20()()
+HIGH_LEVEL_CALL, dest:usdcContract(ERC20Interface), function:approve, arguments:['TMP_410', 'zrxUsdcAmt']  "];
+9->10;
+10[label="Node Type: NEW VARIABLE 10
+"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+(swapSuccess,None) = getAddressZRXExchange().call(calldataHexString)
+
+IRs:
+TMP_412(address) = INTERNAL_CALL, Helpers.getAddressZRXExchange()()
+TUPLE_6(bool,bytes) = LOW_LEVEL_CALL, dest:TMP_412, function:call, arguments:['calldataHexString']  
+swapSuccess(bool)= UNPACK TUPLE_6 index: 0 "];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+assert(bool)(swapSuccess)
+
+IRs:
+TMP_413(None) = SOLIDITY_CALL assert(bool)(swapSuccess)"];
+12->13;
+13[label="Node Type: NEW VARIABLE 13
+
+EXPRESSION:
+usdcRemain = sub(usdcToSwap,zrxUsdcAmt)
+
+IRs:
+TMP_414(uint256) = INTERNAL_CALL, DSMath.sub(uint256,uint256)(usdcToSwap,zrxUsdcAmt)
+usdcRemain(uint256) := TMP_414(uint256)"];
+13->14;
+14[label="Node Type: IF 14
+
+EXPRESSION:
+usdcRemain > 0 && isKyber
+
+IRs:
+TMP_415(bool) = usdcRemain > 0
+TMP_416(bool) = TMP_415 && isKyber
+CONDITION TMP_416"];
+14->15[label="True"];
+14->17[label="False"];
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+usdcContract.approve(getAddressKyberProxy(),usdcRemain)
+
+IRs:
+TMP_417(address) = INTERNAL_CALL, Helpers.getAddressKyberProxy()()
+HIGH_LEVEL_CALL, dest:usdcContract(ERC20Interface), function:approve, arguments:['TMP_417', 'usdcRemain']  "];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+KyberInterface(getAddressKyberProxy()).trade.value(uint256(0))(getAddressUSDC(),usdcRemain,getAddressETH(),address(this),2 ** 255,0,getAddressAdmin())
+
+IRs:
+TMP_419(address) = INTERNAL_CALL, Helpers.getAddressKyberProxy()()
+TMP_420 = CONVERT TMP_419 to KyberInterface
+TMP_421 = CONVERT 0 to uint256
+TMP_423(address) = INTERNAL_CALL, Helpers.getAddressUSDC()()
+TMP_424(address) = INTERNAL_CALL, Helpers.getAddressETH()()
+TMP_425 = CONVERT this to address
+TMP_426(uint256) = 2 ** 255
+TMP_427(address) = INTERNAL_CALL, Helpers.getAddressAdmin()()
+TMP_428(uint256) = HIGH_LEVEL_CALL, dest:TMP_420(KyberInterface), function:trade, arguments:['TMP_423', 'usdcRemain', 'TMP_424', 'TMP_425', 'TMP_426', '0', 'TMP_427'] value:TMP_421 "];
+16->17;
+17[label="Node Type: END_IF 17
+"];
+17->18;
+18[label="Node Type: NEW VARIABLE 18
+
+EXPRESSION:
+wethContract = ERC20Interface(getAddressWETH())
+
+IRs:
+TMP_429(address) = INTERNAL_CALL, Helpers.getAddressWETH()()
+TMP_430 = CONVERT TMP_429 to ERC20Interface
+wethContract(ERC20Interface) := TMP_430(ERC20Interface)"];
+18->19;
+19[label="Node Type: NEW VARIABLE 19
+
+EXPRESSION:
+wethBal = wethContract.balanceOf(address(this))
+
+IRs:
+TMP_431 = CONVERT this to address
+TMP_432(uint256) = HIGH_LEVEL_CALL, dest:wethContract(ERC20Interface), function:balanceOf, arguments:['TMP_431']  
+wethBal(uint256) := TMP_432(uint256)"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+wethContract.approve(getAddressWETH(),wethBal)
+
+IRs:
+TMP_433(address) = INTERNAL_CALL, Helpers.getAddressWETH()()
+HIGH_LEVEL_CALL, dest:wethContract(ERC20Interface), function:approve, arguments:['TMP_433', 'wethBal']  "];
+20->21;
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+wethContract.withdraw(wethBal)
+
+IRs:
+HIGH_LEVEL_CALL, dest:wethContract(ERC20Interface), function:withdraw, arguments:['wethBal']  "];
+21->22;
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+mintCEth(address(this).balance)
+
+IRs:
+TMP_436 = CONVERT this to address
+TMP_437(uint256) = SOLIDITY_CALL balance(address)(TMP_436)
+INTERNAL_CALL, CompoundResolver.mintCEth(uint256)(TMP_437)"];
+22->23;
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+LogLeverageCompoundUsdc(usdcToSwap,address(this).balance)
+
+IRs:
+TMP_439 = CONVERT this to address
+TMP_440(uint256) = SOLIDITY_CALL balance(address)(TMP_439)
+Emit LogLeverageCompoundUsdc(usdcToSwap,TMP_440)"];
+24[label="Node Type: IF 24
+
+EXPRESSION:
+usdcToSwap < usdcToBorrow
+
+IRs:
+TMP_442(bool) = usdcToSwap < usdcToBorrow
+CONDITION TMP_442"];
+24->25[label="True"];
+24->26[label="False"];
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+usdcToSwap = usdcToSwap
+
+IRs:
+usdcToSwap(uint256) := usdcToSwap(uint256)"];
+25->27;
+26[label="Node Type: EXPRESSION 26
+
+EXPRESSION:
+usdcToSwap = usdcToBorrow
+
+IRs:
+usdcToSwap(uint256) := usdcToBorrow(uint256)"];
+26->27;
+27[label="Node Type: END_IF 27
+"];
+27->7;
+}
+// Function: 43327.sol-CompoundSave-mintCEth(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+cToken = CETHInterface(getCETHAddress())
+
+IRs:
+TMP_252(address) = INTERNAL_CALL, Helpers.getCETHAddress()()
+TMP_253 = CONVERT TMP_252 to CETHInterface
+cToken(CETHInterface) := TMP_253(CETHInterface)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+cToken.mint.value(tokenAmt)()
+
+IRs:
+HIGH_LEVEL_CALL, dest:cToken(CETHInterface), function:mint, arguments:[] value:tokenAmt "];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+LogMint(getAddressETH(),getCETHAddress(),tokenAmt,msg.sender)
+
+IRs:
+TMP_256(address) = INTERNAL_CALL, Helpers.getAddressETH()()
+TMP_257(address) = INTERNAL_CALL, Helpers.getCETHAddress()()
+Emit LogMint(TMP_256,TMP_257,tokenAmt,msg.sender)"];
+}
+// Function: 43327.sol-CompoundSave-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(y == 0 || (z = x * y) / y == x,math-not-safe)
+
+IRs:
+TMP_354(bool) = y == 0
+TMP_355(uint256) = x * y
+z(uint256) := TMP_355(uint256)
+TMP_356(uint256) = z / y
+TMP_357(bool) = TMP_356 == x
+TMP_358(bool) = TMP_354 || TMP_357
+TMP_359(None) = SOLIDITY_CALL require(bool,string)(TMP_358,math-not-safe)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 43327.sol-CompoundSave-redeemEth(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+cToken = CTokenInterface(getCETHAddress())
+
+IRs:
+TMP_259(address) = INTERNAL_CALL, Helpers.getCETHAddress()()
+TMP_260 = CONVERT TMP_259 to CTokenInterface
+cToken(CTokenInterface) := TMP_260(CTokenInterface)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+setApproval(getCETHAddress(),10 ** 30,getCETHAddress())
+
+IRs:
+TMP_261(address) = INTERNAL_CALL, Helpers.getCETHAddress()()
+TMP_262(uint256) = 10 ** 30
+TMP_263(address) = INTERNAL_CALL, Helpers.getCETHAddress()()
+INTERNAL_CALL, Helpers.setApproval(address,uint256,address)(TMP_261,TMP_262,TMP_263)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool,string)(cToken.redeemUnderlying(tokenAmt) == 0,something went wrong)
+
+IRs:
+TMP_265(uint256) = HIGH_LEVEL_CALL, dest:cToken(CTokenInterface), function:redeemUnderlying, arguments:['tokenAmt']  
+TMP_266(bool) = TMP_265 == 0
+TMP_267(None) = SOLIDITY_CALL require(bool,string)(TMP_266,something went wrong)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+LogRedeem(getAddressETH(),getCETHAddress(),tokenAmt,address(this))
+
+IRs:
+TMP_268(address) = INTERNAL_CALL, Helpers.getAddressETH()()
+TMP_269(address) = INTERNAL_CALL, Helpers.getCETHAddress()()
+TMP_270 = CONVERT this to address
+Emit LogRedeem(TMP_268,TMP_269,tokenAmt,TMP_270)"];
+}
+// Function: 43327.sol-CompoundSave-repayUsdc(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+cToken = CERC20Interface(getCUSDCAddress())
+
+IRs:
+TMP_281(address) = INTERNAL_CALL, Helpers.getCUSDCAddress()()
+TMP_282 = CONVERT TMP_281 to CERC20Interface
+cToken(CERC20Interface) := TMP_282(CERC20Interface)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+setApproval(getAddressUSDC(),tokenAmt,getCUSDCAddress())
+
+IRs:
+TMP_283(address) = INTERNAL_CALL, Helpers.getAddressUSDC()()
+TMP_284(address) = INTERNAL_CALL, Helpers.getCUSDCAddress()()
+INTERNAL_CALL, Helpers.setApproval(address,uint256,address)(TMP_283,tokenAmt,TMP_284)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool,string)(cToken.repayBorrow(tokenAmt) == 0,transfer approved?)
+
+IRs:
+TMP_286(uint256) = HIGH_LEVEL_CALL, dest:cToken(CERC20Interface), function:repayBorrow, arguments:['tokenAmt']  
+TMP_287(bool) = TMP_286 == 0
+TMP_288(None) = SOLIDITY_CALL require(bool,string)(TMP_287,transfer approved?)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+LogRepay(getAddressUSDC(),getCUSDCAddress(),tokenAmt,address(this))
+
+IRs:
+TMP_289(address) = INTERNAL_CALL, Helpers.getAddressUSDC()()
+TMP_290(address) = INTERNAL_CALL, Helpers.getCUSDCAddress()()
+TMP_291 = CONVERT this to address
+Emit LogRepay(TMP_289,TMP_290,tokenAmt,TMP_291)"];
+}
+// Function: 43327.sol-CompoundSave-save(uint256,uint256,bool,bytes,address[],uint256[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+enterMarket(getCETHAddress())
+
+IRs:
+TMP_368(address) = INTERNAL_CALL, Helpers.getCETHAddress()()
+INTERNAL_CALL, Helpers.enterMarket(address)(TMP_368)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+enterMarket(getCUSDCAddress())
+
+IRs:
+TMP_370(address) = INTERNAL_CALL, Helpers.getCUSDCAddress()()
+INTERNAL_CALL, Helpers.enterMarket(address)(TMP_370)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+(None,None,None,None,maxWithdraw,None) = getCompStats(address(this),ctokenAddr,ctokenFactor)
+
+IRs:
+TMP_372 = CONVERT this to address
+TUPLE_3(uint256,uint256,uint256,uint256,uint256,uint256) = INTERNAL_CALL, CompoundHelper.getCompStats(address,address[],uint256[])(TMP_372,ctokenAddr,ctokenFactor)
+maxWithdraw(uint256)= UNPACK TUPLE_3 index: 4 "];
+4->21;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+redeemEth(ethToSwap)
+
+IRs:
+INTERNAL_CALL, CompoundResolver.redeemEth(uint256)(ethToSwap)"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+wethContract = ERC20Interface(getAddressWETH())
+
+IRs:
+TMP_374(address) = INTERNAL_CALL, Helpers.getAddressWETH()()
+TMP_375 = CONVERT TMP_374 to ERC20Interface
+wethContract(ERC20Interface) := TMP_375(ERC20Interface)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+wethContract.deposit.value(zrxEthAmt)()
+
+IRs:
+HIGH_LEVEL_CALL, dest:wethContract(ERC20Interface), function:deposit, arguments:[] value:zrxEthAmt "];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+wethContract.approve(getAddressZRXERC20(),zrxEthAmt)
+
+IRs:
+TMP_378(address) = INTERNAL_CALL, Helpers.getAddressZRXERC20()()
+HIGH_LEVEL_CALL, dest:wethContract(ERC20Interface), function:approve, arguments:['TMP_378', 'zrxEthAmt']  "];
+9->10;
+10[label="Node Type: NEW VARIABLE 10
+"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+(swapSuccess,None) = getAddressZRXExchange().call(calldataHexString)
+
+IRs:
+TMP_380(address) = INTERNAL_CALL, Helpers.getAddressZRXExchange()()
+TUPLE_4(bool,bytes) = LOW_LEVEL_CALL, dest:TMP_380, function:call, arguments:['calldataHexString']  
+swapSuccess(bool)= UNPACK TUPLE_4 index: 0 "];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+assert(bool)(swapSuccess)
+
+IRs:
+TMP_381(None) = SOLIDITY_CALL assert(bool)(swapSuccess)"];
+12->13;
+13[label="Node Type: NEW VARIABLE 13
+
+EXPRESSION:
+remainEth = sub(ethToSwap,zrxEthAmt)
+
+IRs:
+TMP_382(uint256) = INTERNAL_CALL, DSMath.sub(uint256,uint256)(ethToSwap,zrxEthAmt)
+remainEth(uint256) := TMP_382(uint256)"];
+13->14;
+14[label="Node Type: IF 14
+
+EXPRESSION:
+remainEth > 0 && isKyber
+
+IRs:
+TMP_383(bool) = remainEth > 0
+TMP_384(bool) = TMP_383 && isKyber
+CONDITION TMP_384"];
+14->15[label="True"];
+14->16[label="False"];
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+KyberInterface(getAddressKyberProxy()).trade.value(remainEth)(getAddressETH(),remainEth,getAddressUSDC(),address(this),2 ** 255,0,getAddressAdmin())
+
+IRs:
+TMP_385(address) = INTERNAL_CALL, Helpers.getAddressKyberProxy()()
+TMP_386 = CONVERT TMP_385 to KyberInterface
+TMP_388(address) = INTERNAL_CALL, Helpers.getAddressETH()()
+TMP_389(address) = INTERNAL_CALL, Helpers.getAddressUSDC()()
+TMP_390 = CONVERT this to address
+TMP_391(uint256) = 2 ** 255
+TMP_392(address) = INTERNAL_CALL, Helpers.getAddressAdmin()()
+TMP_393(uint256) = HIGH_LEVEL_CALL, dest:TMP_386(KyberInterface), function:trade, arguments:['TMP_388', 'remainEth', 'TMP_389', 'TMP_390', 'TMP_391', '0', 'TMP_392'] value:remainEth "];
+15->16;
+16[label="Node Type: END_IF 16
+"];
+16->17;
+17[label="Node Type: NEW VARIABLE 17
+
+EXPRESSION:
+usdcContract = ERC20Interface(getAddressUSDC())
+
+IRs:
+TMP_394(address) = INTERNAL_CALL, Helpers.getAddressUSDC()()
+TMP_395 = CONVERT TMP_394 to ERC20Interface
+usdcContract(ERC20Interface) := TMP_395(ERC20Interface)"];
+17->18;
+18[label="Node Type: NEW VARIABLE 18
+
+EXPRESSION:
+usdcBal = usdcContract.balanceOf(address(this))
+
+IRs:
+TMP_396 = CONVERT this to address
+TMP_397(uint256) = HIGH_LEVEL_CALL, dest:usdcContract(ERC20Interface), function:balanceOf, arguments:['TMP_396']  
+usdcBal(uint256) := TMP_397(uint256)"];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+repayUsdc(usdcBal)
+
+IRs:
+INTERNAL_CALL, CompoundResolver.repayUsdc(uint256)(usdcBal)"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+LogSaveCompoundUsdc(ethToSwap,usdcBal)
+
+IRs:
+Emit LogSaveCompoundUsdc(ethToSwap,usdcBal)"];
+21[label="Node Type: IF 21
+
+EXPRESSION:
+ethToFree < maxWithdraw
+
+IRs:
+TMP_400(bool) = ethToFree < maxWithdraw
+CONDITION TMP_400"];
+21->22[label="True"];
+21->23[label="False"];
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+ethToSwap = ethToFree
+
+IRs:
+ethToSwap(uint256) := ethToFree(uint256)"];
+22->24;
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+ethToSwap = maxWithdraw
+
+IRs:
+ethToSwap(uint256) := maxWithdraw(uint256)"];
+23->24;
+24[label="Node Type: END_IF 24
+"];
+24->6;
+}
+// Function: 43327.sol-CompoundSave-setApproval(address,uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+erc20Contract = ERC20Interface(erc20)
+
+IRs:
+TMP_342 = CONVERT erc20 to ERC20Interface
+erc20Contract(ERC20Interface) := TMP_342(ERC20Interface)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+tokenAllowance = erc20Contract.allowance(address(this),to)
+
+IRs:
+TMP_343 = CONVERT this to address
+TMP_344(uint256) = HIGH_LEVEL_CALL, dest:erc20Contract(ERC20Interface), function:allowance, arguments:['TMP_343', 'to']  
+tokenAllowance(uint256) := TMP_344(uint256)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+srcAmt > tokenAllowance
+
+IRs:
+TMP_345(bool) = srcAmt > tokenAllowance
+CONDITION TMP_345"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+erc20Contract.approve(to,2 ** 255)
+
+IRs:
+TMP_346(uint256) = 2 ** 255
+HIGH_LEVEL_CALL, dest:erc20Contract(ERC20Interface), function:approve, arguments:['to', 'TMP_346']  "];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+}
+// Function: 43327.sol-CompoundSave-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+WAD = 10 ** 18
+
+IRs:
+TMP_443(uint256) = 10 ** 18
+WAD(uint256) := TMP_443(uint256)"];
+}
+// Function: 43327.sol-CompoundSave-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+x - y <= x
+
+IRs:
+TMP_351(uint256) = x - y
+TMP_352(bool) = TMP_351 <= x
+CONDITION TMP_352"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+z = x - y
+
+IRs:
+TMP_353(uint256) = x - y
+z(uint256) := TMP_353(uint256)"];
+3->5;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+z = 0
+
+IRs:
+z(uint256) := 0(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 43327.sol-CompoundSave-usdcBorrowed(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+cTokenContract = CTokenInterface(getCUSDCAddress())
+
+IRs:
+TMP_322(address) = INTERNAL_CALL, Helpers.getCUSDCAddress()()
+TMP_323 = CONVERT TMP_322 to CTokenInterface
+cTokenContract(CTokenInterface) := TMP_323(CTokenInterface)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+usdcAmt = cTokenContract.borrowBalanceCurrent(user)
+
+IRs:
+TMP_324(uint256) = HIGH_LEVEL_CALL, dest:cTokenContract(CTokenInterface), function:borrowBalanceCurrent, arguments:['user']  
+usdcAmt(uint256) := TMP_324(uint256)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+usdcAmt
+
+IRs:
+RETURN usdcAmt"];
+}
+// Function: 43327.sol-CompoundSave-wdiv(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+z = add(mul(x,WAD),y / 2) / y
+
+IRs:
+TMP_364(uint256) = INTERNAL_CALL, DSMath.mul(uint256,uint256)(x,WAD)
+TMP_365(uint256) = y / 2
+TMP_366(uint256) = INTERNAL_CALL, DSMath.add(uint256,uint256)(TMP_364,TMP_365)
+TMP_367(uint256) = TMP_366 / y
+z(uint256) := TMP_367(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 43327.sol-CompoundSave-wmul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+z = add(mul(x,y),WAD / 2) / WAD
+
+IRs:
+TMP_360(uint256) = INTERNAL_CALL, DSMath.mul(uint256,uint256)(x,y)
+TMP_361(uint256) = WAD / 2
+TMP_362(uint256) = INTERNAL_CALL, DSMath.add(uint256,uint256)(TMP_360,TMP_361)
+TMP_363(uint256) = TMP_362 / WAD
+z(uint256) := TMP_363(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 43327.sol-ComptrollerInterface-enterMarkets(address[])
+digraph{
+}
+// Function: 43327.sol-ComptrollerInterface-getAccountLiquidity(address)
+digraph{
+}
+// Function: 43327.sol-ComptrollerInterface-getAssetsIn(address)
+digraph{
+}
+// Function: 43327.sol-DSMath-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)((z = x + y) >= x,math-not-safe)
+
+IRs:
+TMP_0(uint256) = x + y
+z(uint256) := TMP_0(uint256)
+TMP_1(bool) = z >= x
+TMP_2(None) = SOLIDITY_CALL require(bool,string)(TMP_1,math-not-safe)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 43327.sol-DSMath-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(y == 0 || (z = x * y) / y == x,math-not-safe)
+
+IRs:
+TMP_6(bool) = y == 0
+TMP_7(uint256) = x * y
+z(uint256) := TMP_7(uint256)
+TMP_8(uint256) = z / y
+TMP_9(bool) = TMP_8 == x
+TMP_10(bool) = TMP_6 || TMP_9
+TMP_11(None) = SOLIDITY_CALL require(bool,string)(TMP_10,math-not-safe)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 43327.sol-DSMath-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+WAD = 10 ** 18
+
+IRs:
+TMP_20(uint256) = 10 ** 18
+WAD(uint256) := TMP_20(uint256)"];
+}
+// Function: 43327.sol-DSMath-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+x - y <= x
+
+IRs:
+TMP_3(uint256) = x - y
+TMP_4(bool) = TMP_3 <= x
+CONDITION TMP_4"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+z = x - y
+
+IRs:
+TMP_5(uint256) = x - y
+z(uint256) := TMP_5(uint256)"];
+3->5;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+z = 0
+
+IRs:
+z(uint256) := 0(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 43327.sol-DSMath-wdiv(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+z = add(mul(x,WAD),y / 2) / y
+
+IRs:
+TMP_16(uint256) = INTERNAL_CALL, DSMath.mul(uint256,uint256)(x,WAD)
+TMP_17(uint256) = y / 2
+TMP_18(uint256) = INTERNAL_CALL, DSMath.add(uint256,uint256)(TMP_16,TMP_17)
+TMP_19(uint256) = TMP_18 / y
+z(uint256) := TMP_19(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 43327.sol-DSMath-wmul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+z = add(mul(x,y),WAD / 2) / WAD
+
+IRs:
+TMP_12(uint256) = INTERNAL_CALL, DSMath.mul(uint256,uint256)(x,y)
+TMP_13(uint256) = WAD / 2
+TMP_14(uint256) = INTERNAL_CALL, DSMath.add(uint256,uint256)(TMP_12,TMP_13)
+TMP_15(uint256) = TMP_14 / WAD
+z(uint256) := TMP_15(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 43327.sol-ERC20Interface-allowance(address,address)
+digraph{
+}
+// Function: 43327.sol-ERC20Interface-approve(address,uint256)
+digraph{
+}
+// Function: 43327.sol-ERC20Interface-balanceOf(address)
+digraph{
+}
+// Function: 43327.sol-ERC20Interface-deposit()
+digraph{
+}
+// Function: 43327.sol-ERC20Interface-transfer(address,uint256)
+digraph{
+}
+// Function: 43327.sol-ERC20Interface-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 43327.sol-ERC20Interface-withdraw(uint256)
+digraph{
+}
+// Function: 43327.sol-Helpers-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)((z = x + y) >= x,math-not-safe)
+
+IRs:
+TMP_21(uint256) = x + y
+z(uint256) := TMP_21(uint256)
+TMP_22(bool) = z >= x
+TMP_23(None) = SOLIDITY_CALL require(bool,string)(TMP_22,math-not-safe)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 43327.sol-Helpers-enterMarket(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+troller = ComptrollerInterface(getComptrollerAddress())
+
+IRs:
+TMP_41(address) = INTERNAL_CALL, Helpers.getComptrollerAddress()()
+TMP_42 = CONVERT TMP_41 to ComptrollerInterface
+troller(ComptrollerInterface) := TMP_42(ComptrollerInterface)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+markets = troller.getAssetsIn(address(this))
+
+IRs:
+TMP_43 = CONVERT this to address
+TMP_44(address[]) = HIGH_LEVEL_CALL, dest:troller(ComptrollerInterface), function:getAssetsIn, arguments:['TMP_43']  
+markets(address[]) = ['TMP_44(address[])']"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+isEntered = false
+
+IRs:
+isEntered(bool) := False(bool)"];
+3->6;
+4[label="Node Type: BEGIN_LOOP 4
+"];
+4->7;
+5[label="Node Type: END_LOOP 5
+"];
+5->12;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+6->4;
+7[label="Node Type: IF_LOOP 7
+
+EXPRESSION:
+i < markets.length
+
+IRs:
+REF_1 -> LENGTH markets
+TMP_45(bool) = i < REF_1
+CONDITION TMP_45"];
+7->8[label="True"];
+7->5[label="False"];
+8[label="Node Type: IF 8
+
+EXPRESSION:
+markets[i] == cErc20
+
+IRs:
+REF_2(address) -> markets[i]
+TMP_46(bool) = REF_2 == cErc20
+CONDITION TMP_46"];
+8->9[label="True"];
+8->10[label="False"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+isEntered = true
+
+IRs:
+isEntered(bool) := True(bool)"];
+9->10;
+10[label="Node Type: END_IF 10
+"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_47(uint256) := i(uint256)
+i(uint256) = i + 1"];
+11->7;
+12[label="Node Type: IF 12
+
+EXPRESSION:
+! isEntered
+
+IRs:
+TMP_48 = UnaryType.BANG isEntered 
+CONDITION TMP_48"];
+12->13[label="True"];
+12->16[label="False"];
+13[label="Node Type: NEW VARIABLE 13
+
+EXPRESSION:
+toEnter = new address[](1)
+
+IRs:
+TMP_50(address[])  = new address[](1)
+toEnter(address[]) = ['TMP_50(address[])']"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+toEnter[0] = cErc20
+
+IRs:
+REF_3(address) -> toEnter[0]
+REF_3(address) (->toEnter) := cErc20(address)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+troller.enterMarkets(toEnter)
+
+IRs:
+TMP_51(uint256[]) = HIGH_LEVEL_CALL, dest:troller(ComptrollerInterface), function:enterMarkets, arguments:['toEnter']  "];
+15->16;
+16[label="Node Type: END_IF 16
+"];
+}
+// Function: 43327.sol-Helpers-getAddressAdmin()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+admin = 0xa7615CD307F323172331865181DC8b80a2834324
+
+IRs:
+admin(address) := 955572717152290849076965359305670882361260327716(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+admin
+
+IRs:
+RETURN admin"];
+}
+// Function: 43327.sol-Helpers-getAddressETH()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+eth = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE
+
+IRs:
+eth(address) := 1364068194842176056990105843868530818345537040110(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+eth
+
+IRs:
+RETURN eth"];
+}
+// Function: 43327.sol-Helpers-getAddressKyberProxy()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+kyberProxy = 0x818E6FECD516Ecc3849DAf6845e3EC868087B755
+
+IRs:
+kyberProxy(address) := 739636265308088261613304435039741210358033397589(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+kyberProxy
+
+IRs:
+RETURN kyberProxy"];
+}
+// Function: 43327.sol-Helpers-getAddressUSDC()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+usdc = 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48
+
+IRs:
+usdc(address) := 917551056842671309452305380979543736893630245704(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+usdc
+
+IRs:
+RETURN usdc"];
+}
+// Function: 43327.sol-Helpers-getAddressWETH()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+eth = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
+
+IRs:
+eth(address) := 1097077688018008265106216665536940668749033598146(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+eth
+
+IRs:
+RETURN eth"];
+}
+// Function: 43327.sol-Helpers-getAddressZRXERC20()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+zrxerc20 = 0x95E6F48254609A6ee006F7D493c8e5fB97094ceF
+
+IRs:
+zrxerc20(address) := 855790095995045926075335861268145962193449995503(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+zrxerc20
+
+IRs:
+RETURN zrxerc20"];
+}
+// Function: 43327.sol-Helpers-getAddressZRXExchange()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+zrxExchange = 0x080bf510FCbF18b91105470639e9561022937712
+
+IRs:
+zrxExchange(address) := 45938582654303390121953012219490797938814449426(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+zrxExchange
+
+IRs:
+RETURN zrxExchange"];
+}
+// Function: 43327.sol-Helpers-getCETHAddress()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+cEth = 0x4Ddc2D193948926D02f9B1fE9e1daa0718270ED5
+
+IRs:
+cEth(address) := 444502381933181293693798013918196478499009007317(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+cEth
+
+IRs:
+RETURN cEth"];
+}
+// Function: 43327.sol-Helpers-getCUSDCAddress()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+cUsdc = 0x39AA39c021dfbaE8faC545936693aC917d5E7563
+
+IRs:
+cUsdc(address) := 329208631400247815016679327962194980497879102819(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+cUsdc
+
+IRs:
+RETURN cUsdc"];
+}
+// Function: 43327.sol-Helpers-getCompOracleAddress()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+troller = 0xe7664229833AE4Abf4E269b8F23a86B657E2338D
+
+IRs:
+troller(address) := 1321057307607440252271861038975558718163773436813(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+troller
+
+IRs:
+RETURN troller"];
+}
+// Function: 43327.sol-Helpers-getComptrollerAddress()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+troller = 0x3d9819210A31b4961b30EF54bE2aeD79B9c9Cd3B
+
+IRs:
+troller(address) := 351640339340447633323156319248468740267018145083(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+troller
+
+IRs:
+RETURN troller"];
+}
+// Function: 43327.sol-Helpers-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(y == 0 || (z = x * y) / y == x,math-not-safe)
+
+IRs:
+TMP_27(bool) = y == 0
+TMP_28(uint256) = x * y
+z(uint256) := TMP_28(uint256)
+TMP_29(uint256) = z / y
+TMP_30(bool) = TMP_29 == x
+TMP_31(bool) = TMP_27 || TMP_30
+TMP_32(None) = SOLIDITY_CALL require(bool,string)(TMP_31,math-not-safe)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 43327.sol-Helpers-setApproval(address,uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+erc20Contract = ERC20Interface(erc20)
+
+IRs:
+TMP_52 = CONVERT erc20 to ERC20Interface
+erc20Contract(ERC20Interface) := TMP_52(ERC20Interface)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+tokenAllowance = erc20Contract.allowance(address(this),to)
+
+IRs:
+TMP_53 = CONVERT this to address
+TMP_54(uint256) = HIGH_LEVEL_CALL, dest:erc20Contract(ERC20Interface), function:allowance, arguments:['TMP_53', 'to']  
+tokenAllowance(uint256) := TMP_54(uint256)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+srcAmt > tokenAllowance
+
+IRs:
+TMP_55(bool) = srcAmt > tokenAllowance
+CONDITION TMP_55"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+erc20Contract.approve(to,2 ** 255)
+
+IRs:
+TMP_56(uint256) = 2 ** 255
+HIGH_LEVEL_CALL, dest:erc20Contract(ERC20Interface), function:approve, arguments:['to', 'TMP_56']  "];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+}
+// Function: 43327.sol-Helpers-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+WAD = 10 ** 18
+
+IRs:
+TMP_58(uint256) = 10 ** 18
+WAD(uint256) := TMP_58(uint256)"];
+}
+// Function: 43327.sol-Helpers-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+x - y <= x
+
+IRs:
+TMP_24(uint256) = x - y
+TMP_25(bool) = TMP_24 <= x
+CONDITION TMP_25"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+z = x - y
+
+IRs:
+TMP_26(uint256) = x - y
+z(uint256) := TMP_26(uint256)"];
+3->5;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+z = 0
+
+IRs:
+z(uint256) := 0(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 43327.sol-Helpers-wdiv(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+z = add(mul(x,WAD),y / 2) / y
+
+IRs:
+TMP_37(uint256) = INTERNAL_CALL, DSMath.mul(uint256,uint256)(x,WAD)
+TMP_38(uint256) = y / 2
+TMP_39(uint256) = INTERNAL_CALL, DSMath.add(uint256,uint256)(TMP_37,TMP_38)
+TMP_40(uint256) = TMP_39 / y
+z(uint256) := TMP_40(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 43327.sol-Helpers-wmul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+z = add(mul(x,y),WAD / 2) / WAD
+
+IRs:
+TMP_33(uint256) = INTERNAL_CALL, DSMath.mul(uint256,uint256)(x,y)
+TMP_34(uint256) = WAD / 2
+TMP_35(uint256) = INTERNAL_CALL, DSMath.add(uint256,uint256)(TMP_33,TMP_34)
+TMP_36(uint256) = TMP_35 / WAD
+z(uint256) := TMP_36(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 43327.sol-InstaCompSaveUsdc-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)((z = x + y) >= x,math-not-safe)
+
+IRs:
+TMP_615(uint256) = x + y
+z(uint256) := TMP_615(uint256)
+TMP_616(bool) = z >= x
+TMP_617(None) = SOLIDITY_CALL require(bool,string)(TMP_616,math-not-safe)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 43327.sol-InstaCompSaveUsdc-borrow(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(CTokenInterface(getCUSDCAddress()).borrow(tokenAmt) == 0,got collateral?)
+
+IRs:
+TMP_539(address) = INTERNAL_CALL, Helpers.getCUSDCAddress()()
+TMP_540 = CONVERT TMP_539 to CTokenInterface
+TMP_541(uint256) = HIGH_LEVEL_CALL, dest:TMP_540(CTokenInterface), function:borrow, arguments:['tokenAmt']  
+TMP_542(bool) = TMP_541 == 0
+TMP_543(None) = SOLIDITY_CALL require(bool,string)(TMP_542,got collateral?)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+LogBorrow(getAddressUSDC(),getCUSDCAddress(),tokenAmt,address(this))
+
+IRs:
+TMP_544(address) = INTERNAL_CALL, Helpers.getAddressUSDC()()
+TMP_545(address) = INTERNAL_CALL, Helpers.getCUSDCAddress()()
+TMP_546 = CONVERT this to address
+Emit LogBorrow(TMP_544,TMP_545,tokenAmt,TMP_546)"];
+}
+// Function: 43327.sol-InstaCompSaveUsdc-compSupplyBorrow(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+cTokenContract = CTokenInterface(cTokenAdd)
+
+IRs:
+TMP_569 = CONVERT cTokenAdd to CTokenInterface
+cTokenContract(CTokenInterface) := TMP_569(CTokenInterface)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+tokenPriceInEth = CompOracleInterface(getCompOracleAddress()).getUnderlyingPrice(cTokenAdd)
+
+IRs:
+TMP_570(address) = INTERNAL_CALL, Helpers.getCompOracleAddress()()
+TMP_571 = CONVERT TMP_570 to CompOracleInterface
+TMP_572(uint256) = HIGH_LEVEL_CALL, dest:TMP_571(CompOracleInterface), function:getUnderlyingPrice, arguments:['cTokenAdd']  
+tokenPriceInEth(uint256) := TMP_572(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+cTokenBal = sub(cTokenContract.balanceOf(user),1)
+
+IRs:
+TMP_573(uint256) = HIGH_LEVEL_CALL, dest:cTokenContract(CTokenInterface), function:balanceOf, arguments:['user']  
+TMP_574(uint256) = INTERNAL_CALL, DSMath.sub(uint256,uint256)(TMP_573,1)
+cTokenBal(uint256) := TMP_574(uint256)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+cTokenExchangeRate = cTokenContract.exchangeRateCurrent()
+
+IRs:
+TMP_575(uint256) = HIGH_LEVEL_CALL, dest:cTokenContract(CTokenInterface), function:exchangeRateCurrent, arguments:[]  
+cTokenExchangeRate(uint256) := TMP_575(uint256)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+tokenSupply = sub(wmul(cTokenBal,cTokenExchangeRate),1)
+
+IRs:
+TMP_576(uint256) = INTERNAL_CALL, DSMath.wmul(uint256,uint256)(cTokenBal,cTokenExchangeRate)
+TMP_577(uint256) = INTERNAL_CALL, DSMath.sub(uint256,uint256)(TMP_576,1)
+tokenSupply(uint256) := TMP_577(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+supplyInEth = sub(wmul(tokenSupply,tokenPriceInEth),10)
+
+IRs:
+TMP_578(uint256) = INTERNAL_CALL, DSMath.wmul(uint256,uint256)(tokenSupply,tokenPriceInEth)
+TMP_579(uint256) = INTERNAL_CALL, DSMath.sub(uint256,uint256)(TMP_578,10)
+supplyInEth(uint256) := TMP_579(uint256)"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+tokenBorrowed = cTokenContract.borrowBalanceCurrent(user)
+
+IRs:
+TMP_580(uint256) = HIGH_LEVEL_CALL, dest:cTokenContract(CTokenInterface), function:borrowBalanceCurrent, arguments:['user']  
+tokenBorrowed(uint256) := TMP_580(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+borrowInEth = add(wmul(tokenBorrowed,tokenPriceInEth),10)
+
+IRs:
+TMP_581(uint256) = INTERNAL_CALL, DSMath.wmul(uint256,uint256)(tokenBorrowed,tokenPriceInEth)
+TMP_582(uint256) = INTERNAL_CALL, DSMath.add(uint256,uint256)(TMP_581,10)
+borrowInEth(uint256) := TMP_582(uint256)"];
+8->9;
+9[label="Node Type: RETURN 9
+
+EXPRESSION:
+(supplyInEth,borrowInEth)
+
+IRs:
+RETURN supplyInEth,borrowInEth"];
+}
+// Function: 43327.sol-InstaCompSaveUsdc-constructor(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+version = _version
+
+IRs:
+version(uint256) := _version(uint256)"];
+}
+// Function: 43327.sol-InstaCompSaveUsdc-enterMarket(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+troller = ComptrollerInterface(getComptrollerAddress())
+
+IRs:
+TMP_598(address) = INTERNAL_CALL, Helpers.getComptrollerAddress()()
+TMP_599 = CONVERT TMP_598 to ComptrollerInterface
+troller(ComptrollerInterface) := TMP_599(ComptrollerInterface)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+markets = troller.getAssetsIn(address(this))
+
+IRs:
+TMP_600 = CONVERT this to address
+TMP_601(address[]) = HIGH_LEVEL_CALL, dest:troller(ComptrollerInterface), function:getAssetsIn, arguments:['TMP_600']  
+markets(address[]) = ['TMP_601(address[])']"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+isEntered = false
+
+IRs:
+isEntered(bool) := False(bool)"];
+3->6;
+4[label="Node Type: BEGIN_LOOP 4
+"];
+4->7;
+5[label="Node Type: END_LOOP 5
+"];
+5->12;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+6->4;
+7[label="Node Type: IF_LOOP 7
+
+EXPRESSION:
+i < markets.length
+
+IRs:
+REF_118 -> LENGTH markets
+TMP_602(bool) = i < REF_118
+CONDITION TMP_602"];
+7->8[label="True"];
+7->5[label="False"];
+8[label="Node Type: IF 8
+
+EXPRESSION:
+markets[i] == cErc20
+
+IRs:
+REF_119(address) -> markets[i]
+TMP_603(bool) = REF_119 == cErc20
+CONDITION TMP_603"];
+8->9[label="True"];
+8->10[label="False"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+isEntered = true
+
+IRs:
+isEntered(bool) := True(bool)"];
+9->10;
+10[label="Node Type: END_IF 10
+"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_604(uint256) := i(uint256)
+i(uint256) = i + 1"];
+11->7;
+12[label="Node Type: IF 12
+
+EXPRESSION:
+! isEntered
+
+IRs:
+TMP_605 = UnaryType.BANG isEntered 
+CONDITION TMP_605"];
+12->13[label="True"];
+12->16[label="False"];
+13[label="Node Type: NEW VARIABLE 13
+
+EXPRESSION:
+toEnter = new address[](1)
+
+IRs:
+TMP_607(address[])  = new address[](1)
+toEnter(address[]) = ['TMP_607(address[])']"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+toEnter[0] = cErc20
+
+IRs:
+REF_120(address) -> toEnter[0]
+REF_120(address) (->toEnter) := cErc20(address)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+troller.enterMarkets(toEnter)
+
+IRs:
+TMP_608(uint256[]) = HIGH_LEVEL_CALL, dest:troller(ComptrollerInterface), function:enterMarkets, arguments:['toEnter']  "];
+15->16;
+16[label="Node Type: END_IF 16
+"];
+}
+// Function: 43327.sol-InstaCompSaveUsdc-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 43327.sol-InstaCompSaveUsdc-getAddressAdmin()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+admin = 0xa7615CD307F323172331865181DC8b80a2834324
+
+IRs:
+admin(address) := 955572717152290849076965359305670882361260327716(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+admin
+
+IRs:
+RETURN admin"];
+}
+// Function: 43327.sol-InstaCompSaveUsdc-getAddressETH()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+eth = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE
+
+IRs:
+eth(address) := 1364068194842176056990105843868530818345537040110(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+eth
+
+IRs:
+RETURN eth"];
+}
+// Function: 43327.sol-InstaCompSaveUsdc-getAddressKyberProxy()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+kyberProxy = 0x818E6FECD516Ecc3849DAf6845e3EC868087B755
+
+IRs:
+kyberProxy(address) := 739636265308088261613304435039741210358033397589(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+kyberProxy
+
+IRs:
+RETURN kyberProxy"];
+}
+// Function: 43327.sol-InstaCompSaveUsdc-getAddressUSDC()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+usdc = 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48
+
+IRs:
+usdc(address) := 917551056842671309452305380979543736893630245704(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+usdc
+
+IRs:
+RETURN usdc"];
+}
+// Function: 43327.sol-InstaCompSaveUsdc-getAddressWETH()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+eth = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
+
+IRs:
+eth(address) := 1097077688018008265106216665536940668749033598146(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+eth
+
+IRs:
+RETURN eth"];
+}
+// Function: 43327.sol-InstaCompSaveUsdc-getAddressZRXERC20()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+zrxerc20 = 0x95E6F48254609A6ee006F7D493c8e5fB97094ceF
+
+IRs:
+zrxerc20(address) := 855790095995045926075335861268145962193449995503(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+zrxerc20
+
+IRs:
+RETURN zrxerc20"];
+}
+// Function: 43327.sol-InstaCompSaveUsdc-getAddressZRXExchange()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+zrxExchange = 0x080bf510FCbF18b91105470639e9561022937712
+
+IRs:
+zrxExchange(address) := 45938582654303390121953012219490797938814449426(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+zrxExchange
+
+IRs:
+RETURN zrxExchange"];
+}
+// Function: 43327.sol-InstaCompSaveUsdc-getCETHAddress()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+cEth = 0x4Ddc2D193948926D02f9B1fE9e1daa0718270ED5
+
+IRs:
+cEth(address) := 444502381933181293693798013918196478499009007317(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+cEth
+
+IRs:
+RETURN cEth"];
+}
+// Function: 43327.sol-InstaCompSaveUsdc-getCUSDCAddress()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+cUsdc = 0x39AA39c021dfbaE8faC545936693aC917d5E7563
+
+IRs:
+cUsdc(address) := 329208631400247815016679327962194980497879102819(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+cUsdc
+
+IRs:
+RETURN cUsdc"];
+}
+// Function: 43327.sol-InstaCompSaveUsdc-getCompOracleAddress()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+troller = 0xe7664229833AE4Abf4E269b8F23a86B657E2338D
+
+IRs:
+troller(address) := 1321057307607440252271861038975558718163773436813(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+troller
+
+IRs:
+RETURN troller"];
+}
+// Function: 43327.sol-InstaCompSaveUsdc-getCompStats(address,address[],uint256[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: BEGIN_LOOP 1
+"];
+1->4;
+2[label="Node Type: END_LOOP 2
+"];
+2->14;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+3->1;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+i < cTokenAddr.length
+
+IRs:
+REF_106 -> LENGTH cTokenAddr
+TMP_560(bool) = i < REF_106
+CONDITION TMP_560"];
+4->5[label="True"];
+4->2[label="False"];
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+cTokenAdd = cTokenAddr[i]
+
+IRs:
+REF_107(address) -> cTokenAddr[i]
+cTokenAdd(address) := REF_107(address)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+factor = cTokenFactor[i]
+
+IRs:
+REF_108(uint256) -> cTokenFactor[i]
+factor(uint256) := REF_108(uint256)"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+"];
+7->8;
+8[label="Node Type: NEW VARIABLE 8
+"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+(supplyInEth,borrowInEth) = compSupplyBorrow(cTokenAdd,user)
+
+IRs:
+TUPLE_11(uint256,uint256) = INTERNAL_CALL, CompoundHelper.compSupplyBorrow(address,address)(cTokenAdd,user)
+supplyInEth(uint256)= UNPACK TUPLE_11 index: 0 
+borrowInEth(uint256)= UNPACK TUPLE_11 index: 1 "];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+totalSupply += supplyInEth
+
+IRs:
+totalSupply(uint256) = totalSupply + supplyInEth"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+totalBorrow += borrowInEth
+
+IRs:
+totalBorrow(uint256) = totalBorrow + borrowInEth"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+maxBorrow += wmul(supplyInEth,factor)
+
+IRs:
+TMP_561(uint256) = INTERNAL_CALL, DSMath.wmul(uint256,uint256)(supplyInEth,factor)
+maxBorrow(uint256) = maxBorrow + TMP_561"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_562(uint256) := i(uint256)
+i(uint256) = i + 1"];
+13->4;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+borrowRemain = sub(maxBorrow,totalBorrow)
+
+IRs:
+TMP_563(uint256) = INTERNAL_CALL, DSMath.sub(uint256,uint256)(maxBorrow,totalBorrow)
+borrowRemain(uint256) := TMP_563(uint256)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+maxWithdraw = sub(wdiv(borrowRemain,750000000000000000),10)
+
+IRs:
+TMP_564(uint256) = INTERNAL_CALL, DSMath.wdiv(uint256,uint256)(borrowRemain,750000000000000000)
+TMP_565(uint256) = INTERNAL_CALL, DSMath.sub(uint256,uint256)(TMP_564,10)
+maxWithdraw(uint256) := TMP_565(uint256)"];
+15->16;
+16[label="Node Type: NEW VARIABLE 16
+
+EXPRESSION:
+userEthSupply = getEthSupply(user)
+
+IRs:
+TMP_566(uint256) = INTERNAL_CALL, CompoundHelper.getEthSupply(address)(user)
+userEthSupply(uint256) := TMP_566(uint256)"];
+16->19;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+ratio = wdiv(totalBorrow,totalSupply)
+
+IRs:
+TMP_567(uint256) = INTERNAL_CALL, DSMath.wdiv(uint256,uint256)(totalBorrow,totalSupply)
+ratio(uint256) := TMP_567(uint256)"];
+18->23;
+19[label="Node Type: IF 19
+
+EXPRESSION:
+userEthSupply > maxWithdraw
+
+IRs:
+TMP_568(bool) = userEthSupply > maxWithdraw
+CONDITION TMP_568"];
+19->20[label="True"];
+19->21[label="False"];
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+maxWithdraw = maxWithdraw
+
+IRs:
+maxWithdraw(uint256) := maxWithdraw(uint256)"];
+20->22;
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+maxWithdraw = userEthSupply
+
+IRs:
+maxWithdraw(uint256) := userEthSupply(uint256)"];
+21->22;
+22[label="Node Type: END_IF 22
+"];
+22->18;
+23[label="Node Type: RETURN 23
+
+EXPRESSION:
+(totalSupply,totalBorrow,maxBorrow,borrowRemain,maxWithdraw,ratio)
+
+IRs:
+RETURN totalSupply,totalBorrow,maxBorrow,borrowRemain,maxWithdraw,ratio"];
+}
+// Function: 43327.sol-InstaCompSaveUsdc-getComptrollerAddress()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+troller = 0x3d9819210A31b4961b30EF54bE2aeD79B9c9Cd3B
+
+IRs:
+troller(address) := 351640339340447633323156319248468740267018145083(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+troller
+
+IRs:
+RETURN troller"];
+}
+// Function: 43327.sol-InstaCompSaveUsdc-getEthSupply(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+cTokenContract = CTokenInterface(getCETHAddress())
+
+IRs:
+TMP_583(address) = INTERNAL_CALL, Helpers.getCETHAddress()()
+TMP_584 = CONVERT TMP_583 to CTokenInterface
+cTokenContract(CTokenInterface) := TMP_584(CTokenInterface)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+cTokenBal = sub(cTokenContract.balanceOf(user),1)
+
+IRs:
+TMP_585(uint256) = HIGH_LEVEL_CALL, dest:cTokenContract(CTokenInterface), function:balanceOf, arguments:['user']  
+TMP_586(uint256) = INTERNAL_CALL, DSMath.sub(uint256,uint256)(TMP_585,1)
+cTokenBal(uint256) := TMP_586(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+cTokenExchangeRate = cTokenContract.exchangeRateCurrent()
+
+IRs:
+TMP_587(uint256) = HIGH_LEVEL_CALL, dest:cTokenContract(CTokenInterface), function:exchangeRateCurrent, arguments:[]  
+cTokenExchangeRate(uint256) := TMP_587(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+ethSupply = wmul(cTokenBal,cTokenExchangeRate)
+
+IRs:
+TMP_588(uint256) = INTERNAL_CALL, DSMath.wmul(uint256,uint256)(cTokenBal,cTokenExchangeRate)
+ethSupply(uint256) := TMP_588(uint256)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+ethSupply
+
+IRs:
+RETURN ethSupply"];
+}
+// Function: 43327.sol-InstaCompSaveUsdc-getUsdcRemainBorrow(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+tokenPriceInEth = CompOracleInterface(getCompOracleAddress()).getUnderlyingPrice(getCUSDCAddress())
+
+IRs:
+TMP_592(address) = INTERNAL_CALL, Helpers.getCompOracleAddress()()
+TMP_593 = CONVERT TMP_592 to CompOracleInterface
+TMP_594(address) = INTERNAL_CALL, Helpers.getCUSDCAddress()()
+TMP_595(uint256) = HIGH_LEVEL_CALL, dest:TMP_593(CompOracleInterface), function:getUnderlyingPrice, arguments:['TMP_594']  
+tokenPriceInEth(uint256) := TMP_595(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+usdcAmt = sub(wdiv(usdcInEth,tokenPriceInEth),10)
+
+IRs:
+TMP_596(uint256) = INTERNAL_CALL, DSMath.wdiv(uint256,uint256)(usdcInEth,tokenPriceInEth)
+TMP_597(uint256) = INTERNAL_CALL, DSMath.sub(uint256,uint256)(TMP_596,10)
+usdcAmt(uint256) := TMP_597(uint256)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+usdcAmt
+
+IRs:
+RETURN usdcAmt"];
+}
+// Function: 43327.sol-InstaCompSaveUsdc-leverage(uint256,uint256,bytes,bool,address[],uint256[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+enterMarket(getCETHAddress())
+
+IRs:
+TMP_477(address) = INTERNAL_CALL, Helpers.getCETHAddress()()
+INTERNAL_CALL, Helpers.enterMarket(address)(TMP_477)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+enterMarket(getCUSDCAddress())
+
+IRs:
+TMP_479(address) = INTERNAL_CALL, Helpers.getCUSDCAddress()()
+INTERNAL_CALL, Helpers.enterMarket(address)(TMP_479)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+(None,None,None,borrowRemain,None,None) = getCompStats(address(this),cTokenAddr,ctokenFactor)
+
+IRs:
+TMP_481 = CONVERT this to address
+TUPLE_9(uint256,uint256,uint256,uint256,uint256,uint256) = INTERNAL_CALL, CompoundHelper.getCompStats(address,address[],uint256[])(TMP_481,cTokenAddr,ctokenFactor)
+borrowRemain(uint256)= UNPACK TUPLE_9 index: 3 "];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+usdcToSwap = getUsdcRemainBorrow(borrowRemain)
+
+IRs:
+TMP_482(uint256) = INTERNAL_CALL, CompoundHelper.getUsdcRemainBorrow(uint256)(borrowRemain)
+usdcToSwap(uint256) := TMP_482(uint256)"];
+5->24;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+borrow(usdcToSwap)
+
+IRs:
+INTERNAL_CALL, CompoundResolver.borrow(uint256)(usdcToSwap)"];
+7->8;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+usdcContract = ERC20Interface(getAddressUSDC())
+
+IRs:
+TMP_484(address) = INTERNAL_CALL, Helpers.getAddressUSDC()()
+TMP_485 = CONVERT TMP_484 to ERC20Interface
+usdcContract(ERC20Interface) := TMP_485(ERC20Interface)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+usdcContract.approve(getAddressZRXERC20(),zrxUsdcAmt)
+
+IRs:
+TMP_486(address) = INTERNAL_CALL, Helpers.getAddressZRXERC20()()
+HIGH_LEVEL_CALL, dest:usdcContract(ERC20Interface), function:approve, arguments:['TMP_486', 'zrxUsdcAmt']  "];
+9->10;
+10[label="Node Type: NEW VARIABLE 10
+"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+(swapSuccess,None) = getAddressZRXExchange().call(calldataHexString)
+
+IRs:
+TMP_488(address) = INTERNAL_CALL, Helpers.getAddressZRXExchange()()
+TUPLE_10(bool,bytes) = LOW_LEVEL_CALL, dest:TMP_488, function:call, arguments:['calldataHexString']  
+swapSuccess(bool)= UNPACK TUPLE_10 index: 0 "];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+assert(bool)(swapSuccess)
+
+IRs:
+TMP_489(None) = SOLIDITY_CALL assert(bool)(swapSuccess)"];
+12->13;
+13[label="Node Type: NEW VARIABLE 13
+
+EXPRESSION:
+usdcRemain = sub(usdcToSwap,zrxUsdcAmt)
+
+IRs:
+TMP_490(uint256) = INTERNAL_CALL, DSMath.sub(uint256,uint256)(usdcToSwap,zrxUsdcAmt)
+usdcRemain(uint256) := TMP_490(uint256)"];
+13->14;
+14[label="Node Type: IF 14
+
+EXPRESSION:
+usdcRemain > 0 && isKyber
+
+IRs:
+TMP_491(bool) = usdcRemain > 0
+TMP_492(bool) = TMP_491 && isKyber
+CONDITION TMP_492"];
+14->15[label="True"];
+14->17[label="False"];
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+usdcContract.approve(getAddressKyberProxy(),usdcRemain)
+
+IRs:
+TMP_493(address) = INTERNAL_CALL, Helpers.getAddressKyberProxy()()
+HIGH_LEVEL_CALL, dest:usdcContract(ERC20Interface), function:approve, arguments:['TMP_493', 'usdcRemain']  "];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+KyberInterface(getAddressKyberProxy()).trade.value(uint256(0))(getAddressUSDC(),usdcRemain,getAddressETH(),address(this),2 ** 255,0,getAddressAdmin())
+
+IRs:
+TMP_495(address) = INTERNAL_CALL, Helpers.getAddressKyberProxy()()
+TMP_496 = CONVERT TMP_495 to KyberInterface
+TMP_497 = CONVERT 0 to uint256
+TMP_499(address) = INTERNAL_CALL, Helpers.getAddressUSDC()()
+TMP_500(address) = INTERNAL_CALL, Helpers.getAddressETH()()
+TMP_501 = CONVERT this to address
+TMP_502(uint256) = 2 ** 255
+TMP_503(address) = INTERNAL_CALL, Helpers.getAddressAdmin()()
+TMP_504(uint256) = HIGH_LEVEL_CALL, dest:TMP_496(KyberInterface), function:trade, arguments:['TMP_499', 'usdcRemain', 'TMP_500', 'TMP_501', 'TMP_502', '0', 'TMP_503'] value:TMP_497 "];
+16->17;
+17[label="Node Type: END_IF 17
+"];
+17->18;
+18[label="Node Type: NEW VARIABLE 18
+
+EXPRESSION:
+wethContract = ERC20Interface(getAddressWETH())
+
+IRs:
+TMP_505(address) = INTERNAL_CALL, Helpers.getAddressWETH()()
+TMP_506 = CONVERT TMP_505 to ERC20Interface
+wethContract(ERC20Interface) := TMP_506(ERC20Interface)"];
+18->19;
+19[label="Node Type: NEW VARIABLE 19
+
+EXPRESSION:
+wethBal = wethContract.balanceOf(address(this))
+
+IRs:
+TMP_507 = CONVERT this to address
+TMP_508(uint256) = HIGH_LEVEL_CALL, dest:wethContract(ERC20Interface), function:balanceOf, arguments:['TMP_507']  
+wethBal(uint256) := TMP_508(uint256)"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+wethContract.approve(getAddressWETH(),wethBal)
+
+IRs:
+TMP_509(address) = INTERNAL_CALL, Helpers.getAddressWETH()()
+HIGH_LEVEL_CALL, dest:wethContract(ERC20Interface), function:approve, arguments:['TMP_509', 'wethBal']  "];
+20->21;
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+wethContract.withdraw(wethBal)
+
+IRs:
+HIGH_LEVEL_CALL, dest:wethContract(ERC20Interface), function:withdraw, arguments:['wethBal']  "];
+21->22;
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+mintCEth(address(this).balance)
+
+IRs:
+TMP_512 = CONVERT this to address
+TMP_513(uint256) = SOLIDITY_CALL balance(address)(TMP_512)
+INTERNAL_CALL, CompoundResolver.mintCEth(uint256)(TMP_513)"];
+22->23;
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+LogLeverageCompoundUsdc(usdcToSwap,address(this).balance)
+
+IRs:
+TMP_515 = CONVERT this to address
+TMP_516(uint256) = SOLIDITY_CALL balance(address)(TMP_515)
+Emit LogLeverageCompoundUsdc(usdcToSwap,TMP_516)"];
+24[label="Node Type: IF 24
+
+EXPRESSION:
+usdcToSwap < usdcToBorrow
+
+IRs:
+TMP_518(bool) = usdcToSwap < usdcToBorrow
+CONDITION TMP_518"];
+24->25[label="True"];
+24->26[label="False"];
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+usdcToSwap = usdcToSwap
+
+IRs:
+usdcToSwap(uint256) := usdcToSwap(uint256)"];
+25->27;
+26[label="Node Type: EXPRESSION 26
+
+EXPRESSION:
+usdcToSwap = usdcToBorrow
+
+IRs:
+usdcToSwap(uint256) := usdcToBorrow(uint256)"];
+26->27;
+27[label="Node Type: END_IF 27
+"];
+27->7;
+}
+// Function: 43327.sol-InstaCompSaveUsdc-mintCEth(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+cToken = CETHInterface(getCETHAddress())
+
+IRs:
+TMP_519(address) = INTERNAL_CALL, Helpers.getCETHAddress()()
+TMP_520 = CONVERT TMP_519 to CETHInterface
+cToken(CETHInterface) := TMP_520(CETHInterface)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+cToken.mint.value(tokenAmt)()
+
+IRs:
+HIGH_LEVEL_CALL, dest:cToken(CETHInterface), function:mint, arguments:[] value:tokenAmt "];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+LogMint(getAddressETH(),getCETHAddress(),tokenAmt,msg.sender)
+
+IRs:
+TMP_523(address) = INTERNAL_CALL, Helpers.getAddressETH()()
+TMP_524(address) = INTERNAL_CALL, Helpers.getCETHAddress()()
+Emit LogMint(TMP_523,TMP_524,tokenAmt,msg.sender)"];
+}
+// Function: 43327.sol-InstaCompSaveUsdc-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(y == 0 || (z = x * y) / y == x,math-not-safe)
+
+IRs:
+TMP_621(bool) = y == 0
+TMP_622(uint256) = x * y
+z(uint256) := TMP_622(uint256)
+TMP_623(uint256) = z / y
+TMP_624(bool) = TMP_623 == x
+TMP_625(bool) = TMP_621 || TMP_624
+TMP_626(None) = SOLIDITY_CALL require(bool,string)(TMP_625,math-not-safe)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 43327.sol-InstaCompSaveUsdc-redeemEth(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+cToken = CTokenInterface(getCETHAddress())
+
+IRs:
+TMP_526(address) = INTERNAL_CALL, Helpers.getCETHAddress()()
+TMP_527 = CONVERT TMP_526 to CTokenInterface
+cToken(CTokenInterface) := TMP_527(CTokenInterface)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+setApproval(getCETHAddress(),10 ** 30,getCETHAddress())
+
+IRs:
+TMP_528(address) = INTERNAL_CALL, Helpers.getCETHAddress()()
+TMP_529(uint256) = 10 ** 30
+TMP_530(address) = INTERNAL_CALL, Helpers.getCETHAddress()()
+INTERNAL_CALL, Helpers.setApproval(address,uint256,address)(TMP_528,TMP_529,TMP_530)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool,string)(cToken.redeemUnderlying(tokenAmt) == 0,something went wrong)
+
+IRs:
+TMP_532(uint256) = HIGH_LEVEL_CALL, dest:cToken(CTokenInterface), function:redeemUnderlying, arguments:['tokenAmt']  
+TMP_533(bool) = TMP_532 == 0
+TMP_534(None) = SOLIDITY_CALL require(bool,string)(TMP_533,something went wrong)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+LogRedeem(getAddressETH(),getCETHAddress(),tokenAmt,address(this))
+
+IRs:
+TMP_535(address) = INTERNAL_CALL, Helpers.getAddressETH()()
+TMP_536(address) = INTERNAL_CALL, Helpers.getCETHAddress()()
+TMP_537 = CONVERT this to address
+Emit LogRedeem(TMP_535,TMP_536,tokenAmt,TMP_537)"];
+}
+// Function: 43327.sol-InstaCompSaveUsdc-repayUsdc(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+cToken = CERC20Interface(getCUSDCAddress())
+
+IRs:
+TMP_548(address) = INTERNAL_CALL, Helpers.getCUSDCAddress()()
+TMP_549 = CONVERT TMP_548 to CERC20Interface
+cToken(CERC20Interface) := TMP_549(CERC20Interface)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+setApproval(getAddressUSDC(),tokenAmt,getCUSDCAddress())
+
+IRs:
+TMP_550(address) = INTERNAL_CALL, Helpers.getAddressUSDC()()
+TMP_551(address) = INTERNAL_CALL, Helpers.getCUSDCAddress()()
+INTERNAL_CALL, Helpers.setApproval(address,uint256,address)(TMP_550,tokenAmt,TMP_551)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool,string)(cToken.repayBorrow(tokenAmt) == 0,transfer approved?)
+
+IRs:
+TMP_553(uint256) = HIGH_LEVEL_CALL, dest:cToken(CERC20Interface), function:repayBorrow, arguments:['tokenAmt']  
+TMP_554(bool) = TMP_553 == 0
+TMP_555(None) = SOLIDITY_CALL require(bool,string)(TMP_554,transfer approved?)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+LogRepay(getAddressUSDC(),getCUSDCAddress(),tokenAmt,address(this))
+
+IRs:
+TMP_556(address) = INTERNAL_CALL, Helpers.getAddressUSDC()()
+TMP_557(address) = INTERNAL_CALL, Helpers.getCUSDCAddress()()
+TMP_558 = CONVERT this to address
+Emit LogRepay(TMP_556,TMP_557,tokenAmt,TMP_558)"];
+}
+// Function: 43327.sol-InstaCompSaveUsdc-save(uint256,uint256,bool,bytes,address[],uint256[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+enterMarket(getCETHAddress())
+
+IRs:
+TMP_444(address) = INTERNAL_CALL, Helpers.getCETHAddress()()
+INTERNAL_CALL, Helpers.enterMarket(address)(TMP_444)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+enterMarket(getCUSDCAddress())
+
+IRs:
+TMP_446(address) = INTERNAL_CALL, Helpers.getCUSDCAddress()()
+INTERNAL_CALL, Helpers.enterMarket(address)(TMP_446)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+(None,None,None,None,maxWithdraw,None) = getCompStats(address(this),ctokenAddr,ctokenFactor)
+
+IRs:
+TMP_448 = CONVERT this to address
+TUPLE_7(uint256,uint256,uint256,uint256,uint256,uint256) = INTERNAL_CALL, CompoundHelper.getCompStats(address,address[],uint256[])(TMP_448,ctokenAddr,ctokenFactor)
+maxWithdraw(uint256)= UNPACK TUPLE_7 index: 4 "];
+4->21;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+redeemEth(ethToSwap)
+
+IRs:
+INTERNAL_CALL, CompoundResolver.redeemEth(uint256)(ethToSwap)"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+wethContract = ERC20Interface(getAddressWETH())
+
+IRs:
+TMP_450(address) = INTERNAL_CALL, Helpers.getAddressWETH()()
+TMP_451 = CONVERT TMP_450 to ERC20Interface
+wethContract(ERC20Interface) := TMP_451(ERC20Interface)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+wethContract.deposit.value(zrxEthAmt)()
+
+IRs:
+HIGH_LEVEL_CALL, dest:wethContract(ERC20Interface), function:deposit, arguments:[] value:zrxEthAmt "];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+wethContract.approve(getAddressZRXERC20(),zrxEthAmt)
+
+IRs:
+TMP_454(address) = INTERNAL_CALL, Helpers.getAddressZRXERC20()()
+HIGH_LEVEL_CALL, dest:wethContract(ERC20Interface), function:approve, arguments:['TMP_454', 'zrxEthAmt']  "];
+9->10;
+10[label="Node Type: NEW VARIABLE 10
+"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+(swapSuccess,None) = getAddressZRXExchange().call(calldataHexString)
+
+IRs:
+TMP_456(address) = INTERNAL_CALL, Helpers.getAddressZRXExchange()()
+TUPLE_8(bool,bytes) = LOW_LEVEL_CALL, dest:TMP_456, function:call, arguments:['calldataHexString']  
+swapSuccess(bool)= UNPACK TUPLE_8 index: 0 "];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+assert(bool)(swapSuccess)
+
+IRs:
+TMP_457(None) = SOLIDITY_CALL assert(bool)(swapSuccess)"];
+12->13;
+13[label="Node Type: NEW VARIABLE 13
+
+EXPRESSION:
+remainEth = sub(ethToSwap,zrxEthAmt)
+
+IRs:
+TMP_458(uint256) = INTERNAL_CALL, DSMath.sub(uint256,uint256)(ethToSwap,zrxEthAmt)
+remainEth(uint256) := TMP_458(uint256)"];
+13->14;
+14[label="Node Type: IF 14
+
+EXPRESSION:
+remainEth > 0 && isKyber
+
+IRs:
+TMP_459(bool) = remainEth > 0
+TMP_460(bool) = TMP_459 && isKyber
+CONDITION TMP_460"];
+14->15[label="True"];
+14->16[label="False"];
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+KyberInterface(getAddressKyberProxy()).trade.value(remainEth)(getAddressETH(),remainEth,getAddressUSDC(),address(this),2 ** 255,0,getAddressAdmin())
+
+IRs:
+TMP_461(address) = INTERNAL_CALL, Helpers.getAddressKyberProxy()()
+TMP_462 = CONVERT TMP_461 to KyberInterface
+TMP_464(address) = INTERNAL_CALL, Helpers.getAddressETH()()
+TMP_465(address) = INTERNAL_CALL, Helpers.getAddressUSDC()()
+TMP_466 = CONVERT this to address
+TMP_467(uint256) = 2 ** 255
+TMP_468(address) = INTERNAL_CALL, Helpers.getAddressAdmin()()
+TMP_469(uint256) = HIGH_LEVEL_CALL, dest:TMP_462(KyberInterface), function:trade, arguments:['TMP_464', 'remainEth', 'TMP_465', 'TMP_466', 'TMP_467', '0', 'TMP_468'] value:remainEth "];
+15->16;
+16[label="Node Type: END_IF 16
+"];
+16->17;
+17[label="Node Type: NEW VARIABLE 17
+
+EXPRESSION:
+usdcContract = ERC20Interface(getAddressUSDC())
+
+IRs:
+TMP_470(address) = INTERNAL_CALL, Helpers.getAddressUSDC()()
+TMP_471 = CONVERT TMP_470 to ERC20Interface
+usdcContract(ERC20Interface) := TMP_471(ERC20Interface)"];
+17->18;
+18[label="Node Type: NEW VARIABLE 18
+
+EXPRESSION:
+usdcBal = usdcContract.balanceOf(address(this))
+
+IRs:
+TMP_472 = CONVERT this to address
+TMP_473(uint256) = HIGH_LEVEL_CALL, dest:usdcContract(ERC20Interface), function:balanceOf, arguments:['TMP_472']  
+usdcBal(uint256) := TMP_473(uint256)"];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+repayUsdc(usdcBal)
+
+IRs:
+INTERNAL_CALL, CompoundResolver.repayUsdc(uint256)(usdcBal)"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+LogSaveCompoundUsdc(ethToSwap,usdcBal)
+
+IRs:
+Emit LogSaveCompoundUsdc(ethToSwap,usdcBal)"];
+21[label="Node Type: IF 21
+
+EXPRESSION:
+ethToFree < maxWithdraw
+
+IRs:
+TMP_476(bool) = ethToFree < maxWithdraw
+CONDITION TMP_476"];
+21->22[label="True"];
+21->23[label="False"];
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+ethToSwap = ethToFree
+
+IRs:
+ethToSwap(uint256) := ethToFree(uint256)"];
+22->24;
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+ethToSwap = maxWithdraw
+
+IRs:
+ethToSwap(uint256) := maxWithdraw(uint256)"];
+23->24;
+24[label="Node Type: END_IF 24
+"];
+24->6;
+}
+// Function: 43327.sol-InstaCompSaveUsdc-setApproval(address,uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+erc20Contract = ERC20Interface(erc20)
+
+IRs:
+TMP_609 = CONVERT erc20 to ERC20Interface
+erc20Contract(ERC20Interface) := TMP_609(ERC20Interface)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+tokenAllowance = erc20Contract.allowance(address(this),to)
+
+IRs:
+TMP_610 = CONVERT this to address
+TMP_611(uint256) = HIGH_LEVEL_CALL, dest:erc20Contract(ERC20Interface), function:allowance, arguments:['TMP_610', 'to']  
+tokenAllowance(uint256) := TMP_611(uint256)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+srcAmt > tokenAllowance
+
+IRs:
+TMP_612(bool) = srcAmt > tokenAllowance
+CONDITION TMP_612"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+erc20Contract.approve(to,2 ** 255)
+
+IRs:
+TMP_613(uint256) = 2 ** 255
+HIGH_LEVEL_CALL, dest:erc20Contract(ERC20Interface), function:approve, arguments:['to', 'TMP_613']  "];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+}
+// Function: 43327.sol-InstaCompSaveUsdc-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+WAD = 10 ** 18
+
+IRs:
+TMP_635(uint256) = 10 ** 18
+WAD(uint256) := TMP_635(uint256)"];
+}
+// Function: 43327.sol-InstaCompSaveUsdc-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+x - y <= x
+
+IRs:
+TMP_618(uint256) = x - y
+TMP_619(bool) = TMP_618 <= x
+CONDITION TMP_619"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+z = x - y
+
+IRs:
+TMP_620(uint256) = x - y
+z(uint256) := TMP_620(uint256)"];
+3->5;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+z = 0
+
+IRs:
+z(uint256) := 0(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 43327.sol-InstaCompSaveUsdc-usdcBorrowed(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+cTokenContract = CTokenInterface(getCUSDCAddress())
+
+IRs:
+TMP_589(address) = INTERNAL_CALL, Helpers.getCUSDCAddress()()
+TMP_590 = CONVERT TMP_589 to CTokenInterface
+cTokenContract(CTokenInterface) := TMP_590(CTokenInterface)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+usdcAmt = cTokenContract.borrowBalanceCurrent(user)
+
+IRs:
+TMP_591(uint256) = HIGH_LEVEL_CALL, dest:cTokenContract(CTokenInterface), function:borrowBalanceCurrent, arguments:['user']  
+usdcAmt(uint256) := TMP_591(uint256)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+usdcAmt
+
+IRs:
+RETURN usdcAmt"];
+}
+// Function: 43327.sol-InstaCompSaveUsdc-wdiv(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+z = add(mul(x,WAD),y / 2) / y
+
+IRs:
+TMP_631(uint256) = INTERNAL_CALL, DSMath.mul(uint256,uint256)(x,WAD)
+TMP_632(uint256) = y / 2
+TMP_633(uint256) = INTERNAL_CALL, DSMath.add(uint256,uint256)(TMP_631,TMP_632)
+TMP_634(uint256) = TMP_633 / y
+z(uint256) := TMP_634(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 43327.sol-InstaCompSaveUsdc-wmul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+z = add(mul(x,y),WAD / 2) / WAD
+
+IRs:
+TMP_627(uint256) = INTERNAL_CALL, DSMath.mul(uint256,uint256)(x,y)
+TMP_628(uint256) = WAD / 2
+TMP_629(uint256) = INTERNAL_CALL, DSMath.add(uint256,uint256)(TMP_627,TMP_628)
+TMP_630(uint256) = TMP_629 / WAD
+z(uint256) := TMP_630(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 43327.sol-KyberInterface-trade(address,uint256,address,address,uint256,uint256,address)
+digraph{
+}
+}

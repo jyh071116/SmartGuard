@@ -1,0 +1,2248 @@
+digraph G {
+// Function: 313.sol-DEXified-ERC20()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+tokenPrice = 10 ** uint256(decimals)
+
+IRs:
+TMP_45 = CONVERT decimals to uint256
+TMP_46(uint256) = 10 ** TMP_45
+tokenPrice(uint256) := TMP_46(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+contributor = contributors[issuer]
+
+IRs:
+REF_35(ERC20.Contributor) -> contributors[issuer]
+contributor(ERC20.Contributor) := REF_35(ERC20.Contributor)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+contributor.balance = totalSupply()
+
+IRs:
+REF_36(uint256) -> contributor.balance
+TMP_47(uint256) = INTERNAL_CALL, ERC20.totalSupply()()
+REF_36(uint256) (->contributor) := TMP_47(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Transfer(address(0),issuer,totalSupply())
+
+IRs:
+TMP_48 = CONVERT 0 to address
+TMP_49(uint256) = INTERNAL_CALL, ERC20.totalSupply()()
+Emit Transfer(TMP_48,issuer,TMP_49)"];
+}
+// Function: 313.sol-DEXified-addSeller(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+sales.lookup[item] > 0
+
+IRs:
+REF_73(mapping(address => uint256)) -> sales.lookup
+REF_74(uint256) -> REF_73[item]
+TMP_72(bool) = REF_74 > 0
+CONDITION TMP_72"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+sales.lookup[item] = sales.items.push(item)
+
+IRs:
+REF_75(mapping(address => uint256)) -> sales.lookup
+REF_76(uint256) -> REF_75[item]
+REF_77(address[]) -> sales.items
+REF_79 -> LENGTH REF_77
+TMP_74(uint256) := REF_79(uint256)
+TMP_75(uint256) = TMP_74 + 1
+REF_79(uint256) (->sales) := TMP_75(uint256)
+REF_80(address) -> REF_77[TMP_74]
+REF_80(address) (->sales) := item(address)
+REF_76(uint256) (->sales) := TMP_73(None)"];
+}
+// Function: 313.sol-DEXified-allowance(address,address)
+digraph{
+}
+// Function: 313.sol-DEXified-approve(address,uint256)
+digraph{
+}
+// Function: 313.sol-DEXified-balanceOf(address)
+digraph{
+}
+// Function: 313.sol-DEXified-changeIssuer(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == issuer)
+
+IRs:
+TMP_70(bool) = msg.sender == issuer
+TMP_71(None) = SOLIDITY_CALL require(bool)(TMP_70)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+issuer = _to
+
+IRs:
+issuer(address) := _to(address)"];
+}
+// Function: 313.sol-DEXified-executeOffer(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! locked)
+
+IRs:
+TMP_88 = UnaryType.BANG locked 
+TMP_89(None) = SOLIDITY_CALL require(bool)(TMP_88)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+offer = exchange[_owner]
+
+IRs:
+REF_105(DEXified.Offer) -> exchange[_owner]
+offer(DEXified.Offer) := REF_105(DEXified.Offer)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(offer.tokens > 0)
+
+IRs:
+REF_106(uint256) -> offer.tokens
+TMP_90(bool) = REF_106 > 0
+TMP_91(None) = SOLIDITY_CALL require(bool)(TMP_90)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool)(msg.value == offer.price)
+
+IRs:
+REF_107(uint256) -> offer.price
+TMP_92(bool) = msg.value == REF_107
+TMP_93(None) = SOLIDITY_CALL require(bool)(TMP_92)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+_owner.transfer(msg.value)
+
+IRs:
+Transfer dest:_owner value:msg.value"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+owner_c = contributors[_owner]
+
+IRs:
+REF_109(ERC20.Contributor) -> contributors[_owner]
+owner_c(ERC20.Contributor) := REF_109(ERC20.Contributor)"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+sender_c = contributors[msg.sender]
+
+IRs:
+REF_110(ERC20.Contributor) -> contributors[msg.sender]
+sender_c(ERC20.Contributor) := REF_110(ERC20.Contributor)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+require(bool)(owner_c.balance >= offer.tokens)
+
+IRs:
+REF_111(uint256) -> owner_c.balance
+REF_112(uint256) -> offer.tokens
+TMP_95(bool) = REF_111 >= REF_112
+TMP_96(None) = SOLIDITY_CALL require(bool)(TMP_95)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+owner_c.balance = owner_c.balance.sub(offer.tokens)
+
+IRs:
+REF_113(uint256) -> owner_c.balance
+REF_114(uint256) -> owner_c.balance
+REF_116(uint256) -> offer.tokens
+TMP_97(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_114', 'REF_116'] 
+REF_113(uint256) (->owner_c) := TMP_97(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+sender_c.balance = sender_c.balance.add(offer.tokens)
+
+IRs:
+REF_117(uint256) -> sender_c.balance
+REF_118(uint256) -> sender_c.balance
+REF_120(uint256) -> offer.tokens
+TMP_98(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_118', 'REF_120'] 
+REF_117(uint256) (->sender_c) := TMP_98(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+Transfer(_owner,msg.sender,offer.tokens)
+
+IRs:
+REF_121(uint256) -> offer.tokens
+Emit Transfer(_owner,msg.sender,REF_121)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+setOffer(_owner,0,0)
+
+IRs:
+INTERNAL_CALL, DEXified.setOffer(address,uint256,uint256)(_owner,0,0)"];
+}
+// Function: 313.sol-DEXified-getOffer(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+offer = exchange[_owner]
+
+IRs:
+REF_70(DEXified.Offer) -> exchange[_owner]
+offer(DEXified.Offer) := REF_70(DEXified.Offer)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+((offer.price,offer.tokens))
+
+IRs:
+REF_71(uint256) -> offer.price
+REF_72(uint256) -> offer.tokens
+RETURN REF_71,REF_72"];
+}
+// Function: 313.sol-DEXified-offerToSell(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! locked)
+
+IRs:
+TMP_85 = UnaryType.BANG locked 
+TMP_86(None) = SOLIDITY_CALL require(bool)(TMP_85)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+setOffer(msg.sender,_price,_value)
+
+IRs:
+INTERNAL_CALL, DEXified.setOffer(address,uint256,uint256)(msg.sender,_price,_value)"];
+}
+// Function: 313.sol-DEXified-removeSeller(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+index = sales.lookup[item]
+
+IRs:
+REF_81(mapping(address => uint256)) -> sales.lookup
+REF_82(uint256) -> REF_81[item]
+index(uint256) := REF_82(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+index == 0
+
+IRs:
+TMP_76(bool) = index == 0
+CONDITION TMP_76"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+index < sales.items.length
+
+IRs:
+REF_83(address[]) -> sales.items
+REF_84 -> LENGTH REF_83
+TMP_77(bool) = index < REF_84
+CONDITION TMP_77"];
+5->6[label="True"];
+5->9[label="False"];
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+lastItem = sales.items[sales.items.length - 1]
+
+IRs:
+REF_85(address[]) -> sales.items
+REF_86(address[]) -> sales.items
+REF_87 -> LENGTH REF_86
+TMP_78(uint256) = REF_87 - 1
+REF_88(address) -> REF_85[TMP_78]
+lastItem(address) := REF_88(address)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+sales.items[index - 1] = lastItem
+
+IRs:
+REF_89(address[]) -> sales.items
+TMP_79(uint256) = index - 1
+REF_90(address) -> REF_89[TMP_79]
+REF_90(address) (->sales) := lastItem(address)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+sales.lookup[lastItem] = index
+
+IRs:
+REF_91(mapping(address => uint256)) -> sales.lookup
+REF_92(uint256) -> REF_91[lastItem]
+REF_92(uint256) (->sales) := index(uint256)"];
+8->9;
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+sales.items.length -= 1
+
+IRs:
+REF_93(address[]) -> sales.items
+REF_94 -> LENGTH REF_93
+REF_94(-> sales) = REF_94 - 1"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+delete sales.lookup[item]
+
+IRs:
+REF_95(mapping(address => uint256)) -> sales.lookup
+REF_96(uint256) -> REF_95[item]
+REF_95 = delete REF_96 "];
+}
+// Function: 313.sol-DEXified-sellers(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+sales.items[index]
+
+IRs:
+REF_68(address[]) -> sales.items
+REF_69(address) -> REF_68[index]
+RETURN REF_69"];
+}
+// Function: 313.sol-DEXified-setOffer(address,uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+exchange[_owner].price = _price
+
+IRs:
+REF_97(DEXified.Offer) -> exchange[_owner]
+REF_98(uint256) -> REF_97.price
+REF_98(uint256) (->exchange) := _price(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+market = market.sub(exchange[_owner].tokens)
+
+IRs:
+REF_100(DEXified.Offer) -> exchange[_owner]
+REF_101(uint256) -> REF_100.tokens
+TMP_80(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['market', 'REF_101'] 
+market(uint256) := TMP_80(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+exchange[_owner].tokens = _value
+
+IRs:
+REF_102(DEXified.Offer) -> exchange[_owner]
+REF_103(uint256) -> REF_102.tokens
+REF_103(uint256) (->exchange) := _value(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+market = market.add(_value)
+
+IRs:
+TMP_81(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['market', '_value'] 
+market(uint256) := TMP_81(uint256)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+_value == 0
+
+IRs:
+TMP_82(bool) = _value == 0
+CONDITION TMP_82"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+removeSeller(_owner)
+
+IRs:
+INTERNAL_CALL, DEXified.removeSeller(address)(_owner)"];
+6->8;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+addSeller(_owner)
+
+IRs:
+INTERNAL_CALL, DEXified.addSeller(address)(_owner)"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+}
+// Function: 313.sol-DEXified-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+name = Ethnamed
+
+IRs:
+name(string) := Ethnamed(string)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+symbol = NAME
+
+IRs:
+symbol(string) := NAME(string)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+decimals = 18
+
+IRs:
+decimals(uint8) := 18(uint256)"];
+}
+// Function: 313.sol-DEXified-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+issuer = 0x692202c797ca194be918114780db7796e9397c13
+
+IRs:
+issuer(address) := 600202498415778856421977559007706166794277977107(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+locked = true
+
+IRs:
+locked(bool) := True(bool)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+market = 0
+
+IRs:
+market(uint256) := 0(uint256)"];
+}
+// Function: 313.sol-DEXified-totalSupply()
+digraph{
+}
+// Function: 313.sol-DEXified-transfer(address,uint256)
+digraph{
+}
+// Function: 313.sol-DEXified-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 313.sol-DEXified-unlock()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == issuer)
+
+IRs:
+TMP_51(bool) = msg.sender == issuer
+TMP_52(None) = SOLIDITY_CALL require(bool)(TMP_51)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+locked = false
+
+IRs:
+locked(bool) := False(bool)"];
+}
+// Function: 313.sol-ERC20-ERC20()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+tokenPrice = 10 ** uint256(decimals)
+
+IRs:
+TMP_20 = CONVERT decimals to uint256
+TMP_21(uint256) = 10 ** TMP_20
+tokenPrice(uint256) := TMP_21(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+contributor = contributors[issuer]
+
+IRs:
+REF_2(ERC20.Contributor) -> contributors[issuer]
+contributor(ERC20.Contributor) := REF_2(ERC20.Contributor)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+contributor.balance = totalSupply()
+
+IRs:
+REF_3(uint256) -> contributor.balance
+TMP_22(uint256) = INTERNAL_CALL, ERC20.totalSupply()()
+REF_3(uint256) (->contributor) := TMP_22(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Transfer(address(0),issuer,totalSupply())
+
+IRs:
+TMP_23 = CONVERT 0 to address
+TMP_24(uint256) = INTERNAL_CALL, ERC20.totalSupply()()
+Emit Transfer(TMP_23,issuer,TMP_24)"];
+}
+// Function: 313.sol-ERC20-allowance(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+owner = contributors[_tokenOwner]
+
+IRs:
+REF_14(ERC20.Contributor) -> contributors[_tokenOwner]
+owner(ERC20.Contributor) := REF_14(ERC20.Contributor)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+owner.allowed[_spender]
+
+IRs:
+REF_15(mapping(address => uint256)) -> owner.allowed
+REF_16(uint256) -> REF_15[_spender]
+RETURN REF_16"];
+}
+// Function: 313.sol-ERC20-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! locked)
+
+IRs:
+TMP_42 = UnaryType.BANG locked 
+TMP_43(None) = SOLIDITY_CALL require(bool)(TMP_42)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+owner = contributors[msg.sender]
+
+IRs:
+REF_32(ERC20.Contributor) -> contributors[msg.sender]
+owner(ERC20.Contributor) := REF_32(ERC20.Contributor)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner.allowed[_spender] = _tokens
+
+IRs:
+REF_33(mapping(address => uint256)) -> owner.allowed
+REF_34(uint256) -> REF_33[_spender]
+REF_34(uint256) (->owner) := _tokens(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Approval(msg.sender,_spender,_tokens)
+
+IRs:
+Emit Approval(msg.sender,_spender,_tokens)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 313.sol-ERC20-balanceOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+contributor = contributors[_tokenOwner]
+
+IRs:
+REF_4(ERC20.Contributor) -> contributors[_tokenOwner]
+contributor(ERC20.Contributor) := REF_4(ERC20.Contributor)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+contributor.balance
+
+IRs:
+REF_5(uint256) -> contributor.balance
+RETURN REF_5"];
+}
+// Function: 313.sol-ERC20-changeIssuer(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == issuer)
+
+IRs:
+TMP_18(bool) = msg.sender == issuer
+TMP_19(None) = SOLIDITY_CALL require(bool)(TMP_18)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+issuer = _to
+
+IRs:
+issuer(address) := _to(address)"];
+}
+// Function: 313.sol-ERC20-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+name = Ethnamed
+
+IRs:
+name(string) := Ethnamed(string)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+symbol = NAME
+
+IRs:
+symbol(string) := NAME(string)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+decimals = 18
+
+IRs:
+decimals(uint8) := 18(uint256)"];
+}
+// Function: 313.sol-ERC20-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+issuer = 0x692202c797ca194be918114780db7796e9397c13
+
+IRs:
+issuer(address) := 600202498415778856421977559007706166794277977107(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+locked = true
+
+IRs:
+locked(bool) := True(bool)"];
+}
+// Function: 313.sol-ERC20-totalSupply()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+1000000 * tokenPrice
+
+IRs:
+TMP_28(uint256) = 1000000 * tokenPrice
+RETURN TMP_28"];
+}
+// Function: 313.sol-ERC20-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! locked || msg.sender == issuer)
+
+IRs:
+TMP_29 = UnaryType.BANG locked 
+TMP_30(bool) = msg.sender == issuer
+TMP_31(bool) = TMP_29 || TMP_30
+TMP_32(None) = SOLIDITY_CALL require(bool)(TMP_31)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+sender = contributors[msg.sender]
+
+IRs:
+REF_6(ERC20.Contributor) -> contributors[msg.sender]
+sender(ERC20.Contributor) := REF_6(ERC20.Contributor)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+recepient = contributors[_to]
+
+IRs:
+REF_7(ERC20.Contributor) -> contributors[_to]
+recepient(ERC20.Contributor) := REF_7(ERC20.Contributor)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+sender.balance = sender.balance.sub(_tokens)
+
+IRs:
+REF_8(uint256) -> sender.balance
+REF_9(uint256) -> sender.balance
+TMP_33(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_9', '_tokens'] 
+REF_8(uint256) (->sender) := TMP_33(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+recepient.balance = recepient.balance.add(_tokens)
+
+IRs:
+REF_11(uint256) -> recepient.balance
+REF_12(uint256) -> recepient.balance
+TMP_34(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_12', '_tokens'] 
+REF_11(uint256) (->recepient) := TMP_34(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+Transfer(msg.sender,_to,_tokens)
+
+IRs:
+Emit Transfer(msg.sender,_to,_tokens)"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 313.sol-ERC20-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+owner = contributors[_from]
+
+IRs:
+REF_17(ERC20.Contributor) -> contributors[_from]
+owner(ERC20.Contributor) := REF_17(ERC20.Contributor)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(owner.allowed[msg.sender] >= _tokens)
+
+IRs:
+REF_18(mapping(address => uint256)) -> owner.allowed
+REF_19(uint256) -> REF_18[msg.sender]
+TMP_36(bool) = REF_19 >= _tokens
+TMP_37(None) = SOLIDITY_CALL require(bool)(TMP_36)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+receiver = contributors[_to]
+
+IRs:
+REF_20(ERC20.Contributor) -> contributors[_to]
+receiver(ERC20.Contributor) := REF_20(ERC20.Contributor)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+owner.balance = owner.balance.sub(_tokens)
+
+IRs:
+REF_21(uint256) -> owner.balance
+REF_22(uint256) -> owner.balance
+TMP_38(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_22', '_tokens'] 
+REF_21(uint256) (->owner) := TMP_38(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+owner.allowed[msg.sender] = owner.allowed[msg.sender].sub(_tokens)
+
+IRs:
+REF_24(mapping(address => uint256)) -> owner.allowed
+REF_25(uint256) -> REF_24[msg.sender]
+REF_26(mapping(address => uint256)) -> owner.allowed
+REF_27(uint256) -> REF_26[msg.sender]
+TMP_39(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_27', '_tokens'] 
+REF_25(uint256) (->owner) := TMP_39(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+receiver.balance = receiver.balance.add(_tokens)
+
+IRs:
+REF_29(uint256) -> receiver.balance
+REF_30(uint256) -> receiver.balance
+TMP_40(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_30', '_tokens'] 
+REF_29(uint256) (->receiver) := TMP_40(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+Transfer(_from,_to,_tokens)
+
+IRs:
+Emit Transfer(_from,_to,_tokens)"];
+7->8;
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 313.sol-ERC20-unlock()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == issuer)
+
+IRs:
+TMP_26(bool) = msg.sender == issuer
+TMP_27(None) = SOLIDITY_CALL require(bool)(TMP_26)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+locked = false
+
+IRs:
+locked(bool) := False(bool)"];
+}
+// Function: 313.sol-ERC20Interface-allowance(address,address)
+digraph{
+}
+// Function: 313.sol-ERC20Interface-approve(address,uint256)
+digraph{
+}
+// Function: 313.sol-ERC20Interface-balanceOf(address)
+digraph{
+}
+// Function: 313.sol-ERC20Interface-totalSupply()
+digraph{
+}
+// Function: 313.sol-ERC20Interface-transfer(address,uint256)
+digraph{
+}
+// Function: 313.sol-ERC20Interface-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 313.sol-Ethnamed-ERC20()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+tokenPrice = 10 ** uint256(decimals)
+
+IRs:
+TMP_130 = CONVERT decimals to uint256
+TMP_131(uint256) = 10 ** TMP_130
+tokenPrice(uint256) := TMP_131(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+contributor = contributors[issuer]
+
+IRs:
+REF_176(ERC20.Contributor) -> contributors[issuer]
+contributor(ERC20.Contributor) := REF_176(ERC20.Contributor)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+contributor.balance = totalSupply()
+
+IRs:
+REF_177(uint256) -> contributor.balance
+TMP_132(uint256) = INTERNAL_CALL, ERC20.totalSupply()()
+REF_177(uint256) (->contributor) := TMP_132(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Transfer(address(0),issuer,totalSupply())
+
+IRs:
+TMP_133 = CONVERT 0 to address
+TMP_134(uint256) = INTERNAL_CALL, ERC20.totalSupply()()
+Emit Transfer(TMP_133,issuer,TMP_134)"];
+}
+// Function: 313.sol-Ethnamed-addSeller(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+sales.lookup[item] > 0
+
+IRs:
+REF_127(mapping(address => uint256)) -> sales.lookup
+REF_128(uint256) -> REF_127[item]
+TMP_101(bool) = REF_128 > 0
+CONDITION TMP_101"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+sales.lookup[item] = sales.items.push(item)
+
+IRs:
+REF_129(mapping(address => uint256)) -> sales.lookup
+REF_130(uint256) -> REF_129[item]
+REF_131(address[]) -> sales.items
+REF_133 -> LENGTH REF_131
+TMP_103(uint256) := REF_133(uint256)
+TMP_104(uint256) = TMP_103 + 1
+REF_133(uint256) (->sales) := TMP_104(uint256)
+REF_134(address) -> REF_131[TMP_103]
+REF_134(address) (->sales) := item(address)
+REF_130(uint256) (->sales) := TMP_102(None)"];
+}
+// Function: 313.sol-Ethnamed-allowance(address,address)
+digraph{
+}
+// Function: 313.sol-Ethnamed-approve(address,uint256)
+digraph{
+}
+// Function: 313.sol-Ethnamed-balanceOf(address)
+digraph{
+}
+// Function: 313.sol-Ethnamed-changeIssuer(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == issuer)
+
+IRs:
+TMP_155(bool) = msg.sender == issuer
+TMP_156(None) = SOLIDITY_CALL require(bool)(TMP_155)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+issuer = _to
+
+IRs:
+issuer(address) := _to(address)"];
+}
+// Function: 313.sol-Ethnamed-executeOffer(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! locked)
+
+IRs:
+TMP_117 = UnaryType.BANG locked 
+TMP_118(None) = SOLIDITY_CALL require(bool)(TMP_117)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+offer = exchange[_owner]
+
+IRs:
+REF_159(DEXified.Offer) -> exchange[_owner]
+offer(DEXified.Offer) := REF_159(DEXified.Offer)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(offer.tokens > 0)
+
+IRs:
+REF_160(uint256) -> offer.tokens
+TMP_119(bool) = REF_160 > 0
+TMP_120(None) = SOLIDITY_CALL require(bool)(TMP_119)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool)(msg.value == offer.price)
+
+IRs:
+REF_161(uint256) -> offer.price
+TMP_121(bool) = msg.value == REF_161
+TMP_122(None) = SOLIDITY_CALL require(bool)(TMP_121)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+_owner.transfer(msg.value)
+
+IRs:
+Transfer dest:_owner value:msg.value"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+owner_c = contributors[_owner]
+
+IRs:
+REF_163(ERC20.Contributor) -> contributors[_owner]
+owner_c(ERC20.Contributor) := REF_163(ERC20.Contributor)"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+sender_c = contributors[msg.sender]
+
+IRs:
+REF_164(ERC20.Contributor) -> contributors[msg.sender]
+sender_c(ERC20.Contributor) := REF_164(ERC20.Contributor)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+require(bool)(owner_c.balance >= offer.tokens)
+
+IRs:
+REF_165(uint256) -> owner_c.balance
+REF_166(uint256) -> offer.tokens
+TMP_124(bool) = REF_165 >= REF_166
+TMP_125(None) = SOLIDITY_CALL require(bool)(TMP_124)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+owner_c.balance = owner_c.balance.sub(offer.tokens)
+
+IRs:
+REF_167(uint256) -> owner_c.balance
+REF_168(uint256) -> owner_c.balance
+REF_170(uint256) -> offer.tokens
+TMP_126(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_168', 'REF_170'] 
+REF_167(uint256) (->owner_c) := TMP_126(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+sender_c.balance = sender_c.balance.add(offer.tokens)
+
+IRs:
+REF_171(uint256) -> sender_c.balance
+REF_172(uint256) -> sender_c.balance
+REF_174(uint256) -> offer.tokens
+TMP_127(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_172', 'REF_174'] 
+REF_171(uint256) (->sender_c) := TMP_127(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+Transfer(_owner,msg.sender,offer.tokens)
+
+IRs:
+REF_175(uint256) -> offer.tokens
+Emit Transfer(_owner,msg.sender,REF_175)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+setOffer(_owner,0,0)
+
+IRs:
+INTERNAL_CALL, DEXified.setOffer(address,uint256,uint256)(_owner,0,0)"];
+}
+// Function: 313.sol-Ethnamed-getOffer(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+offer = exchange[_owner]
+
+IRs:
+REF_124(DEXified.Offer) -> exchange[_owner]
+offer(DEXified.Offer) := REF_124(DEXified.Offer)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+((offer.price,offer.tokens))
+
+IRs:
+REF_125(uint256) -> offer.price
+REF_126(uint256) -> offer.tokens
+RETURN REF_125,REF_126"];
+}
+// Function: 313.sol-Ethnamed-offerToSell(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! locked)
+
+IRs:
+TMP_114 = UnaryType.BANG locked 
+TMP_115(None) = SOLIDITY_CALL require(bool)(TMP_114)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+setOffer(msg.sender,_price,_value)
+
+IRs:
+INTERNAL_CALL, DEXified.setOffer(address,uint256,uint256)(msg.sender,_price,_value)"];
+}
+// Function: 313.sol-Ethnamed-removeExpiredName(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(registry[_name].expires < now)
+
+IRs:
+REF_221(Ethnamed.Name) -> registry[_name]
+REF_222(uint256) -> REF_221.expires
+TMP_165(bool) = REF_222 < now
+TMP_166(None) = SOLIDITY_CALL require(bool)(TMP_165)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+removeName(_name)
+
+IRs:
+INTERNAL_CALL, Ethnamed.removeName(string)(_name)"];
+}
+// Function: 313.sol-Ethnamed-removeName(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+item = registry[_name]
+
+IRs:
+REF_217(Ethnamed.Name) -> registry[_name]
+item(Ethnamed.Name) := REF_217(Ethnamed.Name)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+hash = keccak256()(item.record)
+
+IRs:
+REF_218(string) -> item.record
+TMP_164(bytes32) = SOLIDITY_CALL keccak256()(REF_218)
+hash(bytes32) := TMP_164(bytes32)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+delete registry[_name]
+
+IRs:
+REF_219(Ethnamed.Name) -> registry[_name]
+registry = delete REF_219 "];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+delete lookup[hash]
+
+IRs:
+REF_220(string) -> lookup[hash]
+lookup = delete REF_220 "];
+}
+// Function: 313.sol-Ethnamed-removeNameByOwner(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+item = registry[_name]
+
+IRs:
+REF_223(Ethnamed.Name) -> registry[_name]
+item(Ethnamed.Name) := REF_223(Ethnamed.Name)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(item.owner == msg.sender)
+
+IRs:
+REF_224(address) -> item.owner
+TMP_168(bool) = REF_224 == msg.sender
+TMP_169(None) = SOLIDITY_CALL require(bool)(TMP_168)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+removeName(_name)
+
+IRs:
+INTERNAL_CALL, Ethnamed.removeName(string)(_name)"];
+}
+// Function: 313.sol-Ethnamed-removeSeller(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+index = sales.lookup[item]
+
+IRs:
+REF_135(mapping(address => uint256)) -> sales.lookup
+REF_136(uint256) -> REF_135[item]
+index(uint256) := REF_136(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+index == 0
+
+IRs:
+TMP_105(bool) = index == 0
+CONDITION TMP_105"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+index < sales.items.length
+
+IRs:
+REF_137(address[]) -> sales.items
+REF_138 -> LENGTH REF_137
+TMP_106(bool) = index < REF_138
+CONDITION TMP_106"];
+5->6[label="True"];
+5->9[label="False"];
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+lastItem = sales.items[sales.items.length - 1]
+
+IRs:
+REF_139(address[]) -> sales.items
+REF_140(address[]) -> sales.items
+REF_141 -> LENGTH REF_140
+TMP_107(uint256) = REF_141 - 1
+REF_142(address) -> REF_139[TMP_107]
+lastItem(address) := REF_142(address)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+sales.items[index - 1] = lastItem
+
+IRs:
+REF_143(address[]) -> sales.items
+TMP_108(uint256) = index - 1
+REF_144(address) -> REF_143[TMP_108]
+REF_144(address) (->sales) := lastItem(address)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+sales.lookup[lastItem] = index
+
+IRs:
+REF_145(mapping(address => uint256)) -> sales.lookup
+REF_146(uint256) -> REF_145[lastItem]
+REF_146(uint256) (->sales) := index(uint256)"];
+8->9;
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+sales.items.length -= 1
+
+IRs:
+REF_147(address[]) -> sales.items
+REF_148 -> LENGTH REF_147
+REF_148(-> sales) = REF_148 - 1"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+delete sales.lookup[item]
+
+IRs:
+REF_149(mapping(address => uint256)) -> sales.lookup
+REF_150(uint256) -> REF_149[item]
+REF_149 = delete REF_150 "];
+}
+// Function: 313.sol-Ethnamed-resolve(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+registry[_name].record
+
+IRs:
+REF_210(Ethnamed.Name) -> registry[_name]
+REF_211(string) -> REF_210.record
+RETURN REF_211"];
+}
+// Function: 313.sol-Ethnamed-sellers(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+sales.items[index]
+
+IRs:
+REF_122(address[]) -> sales.items
+REF_123(address) -> REF_122[index]
+RETURN REF_123"];
+}
+// Function: 313.sol-Ethnamed-sendTo(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+registry[_name].owner == address(0)
+
+IRs:
+REF_225(Ethnamed.Name) -> registry[_name]
+REF_226(address) -> REF_225.owner
+TMP_171 = CONVERT 0 to address
+TMP_172(bool) = REF_226 == TMP_171
+CONDITION TMP_172"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+registry[_name].balance = registry[_name].balance.add(msg.value)
+
+IRs:
+REF_227(Ethnamed.Name) -> registry[_name]
+REF_228(uint256) -> REF_227.balance
+REF_229(Ethnamed.Name) -> registry[_name]
+REF_230(uint256) -> REF_229.balance
+TMP_173(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_230', 'msg.value'] 
+REF_228(uint256) (->registry) := TMP_173(uint256)"];
+2->4;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+registry[_name].owner.transfer(msg.value)
+
+IRs:
+REF_232(Ethnamed.Name) -> registry[_name]
+REF_233(address) -> REF_232.owner
+Transfer dest:REF_233 value:msg.value"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+}
+// Function: 313.sol-Ethnamed-setOffer(address,uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+exchange[_owner].price = _price
+
+IRs:
+REF_151(DEXified.Offer) -> exchange[_owner]
+REF_152(uint256) -> REF_151.price
+REF_152(uint256) (->exchange) := _price(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+market = market.sub(exchange[_owner].tokens)
+
+IRs:
+REF_154(DEXified.Offer) -> exchange[_owner]
+REF_155(uint256) -> REF_154.tokens
+TMP_109(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['market', 'REF_155'] 
+market(uint256) := TMP_109(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+exchange[_owner].tokens = _value
+
+IRs:
+REF_156(DEXified.Offer) -> exchange[_owner]
+REF_157(uint256) -> REF_156.tokens
+REF_157(uint256) (->exchange) := _value(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+market = market.add(_value)
+
+IRs:
+TMP_110(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['market', '_value'] 
+market(uint256) := TMP_110(uint256)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+_value == 0
+
+IRs:
+TMP_111(bool) = _value == 0
+CONDITION TMP_111"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+removeSeller(_owner)
+
+IRs:
+INTERNAL_CALL, DEXified.removeSeller(address)(_owner)"];
+6->8;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+addSeller(_owner)
+
+IRs:
+INTERNAL_CALL, DEXified.addSeller(address)(_owner)"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+}
+// Function: 313.sol-Ethnamed-setOrUpdateRecord(string,string,string,string,address,uint8,bytes32,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(life > 0)
+
+IRs:
+TMP_195(bool) = life > 0
+TMP_196(None) = SOLIDITY_CALL require(bool)(TMP_195)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+setupViaAuthority(_length,_name,_record,_blockExpiry,_owner,_v,_r,_s,life)
+
+IRs:
+INTERNAL_CALL, Ethnamed.setupViaAuthority(string,string,string,string,address,uint8,bytes32,bytes32,uint256)(_length,_name,_record,_blockExpiry,_owner,_v,_r,_s,life)"];
+4[label="Node Type: IF 4
+
+EXPRESSION:
+msg.value == 10000000000000000
+
+IRs:
+TMP_198(bool) = msg.value == 10000000000000000
+CONDITION TMP_198"];
+4->5[label="True"];
+4->8[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+life = 29030400
+
+IRs:
+life(uint256) := 29030400(uint256)"];
+5->7;
+7[label="Node Type: END_IF 7
+"];
+7->2;
+8[label="Node Type: IF 8
+
+EXPRESSION:
+msg.value == 8000000000000000
+
+IRs:
+TMP_199(bool) = msg.value == 8000000000000000
+CONDITION TMP_199"];
+8->9[label="True"];
+8->12[label="False"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+life = 14515200
+
+IRs:
+life(uint256) := 14515200(uint256)"];
+9->11;
+11[label="Node Type: END_IF 11
+"];
+11->7;
+12[label="Node Type: IF 12
+
+EXPRESSION:
+msg.value == 6000000000000000
+
+IRs:
+TMP_200(bool) = msg.value == 6000000000000000
+CONDITION TMP_200"];
+12->13[label="True"];
+12->16[label="False"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+life = 7257600
+
+IRs:
+life(uint256) := 7257600(uint256)"];
+13->15;
+15[label="Node Type: END_IF 15
+"];
+15->11;
+16[label="Node Type: IF 16
+
+EXPRESSION:
+msg.value == 2000000000000000
+
+IRs:
+TMP_201(bool) = msg.value == 2000000000000000
+CONDITION TMP_201"];
+16->17[label="True"];
+16->18[label="False"];
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+life = 2419200
+
+IRs:
+life(uint256) := 2419200(uint256)"];
+17->19;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+life = 0
+
+IRs:
+life(uint256) := 0(uint256)"];
+18->19;
+19[label="Node Type: END_IF 19
+"];
+19->15;
+}
+// Function: 313.sol-Ethnamed-setOrUpdateRecord2(string,string,string,string,address,uint8,bytes32,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+contributor = contributors[msg.sender]
+
+IRs:
+REF_248(ERC20.Contributor) -> contributors[msg.sender]
+contributor(ERC20.Contributor) := REF_248(ERC20.Contributor)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(contributor.balance >= tokenPrice)
+
+IRs:
+REF_249(uint256) -> contributor.balance
+TMP_191(bool) = REF_249 >= tokenPrice
+TMP_192(None) = SOLIDITY_CALL require(bool)(TMP_191)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+contributor.balance = contributor.balance.sub(tokenPrice)
+
+IRs:
+REF_250(uint256) -> contributor.balance
+REF_251(uint256) -> contributor.balance
+TMP_193(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_251', 'tokenPrice'] 
+REF_250(uint256) (->contributor) := TMP_193(uint256)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+life = 29030400
+
+IRs:
+life(uint256) := 29030400(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+setupViaAuthority(_length,_name,_record,_blockExpiry,_owner,_v,_r,_s,life)
+
+IRs:
+INTERNAL_CALL, Ethnamed.setupViaAuthority(string,string,string,string,address,uint8,bytes32,bytes32,uint256)(_length,_name,_record,_blockExpiry,_owner,_v,_r,_s,life)"];
+}
+// Function: 313.sol-Ethnamed-setupCore(string,string,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+item = registry[_name]
+
+IRs:
+REF_235(Ethnamed.Name) -> registry[_name]
+item(Ethnamed.Name) := REF_235(Ethnamed.Name)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(item.owner == msg.sender || item.owner == 0x0)
+
+IRs:
+REF_236(address) -> item.owner
+TMP_175(bool) = REF_236 == msg.sender
+REF_237(address) -> item.owner
+TMP_176(bool) = REF_237 == 0
+TMP_177(bool) = TMP_175 || TMP_176
+TMP_178(None) = SOLIDITY_CALL require(bool)(TMP_177)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+item.record = _record
+
+IRs:
+REF_238(string) -> item.record
+REF_238(string) (->item) := _record(string)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+item.owner = _owner
+
+IRs:
+REF_239(address) -> item.owner
+REF_239(address) (->item) := _owner(address)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+item.balance > 0
+
+IRs:
+REF_240(uint256) -> item.balance
+TMP_179(bool) = REF_240 > 0
+CONDITION TMP_179"];
+5->6[label="True"];
+5->8[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+item.owner.transfer(item.balance)
+
+IRs:
+REF_241(address) -> item.owner
+REF_243(uint256) -> item.balance
+Transfer dest:REF_241 value:REF_243"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+item.balance = 0
+
+IRs:
+REF_244(uint256) -> item.balance
+REF_244(uint256) (->item) := 0(uint256)"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+item.expires = now + _life
+
+IRs:
+REF_245(uint256) -> item.expires
+TMP_181(uint256) = now + _life
+REF_245(uint256) (->item) := TMP_181(uint256)"];
+9->10;
+10[label="Node Type: NEW VARIABLE 10
+
+EXPRESSION:
+hash = keccak256()(_record)
+
+IRs:
+TMP_182(bytes32) = SOLIDITY_CALL keccak256()(_record)
+hash(bytes32) := TMP_182(bytes32)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+lookup[hash] = _name
+
+IRs:
+REF_246(string) -> lookup[hash]
+REF_246(string) (->lookup) := _name(string)"];
+}
+// Function: 313.sol-Ethnamed-setupViaAuthority(string,string,string,string,address,uint8,bytes32,bytes32,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_blockExpiry.stringToUint() >= block.number)
+
+IRs:
+TMP_183(uint256) = LIBRARY_CALL, dest:StringHelper, function:StringHelper.stringToUint(string), arguments:['_blockExpiry'] 
+TMP_184(bool) = TMP_183 >= block.number
+TMP_185(None) = SOLIDITY_CALL require(bool)(TMP_184)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(ecrecover(bytes32,uint8,bytes32,bytes32)(keccak256()(Ethereum Signed Message:
+,_length,_name,r=,_record,e=,_blockExpiry),_v,_r,_s) == issuer)
+
+IRs:
+TMP_186(bytes32) = SOLIDITY_CALL keccak256()(Ethereum Signed Message:
+,_length,_name,r=,_record,e=,_blockExpiry)
+TMP_187(address) = SOLIDITY_CALL ecrecover(bytes32,uint8,bytes32,bytes32)(TMP_186,_v,_r,_s)
+TMP_188(bool) = TMP_187 == issuer
+TMP_189(None) = SOLIDITY_CALL require(bool)(TMP_188)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+setupCore(_name,_record,_owner,_life)
+
+IRs:
+INTERNAL_CALL, Ethnamed.setupCore(string,string,address,uint256)(_name,_record,_owner,_life)"];
+}
+// Function: 313.sol-Ethnamed-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+name = Ethnamed
+
+IRs:
+name(string) := Ethnamed(string)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+symbol = NAME
+
+IRs:
+symbol(string) := NAME(string)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+decimals = 18
+
+IRs:
+decimals(uint8) := 18(uint256)"];
+}
+// Function: 313.sol-Ethnamed-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+issuer = 0x692202c797ca194be918114780db7796e9397c13
+
+IRs:
+issuer(address) := 600202498415778856421977559007706166794277977107(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+locked = true
+
+IRs:
+locked(bool) := True(bool)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+market = 0
+
+IRs:
+market(uint256) := 0(uint256)"];
+}
+// Function: 313.sol-Ethnamed-totalSupply()
+digraph{
+}
+// Function: 313.sol-Ethnamed-transfer(address,uint256)
+digraph{
+}
+// Function: 313.sol-Ethnamed-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 313.sol-Ethnamed-transferOwnership(string,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(registry[_name].owner == msg.sender)
+
+IRs:
+REF_213(Ethnamed.Name) -> registry[_name]
+REF_214(address) -> REF_213.owner
+TMP_162(bool) = REF_214 == msg.sender
+TMP_163(None) = SOLIDITY_CALL require(bool)(TMP_162)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+registry[_name].owner = _to
+
+IRs:
+REF_215(Ethnamed.Name) -> registry[_name]
+REF_216(address) -> REF_215.owner
+REF_216(address) (->registry) := _to(address)"];
+}
+// Function: 313.sol-Ethnamed-unlock()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == issuer)
+
+IRs:
+TMP_136(bool) = msg.sender == issuer
+TMP_137(None) = SOLIDITY_CALL require(bool)(TMP_136)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+locked = false
+
+IRs:
+locked(bool) := False(bool)"];
+}
+// Function: 313.sol-Ethnamed-whois(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+lookup[_hash]
+
+IRs:
+REF_212(string) -> lookup[_hash]
+RETURN REF_212"];
+}
+// Function: 313.sol-Ethnamed-withdraw(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == issuer)
+
+IRs:
+TMP_157(bool) = msg.sender == issuer
+TMP_158(None) = SOLIDITY_CALL require(bool)(TMP_157)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_to.transfer(address(this).balance)
+
+IRs:
+TMP_159 = CONVERT this to address
+TMP_160(uint256) = SOLIDITY_CALL balance(address)(TMP_159)
+Transfer dest:_to value:TMP_160"];
+}
+// Function: 313.sol-Issuer-changeIssuer(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == issuer)
+
+IRs:
+TMP_0(bool) = msg.sender == issuer
+TMP_1(None) = SOLIDITY_CALL require(bool)(TMP_0)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+issuer = _to
+
+IRs:
+issuer(address) := _to(address)"];
+}
+// Function: 313.sol-Issuer-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+issuer = 0x692202c797ca194be918114780db7796e9397c13
+
+IRs:
+issuer(address) := 600202498415778856421977559007706166794277977107(uint256)"];
+}
+// Function: 313.sol-SafeMath-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_12(uint256) = a + b
+c(uint256) := TMP_12(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(c >= a)
+
+IRs:
+TMP_13(bool) = c >= a
+TMP_14(None) = SOLIDITY_CALL require(bool)(TMP_13)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 313.sol-SafeMath-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(b <= a)
+
+IRs:
+TMP_15(bool) = b <= a
+TMP_16(None) = SOLIDITY_CALL require(bool)(TMP_15)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+c = a - b
+
+IRs:
+TMP_17(uint256) = a - b
+c(uint256) := TMP_17(uint256)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 313.sol-StringHelper-stringToUint(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+b = bytes(s)
+
+IRs:
+TMP_2 = CONVERT s to bytes
+b(bytes) := TMP_2(bytes)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+result = 0
+
+IRs:
+result(uint256) := 0(uint256)"];
+3->6;
+4[label="Node Type: BEGIN_LOOP 4
+"];
+4->7;
+5[label="Node Type: END_LOOP 5
+"];
+5->13;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+6->4;
+7[label="Node Type: IF_LOOP 7
+
+EXPRESSION:
+i < b.length
+
+IRs:
+REF_0 -> LENGTH b
+TMP_3(bool) = i < REF_0
+CONDITION TMP_3"];
+7->8[label="True"];
+7->5[label="False"];
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+c = uint256(b[i])
+
+IRs:
+REF_1(None) -> b[i]
+TMP_4 = CONVERT REF_1 to uint256
+c(uint256) := TMP_4(uint256)"];
+8->9;
+9[label="Node Type: IF 9
+
+EXPRESSION:
+c >= 48 && c <= 57
+
+IRs:
+TMP_5(bool) = c >= 48
+TMP_6(bool) = c <= 57
+TMP_7(bool) = TMP_5 && TMP_6
+CONDITION TMP_7"];
+9->10[label="True"];
+9->11[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+result = result * 10 + (c - 48)
+
+IRs:
+TMP_8(uint256) = result * 10
+TMP_9(uint256) = c - 48
+TMP_10(uint256) = TMP_8 + TMP_9
+result(uint256) := TMP_10(uint256)"];
+10->11;
+11[label="Node Type: END_IF 11
+"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_11(uint256) := i(uint256)
+i(uint256) = i + 1"];
+12->7;
+13[label="Node Type: RETURN 13
+
+EXPRESSION:
+result
+
+IRs:
+RETURN result"];
+}
+}

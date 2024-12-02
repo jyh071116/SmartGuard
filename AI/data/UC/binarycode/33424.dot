@@ -1,0 +1,1103 @@
+digraph G {
+// Function: 33424.sol-FsTkCMultiSigWallet-FsTkCMultiSigWallet()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+deployer = msg.sender
+
+IRs:
+deployer(address) := msg.sender(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+addCommitteeToMapAndArray(address(0))
+
+IRs:
+TMP_0 = CONVERT 0 to address
+INTERNAL_CALL, FsTkCMultiSigWallet.addCommitteeToMapAndArray(address)(TMP_0)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+committeesNumber --
+
+IRs:
+TMP_2(uint256) := committeesNumber(uint256)
+committeesNumber(uint256) = committeesNumber - 1"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+addCommitteeToMapAndArray(deployer)
+
+IRs:
+INTERNAL_CALL, FsTkCMultiSigWallet.addCommitteeToMapAndArray(address)(deployer)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+setTokenTransferIdentifier(erc20,0xa9059cbb)
+
+IRs:
+TMP_4(bool) = INTERNAL_CALL, FsTkCMultiSigWallet.setTokenTransferIdentifier(string,bytes4)(erc20,2835717307)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+initialized = true
+
+IRs:
+initialized(bool) := True(bool)"];
+}
+// Function: 33424.sol-FsTkCMultiSigWallet-acceptTxTask(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->23;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(txTaskMap[_txNumber].taskType != 0)
+
+IRs:
+REF_41(FsTkCMultiSigWallet.Task) -> txTaskMap[_txNumber]
+REF_42(uint256) -> REF_41.taskType
+TMP_72(bool) = REF_42 != 0
+TMP_73(None) = SOLIDITY_CALL require(bool)(TMP_72)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(txTaskMap[_txNumber].completed == false)
+
+IRs:
+REF_43(FsTkCMultiSigWallet.Task) -> txTaskMap[_txNumber]
+REF_44(bool) -> REF_43.completed
+TMP_74(bool) = REF_44 == False
+TMP_75(None) = SOLIDITY_CALL require(bool)(TMP_74)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(txTaskMap[_txNumber].acceptedCommitteesMap[msg.sender] == false)
+
+IRs:
+REF_45(FsTkCMultiSigWallet.Task) -> txTaskMap[_txNumber]
+REF_46(mapping(address => bool)) -> REF_45.acceptedCommitteesMap
+REF_47(bool) -> REF_46[msg.sender]
+TMP_76(bool) = REF_47 == False
+TMP_77(None) = SOLIDITY_CALL require(bool)(TMP_76)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+AcceptTxTaskEvent(msg.sender,_txNumber)
+
+IRs:
+Emit AcceptTxTaskEvent(msg.sender,_txNumber)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+txTaskMap[_txNumber].acceptedCounter ++
+
+IRs:
+REF_48(FsTkCMultiSigWallet.Task) -> txTaskMap[_txNumber]
+REF_49(uint256) -> REF_48.acceptedCounter
+TMP_79(uint256) := REF_49(uint256)
+REF_49(-> txTaskMap) = REF_49 + 1"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+txTaskMap[_txNumber].acceptedCommitteesMap[msg.sender] = true
+
+IRs:
+REF_50(FsTkCMultiSigWallet.Task) -> txTaskMap[_txNumber]
+REF_51(mapping(address => bool)) -> REF_50.acceptedCommitteesMap
+REF_52(bool) -> REF_51[msg.sender]
+REF_52(bool) (->txTaskMap) := True(bool)"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+theTask = txTaskMap[_txNumber]
+
+IRs:
+REF_53(FsTkCMultiSigWallet.Task) -> txTaskMap[_txNumber]
+theTask(FsTkCMultiSigWallet.Task) := REF_53(FsTkCMultiSigWallet.Task)"];
+7->8;
+8[label="Node Type: IF 8
+
+EXPRESSION:
+theTask.acceptedCounter == getCommitteesNumber()
+
+IRs:
+REF_54(uint256) -> theTask.acceptedCounter
+TMP_80(uint256) = INTERNAL_CALL, FsTkCMultiSigWallet.getCommitteesNumber()()
+TMP_81(bool) = REF_54 == TMP_80
+CONDITION TMP_81"];
+8->9[label="True"];
+8->21[label="False"];
+9[label="Node Type: IF 9
+
+EXPRESSION:
+theTask.taskType == 1
+
+IRs:
+REF_55(uint256) -> theTask.taskType
+TMP_82(bool) = REF_55 == 1
+CONDITION TMP_82"];
+9->10[label="True"];
+9->15[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+txTaskMap[_txNumber].completed = true
+
+IRs:
+REF_56(FsTkCMultiSigWallet.Task) -> txTaskMap[_txNumber]
+REF_57(bool) -> REF_56.completed
+REF_57(bool) (->txTaskMap) := True(bool)"];
+10->11;
+11[label="Node Type: IF 11
+
+EXPRESSION:
+! theTask.tokenContractAddress.call(theTask.functionIdentifier,theTask.receiver,theTask.value)
+
+IRs:
+REF_58(address) -> theTask.tokenContractAddress
+REF_60(bytes4) -> theTask.functionIdentifier
+REF_61(address) -> theTask.receiver
+REF_62(uint256) -> theTask.value
+TMP_83(bool) = LOW_LEVEL_CALL, dest:REF_58, function:call, arguments:['REF_60', 'REF_61', 'REF_62']  
+TMP_84 = UnaryType.BANG TMP_83 
+CONDITION TMP_84"];
+11->12[label="True"];
+11->13[label="False"];
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_85(None) = SOLIDITY_CALL revert()()"];
+12->13;
+13[label="Node Type: END_IF 13
+"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+TaskCompletedEvent(_txNumber)
+
+IRs:
+Emit TaskCompletedEvent(_txNumber)"];
+14->15;
+15[label="Node Type: END_IF 15
+"];
+15->16;
+16[label="Node Type: IF 16
+
+EXPRESSION:
+theTask.taskType == 2
+
+IRs:
+REF_63(uint256) -> theTask.taskType
+TMP_87(bool) = REF_63 == 2
+CONDITION TMP_87"];
+16->17[label="True"];
+16->20[label="False"];
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+txTaskMap[_txNumber].completed = true
+
+IRs:
+REF_64(FsTkCMultiSigWallet.Task) -> txTaskMap[_txNumber]
+REF_65(bool) -> REF_64.completed
+REF_65(bool) (->txTaskMap) := True(bool)"];
+17->18;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+theTask.receiver.transfer(theTask.value)
+
+IRs:
+REF_66(address) -> theTask.receiver
+REF_68(uint256) -> theTask.value
+Transfer dest:REF_66 value:REF_68"];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+TaskCompletedEvent(_txNumber)
+
+IRs:
+Emit TaskCompletedEvent(_txNumber)"];
+19->20;
+20[label="Node Type: END_IF 20
+"];
+20->21;
+21[label="Node Type: END_IF 21
+"];
+21->22;
+22[label="Node Type: RETURN 22
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+onlyCommitteesAfterInitialization()
+
+IRs:
+MODIFIER_CALL, FsTkCMultiSigWallet.onlyCommitteesAfterInitialization()()"];
+23->1;
+}
+// Function: 33424.sol-FsTkCMultiSigWallet-addCommitteeToMapAndArray(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->15;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+committeesMap[_newCommittee] = committeesArrayIndexCounter
+
+IRs:
+REF_0(uint256) -> committeesMap[_newCommittee]
+REF_0(uint256) (->committeesMap) := committeesArrayIndexCounter(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+committeesArray.push(_newCommittee)
+
+IRs:
+REF_2 -> LENGTH committeesArray
+TMP_6(uint256) := REF_2(uint256)
+TMP_7(uint256) = TMP_6 + 1
+REF_2(uint256) (->committeesArray) := TMP_7(uint256)
+REF_3(address) -> committeesArray[TMP_6]
+REF_3(address) (->committeesArray) := _newCommittee(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+committeesArrayIndexCounter ++
+
+IRs:
+TMP_8(uint256) := committeesArrayIndexCounter(uint256)
+committeesArrayIndexCounter(uint256) = committeesArrayIndexCounter + 1"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+committeesNumber ++
+
+IRs:
+TMP_9(uint256) := committeesNumber(uint256)
+committeesNumber(uint256) = committeesNumber + 1"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+committeeJoinVotes[_newCommittee] = 0
+
+IRs:
+REF_4(uint256) -> committeeJoinVotes[_newCommittee]
+REF_4(uint256) (->committeeJoinVotes) := 0(uint256)"];
+5->8;
+6[label="Node Type: BEGIN_LOOP 6
+"];
+6->9;
+7[label="Node Type: END_LOOP 7
+"];
+7->14;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+8->6;
+9[label="Node Type: IF_LOOP 9
+
+EXPRESSION:
+i < committeesArrayIndexCounter
+
+IRs:
+TMP_10(bool) = i < committeesArrayIndexCounter
+CONDITION TMP_10"];
+9->10[label="True"];
+9->7[label="False"];
+10[label="Node Type: IF 10
+
+EXPRESSION:
+committeesArray[i] != address(0)
+
+IRs:
+REF_5(address) -> committeesArray[i]
+TMP_11 = CONVERT 0 to address
+TMP_12(bool) = REF_5 != TMP_11
+CONDITION TMP_12"];
+10->11[label="True"];
+10->12[label="False"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+committeeJoinVoters[_newCommittee][committeesArray[i]] = false
+
+IRs:
+REF_6(mapping(address => bool)) -> committeeJoinVoters[_newCommittee]
+REF_7(address) -> committeesArray[i]
+REF_8(bool) -> REF_6[REF_7]
+REF_8(bool) (->committeeJoinVoters) := False(bool)"];
+11->12;
+12[label="Node Type: END_IF 12
+"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_13(uint256) := i(uint256)
+i(uint256) = i + 1"];
+13->9;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+AddCommitteeToMapAndArrayEvent(_newCommittee)
+
+IRs:
+Emit AddCommitteeToMapAndArrayEvent(_newCommittee)"];
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+onlyCommitteesAfterInitialization()
+
+IRs:
+MODIFIER_CALL, FsTkCMultiSigWallet.onlyCommitteesAfterInitialization()()"];
+15->1;
+}
+// Function: 33424.sol-FsTkCMultiSigWallet-addCommitteeVote(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->13;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(isNotCommittee(_newCommittee))
+
+IRs:
+TMP_27(bool) = INTERNAL_CALL, FsTkCMultiSigWallet.isNotCommittee(address)(_newCommittee)
+TMP_28(None) = SOLIDITY_CALL require(bool)(TMP_27)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(committeeJoinVoters[_newCommittee][msg.sender] == false)
+
+IRs:
+REF_17(mapping(address => bool)) -> committeeJoinVoters[_newCommittee]
+REF_18(bool) -> REF_17[msg.sender]
+TMP_29(bool) = REF_18 == False
+TMP_30(None) = SOLIDITY_CALL require(bool)(TMP_29)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+committeeJoinVoters[_newCommittee][msg.sender] = true
+
+IRs:
+REF_19(mapping(address => bool)) -> committeeJoinVoters[_newCommittee]
+REF_20(bool) -> REF_19[msg.sender]
+REF_20(bool) (->committeeJoinVoters) := True(bool)"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+committeeJoinVotes[_newCommittee] == 0
+
+IRs:
+REF_21(uint256) -> committeeJoinVotes[_newCommittee]
+TMP_31(bool) = REF_21 == 0
+CONDITION TMP_31"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+committeeJoinVotes[_newCommittee] = 1
+
+IRs:
+REF_22(uint256) -> committeeJoinVotes[_newCommittee]
+REF_22(uint256) (->committeeJoinVotes) := 1(uint256)"];
+5->7;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+committeeJoinVotes[_newCommittee] ++
+
+IRs:
+REF_23(uint256) -> committeeJoinVotes[_newCommittee]
+TMP_32(uint256) := REF_23(uint256)
+REF_23(-> committeeJoinVotes) = REF_23 + 1"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: IF 8
+
+EXPRESSION:
+committeeJoinVotes[_newCommittee] == getCommitteesNumber()
+
+IRs:
+REF_24(uint256) -> committeeJoinVotes[_newCommittee]
+TMP_33(uint256) = INTERNAL_CALL, FsTkCMultiSigWallet.getCommitteesNumber()()
+TMP_34(bool) = REF_24 == TMP_33
+CONDITION TMP_34"];
+8->9[label="True"];
+8->10[label="False"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+addCommitteeToMapAndArray(_newCommittee)
+
+IRs:
+INTERNAL_CALL, FsTkCMultiSigWallet.addCommitteeToMapAndArray(address)(_newCommittee)"];
+9->10;
+10[label="Node Type: END_IF 10
+"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+AddCommitteeVoteEvent(msg.sender,_newCommittee)
+
+IRs:
+Emit AddCommitteeVoteEvent(msg.sender,_newCommittee)"];
+11->12;
+12[label="Node Type: RETURN 12
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+onlyCommitteesAfterInitialization()
+
+IRs:
+MODIFIER_CALL, FsTkCMultiSigWallet.onlyCommitteesAfterInitialization()()"];
+13->1;
+}
+// Function: 33424.sol-FsTkCMultiSigWallet-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 33424.sol-FsTkCMultiSigWallet-getCommitteesNumber()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+committeesNumber
+
+IRs:
+RETURN committeesNumber"];
+}
+// Function: 33424.sol-FsTkCMultiSigWallet-getFunctionIdentifier(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+bytes4(keccak256()(_functionRawString))
+
+IRs:
+TMP_93(bytes32) = SOLIDITY_CALL keccak256()(_functionRawString)
+TMP_94 = CONVERT TMP_93 to bytes4
+RETURN TMP_94"];
+}
+// Function: 33424.sol-FsTkCMultiSigWallet-getStringHash(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+keccak256()(_input)
+
+IRs:
+TMP_95(bytes32) = SOLIDITY_CALL keccak256()(_input)
+RETURN TMP_95"];
+}
+// Function: 33424.sol-FsTkCMultiSigWallet-isCommittee(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+committeesArray[committeesMap[_testAddress]] != address(0)
+
+IRs:
+REF_33(uint256) -> committeesMap[_testAddress]
+REF_34(address) -> committeesArray[REF_33]
+TMP_50 = CONVERT 0 to address
+TMP_51(bool) = REF_34 != TMP_50
+RETURN TMP_51"];
+}
+// Function: 33424.sol-FsTkCMultiSigWallet-isNotCommittee(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+committeesArray[committeesMap[_testAddress]] == address(0)
+
+IRs:
+REF_35(uint256) -> committeesMap[_testAddress]
+REF_36(address) -> committeesArray[REF_35]
+TMP_52 = CONVERT 0 to address
+TMP_53(bool) = REF_36 == TMP_52
+RETURN TMP_53"];
+}
+// Function: 33424.sol-FsTkCMultiSigWallet-kickCommitteeFromMapAndArray(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->15;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_kickedCommittee != address(0))
+
+IRs:
+TMP_16 = CONVERT 0 to address
+TMP_17(bool) = _kickedCommittee != TMP_16
+TMP_18(None) = SOLIDITY_CALL require(bool)(TMP_17)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+committeesArray[committeesMap[_kickedCommittee]] = address(0)
+
+IRs:
+REF_9(uint256) -> committeesMap[_kickedCommittee]
+REF_10(address) -> committeesArray[REF_9]
+TMP_19 = CONVERT 0 to address
+REF_10(address) (->committeesArray) := TMP_19(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+committeesMap[_kickedCommittee] = 0
+
+IRs:
+REF_11(uint256) -> committeesMap[_kickedCommittee]
+REF_11(uint256) (->committeesMap) := 0(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+committeesNumber --
+
+IRs:
+TMP_20(uint256) := committeesNumber(uint256)
+committeesNumber(uint256) = committeesNumber - 1"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+committeeKickVotes[_kickedCommittee] = 0
+
+IRs:
+REF_12(uint256) -> committeeKickVotes[_kickedCommittee]
+REF_12(uint256) (->committeeKickVotes) := 0(uint256)"];
+5->8;
+6[label="Node Type: BEGIN_LOOP 6
+"];
+6->9;
+7[label="Node Type: END_LOOP 7
+"];
+7->14;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+8->6;
+9[label="Node Type: IF_LOOP 9
+
+EXPRESSION:
+i < committeesArrayIndexCounter
+
+IRs:
+TMP_21(bool) = i < committeesArrayIndexCounter
+CONDITION TMP_21"];
+9->10[label="True"];
+9->7[label="False"];
+10[label="Node Type: IF 10
+
+EXPRESSION:
+committeesArray[i] != address(0)
+
+IRs:
+REF_13(address) -> committeesArray[i]
+TMP_22 = CONVERT 0 to address
+TMP_23(bool) = REF_13 != TMP_22
+CONDITION TMP_23"];
+10->11[label="True"];
+10->12[label="False"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+committeeKickVoters[_kickedCommittee][committeesArray[i]] = false
+
+IRs:
+REF_14(mapping(address => bool)) -> committeeKickVoters[_kickedCommittee]
+REF_15(address) -> committeesArray[i]
+REF_16(bool) -> REF_14[REF_15]
+REF_16(bool) (->committeeKickVoters) := False(bool)"];
+11->12;
+12[label="Node Type: END_IF 12
+"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_24(uint256) := i(uint256)
+i(uint256) = i + 1"];
+13->9;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+KickCommitteeFromMapAndArrayEvent(_kickedCommittee)
+
+IRs:
+Emit KickCommitteeFromMapAndArrayEvent(_kickedCommittee)"];
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+onlyCommitteesAfterInitialization()
+
+IRs:
+MODIFIER_CALL, FsTkCMultiSigWallet.onlyCommitteesAfterInitialization()()"];
+15->1;
+}
+// Function: 33424.sol-FsTkCMultiSigWallet-kickCommitteeVote(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->13;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(isCommittee(_kickedCommittee))
+
+IRs:
+TMP_38(bool) = INTERNAL_CALL, FsTkCMultiSigWallet.isCommittee(address)(_kickedCommittee)
+TMP_39(None) = SOLIDITY_CALL require(bool)(TMP_38)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(committeeKickVoters[_kickedCommittee][msg.sender] == false)
+
+IRs:
+REF_25(mapping(address => bool)) -> committeeKickVoters[_kickedCommittee]
+REF_26(bool) -> REF_25[msg.sender]
+TMP_40(bool) = REF_26 == False
+TMP_41(None) = SOLIDITY_CALL require(bool)(TMP_40)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+committeeKickVoters[_kickedCommittee][msg.sender] = true
+
+IRs:
+REF_27(mapping(address => bool)) -> committeeKickVoters[_kickedCommittee]
+REF_28(bool) -> REF_27[msg.sender]
+REF_28(bool) (->committeeKickVoters) := True(bool)"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+committeeKickVotes[_kickedCommittee] == 0
+
+IRs:
+REF_29(uint256) -> committeeKickVotes[_kickedCommittee]
+TMP_42(bool) = REF_29 == 0
+CONDITION TMP_42"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+committeeKickVotes[_kickedCommittee] = 1
+
+IRs:
+REF_30(uint256) -> committeeKickVotes[_kickedCommittee]
+REF_30(uint256) (->committeeKickVotes) := 1(uint256)"];
+5->7;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+committeeKickVotes[_kickedCommittee] ++
+
+IRs:
+REF_31(uint256) -> committeeKickVotes[_kickedCommittee]
+TMP_43(uint256) := REF_31(uint256)
+REF_31(-> committeeKickVotes) = REF_31 + 1"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: IF 8
+
+EXPRESSION:
+committeeKickVotes[_kickedCommittee] == getCommitteesNumber() - 1
+
+IRs:
+REF_32(uint256) -> committeeKickVotes[_kickedCommittee]
+TMP_44(uint256) = INTERNAL_CALL, FsTkCMultiSigWallet.getCommitteesNumber()()
+TMP_45(uint256) = TMP_44 - 1
+TMP_46(bool) = REF_32 == TMP_45
+CONDITION TMP_46"];
+8->9[label="True"];
+8->10[label="False"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+kickCommitteeFromMapAndArray(_kickedCommittee)
+
+IRs:
+INTERNAL_CALL, FsTkCMultiSigWallet.kickCommitteeFromMapAndArray(address)(_kickedCommittee)"];
+9->10;
+10[label="Node Type: END_IF 10
+"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+KickCommitteeVoteEvent(msg.sender,_kickedCommittee)
+
+IRs:
+Emit KickCommitteeVoteEvent(msg.sender,_kickedCommittee)"];
+11->12;
+12[label="Node Type: RETURN 12
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+onlyCommitteesAfterInitialization()
+
+IRs:
+MODIFIER_CALL, FsTkCMultiSigWallet.onlyCommitteesAfterInitialization()()"];
+13->1;
+}
+// Function: 33424.sol-FsTkCMultiSigWallet-onlyCommitteesAfterInitialization()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+initialized == false
+
+IRs:
+TMP_97(bool) = initialized == False
+CONDITION TMP_97"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: _ 2
+"];
+2->5;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(isCommittee(msg.sender))
+
+IRs:
+TMP_98(bool) = INTERNAL_CALL, FsTkCMultiSigWallet.isCommittee(address)(msg.sender)
+TMP_99(None) = SOLIDITY_CALL require(bool)(TMP_98)"];
+3->4;
+4[label="Node Type: _ 4
+"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+}
+// Function: 33424.sol-FsTkCMultiSigWallet-onlyDeployer()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == deployer)
+
+IRs:
+TMP_100(bool) = msg.sender == deployer
+TMP_101(None) = SOLIDITY_CALL require(bool)(TMP_100)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 33424.sol-FsTkCMultiSigWallet-setTokenTransferIdentifier(string,bytes4)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+tokenTransferFunctionIdentifierMap[keccak256()(_ercVersion)] = _functionIdentifier
+
+IRs:
+TMP_91(bytes32) = SOLIDITY_CALL keccak256()(_ercVersion)
+REF_69(bytes4) -> tokenTransferFunctionIdentifierMap[TMP_91]
+REF_69(bytes4) (->tokenTransferFunctionIdentifierMap) := _functionIdentifier(bytes4)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyDeployer()
+
+IRs:
+MODIFIER_CALL, FsTkCMultiSigWallet.onlyDeployer()()"];
+3->1;
+}
+// Function: 33424.sol-FsTkCMultiSigWallet-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+deployer = address(0)
+
+IRs:
+TMP_96 = CONVERT 0 to address
+deployer(address) := TMP_96(address)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+initialized = false
+
+IRs:
+initialized(bool) := False(bool)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+committeesArrayIndexCounter = 0
+
+IRs:
+committeesArrayIndexCounter(uint256) := 0(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+committeesNumber = 0
+
+IRs:
+committeesNumber(uint256) := 0(uint256)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+txCounter = 0
+
+IRs:
+txCounter(uint256) := 0(uint256)"];
+}
+// Function: 33424.sol-FsTkCMultiSigWallet-transferERCXTokenInitiation(string,address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->8;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+tmpIdentifier = tokenTransferFunctionIdentifierMap[keccak256()(_ercVersion)]
+
+IRs:
+TMP_54(bytes32) = SOLIDITY_CALL keccak256()(_ercVersion)
+REF_37(bytes4) -> tokenTransferFunctionIdentifierMap[TMP_54]
+tmpIdentifier(bytes4) := REF_37(bytes4)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(tmpIdentifier != bytes4(0))
+
+IRs:
+TMP_55 = CONVERT 0 to bytes4
+TMP_56(bool) = tmpIdentifier != TMP_55
+TMP_57(None) = SOLIDITY_CALL require(bool)(TMP_56)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+txTaskMap[txCounter] = Task({taskType:1,receiver:_to,value:_tokenValue,tokenContractAddress:_tokenContractAddress,functionIdentifier:tmpIdentifier,acceptedCounter:0,completed:false})
+
+IRs:
+REF_38(FsTkCMultiSigWallet.Task) -> txTaskMap[txCounter]
+TMP_58(FsTkCMultiSigWallet.Task) = new Task(1,_to,_tokenValue,_tokenContractAddress,tmpIdentifier,0,False)
+REF_38(FsTkCMultiSigWallet.Task) (->txTaskMap) := TMP_58(FsTkCMultiSigWallet.Task)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+TransferERCXTokenInitiationEvent(txCounter,msg.sender,_ercVersion,_tokenContractAddress,_to,_tokenValue)
+
+IRs:
+Emit TransferERCXTokenInitiationEvent(txCounter,msg.sender,_ercVersion,_tokenContractAddress,_to,_tokenValue)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+acceptTxTask(txCounter)
+
+IRs:
+TMP_60(bool) = INTERNAL_CALL, FsTkCMultiSigWallet.acceptTxTask(uint256)(txCounter)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+txCounter ++
+
+IRs:
+TMP_61(uint256) := txCounter(uint256)
+txCounter(uint256) = txCounter + 1"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+onlyCommitteesAfterInitialization()
+
+IRs:
+MODIFIER_CALL, FsTkCMultiSigWallet.onlyCommitteesAfterInitialization()()"];
+8->1;
+}
+// Function: 33424.sol-FsTkCMultiSigWallet-transferEtherInitiation(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->7;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_weiValue <= this.balance)
+
+IRs:
+REF_39(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_63(bool) = _weiValue <= REF_39
+TMP_64(None) = SOLIDITY_CALL require(bool)(TMP_63)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+txTaskMap[txCounter] = Task({taskType:2,receiver:_to,value:_weiValue,tokenContractAddress:address(0),functionIdentifier:bytes4(0),acceptedCounter:0,completed:false})
+
+IRs:
+REF_40(FsTkCMultiSigWallet.Task) -> txTaskMap[txCounter]
+TMP_65 = CONVERT 0 to address
+TMP_66 = CONVERT 0 to bytes4
+TMP_67(FsTkCMultiSigWallet.Task) = new Task(2,_to,_weiValue,TMP_65,TMP_66,0,False)
+REF_40(FsTkCMultiSigWallet.Task) (->txTaskMap) := TMP_67(FsTkCMultiSigWallet.Task)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+TransferEtherInitiationEvent(txCounter,msg.sender,_to,_weiValue)
+
+IRs:
+Emit TransferEtherInitiationEvent(txCounter,msg.sender,_to,_weiValue)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+acceptTxTask(txCounter)
+
+IRs:
+TMP_69(bool) = INTERNAL_CALL, FsTkCMultiSigWallet.acceptTxTask(uint256)(txCounter)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+txCounter ++
+
+IRs:
+TMP_70(uint256) := txCounter(uint256)
+txCounter(uint256) = txCounter + 1"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+onlyCommitteesAfterInitialization()
+
+IRs:
+MODIFIER_CALL, FsTkCMultiSigWallet.onlyCommitteesAfterInitialization()()"];
+7->1;
+}
+}

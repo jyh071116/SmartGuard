@@ -1,0 +1,1477 @@
+digraph G {
+// Function: 33930.sol-Prover-Prover()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 33930.sol-Prover-addEntry(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+users.insert(msg.sender)
+
+IRs:
+LIBRARY_CALL, dest:Sets, function:Sets.insert(Sets.addressSet,address), arguments:['users', 'msg.sender'] "];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+accounts[msg.sender].entries.insert(dataHash)
+
+IRs:
+REF_172(Prover.Account) -> accounts[msg.sender]
+REF_173(Sets.bytes32Set) -> REF_172.entries
+LIBRARY_CALL, dest:Sets, function:Sets.insert(Sets.bytes32Set,bytes32), arguments:['REF_173', 'dataHash'] "];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+accounts[msg.sender].values[dataHash] = Entry(now,msg.value)
+
+IRs:
+REF_175(Prover.Account) -> accounts[msg.sender]
+REF_176(mapping(bytes32 => Prover.Entry)) -> REF_175.values
+REF_177(Prover.Entry) -> REF_176[dataHash]
+TMP_126(Prover.Entry) = new Entry(now,msg.value)
+REF_177(Prover.Entry) (->accounts) := TMP_126(Prover.Entry)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+entryExists(msg.sender,dataHash,false)
+
+IRs:
+MODIFIER_CALL, Prover.entryExists(address,bytes32,bool)(msg.sender,dataHash,False)"];
+4->1;
+}
+// Function: 33930.sol-Prover-deleteEntry(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->10;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+rebate = accounts[msg.sender].values[dataHash].staked
+
+IRs:
+REF_178(Prover.Account) -> accounts[msg.sender]
+REF_179(mapping(bytes32 => Prover.Entry)) -> REF_178.values
+REF_180(Prover.Entry) -> REF_179[dataHash]
+REF_181(uint256) -> REF_180.staked
+rebate(uint256) := REF_181(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+delete accounts[msg.sender].values[dataHash]
+
+IRs:
+REF_182(Prover.Account) -> accounts[msg.sender]
+REF_183(mapping(bytes32 => Prover.Entry)) -> REF_182.values
+REF_184(Prover.Entry) -> REF_183[dataHash]
+REF_183 = delete REF_184 "];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+accounts[msg.sender].entries.remove(dataHash)
+
+IRs:
+REF_185(Prover.Account) -> accounts[msg.sender]
+REF_186(Sets.bytes32Set) -> REF_185.entries
+LIBRARY_CALL, dest:Sets, function:Sets.remove(Sets.bytes32Set,bytes32), arguments:['REF_186', 'dataHash'] "];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+accounts[msg.sender].entries.length() == 0
+
+IRs:
+REF_188(Prover.Account) -> accounts[msg.sender]
+REF_189(Sets.bytes32Set) -> REF_188.entries
+TMP_129(uint256) = LIBRARY_CALL, dest:Sets, function:Sets.length(Sets.bytes32Set), arguments:['REF_189'] 
+TMP_130(bool) = TMP_129 == 0
+CONDITION TMP_130"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+users.remove(msg.sender)
+
+IRs:
+LIBRARY_CALL, dest:Sets, function:Sets.remove(Sets.addressSet,address), arguments:['users', 'msg.sender'] "];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: IF 7
+
+EXPRESSION:
+rebate > 0
+
+IRs:
+TMP_132(bool) = rebate > 0
+CONDITION TMP_132"];
+7->8[label="True"];
+7->9[label="False"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+msg.sender.transfer(rebate)
+
+IRs:
+Transfer dest:msg.sender value:rebate"];
+8->9;
+9[label="Node Type: END_IF 9
+"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+entryExists(msg.sender,dataHash,true)
+
+IRs:
+MODIFIER_CALL, Prover.entryExists(address,bytes32,bool)(msg.sender,dataHash,True)"];
+10->1;
+}
+// Function: 33930.sol-Prover-entryExists(address,bytes32,bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(accounts[target].entries.contains(dataHash) == exists)
+
+IRs:
+REF_194(Prover.Account) -> accounts[target]
+REF_195(Sets.bytes32Set) -> REF_194.entries
+TMP_140(bool) = LIBRARY_CALL, dest:Sets, function:Sets.contains(Sets.bytes32Set,bytes32), arguments:['REF_195', 'dataHash'] 
+TMP_141(bool) = TMP_140 == exists
+TMP_142(None) = SOLIDITY_CALL assert(bool)(TMP_141)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 33930.sol-Prover-entryInformation(address,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+(accounts[target].entries.contains(dataHash),accounts[target].values[dataHash].time,accounts[target].values[dataHash].staked)
+
+IRs:
+REF_160(Prover.Account) -> accounts[target]
+REF_161(Sets.bytes32Set) -> REF_160.entries
+TMP_123(bool) = LIBRARY_CALL, dest:Sets, function:Sets.contains(Sets.bytes32Set,bytes32), arguments:['REF_161', 'dataHash'] 
+REF_163(Prover.Account) -> accounts[target]
+REF_164(mapping(bytes32 => Prover.Entry)) -> REF_163.values
+REF_165(Prover.Entry) -> REF_164[dataHash]
+REF_166(uint256) -> REF_165.time
+REF_167(Prover.Account) -> accounts[target]
+REF_168(mapping(bytes32 => Prover.Entry)) -> REF_167.values
+REF_169(Prover.Entry) -> REF_168[dataHash]
+REF_170(uint256) -> REF_169.staked
+RETURN TMP_123,REF_166,REF_170"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+(proved,time,staked)
+
+IRs:
+RETURN proved,time,staked"];
+}
+// Function: 33930.sol-Prover-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! this.delegatecall(msg.data)
+
+IRs:
+TMP_119(bool) = LOW_LEVEL_CALL, dest:this, function:delegatecall, arguments:['msg.data']  
+TMP_120 = UnaryType.BANG TMP_119 
+CONDITION TMP_120"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_121(None) = SOLIDITY_CALL revert()()"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 33930.sol-Prover-registeredUsers()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+(users.length(),users.members)
+
+IRs:
+TMP_122(uint256) = LIBRARY_CALL, dest:Sets, function:Sets.length(Sets.addressSet), arguments:['users'] 
+REF_156(address[]) -> users.members
+RETURN TMP_122,REF_156"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+(number_unique_addresses,unique_addresses)
+
+IRs:
+RETURN number_unique_addresses,unique_addresses"];
+}
+// Function: 33930.sol-Prover-selfDestruct()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+(msg.sender == owner) && (users.length() == 0)
+
+IRs:
+TMP_135(bool) = msg.sender == owner
+TMP_136(uint256) = LIBRARY_CALL, dest:Sets, function:Sets.length(Sets.addressSet), arguments:['users'] 
+TMP_137(bool) = TMP_136 == 0
+TMP_138(bool) = TMP_135 && TMP_137
+CONDITION TMP_138"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+selfdestruct(address)(owner)
+
+IRs:
+TMP_139(None) = SOLIDITY_CALL selfdestruct(address)(owner)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 33930.sol-Prover-userEntries(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+accounts[target].entries.members
+
+IRs:
+REF_157(Prover.Account) -> accounts[target]
+REF_158(Sets.bytes32Set) -> REF_157.entries
+REF_159(bytes32[]) -> REF_158.members
+RETURN REF_159"];
+}
+// Function: 33930.sol-Sets-contains(Sets.addressSet,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+self.memberIndices[other] > 0
+
+IRs:
+REF_18(mapping(address => uint256)) -> self.memberIndices
+REF_19(uint256) -> REF_18[other]
+TMP_16(bool) = REF_19 > 0
+RETURN TMP_16"];
+}
+// Function: 33930.sol-Sets-contains(Sets.byteSet,bytes1)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+self.memberIndices[other] > 0
+
+IRs:
+REF_128(mapping(bytes1 => uint256)) -> self.memberIndices
+REF_129(uint256) -> REF_128[other]
+TMP_101(bool) = REF_129 > 0
+RETURN TMP_101"];
+}
+// Function: 33930.sol-Sets-contains(Sets.bytes32Set,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+self.memberIndices[other] > 0
+
+IRs:
+REF_150(mapping(bytes32 => uint256)) -> self.memberIndices
+REF_151(uint256) -> REF_150[other]
+TMP_118(bool) = REF_151 > 0
+RETURN TMP_118"];
+}
+// Function: 33930.sol-Sets-contains(Sets.int8Set,int8)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+self.memberIndices[other] > 0
+
+IRs:
+REF_106(mapping(int8 => uint256)) -> self.memberIndices
+REF_107(uint256) -> REF_106[other]
+TMP_84(bool) = REF_107 > 0
+RETURN TMP_84"];
+}
+// Function: 33930.sol-Sets-contains(Sets.intSet,int256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+self.memberIndices[other] > 0
+
+IRs:
+REF_84(mapping(int256 => uint256)) -> self.memberIndices
+REF_85(uint256) -> REF_84[other]
+TMP_67(bool) = REF_85 > 0
+RETURN TMP_67"];
+}
+// Function: 33930.sol-Sets-contains(Sets.uint8Set,uint8)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+self.memberIndices[other] > 0
+
+IRs:
+REF_62(mapping(uint8 => uint256)) -> self.memberIndices
+REF_63(uint256) -> REF_62[other]
+TMP_50(bool) = REF_63 > 0
+RETURN TMP_50"];
+}
+// Function: 33930.sol-Sets-contains(Sets.uintSet,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+self.memberIndices[other] > 0
+
+IRs:
+REF_40(mapping(uint256 => uint256)) -> self.memberIndices
+REF_41(uint256) -> REF_40[other]
+TMP_33(bool) = REF_41 > 0
+RETURN TMP_33"];
+}
+// Function: 33930.sol-Sets-insert(Sets.addressSet,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! contains(self,other)
+
+IRs:
+TMP_0(bool) = INTERNAL_CALL, Sets.contains(Sets.addressSet,address)(self,other)
+TMP_1 = UnaryType.BANG TMP_0 
+CONDITION TMP_1"];
+1->2[label="True"];
+1->5[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(length(self) < 2 ** 256 - 1)
+
+IRs:
+TMP_2(uint256) = INTERNAL_CALL, Sets.length(Sets.addressSet)(self)
+TMP_3(uint256) = 2 ** 256
+TMP_4(uint256) = TMP_3 - 1
+TMP_5(bool) = TMP_2 < TMP_4
+TMP_6(None) = SOLIDITY_CALL assert(bool)(TMP_5)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+self.members.push(other)
+
+IRs:
+REF_0(address[]) -> self.members
+REF_2 -> LENGTH REF_0
+TMP_8(uint256) := REF_2(uint256)
+TMP_9(uint256) = TMP_8 + 1
+REF_2(uint256) (->self) := TMP_9(uint256)
+REF_3(address) -> REF_0[TMP_8]
+REF_3(address) (->self) := other(address)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+self.memberIndices[other] = length(self)
+
+IRs:
+REF_4(mapping(address => uint256)) -> self.memberIndices
+REF_5(uint256) -> REF_4[other]
+TMP_10(uint256) = INTERNAL_CALL, Sets.length(Sets.addressSet)(self)
+REF_5(uint256) (->self) := TMP_10(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+}
+// Function: 33930.sol-Sets-insert(Sets.byteSet,bytes1)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! contains(self,other)
+
+IRs:
+TMP_85(bool) = INTERNAL_CALL, Sets.contains(Sets.byteSet,bytes1)(self,other)
+TMP_86 = UnaryType.BANG TMP_85 
+CONDITION TMP_86"];
+1->2[label="True"];
+1->5[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(length(self) < 2 ** 256 - 1)
+
+IRs:
+TMP_87(uint256) = INTERNAL_CALL, Sets.length(Sets.byteSet)(self)
+TMP_88(uint256) = 2 ** 256
+TMP_89(uint256) = TMP_88 - 1
+TMP_90(bool) = TMP_87 < TMP_89
+TMP_91(None) = SOLIDITY_CALL assert(bool)(TMP_90)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+self.members.push(other)
+
+IRs:
+REF_110(bytes1[]) -> self.members
+REF_112 -> LENGTH REF_110
+TMP_93(uint256) := REF_112(uint256)
+TMP_94(uint256) = TMP_93 + 1
+REF_112(uint256) (->self) := TMP_94(uint256)
+REF_113(bytes1) -> REF_110[TMP_93]
+REF_113(bytes1) (->self) := other(bytes1)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+self.memberIndices[other] = length(self)
+
+IRs:
+REF_114(mapping(bytes1 => uint256)) -> self.memberIndices
+REF_115(uint256) -> REF_114[other]
+TMP_95(uint256) = INTERNAL_CALL, Sets.length(Sets.byteSet)(self)
+REF_115(uint256) (->self) := TMP_95(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+}
+// Function: 33930.sol-Sets-insert(Sets.bytes32Set,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! contains(self,other)
+
+IRs:
+TMP_102(bool) = INTERNAL_CALL, Sets.contains(Sets.bytes32Set,bytes32)(self,other)
+TMP_103 = UnaryType.BANG TMP_102 
+CONDITION TMP_103"];
+1->2[label="True"];
+1->5[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(length(self) < 2 ** 256 - 1)
+
+IRs:
+TMP_104(uint256) = INTERNAL_CALL, Sets.length(Sets.bytes32Set)(self)
+TMP_105(uint256) = 2 ** 256
+TMP_106(uint256) = TMP_105 - 1
+TMP_107(bool) = TMP_104 < TMP_106
+TMP_108(None) = SOLIDITY_CALL assert(bool)(TMP_107)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+self.members.push(other)
+
+IRs:
+REF_132(bytes32[]) -> self.members
+REF_134 -> LENGTH REF_132
+TMP_110(uint256) := REF_134(uint256)
+TMP_111(uint256) = TMP_110 + 1
+REF_134(uint256) (->self) := TMP_111(uint256)
+REF_135(bytes32) -> REF_132[TMP_110]
+REF_135(bytes32) (->self) := other(bytes32)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+self.memberIndices[other] = length(self)
+
+IRs:
+REF_136(mapping(bytes32 => uint256)) -> self.memberIndices
+REF_137(uint256) -> REF_136[other]
+TMP_112(uint256) = INTERNAL_CALL, Sets.length(Sets.bytes32Set)(self)
+REF_137(uint256) (->self) := TMP_112(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+}
+// Function: 33930.sol-Sets-insert(Sets.int8Set,int8)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! contains(self,other)
+
+IRs:
+TMP_68(bool) = INTERNAL_CALL, Sets.contains(Sets.int8Set,int8)(self,other)
+TMP_69 = UnaryType.BANG TMP_68 
+CONDITION TMP_69"];
+1->2[label="True"];
+1->5[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(length(self) < 2 ** 256 - 1)
+
+IRs:
+TMP_70(uint256) = INTERNAL_CALL, Sets.length(Sets.int8Set)(self)
+TMP_71(uint256) = 2 ** 256
+TMP_72(uint256) = TMP_71 - 1
+TMP_73(bool) = TMP_70 < TMP_72
+TMP_74(None) = SOLIDITY_CALL assert(bool)(TMP_73)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+self.members.push(other)
+
+IRs:
+REF_88(int8[]) -> self.members
+REF_90 -> LENGTH REF_88
+TMP_76(uint256) := REF_90(uint256)
+TMP_77(uint256) = TMP_76 + 1
+REF_90(uint256) (->self) := TMP_77(uint256)
+REF_91(int8) -> REF_88[TMP_76]
+REF_91(int8) (->self) := other(int8)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+self.memberIndices[other] = length(self)
+
+IRs:
+REF_92(mapping(int8 => uint256)) -> self.memberIndices
+REF_93(uint256) -> REF_92[other]
+TMP_78(uint256) = INTERNAL_CALL, Sets.length(Sets.int8Set)(self)
+REF_93(uint256) (->self) := TMP_78(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+}
+// Function: 33930.sol-Sets-insert(Sets.intSet,int256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! contains(self,other)
+
+IRs:
+TMP_51(bool) = INTERNAL_CALL, Sets.contains(Sets.intSet,int256)(self,other)
+TMP_52 = UnaryType.BANG TMP_51 
+CONDITION TMP_52"];
+1->2[label="True"];
+1->5[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(length(self) < 2 ** 256 - 1)
+
+IRs:
+TMP_53(uint256) = INTERNAL_CALL, Sets.length(Sets.intSet)(self)
+TMP_54(uint256) = 2 ** 256
+TMP_55(uint256) = TMP_54 - 1
+TMP_56(bool) = TMP_53 < TMP_55
+TMP_57(None) = SOLIDITY_CALL assert(bool)(TMP_56)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+self.members.push(other)
+
+IRs:
+REF_66(int256[]) -> self.members
+REF_68 -> LENGTH REF_66
+TMP_59(uint256) := REF_68(uint256)
+TMP_60(uint256) = TMP_59 + 1
+REF_68(uint256) (->self) := TMP_60(uint256)
+REF_69(int256) -> REF_66[TMP_59]
+REF_69(int256) (->self) := other(int256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+self.memberIndices[other] = length(self)
+
+IRs:
+REF_70(mapping(int256 => uint256)) -> self.memberIndices
+REF_71(uint256) -> REF_70[other]
+TMP_61(uint256) = INTERNAL_CALL, Sets.length(Sets.intSet)(self)
+REF_71(uint256) (->self) := TMP_61(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+}
+// Function: 33930.sol-Sets-insert(Sets.uint8Set,uint8)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! contains(self,other)
+
+IRs:
+TMP_34(bool) = INTERNAL_CALL, Sets.contains(Sets.uint8Set,uint8)(self,other)
+TMP_35 = UnaryType.BANG TMP_34 
+CONDITION TMP_35"];
+1->2[label="True"];
+1->5[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(length(self) < 2 ** 256 - 1)
+
+IRs:
+TMP_36(uint256) = INTERNAL_CALL, Sets.length(Sets.uint8Set)(self)
+TMP_37(uint256) = 2 ** 256
+TMP_38(uint256) = TMP_37 - 1
+TMP_39(bool) = TMP_36 < TMP_38
+TMP_40(None) = SOLIDITY_CALL assert(bool)(TMP_39)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+self.members.push(other)
+
+IRs:
+REF_44(uint8[]) -> self.members
+REF_46 -> LENGTH REF_44
+TMP_42(uint256) := REF_46(uint256)
+TMP_43(uint256) = TMP_42 + 1
+REF_46(uint256) (->self) := TMP_43(uint256)
+REF_47(uint8) -> REF_44[TMP_42]
+REF_47(uint8) (->self) := other(uint8)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+self.memberIndices[other] = length(self)
+
+IRs:
+REF_48(mapping(uint8 => uint256)) -> self.memberIndices
+REF_49(uint256) -> REF_48[other]
+TMP_44(uint256) = INTERNAL_CALL, Sets.length(Sets.uint8Set)(self)
+REF_49(uint256) (->self) := TMP_44(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+}
+// Function: 33930.sol-Sets-insert(Sets.uintSet,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! contains(self,other)
+
+IRs:
+TMP_17(bool) = INTERNAL_CALL, Sets.contains(Sets.uintSet,uint256)(self,other)
+TMP_18 = UnaryType.BANG TMP_17 
+CONDITION TMP_18"];
+1->2[label="True"];
+1->5[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(length(self) < 2 ** 256 - 1)
+
+IRs:
+TMP_19(uint256) = INTERNAL_CALL, Sets.length(Sets.uintSet)(self)
+TMP_20(uint256) = 2 ** 256
+TMP_21(uint256) = TMP_20 - 1
+TMP_22(bool) = TMP_19 < TMP_21
+TMP_23(None) = SOLIDITY_CALL assert(bool)(TMP_22)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+self.members.push(other)
+
+IRs:
+REF_22(uint256[]) -> self.members
+REF_24 -> LENGTH REF_22
+TMP_25(uint256) := REF_24(uint256)
+TMP_26(uint256) = TMP_25 + 1
+REF_24(uint256) (->self) := TMP_26(uint256)
+REF_25(uint256) -> REF_22[TMP_25]
+REF_25(uint256) (->self) := other(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+self.memberIndices[other] = length(self)
+
+IRs:
+REF_26(mapping(uint256 => uint256)) -> self.memberIndices
+REF_27(uint256) -> REF_26[other]
+TMP_27(uint256) = INTERNAL_CALL, Sets.length(Sets.uintSet)(self)
+REF_27(uint256) (->self) := TMP_27(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+}
+// Function: 33930.sol-Sets-length(Sets.addressSet)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+self.members.length
+
+IRs:
+REF_20(address[]) -> self.members
+REF_21 -> LENGTH REF_20
+RETURN REF_21"];
+}
+// Function: 33930.sol-Sets-length(Sets.byteSet)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+self.members.length
+
+IRs:
+REF_130(bytes1[]) -> self.members
+REF_131 -> LENGTH REF_130
+RETURN REF_131"];
+}
+// Function: 33930.sol-Sets-length(Sets.bytes32Set)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+self.members.length
+
+IRs:
+REF_152(bytes32[]) -> self.members
+REF_153 -> LENGTH REF_152
+RETURN REF_153"];
+}
+// Function: 33930.sol-Sets-length(Sets.int8Set)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+self.members.length
+
+IRs:
+REF_108(int8[]) -> self.members
+REF_109 -> LENGTH REF_108
+RETURN REF_109"];
+}
+// Function: 33930.sol-Sets-length(Sets.intSet)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+self.members.length
+
+IRs:
+REF_86(int256[]) -> self.members
+REF_87 -> LENGTH REF_86
+RETURN REF_87"];
+}
+// Function: 33930.sol-Sets-length(Sets.uint8Set)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+self.members.length
+
+IRs:
+REF_64(uint8[]) -> self.members
+REF_65 -> LENGTH REF_64
+RETURN REF_65"];
+}
+// Function: 33930.sol-Sets-length(Sets.uintSet)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+self.members.length
+
+IRs:
+REF_42(uint256[]) -> self.members
+REF_43 -> LENGTH REF_42
+RETURN REF_43"];
+}
+// Function: 33930.sol-Sets-remove(Sets.addressSet,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+contains(self,other)
+
+IRs:
+TMP_11(bool) = INTERNAL_CALL, Sets.contains(Sets.addressSet,address)(self,other)
+CONDITION TMP_11"];
+1->2[label="True"];
+1->8[label="False"];
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+replaceIndex = self.memberIndices[other]
+
+IRs:
+REF_6(mapping(address => uint256)) -> self.memberIndices
+REF_7(uint256) -> REF_6[other]
+replaceIndex(uint256) := REF_7(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+lastMember = self.members[length(self) - 1]
+
+IRs:
+REF_8(address[]) -> self.members
+TMP_12(uint256) = INTERNAL_CALL, Sets.length(Sets.addressSet)(self)
+TMP_13(uint256) = TMP_12 - 1
+REF_9(address) -> REF_8[TMP_13]
+lastMember(address) := REF_9(address)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+self.members[replaceIndex - 1] = lastMember
+
+IRs:
+REF_10(address[]) -> self.members
+TMP_14(uint256) = replaceIndex - 1
+REF_11(address) -> REF_10[TMP_14]
+REF_11(address) (->self) := lastMember(address)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+self.members.length --
+
+IRs:
+REF_12(address[]) -> self.members
+REF_13 -> LENGTH REF_12
+TMP_15(uint256) := REF_13(uint256)
+REF_13(-> self) = REF_13 - 1"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+self.memberIndices[lastMember] = replaceIndex
+
+IRs:
+REF_14(mapping(address => uint256)) -> self.memberIndices
+REF_15(uint256) -> REF_14[lastMember]
+REF_15(uint256) (->self) := replaceIndex(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+delete self.memberIndices[other]
+
+IRs:
+REF_16(mapping(address => uint256)) -> self.memberIndices
+REF_17(uint256) -> REF_16[other]
+REF_16 = delete REF_17 "];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+}
+// Function: 33930.sol-Sets-remove(Sets.byteSet,bytes1)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+contains(self,other)
+
+IRs:
+TMP_96(bool) = INTERNAL_CALL, Sets.contains(Sets.byteSet,bytes1)(self,other)
+CONDITION TMP_96"];
+1->2[label="True"];
+1->8[label="False"];
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+replaceIndex = self.memberIndices[other]
+
+IRs:
+REF_116(mapping(bytes1 => uint256)) -> self.memberIndices
+REF_117(uint256) -> REF_116[other]
+replaceIndex(uint256) := REF_117(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+lastMember = self.members[length(self) - 1]
+
+IRs:
+REF_118(bytes1[]) -> self.members
+TMP_97(uint256) = INTERNAL_CALL, Sets.length(Sets.byteSet)(self)
+TMP_98(uint256) = TMP_97 - 1
+REF_119(bytes1) -> REF_118[TMP_98]
+lastMember(bytes1) := REF_119(bytes1)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+self.members[replaceIndex - 1] = lastMember
+
+IRs:
+REF_120(bytes1[]) -> self.members
+TMP_99(uint256) = replaceIndex - 1
+REF_121(bytes1) -> REF_120[TMP_99]
+REF_121(bytes1) (->self) := lastMember(bytes1)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+self.members.length --
+
+IRs:
+REF_122(bytes1[]) -> self.members
+REF_123 -> LENGTH REF_122
+TMP_100(uint256) := REF_123(uint256)
+REF_123(-> self) = REF_123 - 1"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+self.memberIndices[lastMember] = replaceIndex
+
+IRs:
+REF_124(mapping(bytes1 => uint256)) -> self.memberIndices
+REF_125(uint256) -> REF_124[lastMember]
+REF_125(uint256) (->self) := replaceIndex(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+delete self.memberIndices[other]
+
+IRs:
+REF_126(mapping(bytes1 => uint256)) -> self.memberIndices
+REF_127(uint256) -> REF_126[other]
+REF_126 = delete REF_127 "];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+}
+// Function: 33930.sol-Sets-remove(Sets.bytes32Set,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+contains(self,other)
+
+IRs:
+TMP_113(bool) = INTERNAL_CALL, Sets.contains(Sets.bytes32Set,bytes32)(self,other)
+CONDITION TMP_113"];
+1->2[label="True"];
+1->8[label="False"];
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+replaceIndex = self.memberIndices[other]
+
+IRs:
+REF_138(mapping(bytes32 => uint256)) -> self.memberIndices
+REF_139(uint256) -> REF_138[other]
+replaceIndex(uint256) := REF_139(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+lastMember = self.members[length(self) - 1]
+
+IRs:
+REF_140(bytes32[]) -> self.members
+TMP_114(uint256) = INTERNAL_CALL, Sets.length(Sets.bytes32Set)(self)
+TMP_115(uint256) = TMP_114 - 1
+REF_141(bytes32) -> REF_140[TMP_115]
+lastMember(bytes32) := REF_141(bytes32)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+self.members[replaceIndex - 1] = lastMember
+
+IRs:
+REF_142(bytes32[]) -> self.members
+TMP_116(uint256) = replaceIndex - 1
+REF_143(bytes32) -> REF_142[TMP_116]
+REF_143(bytes32) (->self) := lastMember(bytes32)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+self.members.length --
+
+IRs:
+REF_144(bytes32[]) -> self.members
+REF_145 -> LENGTH REF_144
+TMP_117(uint256) := REF_145(uint256)
+REF_145(-> self) = REF_145 - 1"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+self.memberIndices[lastMember] = replaceIndex
+
+IRs:
+REF_146(mapping(bytes32 => uint256)) -> self.memberIndices
+REF_147(uint256) -> REF_146[lastMember]
+REF_147(uint256) (->self) := replaceIndex(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+delete self.memberIndices[other]
+
+IRs:
+REF_148(mapping(bytes32 => uint256)) -> self.memberIndices
+REF_149(uint256) -> REF_148[other]
+REF_148 = delete REF_149 "];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+}
+// Function: 33930.sol-Sets-remove(Sets.int8Set,int8)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+contains(self,other)
+
+IRs:
+TMP_79(bool) = INTERNAL_CALL, Sets.contains(Sets.int8Set,int8)(self,other)
+CONDITION TMP_79"];
+1->2[label="True"];
+1->8[label="False"];
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+replaceIndex = self.memberIndices[other]
+
+IRs:
+REF_94(mapping(int8 => uint256)) -> self.memberIndices
+REF_95(uint256) -> REF_94[other]
+replaceIndex(uint256) := REF_95(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+lastMember = self.members[length(self) - 1]
+
+IRs:
+REF_96(int8[]) -> self.members
+TMP_80(uint256) = INTERNAL_CALL, Sets.length(Sets.int8Set)(self)
+TMP_81(uint256) = TMP_80 - 1
+REF_97(int8) -> REF_96[TMP_81]
+lastMember(int8) := REF_97(int8)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+self.members[replaceIndex - 1] = lastMember
+
+IRs:
+REF_98(int8[]) -> self.members
+TMP_82(uint256) = replaceIndex - 1
+REF_99(int8) -> REF_98[TMP_82]
+REF_99(int8) (->self) := lastMember(int8)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+self.members.length --
+
+IRs:
+REF_100(int8[]) -> self.members
+REF_101 -> LENGTH REF_100
+TMP_83(uint256) := REF_101(uint256)
+REF_101(-> self) = REF_101 - 1"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+self.memberIndices[lastMember] = replaceIndex
+
+IRs:
+REF_102(mapping(int8 => uint256)) -> self.memberIndices
+REF_103(uint256) -> REF_102[lastMember]
+REF_103(uint256) (->self) := replaceIndex(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+delete self.memberIndices[other]
+
+IRs:
+REF_104(mapping(int8 => uint256)) -> self.memberIndices
+REF_105(uint256) -> REF_104[other]
+REF_104 = delete REF_105 "];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+}
+// Function: 33930.sol-Sets-remove(Sets.intSet,int256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+contains(self,other)
+
+IRs:
+TMP_62(bool) = INTERNAL_CALL, Sets.contains(Sets.intSet,int256)(self,other)
+CONDITION TMP_62"];
+1->2[label="True"];
+1->8[label="False"];
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+replaceIndex = self.memberIndices[other]
+
+IRs:
+REF_72(mapping(int256 => uint256)) -> self.memberIndices
+REF_73(uint256) -> REF_72[other]
+replaceIndex(uint256) := REF_73(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+lastMember = self.members[length(self) - 1]
+
+IRs:
+REF_74(int256[]) -> self.members
+TMP_63(uint256) = INTERNAL_CALL, Sets.length(Sets.intSet)(self)
+TMP_64(uint256) = TMP_63 - 1
+REF_75(int256) -> REF_74[TMP_64]
+lastMember(int256) := REF_75(int256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+self.members[replaceIndex - 1] = lastMember
+
+IRs:
+REF_76(int256[]) -> self.members
+TMP_65(uint256) = replaceIndex - 1
+REF_77(int256) -> REF_76[TMP_65]
+REF_77(int256) (->self) := lastMember(int256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+self.members.length --
+
+IRs:
+REF_78(int256[]) -> self.members
+REF_79 -> LENGTH REF_78
+TMP_66(uint256) := REF_79(uint256)
+REF_79(-> self) = REF_79 - 1"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+self.memberIndices[lastMember] = replaceIndex
+
+IRs:
+REF_80(mapping(int256 => uint256)) -> self.memberIndices
+REF_81(uint256) -> REF_80[lastMember]
+REF_81(uint256) (->self) := replaceIndex(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+delete self.memberIndices[other]
+
+IRs:
+REF_82(mapping(int256 => uint256)) -> self.memberIndices
+REF_83(uint256) -> REF_82[other]
+REF_82 = delete REF_83 "];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+}
+// Function: 33930.sol-Sets-remove(Sets.uint8Set,uint8)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+contains(self,other)
+
+IRs:
+TMP_45(bool) = INTERNAL_CALL, Sets.contains(Sets.uint8Set,uint8)(self,other)
+CONDITION TMP_45"];
+1->2[label="True"];
+1->8[label="False"];
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+replaceIndex = self.memberIndices[other]
+
+IRs:
+REF_50(mapping(uint8 => uint256)) -> self.memberIndices
+REF_51(uint256) -> REF_50[other]
+replaceIndex(uint256) := REF_51(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+lastMember = self.members[length(self) - 1]
+
+IRs:
+REF_52(uint8[]) -> self.members
+TMP_46(uint256) = INTERNAL_CALL, Sets.length(Sets.uint8Set)(self)
+TMP_47(uint256) = TMP_46 - 1
+REF_53(uint8) -> REF_52[TMP_47]
+lastMember(uint8) := REF_53(uint8)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+self.members[replaceIndex - 1] = lastMember
+
+IRs:
+REF_54(uint8[]) -> self.members
+TMP_48(uint256) = replaceIndex - 1
+REF_55(uint8) -> REF_54[TMP_48]
+REF_55(uint8) (->self) := lastMember(uint8)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+self.members.length --
+
+IRs:
+REF_56(uint8[]) -> self.members
+REF_57 -> LENGTH REF_56
+TMP_49(uint256) := REF_57(uint256)
+REF_57(-> self) = REF_57 - 1"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+self.memberIndices[lastMember] = replaceIndex
+
+IRs:
+REF_58(mapping(uint8 => uint256)) -> self.memberIndices
+REF_59(uint256) -> REF_58[lastMember]
+REF_59(uint256) (->self) := replaceIndex(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+delete self.memberIndices[other]
+
+IRs:
+REF_60(mapping(uint8 => uint256)) -> self.memberIndices
+REF_61(uint256) -> REF_60[other]
+REF_60 = delete REF_61 "];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+}
+// Function: 33930.sol-Sets-remove(Sets.uintSet,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+contains(self,other)
+
+IRs:
+TMP_28(bool) = INTERNAL_CALL, Sets.contains(Sets.uintSet,uint256)(self,other)
+CONDITION TMP_28"];
+1->2[label="True"];
+1->8[label="False"];
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+replaceIndex = self.memberIndices[other]
+
+IRs:
+REF_28(mapping(uint256 => uint256)) -> self.memberIndices
+REF_29(uint256) -> REF_28[other]
+replaceIndex(uint256) := REF_29(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+lastMember = self.members[length(self) - 1]
+
+IRs:
+REF_30(uint256[]) -> self.members
+TMP_29(uint256) = INTERNAL_CALL, Sets.length(Sets.uintSet)(self)
+TMP_30(uint256) = TMP_29 - 1
+REF_31(uint256) -> REF_30[TMP_30]
+lastMember(uint256) := REF_31(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+self.members[replaceIndex - 1] = lastMember
+
+IRs:
+REF_32(uint256[]) -> self.members
+TMP_31(uint256) = replaceIndex - 1
+REF_33(uint256) -> REF_32[TMP_31]
+REF_33(uint256) (->self) := lastMember(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+self.members.length --
+
+IRs:
+REF_34(uint256[]) -> self.members
+REF_35 -> LENGTH REF_34
+TMP_32(uint256) := REF_35(uint256)
+REF_35(-> self) = REF_35 - 1"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+self.memberIndices[lastMember] = replaceIndex
+
+IRs:
+REF_36(mapping(uint256 => uint256)) -> self.memberIndices
+REF_37(uint256) -> REF_36[lastMember]
+REF_37(uint256) (->self) := replaceIndex(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+delete self.memberIndices[other]
+
+IRs:
+REF_38(mapping(uint256 => uint256)) -> self.memberIndices
+REF_39(uint256) -> REF_38[other]
+REF_38 = delete REF_39 "];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+}
+}

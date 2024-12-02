@@ -1,0 +1,4130 @@
+digraph G {
+// Function: 357.sol-Control-AddMatch(string,string,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+MatchList.push(MatchBet({betDeadline:deadline,allbet:0,allbet0:0,allbet1:0,allbet2:0,ownerDrawed:false,SHA_T1:keccak256()(bytes(troop1)),SHA_T2:keccak256()(bytes(troop2)),SHA_WIN:bytes32(0)}))
+
+IRs:
+TMP_197 = CONVERT troop1 to bytes
+TMP_198(bytes32) = SOLIDITY_CALL keccak256()(TMP_197)
+TMP_199 = CONVERT troop2 to bytes
+TMP_200(bytes32) = SOLIDITY_CALL keccak256()(TMP_199)
+TMP_201 = CONVERT 0 to bytes32
+TMP_202(Control.MatchBet) = new MatchBet(deadline,0,0,0,0,False,TMP_201,TMP_198,TMP_200)
+REF_143 -> LENGTH MatchList
+TMP_204(uint256) := REF_143(uint256)
+TMP_205(uint256) = TMP_204 + 1
+REF_143(uint256) (->MatchList) := TMP_205(uint256)
+REF_144(Control.MatchBet) -> MatchList[TMP_204]
+REF_144(Control.MatchBet) (->MatchList) := TMP_202(Control.MatchBet)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Control.onlyOwner()()"];
+2->1;
+}
+// Function: 357.sol-Control-Bet(uint256,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->20;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.value >= MIN_BET)
+
+IRs:
+TMP_221(bool) = msg.value >= MIN_BET
+TMP_222(None) = SOLIDITY_CALL require(bool)(TMP_221)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+oMatch = MatchList[index]
+
+IRs:
+REF_152(Control.MatchBet) -> MatchList[index]
+oMatch(Control.MatchBet) := REF_152(Control.MatchBet)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(oMatch.SHA_WIN == 0 && oMatch.betDeadline >= now)
+
+IRs:
+REF_153(bytes32) -> oMatch.SHA_WIN
+TMP_223(bool) = REF_153 == 0
+REF_154(uint256) -> oMatch.betDeadline
+TMP_224(bool) = REF_154 >= now
+TMP_225(bool) = TMP_223 && TMP_224
+TMP_226(None) = SOLIDITY_CALL require(bool)(TMP_225)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+tempAllBet = oMatch.allbet + msg.value
+
+IRs:
+REF_155(uint256) -> oMatch.allbet
+TMP_227(uint256) = REF_155 + msg.value
+tempAllBet(uint256) := TMP_227(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool)(tempAllBet > oMatch.allbet && tempAllBet <= MAX_ALLBET)
+
+IRs:
+REF_156(uint256) -> oMatch.allbet
+TMP_228(bool) = tempAllBet > REF_156
+TMP_229(bool) = tempAllBet <= MAX_ALLBET
+TMP_230(bool) = TMP_228 && TMP_229
+TMP_231(None) = SOLIDITY_CALL require(bool)(TMP_230)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+oBet = oMatch.list[msg.sender]
+
+IRs:
+REF_157(mapping(address => Control.PlayerBet)) -> oMatch.list
+REF_158(Control.PlayerBet) -> REF_157[msg.sender]
+oBet(Control.PlayerBet) := REF_158(Control.PlayerBet)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+oMatch.allbet = tempAllBet
+
+IRs:
+REF_159(uint256) -> oMatch.allbet
+REF_159(uint256) (->oMatch) := tempAllBet(uint256)"];
+7->8;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+shaBetTroop = keccak256()(bytes(troop))
+
+IRs:
+TMP_232 = CONVERT troop to bytes
+TMP_233(bytes32) = SOLIDITY_CALL keccak256()(TMP_232)
+shaBetTroop(bytes32) := TMP_233(bytes32)"];
+8->9;
+9[label="Node Type: IF 9
+
+EXPRESSION:
+shaBetTroop == oMatch.SHA_T1
+
+IRs:
+REF_160(bytes32) -> oMatch.SHA_T1
+TMP_234(bool) = shaBetTroop == REF_160
+CONDITION TMP_234"];
+9->10[label="True"];
+9->12[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+oBet.bet1 += msg.value
+
+IRs:
+REF_161(uint256) -> oBet.bet1
+REF_161(-> oBet) = REF_161 + msg.value"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+oMatch.allbet1 += msg.value
+
+IRs:
+REF_162(uint256) -> oMatch.allbet1
+REF_162(-> oMatch) = REF_162 + msg.value"];
+11->19;
+12[label="Node Type: IF 12
+
+EXPRESSION:
+shaBetTroop == oMatch.SHA_T2
+
+IRs:
+REF_163(bytes32) -> oMatch.SHA_T2
+TMP_235(bool) = shaBetTroop == REF_163
+CONDITION TMP_235"];
+12->13[label="True"];
+12->15[label="False"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+oBet.bet2 += msg.value
+
+IRs:
+REF_164(uint256) -> oBet.bet2
+REF_164(-> oBet) = REF_164 + msg.value"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+oMatch.allbet2 += msg.value
+
+IRs:
+REF_165(uint256) -> oMatch.allbet2
+REF_165(-> oMatch) = REF_165 + msg.value"];
+14->18;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+require(bool)(shaBetTroop == SHA_DEUCE)
+
+IRs:
+TMP_236(bool) = shaBetTroop == SHA_DEUCE
+TMP_237(None) = SOLIDITY_CALL require(bool)(TMP_236)"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+oBet.bet0 += msg.value
+
+IRs:
+REF_166(uint256) -> oBet.bet0
+REF_166(-> oBet) = REF_166 + msg.value"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+oMatch.allbet0 += msg.value
+
+IRs:
+REF_167(uint256) -> oMatch.allbet0
+REF_167(-> oMatch) = REF_167 + msg.value"];
+17->18;
+18[label="Node Type: END_IF 18
+"];
+18->19;
+19[label="Node Type: END_IF 19
+"];
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+MatchExist(index)
+
+IRs:
+MODIFIER_CALL, Control.MatchExist(uint256)(index)"];
+20->1;
+}
+// Function: 357.sol-Control-CalReward(Control.MatchBet,Control.PlayerBet)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+oMatch.SHA_WIN == oMatch.SHA_T1
+
+IRs:
+REF_168(bytes32) -> oMatch.SHA_WIN
+REF_169(bytes32) -> oMatch.SHA_T1
+TMP_239(bool) = REF_168 == REF_169
+CONDITION TMP_239"];
+3->4[label="True"];
+3->6[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+myWinBet = oBet.bet1
+
+IRs:
+REF_170(uint256) -> oBet.bet1
+myWinBet(uint256) := REF_170(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+allWinBet = oMatch.allbet1
+
+IRs:
+REF_171(uint256) -> oMatch.allbet1
+allWinBet(uint256) := REF_171(uint256)"];
+5->12;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+oMatch.SHA_WIN == oMatch.SHA_T2
+
+IRs:
+REF_172(bytes32) -> oMatch.SHA_WIN
+REF_173(bytes32) -> oMatch.SHA_T2
+TMP_240(bool) = REF_172 == REF_173
+CONDITION TMP_240"];
+6->7[label="True"];
+6->9[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+myWinBet = oBet.bet2
+
+IRs:
+REF_174(uint256) -> oBet.bet2
+myWinBet(uint256) := REF_174(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+allWinBet = oMatch.allbet2
+
+IRs:
+REF_175(uint256) -> oMatch.allbet2
+allWinBet(uint256) := REF_175(uint256)"];
+8->11;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+myWinBet = oBet.bet0
+
+IRs:
+REF_176(uint256) -> oBet.bet0
+myWinBet(uint256) := REF_176(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+allWinBet = oMatch.allbet0
+
+IRs:
+REF_177(uint256) -> oMatch.allbet0
+allWinBet(uint256) := REF_177(uint256)"];
+10->11;
+11[label="Node Type: END_IF 11
+"];
+11->12;
+12[label="Node Type: END_IF 12
+"];
+12->13;
+13[label="Node Type: IF 13
+
+EXPRESSION:
+myWinBet == 0
+
+IRs:
+TMP_241(bool) = myWinBet == 0
+CONDITION TMP_241"];
+13->14[label="True"];
+13->15[label="False"];
+14[label="Node Type: RETURN 14
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+15[label="Node Type: END_IF 15
+"];
+15->16;
+16[label="Node Type: RETURN 16
+
+EXPRESSION:
+myWinBet + (oMatch.allbet - allWinBet) * myWinBet / allWinBet * REWARD_GET / REWARD_BASE
+
+IRs:
+REF_178(uint256) -> oMatch.allbet
+TMP_242(uint256) = REF_178 - allWinBet
+TMP_243(uint256) = TMP_242 * myWinBet
+TMP_244(uint256) = TMP_243 / allWinBet
+TMP_245(uint256) = TMP_244 * REWARD_GET
+TMP_246(uint256) = TMP_245 / REWARD_BASE
+TMP_247(uint256) = myWinBet + TMP_246
+RETURN TMP_247"];
+}
+// Function: 357.sol-Control-CreatorWithdraw(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+oMatch = MatchList[index]
+
+IRs:
+REF_187(Control.MatchBet) -> MatchList[index]
+oMatch(Control.MatchBet) := REF_187(Control.MatchBet)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+oMatch.ownerDrawed
+
+IRs:
+REF_188(bool) -> oMatch.ownerDrawed
+CONDITION REF_188"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+oMatch.SHA_WIN == 0
+
+IRs:
+REF_189(bytes32) -> oMatch.SHA_WIN
+TMP_256(bool) = REF_189 == 0
+CONDITION TMP_256"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: RETURN 6
+"];
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+oMatch.ownerDrawed = true
+
+IRs:
+REF_190(bool) -> oMatch.ownerDrawed
+REF_190(bool) (->oMatch) := True(bool)"];
+8->9;
+9[label="Node Type: NEW VARIABLE 9
+"];
+9->10;
+10[label="Node Type: IF 10
+
+EXPRESSION:
+oMatch.SHA_WIN == oMatch.SHA_T1
+
+IRs:
+REF_191(bytes32) -> oMatch.SHA_WIN
+REF_192(bytes32) -> oMatch.SHA_T1
+TMP_257(bool) = REF_191 == REF_192
+CONDITION TMP_257"];
+10->11[label="True"];
+10->12[label="False"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+allWinBet = oMatch.allbet1
+
+IRs:
+REF_193(uint256) -> oMatch.allbet1
+allWinBet(uint256) := REF_193(uint256)"];
+11->16;
+12[label="Node Type: IF 12
+
+EXPRESSION:
+oMatch.SHA_WIN == oMatch.SHA_T2
+
+IRs:
+REF_194(bytes32) -> oMatch.SHA_WIN
+REF_195(bytes32) -> oMatch.SHA_T2
+TMP_258(bool) = REF_194 == REF_195
+CONDITION TMP_258"];
+12->13[label="True"];
+12->14[label="False"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+allWinBet = oMatch.allbet2
+
+IRs:
+REF_196(uint256) -> oMatch.allbet2
+allWinBet(uint256) := REF_196(uint256)"];
+13->15;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+allWinBet = oMatch.allbet0
+
+IRs:
+REF_197(uint256) -> oMatch.allbet0
+allWinBet(uint256) := REF_197(uint256)"];
+14->15;
+15[label="Node Type: END_IF 15
+"];
+15->16;
+16[label="Node Type: END_IF 16
+"];
+16->17;
+17[label="Node Type: IF 17
+
+EXPRESSION:
+oMatch.allbet == allWinBet
+
+IRs:
+REF_198(uint256) -> oMatch.allbet
+TMP_259(bool) = REF_198 == allWinBet
+CONDITION TMP_259"];
+17->18[label="True"];
+17->19[label="False"];
+18[label="Node Type: RETURN 18
+"];
+19[label="Node Type: END_IF 19
+"];
+19->20;
+20[label="Node Type: IF 20
+
+EXPRESSION:
+allWinBet == 0
+
+IRs:
+TMP_260(bool) = allWinBet == 0
+CONDITION TMP_260"];
+20->21[label="True"];
+20->22[label="False"];
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+owner.transfer(oMatch.allbet)
+
+IRs:
+REF_200(uint256) -> oMatch.allbet
+Transfer dest:owner value:REF_200"];
+21->24;
+22[label="Node Type: NEW VARIABLE 22
+
+EXPRESSION:
+alltax = (oMatch.allbet - allWinBet) * REWARD_TAX / REWARD_BASE
+
+IRs:
+REF_201(uint256) -> oMatch.allbet
+TMP_262(uint256) = REF_201 - allWinBet
+TMP_263(uint256) = TMP_262 * REWARD_TAX
+TMP_264(uint256) = TMP_263 / REWARD_BASE
+alltax(uint256) := TMP_264(uint256)"];
+22->23;
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+owner.transfer(alltax)
+
+IRs:
+Transfer dest:owner value:alltax"];
+23->24;
+24[label="Node Type: END_IF 24
+"];
+}
+// Function: 357.sol-Control-CreatorWithdrawAll()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: BEGIN_LOOP 1
+"];
+1->4;
+2[label="Node Type: END_LOOP 2
+"];
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+3->1;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+i < MatchList.length
+
+IRs:
+REF_203 -> LENGTH MatchList
+TMP_266(bool) = i < REF_203
+CONDITION TMP_266"];
+4->5[label="True"];
+4->2[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+CreatorWithdraw(i)
+
+IRs:
+INTERNAL_CALL, Control.CreatorWithdraw(uint256)(i)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_268(uint256) := i(uint256)
+i(uint256) = i + 1"];
+6->4;
+}
+// Function: 357.sol-Control-GetDetail(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->4;
+2[label="Node Type: BEGIN_LOOP 2
+"];
+2->5;
+3[label="Node Type: END_LOOP 3
+"];
+3->8;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+4->2;
+5[label="Node Type: IF_LOOP 5
+
+EXPRESSION:
+i < MatchList.length
+
+IRs:
+REF_266 -> LENGTH MatchList
+TMP_337(bool) = i < REF_266
+CONDITION TMP_337"];
+5->6[label="True"];
+5->3[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+res = res.toSlice().concat(GetInfo(MatchList[i],i,target).toSlice())
+
+IRs:
+TMP_338(strings.slice) = LIBRARY_CALL, dest:strings, function:strings.toSlice(string), arguments:['res'] 
+REF_269(Control.MatchBet) -> MatchList[i]
+TMP_339(string) = INTERNAL_CALL, Control.GetInfo(Control.MatchBet,uint256,address)(REF_269,i,target)
+TMP_340(strings.slice) = LIBRARY_CALL, dest:strings, function:strings.toSlice(string), arguments:['TMP_339'] 
+TMP_341(string) = LIBRARY_CALL, dest:strings, function:strings.concat(strings.slice,strings.slice), arguments:['TMP_338', 'TMP_340'] 
+res(string) := TMP_341(string)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_342(uint256) := i(uint256)
+i(uint256) = i + 1"];
+7->5;
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+res
+
+IRs:
+RETURN res"];
+}
+// Function: 357.sol-Control-GetInfo(Control.MatchBet,uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+oBet = obj.list[target]
+
+IRs:
+REF_206(mapping(address => Control.PlayerBet)) -> obj.list
+REF_207(Control.PlayerBet) -> REF_206[target]
+oBet(Control.PlayerBet) := REF_207(Control.PlayerBet)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+info = #
+
+IRs:
+info(string) := #(string)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+info = info.toSlice().concat(uint2str(idx).toSlice())
+
+IRs:
+TMP_279(strings.slice) = LIBRARY_CALL, dest:strings, function:strings.toSlice(string), arguments:['info'] 
+TMP_280(string) = INTERNAL_CALL, Control.uint2str(uint256)(idx)
+TMP_281(strings.slice) = LIBRARY_CALL, dest:strings, function:strings.toSlice(string), arguments:['TMP_280'] 
+TMP_282(string) = LIBRARY_CALL, dest:strings, function:strings.concat(strings.slice,strings.slice), arguments:['TMP_279', 'TMP_281'] 
+info(string) := TMP_282(string)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+info = info.toSlice().concat(,.toSlice()).toSlice().concat(uint2str(oBet.bet1).toSlice())
+
+IRs:
+TMP_283(strings.slice) = LIBRARY_CALL, dest:strings, function:strings.toSlice(string), arguments:['info'] 
+TMP_284(strings.slice) = LIBRARY_CALL, dest:strings, function:strings.toSlice(string), arguments:[','] 
+TMP_285(string) = LIBRARY_CALL, dest:strings, function:strings.concat(strings.slice,strings.slice), arguments:['TMP_283', 'TMP_284'] 
+TMP_286(strings.slice) = LIBRARY_CALL, dest:strings, function:strings.toSlice(string), arguments:['TMP_285'] 
+REF_216(uint256) -> oBet.bet1
+TMP_287(string) = INTERNAL_CALL, Control.uint2str(uint256)(REF_216)
+TMP_288(strings.slice) = LIBRARY_CALL, dest:strings, function:strings.toSlice(string), arguments:['TMP_287'] 
+TMP_289(string) = LIBRARY_CALL, dest:strings, function:strings.concat(strings.slice,strings.slice), arguments:['TMP_286', 'TMP_288'] 
+info(string) := TMP_289(string)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+info = info.toSlice().concat(,.toSlice()).toSlice().concat(uint2str(obj.allbet1).toSlice())
+
+IRs:
+TMP_290(strings.slice) = LIBRARY_CALL, dest:strings, function:strings.toSlice(string), arguments:['info'] 
+TMP_291(strings.slice) = LIBRARY_CALL, dest:strings, function:strings.toSlice(string), arguments:[','] 
+TMP_292(string) = LIBRARY_CALL, dest:strings, function:strings.concat(strings.slice,strings.slice), arguments:['TMP_290', 'TMP_291'] 
+TMP_293(strings.slice) = LIBRARY_CALL, dest:strings, function:strings.toSlice(string), arguments:['TMP_292'] 
+REF_223(uint256) -> obj.allbet1
+TMP_294(string) = INTERNAL_CALL, Control.uint2str(uint256)(REF_223)
+TMP_295(strings.slice) = LIBRARY_CALL, dest:strings, function:strings.toSlice(string), arguments:['TMP_294'] 
+TMP_296(string) = LIBRARY_CALL, dest:strings, function:strings.concat(strings.slice,strings.slice), arguments:['TMP_293', 'TMP_295'] 
+info(string) := TMP_296(string)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+info = info.toSlice().concat(,.toSlice()).toSlice().concat(uint2str(oBet.bet2).toSlice())
+
+IRs:
+TMP_297(strings.slice) = LIBRARY_CALL, dest:strings, function:strings.toSlice(string), arguments:['info'] 
+TMP_298(strings.slice) = LIBRARY_CALL, dest:strings, function:strings.toSlice(string), arguments:[','] 
+TMP_299(string) = LIBRARY_CALL, dest:strings, function:strings.concat(strings.slice,strings.slice), arguments:['TMP_297', 'TMP_298'] 
+TMP_300(strings.slice) = LIBRARY_CALL, dest:strings, function:strings.toSlice(string), arguments:['TMP_299'] 
+REF_230(uint256) -> oBet.bet2
+TMP_301(string) = INTERNAL_CALL, Control.uint2str(uint256)(REF_230)
+TMP_302(strings.slice) = LIBRARY_CALL, dest:strings, function:strings.toSlice(string), arguments:['TMP_301'] 
+TMP_303(string) = LIBRARY_CALL, dest:strings, function:strings.concat(strings.slice,strings.slice), arguments:['TMP_300', 'TMP_302'] 
+info(string) := TMP_303(string)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+info = info.toSlice().concat(,.toSlice()).toSlice().concat(uint2str(obj.allbet2).toSlice())
+
+IRs:
+TMP_304(strings.slice) = LIBRARY_CALL, dest:strings, function:strings.toSlice(string), arguments:['info'] 
+TMP_305(strings.slice) = LIBRARY_CALL, dest:strings, function:strings.toSlice(string), arguments:[','] 
+TMP_306(string) = LIBRARY_CALL, dest:strings, function:strings.concat(strings.slice,strings.slice), arguments:['TMP_304', 'TMP_305'] 
+TMP_307(strings.slice) = LIBRARY_CALL, dest:strings, function:strings.toSlice(string), arguments:['TMP_306'] 
+REF_237(uint256) -> obj.allbet2
+TMP_308(string) = INTERNAL_CALL, Control.uint2str(uint256)(REF_237)
+TMP_309(strings.slice) = LIBRARY_CALL, dest:strings, function:strings.toSlice(string), arguments:['TMP_308'] 
+TMP_310(string) = LIBRARY_CALL, dest:strings, function:strings.concat(strings.slice,strings.slice), arguments:['TMP_307', 'TMP_309'] 
+info(string) := TMP_310(string)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+info = info.toSlice().concat(,.toSlice()).toSlice().concat(uint2str(oBet.bet0).toSlice())
+
+IRs:
+TMP_311(strings.slice) = LIBRARY_CALL, dest:strings, function:strings.toSlice(string), arguments:['info'] 
+TMP_312(strings.slice) = LIBRARY_CALL, dest:strings, function:strings.toSlice(string), arguments:[','] 
+TMP_313(string) = LIBRARY_CALL, dest:strings, function:strings.concat(strings.slice,strings.slice), arguments:['TMP_311', 'TMP_312'] 
+TMP_314(strings.slice) = LIBRARY_CALL, dest:strings, function:strings.toSlice(string), arguments:['TMP_313'] 
+REF_244(uint256) -> oBet.bet0
+TMP_315(string) = INTERNAL_CALL, Control.uint2str(uint256)(REF_244)
+TMP_316(strings.slice) = LIBRARY_CALL, dest:strings, function:strings.toSlice(string), arguments:['TMP_315'] 
+TMP_317(string) = LIBRARY_CALL, dest:strings, function:strings.concat(strings.slice,strings.slice), arguments:['TMP_314', 'TMP_316'] 
+info(string) := TMP_317(string)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+info = info.toSlice().concat(,.toSlice()).toSlice().concat(uint2str(obj.allbet0).toSlice())
+
+IRs:
+TMP_318(strings.slice) = LIBRARY_CALL, dest:strings, function:strings.toSlice(string), arguments:['info'] 
+TMP_319(strings.slice) = LIBRARY_CALL, dest:strings, function:strings.toSlice(string), arguments:[','] 
+TMP_320(string) = LIBRARY_CALL, dest:strings, function:strings.concat(strings.slice,strings.slice), arguments:['TMP_318', 'TMP_319'] 
+TMP_321(strings.slice) = LIBRARY_CALL, dest:strings, function:strings.toSlice(string), arguments:['TMP_320'] 
+REF_251(uint256) -> obj.allbet0
+TMP_322(string) = INTERNAL_CALL, Control.uint2str(uint256)(REF_251)
+TMP_323(strings.slice) = LIBRARY_CALL, dest:strings, function:strings.toSlice(string), arguments:['TMP_322'] 
+TMP_324(string) = LIBRARY_CALL, dest:strings, function:strings.concat(strings.slice,strings.slice), arguments:['TMP_321', 'TMP_323'] 
+info(string) := TMP_324(string)"];
+9->10;
+10[label="Node Type: IF 10
+
+EXPRESSION:
+oBet.drawed
+
+IRs:
+REF_253(bool) -> oBet.drawed
+CONDITION REF_253"];
+10->11[label="True"];
+10->12[label="False"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+info = info.toSlice().concat(,.toSlice()).toSlice().concat(1.toSlice())
+
+IRs:
+TMP_325(strings.slice) = LIBRARY_CALL, dest:strings, function:strings.toSlice(string), arguments:['info'] 
+TMP_326(strings.slice) = LIBRARY_CALL, dest:strings, function:strings.toSlice(string), arguments:[','] 
+TMP_327(string) = LIBRARY_CALL, dest:strings, function:strings.concat(strings.slice,strings.slice), arguments:['TMP_325', 'TMP_326'] 
+TMP_328(strings.slice) = LIBRARY_CALL, dest:strings, function:strings.toSlice(string), arguments:['TMP_327'] 
+TMP_329(strings.slice) = LIBRARY_CALL, dest:strings, function:strings.toSlice(string), arguments:['1'] 
+TMP_330(string) = LIBRARY_CALL, dest:strings, function:strings.concat(strings.slice,strings.slice), arguments:['TMP_328', 'TMP_329'] 
+info(string) := TMP_330(string)"];
+11->13;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+info = info.toSlice().concat(,.toSlice()).toSlice().concat(0.toSlice())
+
+IRs:
+TMP_331(strings.slice) = LIBRARY_CALL, dest:strings, function:strings.toSlice(string), arguments:['info'] 
+TMP_332(strings.slice) = LIBRARY_CALL, dest:strings, function:strings.toSlice(string), arguments:[','] 
+TMP_333(string) = LIBRARY_CALL, dest:strings, function:strings.concat(strings.slice,strings.slice), arguments:['TMP_331', 'TMP_332'] 
+TMP_334(strings.slice) = LIBRARY_CALL, dest:strings, function:strings.toSlice(string), arguments:['TMP_333'] 
+TMP_335(strings.slice) = LIBRARY_CALL, dest:strings, function:strings.toSlice(string), arguments:['0'] 
+TMP_336(string) = LIBRARY_CALL, dest:strings, function:strings.concat(strings.slice,strings.slice), arguments:['TMP_334', 'TMP_335'] 
+info(string) := TMP_336(string)"];
+12->13;
+13[label="Node Type: END_IF 13
+"];
+13->14;
+14[label="Node Type: RETURN 14
+
+EXPRESSION:
+info
+
+IRs:
+RETURN info"];
+}
+// Function: 357.sol-Control-GetMatchLength()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+MatchList.length
+
+IRs:
+REF_204 -> LENGTH MatchList
+RETURN REF_204"];
+}
+// Function: 357.sol-Control-MatchEnd(uint256,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+oMatch = MatchList[index]
+
+IRs:
+REF_147(Control.MatchBet) -> MatchList[index]
+oMatch(Control.MatchBet) := REF_147(Control.MatchBet)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(oMatch.SHA_WIN == 0)
+
+IRs:
+REF_148(bytes32) -> oMatch.SHA_WIN
+TMP_209(bool) = REF_148 == 0
+TMP_210(None) = SOLIDITY_CALL require(bool)(TMP_209)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+shaWin = keccak256()(bytes(winTroop))
+
+IRs:
+TMP_211 = CONVERT winTroop to bytes
+TMP_212(bytes32) = SOLIDITY_CALL keccak256()(TMP_211)
+shaWin(bytes32) := TMP_212(bytes32)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool)(shaWin == SHA_DEUCE || shaWin == oMatch.SHA_T1 || shaWin == oMatch.SHA_T2)
+
+IRs:
+TMP_213(bool) = shaWin == SHA_DEUCE
+REF_149(bytes32) -> oMatch.SHA_T1
+TMP_214(bool) = shaWin == REF_149
+TMP_215(bool) = TMP_213 || TMP_214
+REF_150(bytes32) -> oMatch.SHA_T2
+TMP_216(bool) = shaWin == REF_150
+TMP_217(bool) = TMP_215 || TMP_216
+TMP_218(None) = SOLIDITY_CALL require(bool)(TMP_217)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+oMatch.SHA_WIN = shaWin
+
+IRs:
+REF_151(bytes32) -> oMatch.SHA_WIN
+REF_151(bytes32) (->oMatch) := shaWin(bytes32)"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Control.onlyOwner()()"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+MatchExist(index)
+
+IRs:
+MODIFIER_CALL, Control.MatchExist(uint256)(index)"];
+7->1;
+}
+// Function: 357.sol-Control-MatchExist(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(index < MatchList.length)
+
+IRs:
+REF_271 -> LENGTH MatchList
+TMP_350(bool) = index < REF_271
+TMP_351(None) = SOLIDITY_CALL require(bool)(TMP_350)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 357.sol-Control-MatchResetDeadline(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+oMatch = MatchList[index]
+
+IRs:
+REF_145(Control.MatchBet) -> MatchList[index]
+oMatch(Control.MatchBet) := REF_145(Control.MatchBet)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+oMatch.betDeadline = time
+
+IRs:
+REF_146(uint256) -> oMatch.betDeadline
+REF_146(uint256) (->oMatch) := time(uint256)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Control.onlyOwner()()"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+MatchExist(index)
+
+IRs:
+MODIFIER_CALL, Control.MatchExist(uint256)(index)"];
+4->1;
+}
+// Function: 357.sol-Control-Withdraw(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->15;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+oMatch = MatchList[index]
+
+IRs:
+REF_179(Control.MatchBet) -> MatchList[index]
+oMatch(Control.MatchBet) := REF_179(Control.MatchBet)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+oBet = oMatch.list[target]
+
+IRs:
+REF_180(mapping(address => Control.PlayerBet)) -> oMatch.list
+REF_181(Control.PlayerBet) -> REF_180[target]
+oBet(Control.PlayerBet) := REF_181(Control.PlayerBet)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+oBet.drawed
+
+IRs:
+REF_182(bool) -> oBet.drawed
+CONDITION REF_182"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: RETURN 4
+"];
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+oMatch.SHA_WIN == 0
+
+IRs:
+REF_183(bytes32) -> oMatch.SHA_WIN
+TMP_248(bool) = REF_183 == 0
+CONDITION TMP_248"];
+6->7[label="True"];
+6->8[label="False"];
+7[label="Node Type: RETURN 7
+"];
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+reward = CalReward(oMatch,oBet)
+
+IRs:
+TMP_249(uint256) = INTERNAL_CALL, Control.CalReward(Control.MatchBet,Control.PlayerBet)(oMatch,oBet)
+reward(uint256) := TMP_249(uint256)"];
+9->10;
+10[label="Node Type: IF 10
+
+EXPRESSION:
+reward == 0
+
+IRs:
+TMP_250(bool) = reward == 0
+CONDITION TMP_250"];
+10->11[label="True"];
+10->12[label="False"];
+11[label="Node Type: RETURN 11
+"];
+12[label="Node Type: END_IF 12
+"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+oBet.drawed = true
+
+IRs:
+REF_184(bool) -> oBet.drawed
+REF_184(bool) (->oBet) := True(bool)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+target.transfer(reward)
+
+IRs:
+Transfer dest:target value:reward"];
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+MatchExist(index)
+
+IRs:
+MODIFIER_CALL, Control.MatchExist(uint256)(index)"];
+15->1;
+}
+// Function: 357.sol-Control-WithdrawAll(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: BEGIN_LOOP 1
+"];
+1->4;
+2[label="Node Type: END_LOOP 2
+"];
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+3->1;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+i < MatchList.length
+
+IRs:
+REF_186 -> LENGTH MatchList
+TMP_253(bool) = i < REF_186
+CONDITION TMP_253"];
+4->5[label="True"];
+4->2[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Withdraw(i,target)
+
+IRs:
+INTERNAL_CALL, Control.Withdraw(uint256,address)(i,target)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_255(uint256) := i(uint256)
+i(uint256) = i + 1"];
+6->4;
+}
+// Function: 357.sol-Control-constructor(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+creator = msg.sender
+
+IRs:
+creator(address) := msg.sender(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = target
+
+IRs:
+owner(address) := target(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+destroy_time = now + 365 * 24 * 60 * 60
+
+IRs:
+TMP_190(uint256) = 365 * 24
+TMP_191(uint256) = TMP_190 * 60
+TMP_192(uint256) = TMP_191 * 60
+TMP_193(uint256) = now + TMP_192
+destroy_time(uint256) := TMP_193(uint256)"];
+}
+// Function: 357.sol-Control-kill()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(now >= destroy_time)
+
+IRs:
+TMP_194(bool) = now >= destroy_time
+TMP_195(None) = SOLIDITY_CALL require(bool)(TMP_194)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+selfdestruct(address)(owner)
+
+IRs:
+TMP_196(None) = SOLIDITY_CALL selfdestruct(address)(owner)"];
+}
+// Function: 357.sol-Control-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == creator || msg.sender == owner)
+
+IRs:
+TMP_346(bool) = msg.sender == creator
+TMP_347(bool) = msg.sender == owner
+TMP_348(bool) = TMP_346 || TMP_347
+TMP_349(None) = SOLIDITY_CALL require(bool)(TMP_348)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 357.sol-Control-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+REWARD_BASE = 100
+
+IRs:
+REWARD_BASE(uint256) := 100(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+REWARD_TAX = 8
+
+IRs:
+REWARD_TAX(uint256) := 8(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+REWARD_GET = REWARD_BASE - REWARD_TAX
+
+IRs:
+TMP_343(uint256) = REWARD_BASE - REWARD_TAX
+REWARD_GET(uint256) := TMP_343(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+MAX_ALLBET = 2 ** 120
+
+IRs:
+TMP_344(uint256) = 2 ** 120
+MAX_ALLBET(uint256) := TMP_344(uint256)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+MIN_BET = 1000000000000000
+
+IRs:
+MIN_BET(uint256) := 1000000000000000(uint256)"];
+4->5;
+5[label="Node Type: OTHER_ENTRYPOINT 5
+
+EXPRESSION:
+SHA_DEUCE = keccak256()(DEUCE)
+
+IRs:
+TMP_345(bytes32) = SOLIDITY_CALL keccak256()(DEUCE)
+SHA_DEUCE(bytes32) := TMP_345(bytes32)"];
+}
+// Function: 357.sol-Control-uint2str(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+i == 0
+
+IRs:
+TMP_269(bool) = i == 0
+CONDITION TMP_269"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+j = i
+
+IRs:
+j(uint256) := i(uint256)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+"];
+5->6;
+6[label="Node Type: BEGIN_LOOP 6
+"];
+6->7;
+7[label="Node Type: IF_LOOP 7
+
+EXPRESSION:
+j != 0
+
+IRs:
+TMP_270(bool) = j != 0
+CONDITION TMP_270"];
+7->8[label="True"];
+7->10[label="False"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+len ++
+
+IRs:
+TMP_271(uint256) := len(uint256)
+len(uint256) = len + 1"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+j /= 10
+
+IRs:
+j(uint256) = j / 10"];
+9->7;
+10[label="Node Type: END_LOOP 10
+"];
+10->11;
+11[label="Node Type: NEW VARIABLE 11
+
+EXPRESSION:
+bstr = new bytes(len)
+
+IRs:
+TMP_273 = new bytes(len)
+bstr(bytes) := TMP_273(bytes)"];
+11->12;
+12[label="Node Type: BEGIN_LOOP 12
+"];
+12->13;
+13[label="Node Type: IF_LOOP 13
+
+EXPRESSION:
+i != 0
+
+IRs:
+TMP_274(bool) = i != 0
+CONDITION TMP_274"];
+13->14[label="True"];
+13->16[label="False"];
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+bstr[-- len] = bytes1(48 + i % 10)
+
+IRs:
+len(uint256) = len - 1
+REF_205(bytes1) -> bstr[len]
+TMP_275(uint256) = i % 10
+TMP_276(uint256) = 48 + TMP_275
+TMP_277 = CONVERT TMP_276 to bytes1
+REF_205(bytes1) (->bstr) := TMP_277(bytes1)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+i /= 10
+
+IRs:
+i(uint256) = i / 10"];
+15->13;
+16[label="Node Type: END_LOOP 16
+"];
+16->17;
+17[label="Node Type: RETURN 17
+
+EXPRESSION:
+string(bstr)
+
+IRs:
+TMP_278 = CONVERT bstr to string
+RETURN TMP_278"];
+}
+// Function: 357.sol-strings-beyond(strings.slice,strings.slice)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+self._len < needle._len
+
+IRs:
+REF_37(uint256) -> self._len
+REF_38(uint256) -> needle._len
+TMP_95(bool) = REF_37 < REF_38
+CONDITION TMP_95"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+self
+
+IRs:
+RETURN self"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+equal = true
+
+IRs:
+equal(bool) := True(bool)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+self._ptr != needle._ptr
+
+IRs:
+REF_39(uint256) -> self._ptr
+REF_40(uint256) -> needle._ptr
+TMP_96(bool) = REF_39 != REF_40
+CONDITION TMP_96"];
+5->6[label="True"];
+5->8[label="False"];
+6[label="Node Type: INLINE ASM 6
+"];
+6->7;
+7[label="Node Type: END INLINE ASM 7
+"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: IF 9
+
+EXPRESSION:
+equal
+
+IRs:
+CONDITION equal"];
+9->10[label="True"];
+9->12[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+self._len -= needle._len
+
+IRs:
+REF_41(uint256) -> self._len
+REF_42(uint256) -> needle._len
+REF_41(-> self) = REF_41 - REF_42"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+self._ptr += needle._len
+
+IRs:
+REF_43(uint256) -> self._ptr
+REF_44(uint256) -> needle._len
+REF_43(-> self) = REF_43 + REF_44"];
+11->12;
+12[label="Node Type: END_IF 12
+"];
+12->13;
+13[label="Node Type: RETURN 13
+
+EXPRESSION:
+self
+
+IRs:
+RETURN self"];
+}
+// Function: 357.sol-strings-compare(strings.slice,strings.slice)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+shortest = self._len
+
+IRs:
+REF_10(uint256) -> self._len
+shortest(uint256) := REF_10(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+other._len < self._len
+
+IRs:
+REF_11(uint256) -> other._len
+REF_12(uint256) -> self._len
+TMP_45(bool) = REF_11 < REF_12
+CONDITION TMP_45"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+shortest = other._len
+
+IRs:
+REF_13(uint256) -> other._len
+shortest(uint256) := REF_13(uint256)"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+selfptr = self._ptr
+
+IRs:
+REF_14(uint256) -> self._ptr
+selfptr(uint256) := REF_14(uint256)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+otherptr = other._ptr
+
+IRs:
+REF_15(uint256) -> other._ptr
+otherptr(uint256) := REF_15(uint256)"];
+6->9;
+7[label="Node Type: BEGIN_LOOP 7
+"];
+7->10;
+8[label="Node Type: END_LOOP 8
+"];
+8->28;
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+idx = 0
+
+IRs:
+idx(uint256) := 0(uint256)"];
+9->7;
+10[label="Node Type: IF_LOOP 10
+
+EXPRESSION:
+idx < shortest
+
+IRs:
+TMP_46(bool) = idx < shortest
+CONDITION TMP_46"];
+10->11[label="True"];
+10->8[label="False"];
+11[label="Node Type: NEW VARIABLE 11
+"];
+11->12;
+12[label="Node Type: NEW VARIABLE 12
+"];
+12->13;
+13[label="Node Type: INLINE ASM 13
+"];
+13->14;
+14[label="Node Type: END INLINE ASM 14
+"];
+14->15;
+15[label="Node Type: IF 15
+
+EXPRESSION:
+a != b
+
+IRs:
+TMP_47(bool) = a != b
+CONDITION TMP_47"];
+15->16[label="True"];
+15->24[label="False"];
+16[label="Node Type: NEW VARIABLE 16
+
+EXPRESSION:
+mask = uint256(- 1)
+
+IRs:
+TMP_48(uint256) = 0 - 1
+TMP_49 = CONVERT TMP_48 to uint256
+mask(uint256) := TMP_49(uint256)"];
+16->17;
+17[label="Node Type: IF 17
+
+EXPRESSION:
+shortest < 32
+
+IRs:
+TMP_50(bool) = shortest < 32
+CONDITION TMP_50"];
+17->18[label="True"];
+17->19[label="False"];
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+mask = ~ (2 ** (8 * (32 - shortest + idx)) - 1)
+
+IRs:
+TMP_51(uint256) = 32 - shortest
+TMP_52(uint256) = TMP_51 + idx
+TMP_53(uint256) = 8 * TMP_52
+TMP_54(uint256) = 2 ** TMP_53
+TMP_55(uint256) = TMP_54 - 1
+TMP_56 = UnaryType.TILD TMP_55 
+mask(uint256) := TMP_56(uint256)"];
+18->19;
+19[label="Node Type: END_IF 19
+"];
+19->20;
+20[label="Node Type: NEW VARIABLE 20
+
+EXPRESSION:
+diff = (a & mask) - (b & mask)
+
+IRs:
+TMP_57(uint256) = a & mask
+TMP_58(uint256) = b & mask
+TMP_59(uint256) = TMP_57 - TMP_58
+diff(uint256) := TMP_59(uint256)"];
+20->21;
+21[label="Node Type: IF 21
+
+EXPRESSION:
+diff != 0
+
+IRs:
+TMP_60(bool) = diff != 0
+CONDITION TMP_60"];
+21->22[label="True"];
+21->23[label="False"];
+22[label="Node Type: RETURN 22
+
+EXPRESSION:
+int256(diff)
+
+IRs:
+TMP_61 = CONVERT diff to int256
+RETURN TMP_61"];
+23[label="Node Type: END_IF 23
+"];
+23->24;
+24[label="Node Type: END_IF 24
+"];
+24->25;
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+selfptr += 32
+
+IRs:
+selfptr(uint256) = selfptr + 32"];
+25->26;
+26[label="Node Type: EXPRESSION 26
+
+EXPRESSION:
+otherptr += 32
+
+IRs:
+otherptr(uint256) = otherptr + 32"];
+26->27;
+27[label="Node Type: EXPRESSION 27
+
+EXPRESSION:
+idx += 32
+
+IRs:
+idx(uint256) = idx + 32"];
+27->10;
+28[label="Node Type: RETURN 28
+
+EXPRESSION:
+int256(self._len) - int256(other._len)
+
+IRs:
+REF_16(uint256) -> self._len
+TMP_62 = CONVERT REF_16 to int256
+REF_17(uint256) -> other._len
+TMP_63 = CONVERT REF_17 to int256
+TMP_64(int256) = TMP_62 - TMP_63
+RETURN TMP_64"];
+}
+// Function: 357.sol-strings-concat(strings.slice,strings.slice)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+ret = new string(self._len + other._len)
+
+IRs:
+REF_118(uint256) -> self._len
+REF_119(uint256) -> other._len
+TMP_172(uint256) = REF_118 + REF_119
+TMP_173 = new string(TMP_172)
+ret(string) := TMP_173(string)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: INLINE ASM 3
+"];
+3->4;
+4[label="Node Type: END INLINE ASM 4
+"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+memcpy(retptr,self._ptr,self._len)
+
+IRs:
+REF_120(uint256) -> self._ptr
+REF_121(uint256) -> self._len
+INTERNAL_CALL, strings.memcpy(uint256,uint256,uint256)(retptr,REF_120,REF_121)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+memcpy(retptr + self._len,other._ptr,other._len)
+
+IRs:
+REF_122(uint256) -> self._len
+TMP_175(uint256) = retptr + REF_122
+REF_123(uint256) -> other._ptr
+REF_124(uint256) -> other._len
+INTERNAL_CALL, strings.memcpy(uint256,uint256,uint256)(TMP_175,REF_123,REF_124)"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+ret
+
+IRs:
+RETURN ret"];
+}
+// Function: 357.sol-strings-contains(strings.slice,strings.slice)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+rfindPtr(self._len,self._ptr,needle._len,needle._ptr) != self._ptr
+
+IRs:
+REF_113(uint256) -> self._len
+REF_114(uint256) -> self._ptr
+REF_115(uint256) -> needle._len
+REF_116(uint256) -> needle._ptr
+TMP_169(uint256) = INTERNAL_CALL, strings.rfindPtr(uint256,uint256,uint256,uint256)(REF_113,REF_114,REF_115,REF_116)
+REF_117(uint256) -> self._ptr
+TMP_170(bool) = TMP_169 != REF_117
+RETURN TMP_170"];
+}
+// Function: 357.sol-strings-copy(strings.slice)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+slice(self._len,self._ptr)
+
+IRs:
+REF_2(uint256) -> self._len
+REF_3(uint256) -> self._ptr
+TMP_31(strings.slice) = new slice(REF_2,REF_3)
+RETURN TMP_31"];
+}
+// Function: 357.sol-strings-count(strings.slice,strings.slice)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+ptr = findPtr(self._len,self._ptr,needle._len,needle._ptr) + needle._len
+
+IRs:
+REF_101(uint256) -> self._len
+REF_102(uint256) -> self._ptr
+REF_103(uint256) -> needle._len
+REF_104(uint256) -> needle._ptr
+TMP_160(uint256) = INTERNAL_CALL, strings.findPtr(uint256,uint256,uint256,uint256)(REF_101,REF_102,REF_103,REF_104)
+REF_105(uint256) -> needle._len
+TMP_161(uint256) = TMP_160 + REF_105
+ptr(uint256) := TMP_161(uint256)"];
+1->2;
+2[label="Node Type: BEGIN_LOOP 2
+"];
+2->3;
+3[label="Node Type: IF_LOOP 3
+
+EXPRESSION:
+ptr <= self._ptr + self._len
+
+IRs:
+REF_106(uint256) -> self._ptr
+REF_107(uint256) -> self._len
+TMP_162(uint256) = REF_106 + REF_107
+TMP_163(bool) = ptr <= TMP_162
+CONDITION TMP_163"];
+3->4[label="True"];
+3->6[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+cnt ++
+
+IRs:
+TMP_164(uint256) := cnt(uint256)
+cnt(uint256) = cnt + 1"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+ptr = findPtr(self._len - (ptr - self._ptr),ptr,needle._len,needle._ptr) + needle._len
+
+IRs:
+REF_108(uint256) -> self._len
+REF_109(uint256) -> self._ptr
+TMP_165(uint256) = ptr - REF_109
+TMP_166(uint256) = REF_108 - TMP_165
+REF_110(uint256) -> needle._len
+REF_111(uint256) -> needle._ptr
+TMP_167(uint256) = INTERNAL_CALL, strings.findPtr(uint256,uint256,uint256,uint256)(TMP_166,ptr,REF_110,REF_111)
+REF_112(uint256) -> needle._len
+TMP_168(uint256) = TMP_167 + REF_112
+ptr(uint256) := TMP_168(uint256)"];
+5->3;
+6[label="Node Type: END_LOOP 6
+"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+cnt
+
+IRs:
+RETURN cnt"];
+}
+// Function: 357.sol-strings-empty(strings.slice)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+self._len == 0
+
+IRs:
+REF_9(uint256) -> self._len
+TMP_44(bool) = REF_9 == 0
+RETURN TMP_44"];
+}
+// Function: 357.sol-strings-endsWith(strings.slice,strings.slice)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+self._len < needle._len
+
+IRs:
+REF_45(uint256) -> self._len
+REF_46(uint256) -> needle._len
+TMP_97(bool) = REF_45 < REF_46
+CONDITION TMP_97"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+selfptr = self._ptr + self._len - needle._len
+
+IRs:
+REF_47(uint256) -> self._ptr
+REF_48(uint256) -> self._len
+TMP_98(uint256) = REF_47 + REF_48
+REF_49(uint256) -> needle._len
+TMP_99(uint256) = TMP_98 - REF_49
+selfptr(uint256) := TMP_99(uint256)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+selfptr == needle._ptr
+
+IRs:
+REF_50(uint256) -> needle._ptr
+TMP_100(bool) = selfptr == REF_50
+CONDITION TMP_100"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: NEW VARIABLE 8
+"];
+8->9;
+9[label="Node Type: INLINE ASM 9
+"];
+9->10;
+10[label="Node Type: END INLINE ASM 10
+"];
+10->11;
+11[label="Node Type: RETURN 11
+
+EXPRESSION:
+equal
+
+IRs:
+RETURN equal"];
+}
+// Function: 357.sol-strings-equals(strings.slice,strings.slice)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+compare(self,other) == 0
+
+IRs:
+TMP_65(int256) = INTERNAL_CALL, strings.compare(strings.slice,strings.slice)(self,other)
+TMP_66(bool) = TMP_65 == 0
+RETURN TMP_66"];
+}
+// Function: 357.sol-strings-find(strings.slice,strings.slice)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+ptr = findPtr(self._len,self._ptr,needle._len,needle._ptr)
+
+IRs:
+REF_59(uint256) -> self._len
+REF_60(uint256) -> self._ptr
+REF_61(uint256) -> needle._len
+REF_62(uint256) -> needle._ptr
+TMP_143(uint256) = INTERNAL_CALL, strings.findPtr(uint256,uint256,uint256,uint256)(REF_59,REF_60,REF_61,REF_62)
+ptr(uint256) := TMP_143(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+self._len -= ptr - self._ptr
+
+IRs:
+REF_63(uint256) -> self._len
+REF_64(uint256) -> self._ptr
+TMP_144(uint256) = ptr - REF_64
+REF_63(-> self) = REF_63 - TMP_144"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+self._ptr = ptr
+
+IRs:
+REF_65(uint256) -> self._ptr
+REF_65(uint256) (->self) := ptr(uint256)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+self
+
+IRs:
+RETURN self"];
+}
+// Function: 357.sol-strings-findPtr(uint256,uint256,uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+ptr = selfptr
+
+IRs:
+ptr(uint256) := selfptr(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+needlelen <= selflen
+
+IRs:
+TMP_105(bool) = needlelen <= selflen
+CONDITION TMP_105"];
+3->4[label="True"];
+3->39[label="False"];
+4[label="Node Type: IF 4
+
+EXPRESSION:
+needlelen <= 32
+
+IRs:
+TMP_106(bool) = needlelen <= 32
+CONDITION TMP_106"];
+4->5[label="True"];
+4->23[label="False"];
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+mask = bytes32(~ (2 ** (8 * (32 - needlelen)) - 1))
+
+IRs:
+TMP_107(uint256) = 32 - needlelen
+TMP_108(uint256) = 8 * TMP_107
+TMP_109(uint256) = 2 ** TMP_108
+TMP_110(uint256) = TMP_109 - 1
+TMP_111 = UnaryType.TILD TMP_110 
+TMP_112 = CONVERT TMP_111 to bytes32
+mask(bytes32) := TMP_112(bytes32)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+"];
+6->7;
+7[label="Node Type: INLINE ASM 7
+"];
+7->8;
+8[label="Node Type: END INLINE ASM 8
+"];
+8->9;
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+end = selfptr + selflen - needlelen
+
+IRs:
+TMP_113(uint256) = selfptr + selflen
+TMP_114(uint256) = TMP_113 - needlelen
+end(uint256) := TMP_114(uint256)"];
+9->10;
+10[label="Node Type: NEW VARIABLE 10
+"];
+10->11;
+11[label="Node Type: INLINE ASM 11
+"];
+11->12;
+12[label="Node Type: END INLINE ASM 12
+"];
+12->13;
+13[label="Node Type: BEGIN_LOOP 13
+"];
+13->14;
+14[label="Node Type: IF_LOOP 14
+
+EXPRESSION:
+ptrdata != needledata
+
+IRs:
+TMP_115(bool) = ptrdata != needledata
+CONDITION TMP_115"];
+14->15[label="True"];
+14->21[label="False"];
+15[label="Node Type: IF 15
+
+EXPRESSION:
+ptr >= end
+
+IRs:
+TMP_116(bool) = ptr >= end
+CONDITION TMP_116"];
+15->16[label="True"];
+15->17[label="False"];
+16[label="Node Type: RETURN 16
+
+EXPRESSION:
+selfptr + selflen
+
+IRs:
+TMP_117(uint256) = selfptr + selflen
+RETURN TMP_117"];
+17[label="Node Type: END_IF 17
+"];
+17->18;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+ptr ++
+
+IRs:
+TMP_118(uint256) := ptr(uint256)
+ptr(uint256) = ptr + 1"];
+18->19;
+19[label="Node Type: INLINE ASM 19
+"];
+19->20;
+20[label="Node Type: END INLINE ASM 20
+"];
+20->14;
+21[label="Node Type: END_LOOP 21
+"];
+21->22;
+22[label="Node Type: RETURN 22
+
+EXPRESSION:
+ptr
+
+IRs:
+RETURN ptr"];
+23[label="Node Type: NEW VARIABLE 23
+"];
+23->24;
+24[label="Node Type: INLINE ASM 24
+"];
+24->25;
+25[label="Node Type: END INLINE ASM 25
+"];
+25->28;
+26[label="Node Type: BEGIN_LOOP 26
+"];
+26->29;
+27[label="Node Type: END_LOOP 27
+"];
+27->38;
+28[label="Node Type: EXPRESSION 28
+
+EXPRESSION:
+idx = 0
+
+IRs:
+idx(uint256) := 0(uint256)"];
+28->26;
+29[label="Node Type: IF_LOOP 29
+
+EXPRESSION:
+idx <= selflen - needlelen
+
+IRs:
+TMP_119(uint256) = selflen - needlelen
+TMP_120(bool) = idx <= TMP_119
+CONDITION TMP_120"];
+29->30[label="True"];
+29->27[label="False"];
+30[label="Node Type: NEW VARIABLE 30
+"];
+30->31;
+31[label="Node Type: INLINE ASM 31
+"];
+31->32;
+32[label="Node Type: END INLINE ASM 32
+"];
+32->33;
+33[label="Node Type: IF 33
+
+EXPRESSION:
+hash == testHash
+
+IRs:
+TMP_121(bool) = hash == testHash
+CONDITION TMP_121"];
+33->34[label="True"];
+33->35[label="False"];
+34[label="Node Type: RETURN 34
+
+EXPRESSION:
+ptr
+
+IRs:
+RETURN ptr"];
+35[label="Node Type: END_IF 35
+"];
+35->36;
+36[label="Node Type: EXPRESSION 36
+
+EXPRESSION:
+ptr += 1
+
+IRs:
+ptr(uint256) = ptr + 1"];
+36->37;
+37[label="Node Type: EXPRESSION 37
+
+EXPRESSION:
+idx ++
+
+IRs:
+TMP_122(uint256) := idx(uint256)
+idx(uint256) = idx + 1"];
+37->29;
+38[label="Node Type: END_IF 38
+"];
+38->39;
+39[label="Node Type: END_IF 39
+"];
+39->40;
+40[label="Node Type: RETURN 40
+
+EXPRESSION:
+selfptr + selflen
+
+IRs:
+TMP_123(uint256) = selfptr + selflen
+RETURN TMP_123"];
+}
+// Function: 357.sol-strings-join(strings.slice,strings.slice[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+parts.length == 0
+
+IRs:
+REF_125 -> LENGTH parts
+TMP_177(bool) = REF_125 == 0
+CONDITION TMP_177"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+
+
+IRs:
+RETURN "];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+length = self._len * (parts.length - 1)
+
+IRs:
+REF_126(uint256) -> self._len
+REF_127 -> LENGTH parts
+TMP_178(uint256) = REF_127 - 1
+TMP_179(uint256) = REF_126 * TMP_178
+length(uint256) := TMP_179(uint256)"];
+4->7;
+5[label="Node Type: BEGIN_LOOP 5
+"];
+5->8;
+6[label="Node Type: END_LOOP 6
+"];
+6->11;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+7->5;
+8[label="Node Type: IF_LOOP 8
+
+EXPRESSION:
+i < parts.length
+
+IRs:
+REF_128 -> LENGTH parts
+TMP_180(bool) = i < REF_128
+CONDITION TMP_180"];
+8->9[label="True"];
+8->6[label="False"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+length += parts[i]._len
+
+IRs:
+REF_129(strings.slice) -> parts[i]
+REF_130(uint256) -> REF_129._len
+length(uint256) = length + REF_130"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_181(uint256) := i(uint256)
+i(uint256) = i + 1"];
+10->8;
+11[label="Node Type: NEW VARIABLE 11
+
+EXPRESSION:
+ret = new string(length)
+
+IRs:
+TMP_183 = new string(length)
+ret(string) := TMP_183(string)"];
+11->12;
+12[label="Node Type: NEW VARIABLE 12
+"];
+12->13;
+13[label="Node Type: INLINE ASM 13
+"];
+13->14;
+14[label="Node Type: END INLINE ASM 14
+"];
+14->17;
+15[label="Node Type: BEGIN_LOOP 15
+"];
+15->18;
+16[label="Node Type: END_LOOP 16
+"];
+16->26;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+17->15;
+18[label="Node Type: IF_LOOP 18
+
+EXPRESSION:
+i < parts.length
+
+IRs:
+REF_131 -> LENGTH parts
+TMP_184(bool) = i < REF_131
+CONDITION TMP_184"];
+18->19[label="True"];
+18->16[label="False"];
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+memcpy(retptr,parts[i]._ptr,parts[i]._len)
+
+IRs:
+REF_132(strings.slice) -> parts[i]
+REF_133(uint256) -> REF_132._ptr
+REF_134(strings.slice) -> parts[i]
+REF_135(uint256) -> REF_134._len
+INTERNAL_CALL, strings.memcpy(uint256,uint256,uint256)(retptr,REF_133,REF_135)"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+retptr += parts[i]._len
+
+IRs:
+REF_136(strings.slice) -> parts[i]
+REF_137(uint256) -> REF_136._len
+retptr(uint256) = retptr + REF_137"];
+20->21;
+21[label="Node Type: IF 21
+
+EXPRESSION:
+i < parts.length - 1
+
+IRs:
+REF_138 -> LENGTH parts
+TMP_186(uint256) = REF_138 - 1
+TMP_187(bool) = i < TMP_186
+CONDITION TMP_187"];
+21->22[label="True"];
+21->24[label="False"];
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+memcpy(retptr,self._ptr,self._len)
+
+IRs:
+REF_139(uint256) -> self._ptr
+REF_140(uint256) -> self._len
+INTERNAL_CALL, strings.memcpy(uint256,uint256,uint256)(retptr,REF_139,REF_140)"];
+22->23;
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+retptr += self._len
+
+IRs:
+REF_141(uint256) -> self._len
+retptr(uint256) = retptr + REF_141"];
+23->24;
+24[label="Node Type: END_IF 24
+"];
+24->25;
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_189(uint256) := i(uint256)
+i(uint256) = i + 1"];
+25->18;
+26[label="Node Type: RETURN 26
+
+EXPRESSION:
+ret
+
+IRs:
+RETURN ret"];
+}
+// Function: 357.sol-strings-keccak(strings.slice)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: INLINE ASM 1
+"];
+1->2;
+2[label="Node Type: END INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+ret
+
+IRs:
+RETURN ret"];
+}
+// Function: 357.sol-strings-len(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+self == 0
+
+IRs:
+TMP_6(bool) = self == 0
+CONDITION TMP_6"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+self & 0xffffffffffffffffffffffffffffffff == 0
+
+IRs:
+TMP_7(bytes32) = self & 340282366920938463463374607431768211455
+TMP_8(bool) = TMP_7 == 0
+CONDITION TMP_8"];
+5->6[label="True"];
+5->8[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+ret += 16
+
+IRs:
+ret(uint256) = ret + 16"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+self = bytes32(uint256(self) / 0x100000000000000000000000000000000)
+
+IRs:
+TMP_9 = CONVERT self to uint256
+TMP_10(uint256) = TMP_9 / 340282366920938463463374607431768211456
+TMP_11 = CONVERT TMP_10 to bytes32
+self(bytes32) := TMP_11(bytes32)"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: IF 9
+
+EXPRESSION:
+self & 0xffffffffffffffff == 0
+
+IRs:
+TMP_12(bytes32) = self & 18446744073709551615
+TMP_13(bool) = TMP_12 == 0
+CONDITION TMP_13"];
+9->10[label="True"];
+9->12[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+ret += 8
+
+IRs:
+ret(uint256) = ret + 8"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+self = bytes32(uint256(self) / 0x10000000000000000)
+
+IRs:
+TMP_14 = CONVERT self to uint256
+TMP_15(uint256) = TMP_14 / 18446744073709551616
+TMP_16 = CONVERT TMP_15 to bytes32
+self(bytes32) := TMP_16(bytes32)"];
+11->12;
+12[label="Node Type: END_IF 12
+"];
+12->13;
+13[label="Node Type: IF 13
+
+EXPRESSION:
+self & 0xffffffff == 0
+
+IRs:
+TMP_17(bytes32) = self & 4294967295
+TMP_18(bool) = TMP_17 == 0
+CONDITION TMP_18"];
+13->14[label="True"];
+13->16[label="False"];
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+ret += 4
+
+IRs:
+ret(uint256) = ret + 4"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+self = bytes32(uint256(self) / 0x100000000)
+
+IRs:
+TMP_19 = CONVERT self to uint256
+TMP_20(uint256) = TMP_19 / 4294967296
+TMP_21 = CONVERT TMP_20 to bytes32
+self(bytes32) := TMP_21(bytes32)"];
+15->16;
+16[label="Node Type: END_IF 16
+"];
+16->17;
+17[label="Node Type: IF 17
+
+EXPRESSION:
+self & 0xffff == 0
+
+IRs:
+TMP_22(bytes32) = self & 65535
+TMP_23(bool) = TMP_22 == 0
+CONDITION TMP_23"];
+17->18[label="True"];
+17->20[label="False"];
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+ret += 2
+
+IRs:
+ret(uint256) = ret + 2"];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+self = bytes32(uint256(self) / 0x10000)
+
+IRs:
+TMP_24 = CONVERT self to uint256
+TMP_25(uint256) = TMP_24 / 65536
+TMP_26 = CONVERT TMP_25 to bytes32
+self(bytes32) := TMP_26(bytes32)"];
+19->20;
+20[label="Node Type: END_IF 20
+"];
+20->21;
+21[label="Node Type: IF 21
+
+EXPRESSION:
+self & 0xff == 0
+
+IRs:
+TMP_27(bytes32) = self & 255
+TMP_28(bool) = TMP_27 == 0
+CONDITION TMP_28"];
+21->22[label="True"];
+21->23[label="False"];
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+ret += 1
+
+IRs:
+ret(uint256) = ret + 1"];
+22->23;
+23[label="Node Type: END_IF 23
+"];
+23->24;
+24[label="Node Type: RETURN 24
+
+EXPRESSION:
+32 - ret
+
+IRs:
+TMP_29(uint256) = 32 - ret
+RETURN TMP_29"];
+}
+// Function: 357.sol-strings-len(strings.slice)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+ptr = self._ptr - 31
+
+IRs:
+REF_7(uint256) -> self._ptr
+TMP_35(uint256) = REF_7 - 31
+ptr(uint256) := TMP_35(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+end = ptr + self._len
+
+IRs:
+REF_8(uint256) -> self._len
+TMP_36(uint256) = ptr + REF_8
+end(uint256) := TMP_36(uint256)"];
+2->5;
+3[label="Node Type: BEGIN_LOOP 3
+"];
+3->6;
+4[label="Node Type: END_LOOP 4
+"];
+4->27;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+l = 0
+
+IRs:
+l(uint256) := 0(uint256)"];
+5->3;
+6[label="Node Type: IF_LOOP 6
+
+EXPRESSION:
+ptr < end
+
+IRs:
+TMP_37(bool) = ptr < end
+CONDITION TMP_37"];
+6->7[label="True"];
+6->4[label="False"];
+7[label="Node Type: NEW VARIABLE 7
+"];
+7->8;
+8[label="Node Type: INLINE ASM 8
+"];
+8->9;
+9[label="Node Type: END INLINE ASM 9
+"];
+9->10;
+10[label="Node Type: IF 10
+
+EXPRESSION:
+b < 0x80
+
+IRs:
+TMP_38(bool) = b < 128
+CONDITION TMP_38"];
+10->11[label="True"];
+10->12[label="False"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+ptr += 1
+
+IRs:
+ptr(uint256) = ptr + 1"];
+11->25;
+12[label="Node Type: IF 12
+
+EXPRESSION:
+b < 0xE0
+
+IRs:
+TMP_39(bool) = b < 224
+CONDITION TMP_39"];
+12->13[label="True"];
+12->14[label="False"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+ptr += 2
+
+IRs:
+ptr(uint256) = ptr + 2"];
+13->24;
+14[label="Node Type: IF 14
+
+EXPRESSION:
+b < 0xF0
+
+IRs:
+TMP_40(bool) = b < 240
+CONDITION TMP_40"];
+14->15[label="True"];
+14->16[label="False"];
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+ptr += 3
+
+IRs:
+ptr(uint256) = ptr + 3"];
+15->23;
+16[label="Node Type: IF 16
+
+EXPRESSION:
+b < 0xF8
+
+IRs:
+TMP_41(bool) = b < 248
+CONDITION TMP_41"];
+16->17[label="True"];
+16->18[label="False"];
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+ptr += 4
+
+IRs:
+ptr(uint256) = ptr + 4"];
+17->22;
+18[label="Node Type: IF 18
+
+EXPRESSION:
+b < 0xFC
+
+IRs:
+TMP_42(bool) = b < 252
+CONDITION TMP_42"];
+18->19[label="True"];
+18->20[label="False"];
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+ptr += 5
+
+IRs:
+ptr(uint256) = ptr + 5"];
+19->21;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+ptr += 6
+
+IRs:
+ptr(uint256) = ptr + 6"];
+20->21;
+21[label="Node Type: END_IF 21
+"];
+21->22;
+22[label="Node Type: END_IF 22
+"];
+22->23;
+23[label="Node Type: END_IF 23
+"];
+23->24;
+24[label="Node Type: END_IF 24
+"];
+24->25;
+25[label="Node Type: END_IF 25
+"];
+25->26;
+26[label="Node Type: EXPRESSION 26
+
+EXPRESSION:
+l ++
+
+IRs:
+TMP_43(uint256) := l(uint256)
+l(uint256) = l + 1"];
+26->6;
+27[label="Node Type: RETURN 27
+
+EXPRESSION:
+l
+
+IRs:
+RETURN l"];
+}
+// Function: 357.sol-strings-memcpy(uint256,uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: BEGIN_LOOP 1
+"];
+1->3;
+2[label="Node Type: END_LOOP 2
+"];
+2->9;
+3[label="Node Type: IF_LOOP 3
+
+EXPRESSION:
+len >= 32
+
+IRs:
+TMP_0(bool) = len >= 32
+CONDITION TMP_0"];
+3->4[label="True"];
+3->2[label="False"];
+4[label="Node Type: INLINE ASM 4
+"];
+4->5;
+5[label="Node Type: END INLINE ASM 5
+"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+dest += 32
+
+IRs:
+dest(uint256) = dest + 32"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+src += 32
+
+IRs:
+src(uint256) = src + 32"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+len -= 32
+
+IRs:
+len(uint256) = len - 32"];
+8->3;
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+mask = 256 ** (32 - len) - 1
+
+IRs:
+TMP_1(uint256) = 32 - len
+TMP_2(uint256) = 256 ** TMP_1
+TMP_3(uint256) = TMP_2 - 1
+mask(uint256) := TMP_3(uint256)"];
+9->10;
+10[label="Node Type: INLINE ASM 10
+"];
+10->11;
+11[label="Node Type: END INLINE ASM 11
+"];
+}
+// Function: 357.sol-strings-nextRune(strings.slice)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+nextRune(self,ret)
+
+IRs:
+TMP_72(strings.slice) = INTERNAL_CALL, strings.nextRune(strings.slice,strings.slice)(self,ret)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+ret
+
+IRs:
+RETURN ret"];
+}
+// Function: 357.sol-strings-nextRune(strings.slice,strings.slice)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+rune._ptr = self._ptr
+
+IRs:
+REF_18(uint256) -> rune._ptr
+REF_19(uint256) -> self._ptr
+REF_18(uint256) (->rune) := REF_19(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+self._len == 0
+
+IRs:
+REF_20(uint256) -> self._len
+TMP_67(bool) = REF_20 == 0
+CONDITION TMP_67"];
+2->3[label="True"];
+2->5[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+rune._len = 0
+
+IRs:
+REF_21(uint256) -> rune._len
+REF_21(uint256) (->rune) := 0(uint256)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+rune
+
+IRs:
+RETURN rune"];
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+"];
+7->8;
+8[label="Node Type: INLINE ASM 8
+"];
+8->9;
+9[label="Node Type: END INLINE ASM 9
+"];
+9->10;
+10[label="Node Type: IF 10
+
+EXPRESSION:
+b < 0x80
+
+IRs:
+TMP_68(bool) = b < 128
+CONDITION TMP_68"];
+10->11[label="True"];
+10->12[label="False"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+l = 1
+
+IRs:
+l(uint256) := 1(uint256)"];
+11->19;
+12[label="Node Type: IF 12
+
+EXPRESSION:
+b < 0xE0
+
+IRs:
+TMP_69(bool) = b < 224
+CONDITION TMP_69"];
+12->13[label="True"];
+12->14[label="False"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+l = 2
+
+IRs:
+l(uint256) := 2(uint256)"];
+13->18;
+14[label="Node Type: IF 14
+
+EXPRESSION:
+b < 0xF0
+
+IRs:
+TMP_70(bool) = b < 240
+CONDITION TMP_70"];
+14->15[label="True"];
+14->16[label="False"];
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+l = 3
+
+IRs:
+l(uint256) := 3(uint256)"];
+15->17;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+l = 4
+
+IRs:
+l(uint256) := 4(uint256)"];
+16->17;
+17[label="Node Type: END_IF 17
+"];
+17->18;
+18[label="Node Type: END_IF 18
+"];
+18->19;
+19[label="Node Type: END_IF 19
+"];
+19->20;
+20[label="Node Type: IF 20
+
+EXPRESSION:
+l > self._len
+
+IRs:
+REF_22(uint256) -> self._len
+TMP_71(bool) = l > REF_22
+CONDITION TMP_71"];
+20->21[label="True"];
+20->25[label="False"];
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+rune._len = self._len
+
+IRs:
+REF_23(uint256) -> rune._len
+REF_24(uint256) -> self._len
+REF_23(uint256) (->rune) := REF_24(uint256)"];
+21->22;
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+self._ptr += self._len
+
+IRs:
+REF_25(uint256) -> self._ptr
+REF_26(uint256) -> self._len
+REF_25(-> self) = REF_25 + REF_26"];
+22->23;
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+self._len = 0
+
+IRs:
+REF_27(uint256) -> self._len
+REF_27(uint256) (->self) := 0(uint256)"];
+23->24;
+24[label="Node Type: RETURN 24
+
+EXPRESSION:
+rune
+
+IRs:
+RETURN rune"];
+25[label="Node Type: END_IF 25
+"];
+25->26;
+26[label="Node Type: EXPRESSION 26
+
+EXPRESSION:
+self._ptr += l
+
+IRs:
+REF_28(uint256) -> self._ptr
+REF_28(-> self) = REF_28 + l"];
+26->27;
+27[label="Node Type: EXPRESSION 27
+
+EXPRESSION:
+self._len -= l
+
+IRs:
+REF_29(uint256) -> self._len
+REF_29(-> self) = REF_29 - l"];
+27->28;
+28[label="Node Type: EXPRESSION 28
+
+EXPRESSION:
+rune._len = l
+
+IRs:
+REF_30(uint256) -> rune._len
+REF_30(uint256) (->rune) := l(uint256)"];
+28->29;
+29[label="Node Type: RETURN 29
+
+EXPRESSION:
+rune
+
+IRs:
+RETURN rune"];
+}
+// Function: 357.sol-strings-ord(strings.slice)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+self._len == 0
+
+IRs:
+REF_31(uint256) -> self._len
+TMP_73(bool) = REF_31 == 0
+CONDITION TMP_73"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+divisor = 2 ** 248
+
+IRs:
+TMP_74(uint256) = 2 ** 248
+divisor(uint256) := TMP_74(uint256)"];
+6->7;
+7[label="Node Type: INLINE ASM 7
+"];
+7->8;
+8[label="Node Type: END INLINE ASM 8
+"];
+8->9;
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+b = word / divisor
+
+IRs:
+TMP_75(uint256) = word / divisor
+b(uint256) := TMP_75(uint256)"];
+9->10;
+10[label="Node Type: IF 10
+
+EXPRESSION:
+b < 0x80
+
+IRs:
+TMP_76(bool) = b < 128
+CONDITION TMP_76"];
+10->11[label="True"];
+10->13[label="False"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+ret = b
+
+IRs:
+ret(uint256) := b(uint256)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+length = 1
+
+IRs:
+length(uint256) := 1(uint256)"];
+12->23;
+13[label="Node Type: IF 13
+
+EXPRESSION:
+b < 0xE0
+
+IRs:
+TMP_77(bool) = b < 224
+CONDITION TMP_77"];
+13->14[label="True"];
+13->16[label="False"];
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+ret = b & 0x1F
+
+IRs:
+TMP_78(uint256) = b & 31
+ret(uint256) := TMP_78(uint256)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+length = 2
+
+IRs:
+length(uint256) := 2(uint256)"];
+15->22;
+16[label="Node Type: IF 16
+
+EXPRESSION:
+b < 0xF0
+
+IRs:
+TMP_79(bool) = b < 240
+CONDITION TMP_79"];
+16->17[label="True"];
+16->19[label="False"];
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+ret = b & 0x0F
+
+IRs:
+TMP_80(uint256) = b & 15
+ret(uint256) := TMP_80(uint256)"];
+17->18;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+length = 3
+
+IRs:
+length(uint256) := 3(uint256)"];
+18->21;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+ret = b & 0x07
+
+IRs:
+TMP_81(uint256) = b & 7
+ret(uint256) := TMP_81(uint256)"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+length = 4
+
+IRs:
+length(uint256) := 4(uint256)"];
+20->21;
+21[label="Node Type: END_IF 21
+"];
+21->22;
+22[label="Node Type: END_IF 22
+"];
+22->23;
+23[label="Node Type: END_IF 23
+"];
+23->24;
+24[label="Node Type: IF 24
+
+EXPRESSION:
+length > self._len
+
+IRs:
+REF_32(uint256) -> self._len
+TMP_82(bool) = length > REF_32
+CONDITION TMP_82"];
+24->25[label="True"];
+24->26[label="False"];
+25[label="Node Type: RETURN 25
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+26[label="Node Type: END_IF 26
+"];
+26->29;
+27[label="Node Type: BEGIN_LOOP 27
+"];
+27->30;
+28[label="Node Type: END_LOOP 28
+"];
+28->38;
+29[label="Node Type: NEW VARIABLE 29
+
+EXPRESSION:
+i = 1
+
+IRs:
+i(uint256) := 1(uint256)"];
+29->27;
+30[label="Node Type: IF_LOOP 30
+
+EXPRESSION:
+i < length
+
+IRs:
+TMP_83(bool) = i < length
+CONDITION TMP_83"];
+30->31[label="True"];
+30->28[label="False"];
+31[label="Node Type: EXPRESSION 31
+
+EXPRESSION:
+divisor = divisor / 256
+
+IRs:
+TMP_84(uint256) = divisor / 256
+divisor(uint256) := TMP_84(uint256)"];
+31->32;
+32[label="Node Type: EXPRESSION 32
+
+EXPRESSION:
+b = (word / divisor) & 0xFF
+
+IRs:
+TMP_85(uint256) = word / divisor
+TMP_86(uint256) = TMP_85 & 255
+b(uint256) := TMP_86(uint256)"];
+32->33;
+33[label="Node Type: IF 33
+
+EXPRESSION:
+b & 0xC0 != 0x80
+
+IRs:
+TMP_87(uint256) = b & 192
+TMP_88(bool) = TMP_87 != 128
+CONDITION TMP_88"];
+33->34[label="True"];
+33->35[label="False"];
+34[label="Node Type: RETURN 34
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+35[label="Node Type: END_IF 35
+"];
+35->36;
+36[label="Node Type: EXPRESSION 36
+
+EXPRESSION:
+ret = (ret * 64) | (b & 0x3F)
+
+IRs:
+TMP_89(uint256) = ret * 64
+TMP_90(uint256) = b & 63
+TMP_91(uint256) = TMP_89 | TMP_90
+ret(uint256) := TMP_91(uint256)"];
+36->37;
+37[label="Node Type: EXPRESSION 37
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_92(uint256) := i(uint256)
+i(uint256) = i + 1"];
+37->30;
+38[label="Node Type: RETURN 38
+
+EXPRESSION:
+ret
+
+IRs:
+RETURN ret"];
+39[label="Node Type: RETURN 39
+
+EXPRESSION:
+ret
+
+IRs:
+RETURN ret"];
+}
+// Function: 357.sol-strings-rfind(strings.slice,strings.slice)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+ptr = rfindPtr(self._len,self._ptr,needle._len,needle._ptr)
+
+IRs:
+REF_66(uint256) -> self._len
+REF_67(uint256) -> self._ptr
+REF_68(uint256) -> needle._len
+REF_69(uint256) -> needle._ptr
+TMP_145(uint256) = INTERNAL_CALL, strings.rfindPtr(uint256,uint256,uint256,uint256)(REF_66,REF_67,REF_68,REF_69)
+ptr(uint256) := TMP_145(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+self._len = ptr - self._ptr
+
+IRs:
+REF_70(uint256) -> self._len
+REF_71(uint256) -> self._ptr
+TMP_146(uint256) = ptr - REF_71
+REF_70(uint256) (->self) := TMP_146(uint256)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+self
+
+IRs:
+RETURN self"];
+}
+// Function: 357.sol-strings-rfindPtr(uint256,uint256,uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+needlelen <= selflen
+
+IRs:
+TMP_124(bool) = needlelen <= selflen
+CONDITION TMP_124"];
+2->3[label="True"];
+2->37[label="False"];
+3[label="Node Type: IF 3
+
+EXPRESSION:
+needlelen <= 32
+
+IRs:
+TMP_125(bool) = needlelen <= 32
+CONDITION TMP_125"];
+3->4[label="True"];
+3->22[label="False"];
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+mask = bytes32(~ (2 ** (8 * (32 - needlelen)) - 1))
+
+IRs:
+TMP_126(uint256) = 32 - needlelen
+TMP_127(uint256) = 8 * TMP_126
+TMP_128(uint256) = 2 ** TMP_127
+TMP_129(uint256) = TMP_128 - 1
+TMP_130 = UnaryType.TILD TMP_129 
+TMP_131 = CONVERT TMP_130 to bytes32
+mask(bytes32) := TMP_131(bytes32)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+"];
+5->6;
+6[label="Node Type: INLINE ASM 6
+"];
+6->7;
+7[label="Node Type: END INLINE ASM 7
+"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+ptr = selfptr + selflen - needlelen
+
+IRs:
+TMP_132(uint256) = selfptr + selflen
+TMP_133(uint256) = TMP_132 - needlelen
+ptr(uint256) := TMP_133(uint256)"];
+8->9;
+9[label="Node Type: NEW VARIABLE 9
+"];
+9->10;
+10[label="Node Type: INLINE ASM 10
+"];
+10->11;
+11[label="Node Type: END INLINE ASM 11
+"];
+11->12;
+12[label="Node Type: BEGIN_LOOP 12
+"];
+12->13;
+13[label="Node Type: IF_LOOP 13
+
+EXPRESSION:
+ptrdata != needledata
+
+IRs:
+TMP_134(bool) = ptrdata != needledata
+CONDITION TMP_134"];
+13->14[label="True"];
+13->20[label="False"];
+14[label="Node Type: IF 14
+
+EXPRESSION:
+ptr <= selfptr
+
+IRs:
+TMP_135(bool) = ptr <= selfptr
+CONDITION TMP_135"];
+14->15[label="True"];
+14->16[label="False"];
+15[label="Node Type: RETURN 15
+
+EXPRESSION:
+selfptr
+
+IRs:
+RETURN selfptr"];
+16[label="Node Type: END_IF 16
+"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+ptr --
+
+IRs:
+TMP_136(uint256) := ptr(uint256)
+ptr(uint256) = ptr - 1"];
+17->18;
+18[label="Node Type: INLINE ASM 18
+"];
+18->19;
+19[label="Node Type: END INLINE ASM 19
+"];
+19->13;
+20[label="Node Type: END_LOOP 20
+"];
+20->21;
+21[label="Node Type: RETURN 21
+
+EXPRESSION:
+ptr + needlelen
+
+IRs:
+TMP_137(uint256) = ptr + needlelen
+RETURN TMP_137"];
+22[label="Node Type: NEW VARIABLE 22
+"];
+22->23;
+23[label="Node Type: INLINE ASM 23
+"];
+23->24;
+24[label="Node Type: END INLINE ASM 24
+"];
+24->25;
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+ptr = selfptr + (selflen - needlelen)
+
+IRs:
+TMP_138(uint256) = selflen - needlelen
+TMP_139(uint256) = selfptr + TMP_138
+ptr(uint256) := TMP_139(uint256)"];
+25->26;
+26[label="Node Type: BEGIN_LOOP 26
+"];
+26->27;
+27[label="Node Type: IF_LOOP 27
+
+EXPRESSION:
+ptr >= selfptr
+
+IRs:
+TMP_140(bool) = ptr >= selfptr
+CONDITION TMP_140"];
+27->28[label="True"];
+27->35[label="False"];
+28[label="Node Type: NEW VARIABLE 28
+"];
+28->29;
+29[label="Node Type: INLINE ASM 29
+"];
+29->30;
+30[label="Node Type: END INLINE ASM 30
+"];
+30->31;
+31[label="Node Type: IF 31
+
+EXPRESSION:
+hash == testHash
+
+IRs:
+TMP_141(bool) = hash == testHash
+CONDITION TMP_141"];
+31->32[label="True"];
+31->33[label="False"];
+32[label="Node Type: RETURN 32
+
+EXPRESSION:
+ptr + needlelen
+
+IRs:
+TMP_142(uint256) = ptr + needlelen
+RETURN TMP_142"];
+33[label="Node Type: END_IF 33
+"];
+33->34;
+34[label="Node Type: EXPRESSION 34
+
+EXPRESSION:
+ptr -= 1
+
+IRs:
+ptr(uint256) = ptr - 1"];
+34->27;
+35[label="Node Type: END_LOOP 35
+"];
+35->36;
+36[label="Node Type: END_IF 36
+"];
+36->37;
+37[label="Node Type: END_IF 37
+"];
+37->38;
+38[label="Node Type: RETURN 38
+
+EXPRESSION:
+selfptr
+
+IRs:
+RETURN selfptr"];
+}
+// Function: 357.sol-strings-rsplit(strings.slice,strings.slice)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+rsplit(self,needle,token)
+
+IRs:
+TMP_159(strings.slice) = INTERNAL_CALL, strings.rsplit(strings.slice,strings.slice,strings.slice)(self,needle,token)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+token
+
+IRs:
+RETURN token"];
+}
+// Function: 357.sol-strings-rsplit(strings.slice,strings.slice,strings.slice)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+ptr = rfindPtr(self._len,self._ptr,needle._len,needle._ptr)
+
+IRs:
+REF_88(uint256) -> self._len
+REF_89(uint256) -> self._ptr
+REF_90(uint256) -> needle._len
+REF_91(uint256) -> needle._ptr
+TMP_154(uint256) = INTERNAL_CALL, strings.rfindPtr(uint256,uint256,uint256,uint256)(REF_88,REF_89,REF_90,REF_91)
+ptr(uint256) := TMP_154(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+token._ptr = ptr
+
+IRs:
+REF_92(uint256) -> token._ptr
+REF_92(uint256) (->token) := ptr(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+token._len = self._len - (ptr - self._ptr)
+
+IRs:
+REF_93(uint256) -> token._len
+REF_94(uint256) -> self._len
+REF_95(uint256) -> self._ptr
+TMP_155(uint256) = ptr - REF_95
+TMP_156(uint256) = REF_94 - TMP_155
+REF_93(uint256) (->token) := TMP_156(uint256)"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+ptr == self._ptr
+
+IRs:
+REF_96(uint256) -> self._ptr
+TMP_157(bool) = ptr == REF_96
+CONDITION TMP_157"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+self._len = 0
+
+IRs:
+REF_97(uint256) -> self._len
+REF_97(uint256) (->self) := 0(uint256)"];
+5->7;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+self._len -= token._len + needle._len
+
+IRs:
+REF_98(uint256) -> self._len
+REF_99(uint256) -> token._len
+REF_100(uint256) -> needle._len
+TMP_158(uint256) = REF_99 + REF_100
+REF_98(-> self) = REF_98 - TMP_158"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+token
+
+IRs:
+RETURN token"];
+}
+// Function: 357.sol-strings-split(strings.slice,strings.slice)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+split(self,needle,token)
+
+IRs:
+TMP_153(strings.slice) = INTERNAL_CALL, strings.split(strings.slice,strings.slice,strings.slice)(self,needle,token)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+token
+
+IRs:
+RETURN token"];
+}
+// Function: 357.sol-strings-split(strings.slice,strings.slice,strings.slice)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+ptr = findPtr(self._len,self._ptr,needle._len,needle._ptr)
+
+IRs:
+REF_72(uint256) -> self._len
+REF_73(uint256) -> self._ptr
+REF_74(uint256) -> needle._len
+REF_75(uint256) -> needle._ptr
+TMP_147(uint256) = INTERNAL_CALL, strings.findPtr(uint256,uint256,uint256,uint256)(REF_72,REF_73,REF_74,REF_75)
+ptr(uint256) := TMP_147(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+token._ptr = self._ptr
+
+IRs:
+REF_76(uint256) -> token._ptr
+REF_77(uint256) -> self._ptr
+REF_76(uint256) (->token) := REF_77(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+token._len = ptr - self._ptr
+
+IRs:
+REF_78(uint256) -> token._len
+REF_79(uint256) -> self._ptr
+TMP_148(uint256) = ptr - REF_79
+REF_78(uint256) (->token) := TMP_148(uint256)"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+ptr == self._ptr + self._len
+
+IRs:
+REF_80(uint256) -> self._ptr
+REF_81(uint256) -> self._len
+TMP_149(uint256) = REF_80 + REF_81
+TMP_150(bool) = ptr == TMP_149
+CONDITION TMP_150"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+self._len = 0
+
+IRs:
+REF_82(uint256) -> self._len
+REF_82(uint256) (->self) := 0(uint256)"];
+5->8;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+self._len -= token._len + needle._len
+
+IRs:
+REF_83(uint256) -> self._len
+REF_84(uint256) -> token._len
+REF_85(uint256) -> needle._len
+TMP_151(uint256) = REF_84 + REF_85
+REF_83(-> self) = REF_83 - TMP_151"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+self._ptr = ptr + needle._len
+
+IRs:
+REF_86(uint256) -> self._ptr
+REF_87(uint256) -> needle._len
+TMP_152(uint256) = ptr + REF_87
+REF_86(uint256) (->self) := TMP_152(uint256)"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: RETURN 9
+
+EXPRESSION:
+token
+
+IRs:
+RETURN token"];
+}
+// Function: 357.sol-strings-startsWith(strings.slice,strings.slice)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+self._len < needle._len
+
+IRs:
+REF_33(uint256) -> self._len
+REF_34(uint256) -> needle._len
+TMP_93(bool) = REF_33 < REF_34
+CONDITION TMP_93"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+self._ptr == needle._ptr
+
+IRs:
+REF_35(uint256) -> self._ptr
+REF_36(uint256) -> needle._ptr
+TMP_94(bool) = REF_35 == REF_36
+CONDITION TMP_94"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+"];
+7->8;
+8[label="Node Type: INLINE ASM 8
+"];
+8->9;
+9[label="Node Type: END INLINE ASM 9
+"];
+9->10;
+10[label="Node Type: RETURN 10
+
+EXPRESSION:
+equal
+
+IRs:
+RETURN equal"];
+}
+// Function: 357.sol-strings-toSlice(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->2;
+2[label="Node Type: INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: END INLINE ASM 3
+"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+slice(bytes(self).length,ptr)
+
+IRs:
+TMP_4 = CONVERT self to bytes
+REF_0 -> LENGTH TMP_4
+TMP_5(strings.slice) = new slice(REF_0,ptr)
+RETURN TMP_5"];
+}
+// Function: 357.sol-strings-toSliceB32(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: INLINE ASM 1
+"];
+1->2;
+2[label="Node Type: END INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+ret._len = len(self)
+
+IRs:
+REF_1(uint256) -> ret._len
+TMP_30(uint256) = INTERNAL_CALL, strings.len(bytes32)(self)
+REF_1(uint256) (->ret) := TMP_30(uint256)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+ret
+
+IRs:
+RETURN ret"];
+}
+// Function: 357.sol-strings-toString(strings.slice)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+ret = new string(self._len)
+
+IRs:
+REF_4(uint256) -> self._len
+TMP_33 = new string(REF_4)
+ret(string) := TMP_33(string)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: INLINE ASM 3
+"];
+3->4;
+4[label="Node Type: END INLINE ASM 4
+"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+memcpy(retptr,self._ptr,self._len)
+
+IRs:
+REF_5(uint256) -> self._ptr
+REF_6(uint256) -> self._len
+INTERNAL_CALL, strings.memcpy(uint256,uint256,uint256)(retptr,REF_5,REF_6)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+ret
+
+IRs:
+RETURN ret"];
+}
+// Function: 357.sol-strings-until(strings.slice,strings.slice)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+self._len < needle._len
+
+IRs:
+REF_51(uint256) -> self._len
+REF_52(uint256) -> needle._len
+TMP_101(bool) = REF_51 < REF_52
+CONDITION TMP_101"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+self
+
+IRs:
+RETURN self"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+selfptr = self._ptr + self._len - needle._len
+
+IRs:
+REF_53(uint256) -> self._ptr
+REF_54(uint256) -> self._len
+TMP_102(uint256) = REF_53 + REF_54
+REF_55(uint256) -> needle._len
+TMP_103(uint256) = TMP_102 - REF_55
+selfptr(uint256) := TMP_103(uint256)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+equal = true
+
+IRs:
+equal(bool) := True(bool)"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+selfptr != needle._ptr
+
+IRs:
+REF_56(uint256) -> needle._ptr
+TMP_104(bool) = selfptr != REF_56
+CONDITION TMP_104"];
+6->7[label="True"];
+6->9[label="False"];
+7[label="Node Type: INLINE ASM 7
+"];
+7->8;
+8[label="Node Type: END INLINE ASM 8
+"];
+8->9;
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: IF 10
+
+EXPRESSION:
+equal
+
+IRs:
+CONDITION equal"];
+10->11[label="True"];
+10->12[label="False"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+self._len -= needle._len
+
+IRs:
+REF_57(uint256) -> self._len
+REF_58(uint256) -> needle._len
+REF_57(-> self) = REF_57 - REF_58"];
+11->12;
+12[label="Node Type: END_IF 12
+"];
+12->13;
+13[label="Node Type: RETURN 13
+
+EXPRESSION:
+self
+
+IRs:
+RETURN self"];
+}
+}

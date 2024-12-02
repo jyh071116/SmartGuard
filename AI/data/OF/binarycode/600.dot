@@ -1,0 +1,884 @@
+digraph G {
+// Function: 600.sol-AnsforceIntelligenceToken-_transfer(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(balanceOf[from] >= value)
+
+IRs:
+REF_24(uint256) -> balanceOf[from]
+TMP_29(bool) = REF_24 >= value
+TMP_30(None) = SOLIDITY_CALL require(bool)(TMP_29)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(balanceOf[to] + value > balanceOf[to])
+
+IRs:
+REF_25(uint256) -> balanceOf[to]
+TMP_31(uint256) = REF_25 + value
+REF_26(uint256) -> balanceOf[to]
+TMP_32(bool) = TMP_31 > REF_26
+TMP_33(None) = SOLIDITY_CALL require(bool)(TMP_32)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+previousBalances = balanceOf[from].add(balanceOf[to])
+
+IRs:
+REF_27(uint256) -> balanceOf[from]
+REF_29(uint256) -> balanceOf[to]
+TMP_34(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_27', 'REF_29'] 
+previousBalances(uint256) := TMP_34(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+balanceOf[from] = balanceOf[from].sub(value)
+
+IRs:
+REF_30(uint256) -> balanceOf[from]
+REF_31(uint256) -> balanceOf[from]
+TMP_35(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_31', 'value'] 
+REF_30(uint256) (->balanceOf) := TMP_35(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balanceOf[to] = balanceOf[to].add(value)
+
+IRs:
+REF_33(uint256) -> balanceOf[to]
+REF_34(uint256) -> balanceOf[to]
+TMP_36(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_34', 'value'] 
+REF_33(uint256) (->balanceOf) := TMP_36(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+Transfer(from,to,value)
+
+IRs:
+Emit Transfer(from,to,value)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+assert(bool)(balanceOf[from].add(balanceOf[to]) == previousBalances)
+
+IRs:
+REF_36(uint256) -> balanceOf[from]
+REF_38(uint256) -> balanceOf[to]
+TMP_38(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_36', 'REF_38'] 
+TMP_39(bool) = TMP_38 == previousBalances
+TMP_40(None) = SOLIDITY_CALL assert(bool)(TMP_39)"];
+}
+// Function: 600.sol-AnsforceIntelligenceToken-approve(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowance[msg.sender][spender] = value
+
+IRs:
+REF_46(mapping(address => uint256)) -> allowance[msg.sender]
+REF_47(uint256) -> REF_46[spender]
+REF_47(uint256) (->allowance) := value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,value,spender,extraData)
+
+IRs:
+Emit Approval(msg.sender,value,spender,extraData)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 600.sol-AnsforceIntelligenceToken-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 600.sol-AnsforceIntelligenceToken-freeze(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_value > 0)
+
+IRs:
+TMP_62(bool) = _value > 0
+TMP_63(None) = SOLIDITY_CALL require(bool)(TMP_62)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balanceOf[target] = SafeMath.sub(balanceOf[target],_value)
+
+IRs:
+REF_50(uint256) -> balanceOf[target]
+REF_52(uint256) -> balanceOf[target]
+TMP_64(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_52', '_value'] 
+REF_50(uint256) (->balanceOf) := TMP_64(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+freezeOf[target] = SafeMath.add(freezeOf[target],_value)
+
+IRs:
+REF_53(uint256) -> freezeOf[target]
+REF_55(uint256) -> freezeOf[target]
+TMP_65(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_55', '_value'] 
+REF_53(uint256) (->freezeOf) := TMP_65(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Freeze(target,_value)
+
+IRs:
+Emit Freeze(target,_value)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Owned.onlyOwner()()"];
+6->1;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 600.sol-AnsforceIntelligenceToken-init(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(totalSupply == 0)
+
+IRs:
+TMP_50(bool) = totalSupply == 0
+TMP_51(None) = SOLIDITY_CALL require(bool)(TMP_50)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_supply > 0)
+
+IRs:
+TMP_52(bool) = _supply > 0
+TMP_53(None) = SOLIDITY_CALL require(bool)(TMP_52)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(_vault != address(0))
+
+IRs:
+TMP_54 = CONVERT 0 to address
+TMP_55(bool) = _vault != TMP_54
+TMP_56(None) = SOLIDITY_CALL require(bool)(TMP_55)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+totalSupply = _supply
+
+IRs:
+totalSupply(uint256) := _supply(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balanceOf[_vault] = totalSupply
+
+IRs:
+REF_48(uint256) -> balanceOf[_vault]
+REF_48(uint256) (->balanceOf) := totalSupply(uint256)"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Owned.onlyOwner()()"];
+6->1;
+}
+// Function: 600.sol-AnsforceIntelligenceToken-isRunning()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! stopped)
+
+IRs:
+TMP_76 = UnaryType.BANG stopped 
+TMP_77(None) = SOLIDITY_CALL require(bool)(TMP_76)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 600.sol-AnsforceIntelligenceToken-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_74(bool) = msg.sender == owner
+TMP_75(None) = SOLIDITY_CALL require(bool)(TMP_74)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 600.sol-AnsforceIntelligenceToken-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+name = Ansforce Intelligence Token
+
+IRs:
+name(string) := Ansforce Intelligence Token(string)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+symbol = AIT
+
+IRs:
+symbol(string) := AIT(string)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+decimals = 18
+
+IRs:
+decimals(uint8) := 18(uint256)"];
+}
+// Function: 600.sol-AnsforceIntelligenceToken-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+totalSupply = 0
+
+IRs:
+totalSupply(uint256) := 0(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+stopped = false
+
+IRs:
+stopped(bool) := False(bool)"];
+}
+// Function: 600.sol-AnsforceIntelligenceToken-start()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+stopped = false
+
+IRs:
+stopped(bool) := False(bool)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Owned.onlyOwner()()"];
+2->1;
+}
+// Function: 600.sol-AnsforceIntelligenceToken-stop()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+stopped = true
+
+IRs:
+stopped(bool) := True(bool)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Owned.onlyOwner()()"];
+2->1;
+}
+// Function: 600.sol-AnsforceIntelligenceToken-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+ERC20Token.transfer(to,value)
+
+IRs:
+INTERNAL_CALL, ERC20Token.transfer(address,uint256)(to,value)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+isRunning()
+
+IRs:
+MODIFIER_CALL, AnsforceIntelligenceToken.isRunning()()"];
+2->1;
+}
+// Function: 600.sol-AnsforceIntelligenceToken-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(value <= allowance[from][msg.sender])
+
+IRs:
+REF_39(mapping(address => uint256)) -> allowance[from]
+REF_40(uint256) -> REF_39[msg.sender]
+TMP_42(bool) = value <= REF_40
+TMP_43(None) = SOLIDITY_CALL require(bool)(TMP_42)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+allowance[from][msg.sender] = allowance[from][msg.sender].sub(value)
+
+IRs:
+REF_41(mapping(address => uint256)) -> allowance[from]
+REF_42(uint256) -> REF_41[msg.sender]
+REF_43(mapping(address => uint256)) -> allowance[from]
+REF_44(uint256) -> REF_43[msg.sender]
+TMP_44(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_44', 'value'] 
+REF_42(uint256) (->allowance) := TMP_44(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_transfer(from,to,value)
+
+IRs:
+INTERNAL_CALL, ERC20Token._transfer(address,address,uint256)(from,to,value)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 600.sol-AnsforceIntelligenceToken-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransfered(owner)
+
+IRs:
+Emit OwnershipTransfered(owner)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Owned.onlyOwner()()"];
+3->1;
+}
+// Function: 600.sol-AnsforceIntelligenceToken-unfreeze(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_value > 0)
+
+IRs:
+TMP_68(bool) = _value > 0
+TMP_69(None) = SOLIDITY_CALL require(bool)(TMP_68)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+freezeOf[target] = SafeMath.sub(freezeOf[target],_value)
+
+IRs:
+REF_56(uint256) -> freezeOf[target]
+REF_58(uint256) -> freezeOf[target]
+TMP_70(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_58', '_value'] 
+REF_56(uint256) (->freezeOf) := TMP_70(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balanceOf[target] = SafeMath.add(balanceOf[target],_value)
+
+IRs:
+REF_59(uint256) -> balanceOf[target]
+REF_61(uint256) -> balanceOf[target]
+TMP_71(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_61', '_value'] 
+REF_59(uint256) (->balanceOf) := TMP_71(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Unfreeze(target,_value)
+
+IRs:
+Emit Unfreeze(target,_value)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Owned.onlyOwner()()"];
+6->1;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 600.sol-ERC20Token-_transfer(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(balanceOf[from] >= value)
+
+IRs:
+REF_0(uint256) -> balanceOf[from]
+TMP_11(bool) = REF_0 >= value
+TMP_12(None) = SOLIDITY_CALL require(bool)(TMP_11)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(balanceOf[to] + value > balanceOf[to])
+
+IRs:
+REF_1(uint256) -> balanceOf[to]
+TMP_13(uint256) = REF_1 + value
+REF_2(uint256) -> balanceOf[to]
+TMP_14(bool) = TMP_13 > REF_2
+TMP_15(None) = SOLIDITY_CALL require(bool)(TMP_14)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+previousBalances = balanceOf[from].add(balanceOf[to])
+
+IRs:
+REF_3(uint256) -> balanceOf[from]
+REF_5(uint256) -> balanceOf[to]
+TMP_16(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_3', 'REF_5'] 
+previousBalances(uint256) := TMP_16(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+balanceOf[from] = balanceOf[from].sub(value)
+
+IRs:
+REF_6(uint256) -> balanceOf[from]
+REF_7(uint256) -> balanceOf[from]
+TMP_17(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_7', 'value'] 
+REF_6(uint256) (->balanceOf) := TMP_17(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balanceOf[to] = balanceOf[to].add(value)
+
+IRs:
+REF_9(uint256) -> balanceOf[to]
+REF_10(uint256) -> balanceOf[to]
+TMP_18(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_10', 'value'] 
+REF_9(uint256) (->balanceOf) := TMP_18(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+Transfer(from,to,value)
+
+IRs:
+Emit Transfer(from,to,value)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+assert(bool)(balanceOf[from].add(balanceOf[to]) == previousBalances)
+
+IRs:
+REF_12(uint256) -> balanceOf[from]
+REF_14(uint256) -> balanceOf[to]
+TMP_20(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_12', 'REF_14'] 
+TMP_21(bool) = TMP_20 == previousBalances
+TMP_22(None) = SOLIDITY_CALL assert(bool)(TMP_21)"];
+}
+// Function: 600.sol-ERC20Token-approve(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowance[msg.sender][spender] = value
+
+IRs:
+REF_22(mapping(address => uint256)) -> allowance[msg.sender]
+REF_23(uint256) -> REF_22[spender]
+REF_23(uint256) (->allowance) := value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,value,spender,extraData)
+
+IRs:
+Emit Approval(msg.sender,value,spender,extraData)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 600.sol-ERC20Token-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 600.sol-ERC20Token-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+name = Ansforce Intelligence Token
+
+IRs:
+name(string) := Ansforce Intelligence Token(string)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+symbol = AIT
+
+IRs:
+symbol(string) := AIT(string)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+decimals = 18
+
+IRs:
+decimals(uint8) := 18(uint256)"];
+}
+// Function: 600.sol-ERC20Token-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+totalSupply = 0
+
+IRs:
+totalSupply(uint256) := 0(uint256)"];
+}
+// Function: 600.sol-ERC20Token-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transfer(msg.sender,to,value)
+
+IRs:
+INTERNAL_CALL, ERC20Token._transfer(address,address,uint256)(msg.sender,to,value)"];
+}
+// Function: 600.sol-ERC20Token-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(value <= allowance[from][msg.sender])
+
+IRs:
+REF_15(mapping(address => uint256)) -> allowance[from]
+REF_16(uint256) -> REF_15[msg.sender]
+TMP_24(bool) = value <= REF_16
+TMP_25(None) = SOLIDITY_CALL require(bool)(TMP_24)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+allowance[from][msg.sender] = allowance[from][msg.sender].sub(value)
+
+IRs:
+REF_17(mapping(address => uint256)) -> allowance[from]
+REF_18(uint256) -> REF_17[msg.sender]
+REF_19(mapping(address => uint256)) -> allowance[from]
+REF_20(uint256) -> REF_19[msg.sender]
+TMP_26(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_20', 'value'] 
+REF_18(uint256) (->allowance) := TMP_26(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_transfer(from,to,value)
+
+IRs:
+INTERNAL_CALL, ERC20Token._transfer(address,address,uint256)(from,to,value)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 600.sol-Owned-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransfered(owner)
+
+IRs:
+Emit OwnershipTransfered(owner)"];
+}
+// Function: 600.sol-Owned-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_9(bool) = msg.sender == owner
+TMP_10(None) = SOLIDITY_CALL require(bool)(TMP_9)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 600.sol-Owned-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransfered(owner)
+
+IRs:
+Emit OwnershipTransfered(owner)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Owned.onlyOwner()()"];
+3->1;
+}
+// Function: 600.sol-SafeMath-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_3(uint256) = a + b
+c(uint256) := TMP_3(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(c >= a)
+
+IRs:
+TMP_4(bool) = c >= a
+TMP_5(None) = SOLIDITY_CALL assert(bool)(TMP_4)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 600.sol-SafeMath-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(a >= b)
+
+IRs:
+TMP_0(bool) = a >= b
+TMP_1(None) = SOLIDITY_CALL assert(bool)(TMP_0)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_2(uint256) = a - b
+RETURN TMP_2"];
+}
+}

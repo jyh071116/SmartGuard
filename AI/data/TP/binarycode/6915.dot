@@ -1,0 +1,4285 @@
+digraph G {
+// Function: 6915.sol-BurnableTokenInterface-burn(uint256)
+digraph{
+}
+// Function: 6915.sol-CappedCrowdsale-_deliverTokens(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+token.transfer(_beneficiary,_tokenAmount)
+
+IRs:
+TMP_310(bool) = HIGH_LEVEL_CALL, dest:token(ERC20), function:transfer, arguments:['_beneficiary', '_tokenAmount']  "];
+}
+// Function: 6915.sol-CappedCrowdsale-_forwardFunds()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+wallet.transfer(msg.value)
+
+IRs:
+Transfer dest:wallet value:msg.value"];
+}
+// Function: 6915.sol-CappedCrowdsale-_getTokenAmount(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+_weiAmount.mul(rate)
+
+IRs:
+TMP_312(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['_weiAmount', 'rate'] 
+RETURN TMP_312"];
+}
+// Function: 6915.sol-CappedCrowdsale-_postValidatePurchase(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 6915.sol-CappedCrowdsale-_preValidatePurchase(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+super._preValidatePurchase(_beneficiary,_weiAmount)
+
+IRs:
+INTERNAL_CALL, Crowdsale._preValidatePurchase(address,uint256)(_beneficiary,_weiAmount)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(weiRaised.add(_weiAmount) <= cap)
+
+IRs:
+TMP_318(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['weiRaised', '_weiAmount'] 
+TMP_319(bool) = TMP_318 <= cap
+TMP_320(None) = SOLIDITY_CALL require(bool)(TMP_319)"];
+}
+// Function: 6915.sol-CappedCrowdsale-_processPurchase(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_deliverTokens(_beneficiary,_tokenAmount)
+
+IRs:
+INTERNAL_CALL, Crowdsale._deliverTokens(address,uint256)(_beneficiary,_tokenAmount)"];
+}
+// Function: 6915.sol-CappedCrowdsale-_updatePurchasingState(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 6915.sol-CappedCrowdsale-buyTokens(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+weiAmount = msg.value
+
+IRs:
+weiAmount(uint256) := msg.value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_preValidatePurchase(_beneficiary,weiAmount)
+
+IRs:
+INTERNAL_CALL, CappedCrowdsale._preValidatePurchase(address,uint256)(_beneficiary,weiAmount)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+tokens = _getTokenAmount(weiAmount)
+
+IRs:
+TMP_298(uint256) = INTERNAL_CALL, Crowdsale._getTokenAmount(uint256)(weiAmount)
+tokens(uint256) := TMP_298(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+weiRaised = weiRaised.add(weiAmount)
+
+IRs:
+TMP_299(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['weiRaised', 'weiAmount'] 
+weiRaised(uint256) := TMP_299(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+_processPurchase(_beneficiary,tokens)
+
+IRs:
+INTERNAL_CALL, Crowdsale._processPurchase(address,uint256)(_beneficiary,tokens)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+TokenPurchase(msg.sender,_beneficiary,weiAmount,tokens)
+
+IRs:
+Emit TokenPurchase(msg.sender,_beneficiary,weiAmount,tokens)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+_updatePurchasingState(_beneficiary,weiAmount)
+
+IRs:
+INTERNAL_CALL, Crowdsale._updatePurchasingState(address,uint256)(_beneficiary,weiAmount)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+_forwardFunds()
+
+IRs:
+INTERNAL_CALL, Crowdsale._forwardFunds()()"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+_postValidatePurchase(_beneficiary,weiAmount)
+
+IRs:
+INTERNAL_CALL, Crowdsale._postValidatePurchase(address,uint256)(_beneficiary,weiAmount)"];
+}
+// Function: 6915.sol-CappedCrowdsale-capReached()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+weiRaised >= cap
+
+IRs:
+TMP_316(bool) = weiRaised >= cap
+RETURN TMP_316"];
+}
+// Function: 6915.sol-CappedCrowdsale-constructor(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_cap > 0)
+
+IRs:
+TMP_314(bool) = _cap > 0
+TMP_315(None) = SOLIDITY_CALL require(bool)(TMP_314)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+cap = _cap
+
+IRs:
+cap(uint256) := _cap(uint256)"];
+}
+// Function: 6915.sol-CappedCrowdsale-constructor(uint256,address,ERC20)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_rate > 0)
+
+IRs:
+TMP_288(bool) = _rate > 0
+TMP_289(None) = SOLIDITY_CALL require(bool)(TMP_288)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_wallet != address(0))
+
+IRs:
+TMP_290 = CONVERT 0 to address
+TMP_291(bool) = _wallet != TMP_290
+TMP_292(None) = SOLIDITY_CALL require(bool)(TMP_291)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(_token != address(0))
+
+IRs:
+TMP_293 = CONVERT 0 to address
+TMP_294(bool) = _token != TMP_293
+TMP_295(None) = SOLIDITY_CALL require(bool)(TMP_294)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+rate = _rate
+
+IRs:
+rate(uint256) := _rate(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+wallet = _wallet
+
+IRs:
+wallet(address) := _wallet(address)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+token = _token
+
+IRs:
+token(ERC20) := _token(ERC20)"];
+}
+// Function: 6915.sol-CappedCrowdsale-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+buyTokens(msg.sender)
+
+IRs:
+INTERNAL_CALL, Crowdsale.buyTokens(address)(msg.sender)"];
+}
+// Function: 6915.sol-Crowdsale-_deliverTokens(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+token.transfer(_beneficiary,_tokenAmount)
+
+IRs:
+TMP_34(bool) = HIGH_LEVEL_CALL, dest:token(ERC20), function:transfer, arguments:['_beneficiary', '_tokenAmount']  "];
+}
+// Function: 6915.sol-Crowdsale-_forwardFunds()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+wallet.transfer(msg.value)
+
+IRs:
+Transfer dest:wallet value:msg.value"];
+}
+// Function: 6915.sol-Crowdsale-_getTokenAmount(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+_weiAmount.mul(rate)
+
+IRs:
+TMP_36(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['_weiAmount', 'rate'] 
+RETURN TMP_36"];
+}
+// Function: 6915.sol-Crowdsale-_postValidatePurchase(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 6915.sol-Crowdsale-_preValidatePurchase(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_beneficiary != address(0))
+
+IRs:
+TMP_29 = CONVERT 0 to address
+TMP_30(bool) = _beneficiary != TMP_29
+TMP_31(None) = SOLIDITY_CALL require(bool)(TMP_30)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_weiAmount != 0)
+
+IRs:
+TMP_32(bool) = _weiAmount != 0
+TMP_33(None) = SOLIDITY_CALL require(bool)(TMP_32)"];
+}
+// Function: 6915.sol-Crowdsale-_processPurchase(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_deliverTokens(_beneficiary,_tokenAmount)
+
+IRs:
+INTERNAL_CALL, Crowdsale._deliverTokens(address,uint256)(_beneficiary,_tokenAmount)"];
+}
+// Function: 6915.sol-Crowdsale-_updatePurchasingState(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 6915.sol-Crowdsale-buyTokens(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+weiAmount = msg.value
+
+IRs:
+weiAmount(uint256) := msg.value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_preValidatePurchase(_beneficiary,weiAmount)
+
+IRs:
+INTERNAL_CALL, Crowdsale._preValidatePurchase(address,uint256)(_beneficiary,weiAmount)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+tokens = _getTokenAmount(weiAmount)
+
+IRs:
+TMP_22(uint256) = INTERNAL_CALL, Crowdsale._getTokenAmount(uint256)(weiAmount)
+tokens(uint256) := TMP_22(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+weiRaised = weiRaised.add(weiAmount)
+
+IRs:
+TMP_23(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['weiRaised', 'weiAmount'] 
+weiRaised(uint256) := TMP_23(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+_processPurchase(_beneficiary,tokens)
+
+IRs:
+INTERNAL_CALL, Crowdsale._processPurchase(address,uint256)(_beneficiary,tokens)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+TokenPurchase(msg.sender,_beneficiary,weiAmount,tokens)
+
+IRs:
+Emit TokenPurchase(msg.sender,_beneficiary,weiAmount,tokens)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+_updatePurchasingState(_beneficiary,weiAmount)
+
+IRs:
+INTERNAL_CALL, Crowdsale._updatePurchasingState(address,uint256)(_beneficiary,weiAmount)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+_forwardFunds()
+
+IRs:
+INTERNAL_CALL, Crowdsale._forwardFunds()()"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+_postValidatePurchase(_beneficiary,weiAmount)
+
+IRs:
+INTERNAL_CALL, Crowdsale._postValidatePurchase(address,uint256)(_beneficiary,weiAmount)"];
+}
+// Function: 6915.sol-Crowdsale-constructor(uint256,address,ERC20)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_rate > 0)
+
+IRs:
+TMP_12(bool) = _rate > 0
+TMP_13(None) = SOLIDITY_CALL require(bool)(TMP_12)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_wallet != address(0))
+
+IRs:
+TMP_14 = CONVERT 0 to address
+TMP_15(bool) = _wallet != TMP_14
+TMP_16(None) = SOLIDITY_CALL require(bool)(TMP_15)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(_token != address(0))
+
+IRs:
+TMP_17 = CONVERT 0 to address
+TMP_18(bool) = _token != TMP_17
+TMP_19(None) = SOLIDITY_CALL require(bool)(TMP_18)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+rate = _rate
+
+IRs:
+rate(uint256) := _rate(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+wallet = _wallet
+
+IRs:
+wallet(address) := _wallet(address)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+token = _token
+
+IRs:
+token(ERC20) := _token(ERC20)"];
+}
+// Function: 6915.sol-Crowdsale-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+buyTokens(msg.sender)
+
+IRs:
+INTERNAL_CALL, Crowdsale.buyTokens(address)(msg.sender)"];
+}
+// Function: 6915.sol-ERC20-allowance(address,address)
+digraph{
+}
+// Function: 6915.sol-ERC20-approve(address,uint256)
+digraph{
+}
+// Function: 6915.sol-ERC20-balanceOf(address)
+digraph{
+}
+// Function: 6915.sol-ERC20-totalSupply()
+digraph{
+}
+// Function: 6915.sol-ERC20-transfer(address,uint256)
+digraph{
+}
+// Function: 6915.sol-ERC20-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 6915.sol-ERC20Basic-balanceOf(address)
+digraph{
+}
+// Function: 6915.sol-ERC20Basic-totalSupply()
+digraph{
+}
+// Function: 6915.sol-ERC20Basic-transfer(address,uint256)
+digraph{
+}
+// Function: 6915.sol-FinalizableCrowdsale-_deliverTokens(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+token.transfer(_beneficiary,_tokenAmount)
+
+IRs:
+TMP_167(bool) = HIGH_LEVEL_CALL, dest:token(ERC20), function:transfer, arguments:['_beneficiary', '_tokenAmount']  "];
+}
+// Function: 6915.sol-FinalizableCrowdsale-_forwardFunds()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+wallet.transfer(msg.value)
+
+IRs:
+Transfer dest:wallet value:msg.value"];
+}
+// Function: 6915.sol-FinalizableCrowdsale-_getTokenAmount(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+_weiAmount.mul(rate)
+
+IRs:
+TMP_169(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['_weiAmount', 'rate'] 
+RETURN TMP_169"];
+}
+// Function: 6915.sol-FinalizableCrowdsale-_postValidatePurchase(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 6915.sol-FinalizableCrowdsale-_preValidatePurchase(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_beneficiary != address(0))
+
+IRs:
+TMP_162 = CONVERT 0 to address
+TMP_163(bool) = _beneficiary != TMP_162
+TMP_164(None) = SOLIDITY_CALL require(bool)(TMP_163)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_weiAmount != 0)
+
+IRs:
+TMP_165(bool) = _weiAmount != 0
+TMP_166(None) = SOLIDITY_CALL require(bool)(TMP_165)"];
+}
+// Function: 6915.sol-FinalizableCrowdsale-_processPurchase(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_deliverTokens(_beneficiary,_tokenAmount)
+
+IRs:
+INTERNAL_CALL, Crowdsale._deliverTokens(address,uint256)(_beneficiary,_tokenAmount)"];
+}
+// Function: 6915.sol-FinalizableCrowdsale-_transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_newOwner != address(0))
+
+IRs:
+TMP_134 = CONVERT 0 to address
+TMP_135(bool) = _newOwner != TMP_134
+TMP_136(None) = SOLIDITY_CALL require(bool)(TMP_135)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,_newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,_newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = _newOwner
+
+IRs:
+owner(address) := _newOwner(address)"];
+}
+// Function: 6915.sol-FinalizableCrowdsale-_updatePurchasingState(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 6915.sol-FinalizableCrowdsale-buyTokens(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+weiAmount = msg.value
+
+IRs:
+weiAmount(uint256) := msg.value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_preValidatePurchase(_beneficiary,weiAmount)
+
+IRs:
+INTERNAL_CALL, TimedCrowdsale._preValidatePurchase(address,uint256)(_beneficiary,weiAmount)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+tokens = _getTokenAmount(weiAmount)
+
+IRs:
+TMP_155(uint256) = INTERNAL_CALL, Crowdsale._getTokenAmount(uint256)(weiAmount)
+tokens(uint256) := TMP_155(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+weiRaised = weiRaised.add(weiAmount)
+
+IRs:
+TMP_156(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['weiRaised', 'weiAmount'] 
+weiRaised(uint256) := TMP_156(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+_processPurchase(_beneficiary,tokens)
+
+IRs:
+INTERNAL_CALL, Crowdsale._processPurchase(address,uint256)(_beneficiary,tokens)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+TokenPurchase(msg.sender,_beneficiary,weiAmount,tokens)
+
+IRs:
+Emit TokenPurchase(msg.sender,_beneficiary,weiAmount,tokens)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+_updatePurchasingState(_beneficiary,weiAmount)
+
+IRs:
+INTERNAL_CALL, Crowdsale._updatePurchasingState(address,uint256)(_beneficiary,weiAmount)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+_forwardFunds()
+
+IRs:
+INTERNAL_CALL, Crowdsale._forwardFunds()()"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+_postValidatePurchase(_beneficiary,weiAmount)
+
+IRs:
+INTERNAL_CALL, Crowdsale._postValidatePurchase(address,uint256)(_beneficiary,weiAmount)"];
+}
+// Function: 6915.sol-FinalizableCrowdsale-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 6915.sol-FinalizableCrowdsale-constructor(uint256,address,ERC20)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_rate > 0)
+
+IRs:
+TMP_145(bool) = _rate > 0
+TMP_146(None) = SOLIDITY_CALL require(bool)(TMP_145)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_wallet != address(0))
+
+IRs:
+TMP_147 = CONVERT 0 to address
+TMP_148(bool) = _wallet != TMP_147
+TMP_149(None) = SOLIDITY_CALL require(bool)(TMP_148)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(_token != address(0))
+
+IRs:
+TMP_150 = CONVERT 0 to address
+TMP_151(bool) = _token != TMP_150
+TMP_152(None) = SOLIDITY_CALL require(bool)(TMP_151)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+rate = _rate
+
+IRs:
+rate(uint256) := _rate(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+wallet = _wallet
+
+IRs:
+wallet(address) := _wallet(address)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+token = _token
+
+IRs:
+token(ERC20) := _token(ERC20)"];
+}
+// Function: 6915.sol-FinalizableCrowdsale-constructor(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_openingTime >= block.timestamp)
+
+IRs:
+TMP_138(bool) = _openingTime >= block.timestamp
+TMP_139(None) = SOLIDITY_CALL require(bool)(TMP_138)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_closingTime >= _openingTime)
+
+IRs:
+TMP_140(bool) = _closingTime >= _openingTime
+TMP_141(None) = SOLIDITY_CALL require(bool)(TMP_140)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+openingTime = _openingTime
+
+IRs:
+openingTime(uint256) := _openingTime(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+closingTime = _closingTime
+
+IRs:
+closingTime(uint256) := _closingTime(uint256)"];
+}
+// Function: 6915.sol-FinalizableCrowdsale-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+buyTokens(msg.sender)
+
+IRs:
+INTERNAL_CALL, Crowdsale.buyTokens(address)(msg.sender)"];
+}
+// Function: 6915.sol-FinalizableCrowdsale-finalization()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 6915.sol-FinalizableCrowdsale-finalize()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! isFinalized)
+
+IRs:
+TMP_171 = UnaryType.BANG isFinalized 
+TMP_172(None) = SOLIDITY_CALL require(bool)(TMP_171)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(hasClosed())
+
+IRs:
+TMP_173(bool) = INTERNAL_CALL, TimedCrowdsale.hasClosed()()
+TMP_174(None) = SOLIDITY_CALL require(bool)(TMP_173)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+finalization()
+
+IRs:
+INTERNAL_CALL, FinalizableCrowdsale.finalization()()"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Finalized()
+
+IRs:
+Emit Finalized()"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+isFinalized = true
+
+IRs:
+isFinalized(bool) := True(bool)"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+6->1;
+}
+// Function: 6915.sol-FinalizableCrowdsale-hasClosed()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+block.timestamp > closingTime
+
+IRs:
+TMP_142(bool) = block.timestamp > closingTime
+RETURN TMP_142"];
+}
+// Function: 6915.sol-FinalizableCrowdsale-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_178(bool) = msg.sender == owner
+TMP_179(None) = SOLIDITY_CALL require(bool)(TMP_178)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 6915.sol-FinalizableCrowdsale-onlyWhileOpen()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(block.timestamp >= openingTime && block.timestamp <= closingTime)
+
+IRs:
+TMP_180(bool) = block.timestamp >= openingTime
+TMP_181(bool) = block.timestamp <= closingTime
+TMP_182(bool) = TMP_180 && TMP_181
+TMP_183(None) = SOLIDITY_CALL require(bool)(TMP_182)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 6915.sol-FinalizableCrowdsale-renounceOwnership()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+OwnershipRenounced(owner)
+
+IRs:
+Emit OwnershipRenounced(owner)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = address(0)
+
+IRs:
+TMP_130 = CONVERT 0 to address
+owner(address) := TMP_130(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 6915.sol-FinalizableCrowdsale-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+isFinalized = false
+
+IRs:
+isFinalized(bool) := False(bool)"];
+}
+// Function: 6915.sol-FinalizableCrowdsale-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transferOwnership(_newOwner)
+
+IRs:
+INTERNAL_CALL, Ownable._transferOwnership(address)(_newOwner)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 6915.sol-GrapevineCrowdsale-_deliverTokens(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+token.transfer(_beneficiary,_tokenAmount)
+
+IRs:
+TMP_376(bool) = HIGH_LEVEL_CALL, dest:token(ERC20), function:transfer, arguments:['_beneficiary', '_tokenAmount']  "];
+}
+// Function: 6915.sol-GrapevineCrowdsale-_forwardFunds()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+vault.deposit.value(msg.value)(msg.sender)
+
+IRs:
+HIGH_LEVEL_CALL, dest:vault(RefundVault), function:deposit, arguments:['msg.sender'] value:msg.value "];
+}
+// Function: 6915.sol-GrapevineCrowdsale-_getTokenAmount(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+_weiAmount.mul(rate)
+
+IRs:
+TMP_378(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['_weiAmount', 'rate'] 
+RETURN TMP_378"];
+}
+// Function: 6915.sol-GrapevineCrowdsale-_postValidatePurchase(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 6915.sol-GrapevineCrowdsale-_preValidatePurchase(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(authorisedInvestors.whitelist(_beneficiary) || earlyInvestors.whitelist(_beneficiary))
+
+IRs:
+TMP_460(bool) = HIGH_LEVEL_CALL, dest:authorisedInvestors(GrapevineWhitelistInterface), function:whitelist, arguments:['_beneficiary']  
+TMP_461(bool) = HIGH_LEVEL_CALL, dest:earlyInvestors(GrapevineWhitelistInterface), function:whitelist, arguments:['_beneficiary']  
+TMP_462(bool) = TMP_460 || TMP_461
+TMP_463(None) = SOLIDITY_CALL require(bool)(TMP_462)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+super._preValidatePurchase(_beneficiary,_weiAmount)
+
+IRs:
+INTERNAL_CALL, TimedCrowdsale._preValidatePurchase(address,uint256)(_beneficiary,_weiAmount)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+whenNotPaused()
+
+IRs:
+MODIFIER_CALL, Pausable.whenNotPaused()()"];
+3->1;
+}
+// Function: 6915.sol-GrapevineCrowdsale-_processPurchase(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+_totalTokens = _tokenAmount
+
+IRs:
+_totalTokens(uint256) := _tokenAmount(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+_bonus = getBonus(block.timestamp,_beneficiary,msg.value)
+
+IRs:
+TMP_448(uint256) = INTERNAL_CALL, GrapevineCrowdsale.getBonus(uint256,address,uint256)(block.timestamp,_beneficiary,msg.value)
+_bonus(uint256) := TMP_448(uint256)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+_bonus > 0
+
+IRs:
+TMP_449(bool) = _bonus > 0
+CONDITION TMP_449"];
+3->4[label="True"];
+3->9[label="False"];
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+_bonusTokens = _tokenAmount.mul(_bonus).div(100)
+
+IRs:
+TMP_450(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['_tokenAmount', '_bonus'] 
+TMP_451(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['TMP_450', '100'] 
+_bonusTokens(uint256) := TMP_451(uint256)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+_currentBalance = token.balanceOf(this)
+
+IRs:
+TMP_452(uint256) = HIGH_LEVEL_CALL, dest:token(ERC20), function:balanceOf, arguments:['this']  
+_currentBalance(uint256) := TMP_452(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+require(bool)(_currentBalance >= _totalTokens.add(_bonusTokens))
+
+IRs:
+TMP_453(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['_totalTokens', '_bonusTokens'] 
+TMP_454(bool) = _currentBalance >= TMP_453
+TMP_455(None) = SOLIDITY_CALL require(bool)(TMP_454)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+bonuses[_beneficiary] = bonuses[_beneficiary].add(_bonusTokens)
+
+IRs:
+REF_75(uint256) -> bonuses[_beneficiary]
+REF_76(uint256) -> bonuses[_beneficiary]
+TMP_456(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_76', '_bonusTokens'] 
+REF_75(uint256) (->bonuses) := TMP_456(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+_totalTokens = _totalTokens.add(_bonusTokens)
+
+IRs:
+TMP_457(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['_totalTokens', '_bonusTokens'] 
+_totalTokens(uint256) := TMP_457(uint256)"];
+8->9;
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+tokensToBeDelivered = tokensToBeDelivered.add(_totalTokens)
+
+IRs:
+TMP_458(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['tokensToBeDelivered', '_totalTokens'] 
+tokensToBeDelivered(uint256) := TMP_458(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+super._processPurchase(_beneficiary,_tokenAmount)
+
+IRs:
+INTERNAL_CALL, PostDeliveryCrowdsale._processPurchase(address,uint256)(_beneficiary,_tokenAmount)"];
+}
+// Function: 6915.sol-GrapevineCrowdsale-_transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_newOwner != address(0))
+
+IRs:
+TMP_408 = CONVERT 0 to address
+TMP_409(bool) = _newOwner != TMP_408
+TMP_410(None) = SOLIDITY_CALL require(bool)(TMP_409)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,_newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,_newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = _newOwner
+
+IRs:
+owner(address) := _newOwner(address)"];
+}
+// Function: 6915.sol-GrapevineCrowdsale-_updatePurchasingState(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 6915.sol-GrapevineCrowdsale-buyTokens(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+weiAmount = msg.value
+
+IRs:
+weiAmount(uint256) := msg.value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_preValidatePurchase(_beneficiary,weiAmount)
+
+IRs:
+INTERNAL_CALL, GrapevineCrowdsale._preValidatePurchase(address,uint256)(_beneficiary,weiAmount)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+tokens = _getTokenAmount(weiAmount)
+
+IRs:
+TMP_364(uint256) = INTERNAL_CALL, Crowdsale._getTokenAmount(uint256)(weiAmount)
+tokens(uint256) := TMP_364(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+weiRaised = weiRaised.add(weiAmount)
+
+IRs:
+TMP_365(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['weiRaised', 'weiAmount'] 
+weiRaised(uint256) := TMP_365(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+_processPurchase(_beneficiary,tokens)
+
+IRs:
+INTERNAL_CALL, GrapevineCrowdsale._processPurchase(address,uint256)(_beneficiary,tokens)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+TokenPurchase(msg.sender,_beneficiary,weiAmount,tokens)
+
+IRs:
+Emit TokenPurchase(msg.sender,_beneficiary,weiAmount,tokens)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+_updatePurchasingState(_beneficiary,weiAmount)
+
+IRs:
+INTERNAL_CALL, Crowdsale._updatePurchasingState(address,uint256)(_beneficiary,weiAmount)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+_forwardFunds()
+
+IRs:
+INTERNAL_CALL, RefundableCrowdsale._forwardFunds()()"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+_postValidatePurchase(_beneficiary,weiAmount)
+
+IRs:
+INTERNAL_CALL, Crowdsale._postValidatePurchase(address,uint256)(_beneficiary,weiAmount)"];
+}
+// Function: 6915.sol-GrapevineCrowdsale-buyTokens(address,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! earlyInvestors.handleOffchainWhitelisted(_beneficiary,_whitelistSign)
+
+IRs:
+TMP_433(bool) = HIGH_LEVEL_CALL, dest:earlyInvestors(GrapevineWhitelistInterface), function:handleOffchainWhitelisted, arguments:['_beneficiary', '_whitelistSign']  
+TMP_434 = UnaryType.BANG TMP_433 
+CONDITION TMP_434"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+authorisedInvestors.handleOffchainWhitelisted(_beneficiary,_whitelistSign)
+
+IRs:
+TMP_435(bool) = HIGH_LEVEL_CALL, dest:authorisedInvestors(GrapevineWhitelistInterface), function:handleOffchainWhitelisted, arguments:['_beneficiary', '_whitelistSign']  "];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+super.buyTokens(_beneficiary)
+
+IRs:
+INTERNAL_CALL, Crowdsale.buyTokens(address)(_beneficiary)"];
+}
+// Function: 6915.sol-GrapevineCrowdsale-capReached()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+weiRaised >= cap
+
+IRs:
+TMP_420(bool) = weiRaised >= cap
+RETURN TMP_420"];
+}
+// Function: 6915.sol-GrapevineCrowdsale-claimRefund()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(isFinalized)
+
+IRs:
+TMP_384(None) = SOLIDITY_CALL require(bool)(isFinalized)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(! goalReached())
+
+IRs:
+TMP_385(bool) = INTERNAL_CALL, RefundableCrowdsale.goalReached()()
+TMP_386 = UnaryType.BANG TMP_385 
+TMP_387(None) = SOLIDITY_CALL require(bool)(TMP_386)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+vault.refund(msg.sender)
+
+IRs:
+HIGH_LEVEL_CALL, dest:vault(RefundVault), function:refund, arguments:['msg.sender']  "];
+}
+// Function: 6915.sol-GrapevineCrowdsale-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 6915.sol-GrapevineCrowdsale-constructor(TokenTimelockControllerInterface,GrapevineWhitelistInterface,GrapevineWhitelistInterface,uint256,address,ERC20,uint256,uint256,uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+timelockController = _timelockController
+
+IRs:
+timelockController(TokenTimelockControllerInterface) := _timelockController(TokenTimelockControllerInterface)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+authorisedInvestors = _authorisedInvestors
+
+IRs:
+authorisedInvestors(GrapevineWhitelistInterface) := _authorisedInvestors(GrapevineWhitelistInterface)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+earlyInvestors = _earlyInvestors
+
+IRs:
+earlyInvestors(GrapevineWhitelistInterface) := _earlyInvestors(GrapevineWhitelistInterface)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+deliveryTime = _closingTime.add(60 * 60 * 24 * 5)
+
+IRs:
+TMP_425(uint256) = 60 * 60
+TMP_426(uint256) = TMP_425 * 24
+TMP_427(uint256) = TMP_426 * 5
+TMP_428(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['_closingTime', 'TMP_427'] 
+deliveryTime(uint256) := TMP_428(uint256)"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Crowdsale(_rate,_wallet,_token)
+
+IRs:
+INTERNAL_CALL, Crowdsale.constructor(uint256,address,ERC20)(_rate,_wallet,_token)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+CappedCrowdsale(_hardCap)
+
+IRs:
+INTERNAL_CALL, CappedCrowdsale.constructor(uint256)(_hardCap)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+TimedCrowdsale(_openingTime,_closingTime)
+
+IRs:
+INTERNAL_CALL, TimedCrowdsale.constructor(uint256,uint256)(_openingTime,_closingTime)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+RefundableCrowdsale(_softCap)
+
+IRs:
+INTERNAL_CALL, RefundableCrowdsale.constructor(uint256)(_softCap)"];
+8->1;
+}
+// Function: 6915.sol-GrapevineCrowdsale-constructor(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_cap > 0)
+
+IRs:
+TMP_418(bool) = _cap > 0
+TMP_419(None) = SOLIDITY_CALL require(bool)(TMP_418)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+cap = _cap
+
+IRs:
+cap(uint256) := _cap(uint256)"];
+}
+// Function: 6915.sol-GrapevineCrowdsale-constructor(uint256,address,ERC20)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_rate > 0)
+
+IRs:
+TMP_354(bool) = _rate > 0
+TMP_355(None) = SOLIDITY_CALL require(bool)(TMP_354)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_wallet != address(0))
+
+IRs:
+TMP_356 = CONVERT 0 to address
+TMP_357(bool) = _wallet != TMP_356
+TMP_358(None) = SOLIDITY_CALL require(bool)(TMP_357)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(_token != address(0))
+
+IRs:
+TMP_359 = CONVERT 0 to address
+TMP_360(bool) = _token != TMP_359
+TMP_361(None) = SOLIDITY_CALL require(bool)(TMP_360)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+rate = _rate
+
+IRs:
+rate(uint256) := _rate(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+wallet = _wallet
+
+IRs:
+wallet(address) := _wallet(address)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+token = _token
+
+IRs:
+token(ERC20) := _token(ERC20)"];
+}
+// Function: 6915.sol-GrapevineCrowdsale-constructor(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_openingTime >= block.timestamp)
+
+IRs:
+TMP_347(bool) = _openingTime >= block.timestamp
+TMP_348(None) = SOLIDITY_CALL require(bool)(TMP_347)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_closingTime >= _openingTime)
+
+IRs:
+TMP_349(bool) = _closingTime >= _openingTime
+TMP_350(None) = SOLIDITY_CALL require(bool)(TMP_349)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+openingTime = _openingTime
+
+IRs:
+openingTime(uint256) := _openingTime(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+closingTime = _closingTime
+
+IRs:
+closingTime(uint256) := _closingTime(uint256)"];
+}
+// Function: 6915.sol-GrapevineCrowdsale-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+buyTokens(msg.sender)
+
+IRs:
+INTERNAL_CALL, Crowdsale.buyTokens(address)(msg.sender)"];
+}
+// Function: 6915.sol-GrapevineCrowdsale-finalization()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+goalReached()
+
+IRs:
+TMP_476(bool) = INTERNAL_CALL, RefundableCrowdsale.goalReached()()
+CONDITION TMP_476"];
+1->2[label="True"];
+1->8[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+timelockController.activate()
+
+IRs:
+HIGH_LEVEL_CALL, dest:timelockController(TokenTimelockControllerInterface), function:activate, arguments:[]  "];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+balance = token.balanceOf(this)
+
+IRs:
+TMP_478(uint256) = HIGH_LEVEL_CALL, dest:token(ERC20), function:balanceOf, arguments:['this']  
+balance(uint256) := TMP_478(uint256)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+remainingTokens = balance.sub(tokensToBeDelivered)
+
+IRs:
+TMP_479(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['balance', 'tokensToBeDelivered'] 
+remainingTokens(uint256) := TMP_479(uint256)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+remainingTokens > 0
+
+IRs:
+TMP_480(bool) = remainingTokens > 0
+CONDITION TMP_480"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+BurnableTokenInterface(address(token)).burn(remainingTokens)
+
+IRs:
+TMP_481 = CONVERT token to address
+TMP_482 = CONVERT TMP_481 to BurnableTokenInterface
+HIGH_LEVEL_CALL, dest:TMP_482(BurnableTokenInterface), function:burn, arguments:['remainingTokens']  "];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+Ownable(address(token)).transferOwnership(owner)
+
+IRs:
+TMP_484 = CONVERT token to address
+TMP_485 = CONVERT TMP_484 to Ownable
+HIGH_LEVEL_CALL, dest:TMP_485(Ownable), function:transferOwnership, arguments:['owner']  "];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+super.finalization()
+
+IRs:
+INTERNAL_CALL, RefundableCrowdsale.finalization()()"];
+}
+// Function: 6915.sol-GrapevineCrowdsale-finalize()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! isFinalized)
+
+IRs:
+TMP_396 = UnaryType.BANG isFinalized 
+TMP_397(None) = SOLIDITY_CALL require(bool)(TMP_396)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(hasClosed())
+
+IRs:
+TMP_398(bool) = INTERNAL_CALL, TimedCrowdsale.hasClosed()()
+TMP_399(None) = SOLIDITY_CALL require(bool)(TMP_398)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+finalization()
+
+IRs:
+INTERNAL_CALL, GrapevineCrowdsale.finalization()()"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Finalized()
+
+IRs:
+Emit Finalized()"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+isFinalized = true
+
+IRs:
+isFinalized(bool) := True(bool)"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+6->1;
+}
+// Function: 6915.sol-GrapevineCrowdsale-getBonus(uint256,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_bonus = 0
+
+IRs:
+_bonus(uint256) := 0(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+(weiRaised.sub(_value) < goal) && earlyInvestors.whitelist(_beneficiary)
+
+IRs:
+TMP_466(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['weiRaised', '_value'] 
+TMP_467(bool) = TMP_466 < goal
+TMP_468(bool) = HIGH_LEVEL_CALL, dest:earlyInvestors(GrapevineWhitelistInterface), function:whitelist, arguments:['_beneficiary']  
+TMP_469(bool) = TMP_467 && TMP_468
+CONDITION TMP_469"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_bonus = 30
+
+IRs:
+_bonus(uint256) := 30(uint256)"];
+3->14;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+_time < openingTime.add(604800)
+
+IRs:
+TMP_470(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['openingTime', '604800'] 
+TMP_471(bool) = _time < TMP_470
+CONDITION TMP_471"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+_bonus = 15
+
+IRs:
+_bonus(uint256) := 15(uint256)"];
+5->13;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+_time < openingTime.add(1209600)
+
+IRs:
+TMP_472(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['openingTime', '1209600'] 
+TMP_473(bool) = _time < TMP_472
+CONDITION TMP_473"];
+6->7[label="True"];
+6->8[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+_bonus = 10
+
+IRs:
+_bonus(uint256) := 10(uint256)"];
+7->12;
+8[label="Node Type: IF 8
+
+EXPRESSION:
+_time < openingTime.add(1814400)
+
+IRs:
+TMP_474(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['openingTime', '1814400'] 
+TMP_475(bool) = _time < TMP_474
+CONDITION TMP_475"];
+8->9[label="True"];
+8->10[label="False"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+_bonus = 8
+
+IRs:
+_bonus(uint256) := 8(uint256)"];
+9->11;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+_bonus = 6
+
+IRs:
+_bonus(uint256) := 6(uint256)"];
+10->11;
+11[label="Node Type: END_IF 11
+"];
+11->12;
+12[label="Node Type: END_IF 12
+"];
+12->13;
+13[label="Node Type: END_IF 13
+"];
+13->14;
+14[label="Node Type: END_IF 14
+"];
+14->15;
+15[label="Node Type: RETURN 15
+
+EXPRESSION:
+_bonus
+
+IRs:
+RETURN _bonus"];
+16[label="Node Type: RETURN 16
+
+EXPRESSION:
+_bonus
+
+IRs:
+RETURN _bonus"];
+}
+// Function: 6915.sol-GrapevineCrowdsale-goalReached()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+weiRaised >= goal
+
+IRs:
+TMP_389(bool) = weiRaised >= goal
+RETURN TMP_389"];
+}
+// Function: 6915.sol-GrapevineCrowdsale-hasClosed()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+block.timestamp > closingTime
+
+IRs:
+TMP_351(bool) = block.timestamp > closingTime
+RETURN TMP_351"];
+}
+// Function: 6915.sol-GrapevineCrowdsale-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_492(bool) = msg.sender == owner
+TMP_493(None) = SOLIDITY_CALL require(bool)(TMP_492)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 6915.sol-GrapevineCrowdsale-onlyWhileOpen()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(block.timestamp >= openingTime && block.timestamp <= closingTime)
+
+IRs:
+TMP_488(bool) = block.timestamp >= openingTime
+TMP_489(bool) = block.timestamp <= closingTime
+TMP_490(bool) = TMP_488 && TMP_489
+TMP_491(None) = SOLIDITY_CALL require(bool)(TMP_490)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 6915.sol-GrapevineCrowdsale-pause()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+paused = true
+
+IRs:
+paused(bool) := True(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Pause()
+
+IRs:
+Emit Pause()"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+whenNotPaused()
+
+IRs:
+MODIFIER_CALL, Pausable.whenNotPaused()()"];
+4->1;
+}
+// Function: 6915.sol-GrapevineCrowdsale-renounceOwnership()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+OwnershipRenounced(owner)
+
+IRs:
+Emit OwnershipRenounced(owner)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = address(0)
+
+IRs:
+TMP_404 = CONVERT 0 to address
+owner(address) := TMP_404(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 6915.sol-GrapevineCrowdsale-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+paused = false
+
+IRs:
+paused(bool) := False(bool)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+isFinalized = false
+
+IRs:
+isFinalized(bool) := False(bool)"];
+}
+// Function: 6915.sol-GrapevineCrowdsale-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transferOwnership(_newOwner)
+
+IRs:
+INTERNAL_CALL, Ownable._transferOwnership(address)(_newOwner)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 6915.sol-GrapevineCrowdsale-unpause()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+paused = false
+
+IRs:
+paused(bool) := False(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Unpause()
+
+IRs:
+Emit Unpause()"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+whenPaused()
+
+IRs:
+MODIFIER_CALL, Pausable.whenPaused()()"];
+4->1;
+}
+// Function: 6915.sol-GrapevineCrowdsale-whenNotPaused()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! paused)
+
+IRs:
+TMP_494 = UnaryType.BANG paused 
+TMP_495(None) = SOLIDITY_CALL require(bool)(TMP_494)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 6915.sol-GrapevineCrowdsale-whenPaused()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(paused)
+
+IRs:
+TMP_496(None) = SOLIDITY_CALL require(bool)(paused)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 6915.sol-GrapevineCrowdsale-withdrawTokens()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(goalReached())
+
+IRs:
+TMP_437(bool) = INTERNAL_CALL, RefundableCrowdsale.goalReached()()
+TMP_438(None) = SOLIDITY_CALL require(bool)(TMP_437)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(block.timestamp > deliveryTime)
+
+IRs:
+TMP_439(bool) = block.timestamp > deliveryTime
+TMP_440(None) = SOLIDITY_CALL require(bool)(TMP_439)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+super.withdrawTokens()
+
+IRs:
+INTERNAL_CALL, PostDeliveryCrowdsale.withdrawTokens()()"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+_bonusTokens = bonuses[msg.sender]
+
+IRs:
+REF_67(uint256) -> bonuses[msg.sender]
+_bonusTokens(uint256) := REF_67(uint256)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+_bonusTokens > 0
+
+IRs:
+TMP_442(bool) = _bonusTokens > 0
+CONDITION TMP_442"];
+5->6[label="True"];
+5->9[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+bonuses[msg.sender] = 0
+
+IRs:
+REF_68(uint256) -> bonuses[msg.sender]
+REF_68(uint256) (->bonuses) := 0(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+require(bool)(token.approve(address(timelockController),_bonusTokens))
+
+IRs:
+TMP_443 = CONVERT timelockController to address
+TMP_444(bool) = HIGH_LEVEL_CALL, dest:token(ERC20), function:approve, arguments:['TMP_443', '_bonusTokens']  
+TMP_445(None) = SOLIDITY_CALL require(bool)(TMP_444)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+require(bool)(timelockController.createInvestorTokenTimeLock(msg.sender,_bonusTokens,deliveryTime,this))
+
+IRs:
+TMP_446(bool) = HIGH_LEVEL_CALL, dest:timelockController(TokenTimelockControllerInterface), function:createInvestorTokenTimeLock, arguments:['msg.sender', '_bonusTokens', 'deliveryTime', 'this']  
+TMP_447(None) = SOLIDITY_CALL require(bool)(TMP_446)"];
+8->9;
+9[label="Node Type: END_IF 9
+"];
+}
+// Function: 6915.sol-GrapevineWhitelistInterface-handleOffchainWhitelisted(address,bytes)
+digraph{
+}
+// Function: 6915.sol-GrapevineWhitelistInterface-whitelist(address)
+digraph{
+}
+// Function: 6915.sol-Ownable-_transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_newOwner != address(0))
+
+IRs:
+TMP_123 = CONVERT 0 to address
+TMP_124(bool) = _newOwner != TMP_123
+TMP_125(None) = SOLIDITY_CALL require(bool)(TMP_124)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,_newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,_newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = _newOwner
+
+IRs:
+owner(address) := _newOwner(address)"];
+}
+// Function: 6915.sol-Ownable-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 6915.sol-Ownable-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_127(bool) = msg.sender == owner
+TMP_128(None) = SOLIDITY_CALL require(bool)(TMP_127)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 6915.sol-Ownable-renounceOwnership()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+OwnershipRenounced(owner)
+
+IRs:
+Emit OwnershipRenounced(owner)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = address(0)
+
+IRs:
+TMP_119 = CONVERT 0 to address
+owner(address) := TMP_119(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 6915.sol-Ownable-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transferOwnership(_newOwner)
+
+IRs:
+INTERNAL_CALL, Ownable._transferOwnership(address)(_newOwner)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 6915.sol-Pausable-_transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_newOwner != address(0))
+
+IRs:
+TMP_326 = CONVERT 0 to address
+TMP_327(bool) = _newOwner != TMP_326
+TMP_328(None) = SOLIDITY_CALL require(bool)(TMP_327)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,_newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,_newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = _newOwner
+
+IRs:
+owner(address) := _newOwner(address)"];
+}
+// Function: 6915.sol-Pausable-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 6915.sol-Pausable-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_336(bool) = msg.sender == owner
+TMP_337(None) = SOLIDITY_CALL require(bool)(TMP_336)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 6915.sol-Pausable-pause()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+paused = true
+
+IRs:
+paused(bool) := True(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Pause()
+
+IRs:
+Emit Pause()"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+whenNotPaused()
+
+IRs:
+MODIFIER_CALL, Pausable.whenNotPaused()()"];
+4->1;
+}
+// Function: 6915.sol-Pausable-renounceOwnership()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+OwnershipRenounced(owner)
+
+IRs:
+Emit OwnershipRenounced(owner)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = address(0)
+
+IRs:
+TMP_322 = CONVERT 0 to address
+owner(address) := TMP_322(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 6915.sol-Pausable-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+paused = false
+
+IRs:
+paused(bool) := False(bool)"];
+}
+// Function: 6915.sol-Pausable-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transferOwnership(_newOwner)
+
+IRs:
+INTERNAL_CALL, Ownable._transferOwnership(address)(_newOwner)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 6915.sol-Pausable-unpause()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+paused = false
+
+IRs:
+paused(bool) := False(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Unpause()
+
+IRs:
+Emit Unpause()"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+whenPaused()
+
+IRs:
+MODIFIER_CALL, Pausable.whenPaused()()"];
+4->1;
+}
+// Function: 6915.sol-Pausable-whenNotPaused()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! paused)
+
+IRs:
+TMP_338 = UnaryType.BANG paused 
+TMP_339(None) = SOLIDITY_CALL require(bool)(TMP_338)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 6915.sol-Pausable-whenPaused()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(paused)
+
+IRs:
+TMP_340(None) = SOLIDITY_CALL require(bool)(paused)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 6915.sol-PostDeliveryCrowdsale-_deliverTokens(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+token.transfer(_beneficiary,_tokenAmount)
+
+IRs:
+TMP_104(bool) = HIGH_LEVEL_CALL, dest:token(ERC20), function:transfer, arguments:['_beneficiary', '_tokenAmount']  "];
+}
+// Function: 6915.sol-PostDeliveryCrowdsale-_forwardFunds()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+wallet.transfer(msg.value)
+
+IRs:
+Transfer dest:wallet value:msg.value"];
+}
+// Function: 6915.sol-PostDeliveryCrowdsale-_getTokenAmount(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+_weiAmount.mul(rate)
+
+IRs:
+TMP_106(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['_weiAmount', 'rate'] 
+RETURN TMP_106"];
+}
+// Function: 6915.sol-PostDeliveryCrowdsale-_postValidatePurchase(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 6915.sol-PostDeliveryCrowdsale-_preValidatePurchase(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_beneficiary != address(0))
+
+IRs:
+TMP_99 = CONVERT 0 to address
+TMP_100(bool) = _beneficiary != TMP_99
+TMP_101(None) = SOLIDITY_CALL require(bool)(TMP_100)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_weiAmount != 0)
+
+IRs:
+TMP_102(bool) = _weiAmount != 0
+TMP_103(None) = SOLIDITY_CALL require(bool)(TMP_102)"];
+}
+// Function: 6915.sol-PostDeliveryCrowdsale-_processPurchase(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+balances[_beneficiary] = balances[_beneficiary].add(_tokenAmount)
+
+IRs:
+REF_14(uint256) -> balances[_beneficiary]
+REF_15(uint256) -> balances[_beneficiary]
+TMP_113(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_15', '_tokenAmount'] 
+REF_14(uint256) (->balances) := TMP_113(uint256)"];
+}
+// Function: 6915.sol-PostDeliveryCrowdsale-_updatePurchasingState(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 6915.sol-PostDeliveryCrowdsale-buyTokens(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+weiAmount = msg.value
+
+IRs:
+weiAmount(uint256) := msg.value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_preValidatePurchase(_beneficiary,weiAmount)
+
+IRs:
+INTERNAL_CALL, TimedCrowdsale._preValidatePurchase(address,uint256)(_beneficiary,weiAmount)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+tokens = _getTokenAmount(weiAmount)
+
+IRs:
+TMP_92(uint256) = INTERNAL_CALL, Crowdsale._getTokenAmount(uint256)(weiAmount)
+tokens(uint256) := TMP_92(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+weiRaised = weiRaised.add(weiAmount)
+
+IRs:
+TMP_93(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['weiRaised', 'weiAmount'] 
+weiRaised(uint256) := TMP_93(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+_processPurchase(_beneficiary,tokens)
+
+IRs:
+INTERNAL_CALL, PostDeliveryCrowdsale._processPurchase(address,uint256)(_beneficiary,tokens)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+TokenPurchase(msg.sender,_beneficiary,weiAmount,tokens)
+
+IRs:
+Emit TokenPurchase(msg.sender,_beneficiary,weiAmount,tokens)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+_updatePurchasingState(_beneficiary,weiAmount)
+
+IRs:
+INTERNAL_CALL, Crowdsale._updatePurchasingState(address,uint256)(_beneficiary,weiAmount)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+_forwardFunds()
+
+IRs:
+INTERNAL_CALL, Crowdsale._forwardFunds()()"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+_postValidatePurchase(_beneficiary,weiAmount)
+
+IRs:
+INTERNAL_CALL, Crowdsale._postValidatePurchase(address,uint256)(_beneficiary,weiAmount)"];
+}
+// Function: 6915.sol-PostDeliveryCrowdsale-constructor(uint256,address,ERC20)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_rate > 0)
+
+IRs:
+TMP_82(bool) = _rate > 0
+TMP_83(None) = SOLIDITY_CALL require(bool)(TMP_82)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_wallet != address(0))
+
+IRs:
+TMP_84 = CONVERT 0 to address
+TMP_85(bool) = _wallet != TMP_84
+TMP_86(None) = SOLIDITY_CALL require(bool)(TMP_85)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(_token != address(0))
+
+IRs:
+TMP_87 = CONVERT 0 to address
+TMP_88(bool) = _token != TMP_87
+TMP_89(None) = SOLIDITY_CALL require(bool)(TMP_88)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+rate = _rate
+
+IRs:
+rate(uint256) := _rate(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+wallet = _wallet
+
+IRs:
+wallet(address) := _wallet(address)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+token = _token
+
+IRs:
+token(ERC20) := _token(ERC20)"];
+}
+// Function: 6915.sol-PostDeliveryCrowdsale-constructor(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_openingTime >= block.timestamp)
+
+IRs:
+TMP_75(bool) = _openingTime >= block.timestamp
+TMP_76(None) = SOLIDITY_CALL require(bool)(TMP_75)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_closingTime >= _openingTime)
+
+IRs:
+TMP_77(bool) = _closingTime >= _openingTime
+TMP_78(None) = SOLIDITY_CALL require(bool)(TMP_77)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+openingTime = _openingTime
+
+IRs:
+openingTime(uint256) := _openingTime(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+closingTime = _closingTime
+
+IRs:
+closingTime(uint256) := _closingTime(uint256)"];
+}
+// Function: 6915.sol-PostDeliveryCrowdsale-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+buyTokens(msg.sender)
+
+IRs:
+INTERNAL_CALL, Crowdsale.buyTokens(address)(msg.sender)"];
+}
+// Function: 6915.sol-PostDeliveryCrowdsale-hasClosed()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+block.timestamp > closingTime
+
+IRs:
+TMP_79(bool) = block.timestamp > closingTime
+RETURN TMP_79"];
+}
+// Function: 6915.sol-PostDeliveryCrowdsale-onlyWhileOpen()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(block.timestamp >= openingTime && block.timestamp <= closingTime)
+
+IRs:
+TMP_114(bool) = block.timestamp >= openingTime
+TMP_115(bool) = block.timestamp <= closingTime
+TMP_116(bool) = TMP_114 && TMP_115
+TMP_117(None) = SOLIDITY_CALL require(bool)(TMP_116)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 6915.sol-PostDeliveryCrowdsale-withdrawTokens()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(hasClosed())
+
+IRs:
+TMP_108(bool) = INTERNAL_CALL, TimedCrowdsale.hasClosed()()
+TMP_109(None) = SOLIDITY_CALL require(bool)(TMP_108)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+amount = balances[msg.sender]
+
+IRs:
+REF_12(uint256) -> balances[msg.sender]
+amount(uint256) := REF_12(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(amount > 0)
+
+IRs:
+TMP_110(bool) = amount > 0
+TMP_111(None) = SOLIDITY_CALL require(bool)(TMP_110)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+balances[msg.sender] = 0
+
+IRs:
+REF_13(uint256) -> balances[msg.sender]
+REF_13(uint256) (->balances) := 0(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+_deliverTokens(msg.sender,amount)
+
+IRs:
+INTERNAL_CALL, Crowdsale._deliverTokens(address,uint256)(msg.sender,amount)"];
+}
+// Function: 6915.sol-RefundVault-_transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_newOwner != address(0))
+
+IRs:
+TMP_189 = CONVERT 0 to address
+TMP_190(bool) = _newOwner != TMP_189
+TMP_191(None) = SOLIDITY_CALL require(bool)(TMP_190)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,_newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,_newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = _newOwner
+
+IRs:
+owner(address) := _newOwner(address)"];
+}
+// Function: 6915.sol-RefundVault-close()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(state == State.Active)
+
+IRs:
+REF_26(RefundVault.State) -> State.Active
+TMP_200(bool) = state == REF_26
+TMP_201(None) = SOLIDITY_CALL require(bool)(TMP_200)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+state = State.Closed
+
+IRs:
+REF_27(RefundVault.State) -> State.Closed
+state(RefundVault.State) := REF_27(RefundVault.State)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+Closed()
+
+IRs:
+Emit Closed()"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+wallet.transfer(address(this).balance)
+
+IRs:
+TMP_203 = CONVERT this to address
+TMP_204(uint256) = SOLIDITY_CALL balance(address)(TMP_203)
+Transfer dest:wallet value:TMP_204"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+5->1;
+}
+// Function: 6915.sol-RefundVault-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 6915.sol-RefundVault-constructor(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_wallet != address(0))
+
+IRs:
+TMP_193 = CONVERT 0 to address
+TMP_194(bool) = _wallet != TMP_193
+TMP_195(None) = SOLIDITY_CALL require(bool)(TMP_194)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+wallet = _wallet
+
+IRs:
+wallet(address) := _wallet(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+state = State.Active
+
+IRs:
+REF_21(RefundVault.State) -> State.Active
+state(RefundVault.State) := REF_21(RefundVault.State)"];
+}
+// Function: 6915.sol-RefundVault-deposit(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(state == State.Active)
+
+IRs:
+REF_22(RefundVault.State) -> State.Active
+TMP_196(bool) = state == REF_22
+TMP_197(None) = SOLIDITY_CALL require(bool)(TMP_196)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+deposited[investor] = deposited[investor].add(msg.value)
+
+IRs:
+REF_23(uint256) -> deposited[investor]
+REF_24(uint256) -> deposited[investor]
+TMP_198(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_24', 'msg.value'] 
+REF_23(uint256) (->deposited) := TMP_198(uint256)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 6915.sol-RefundVault-enableRefunds()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(state == State.Active)
+
+IRs:
+REF_29(RefundVault.State) -> State.Active
+TMP_207(bool) = state == REF_29
+TMP_208(None) = SOLIDITY_CALL require(bool)(TMP_207)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+state = State.Refunding
+
+IRs:
+REF_30(RefundVault.State) -> State.Refunding
+state(RefundVault.State) := REF_30(RefundVault.State)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+RefundsEnabled()
+
+IRs:
+Emit RefundsEnabled()"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->1;
+}
+// Function: 6915.sol-RefundVault-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_215(bool) = msg.sender == owner
+TMP_216(None) = SOLIDITY_CALL require(bool)(TMP_215)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 6915.sol-RefundVault-refund(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(state == State.Refunding)
+
+IRs:
+REF_31(RefundVault.State) -> State.Refunding
+TMP_211(bool) = state == REF_31
+TMP_212(None) = SOLIDITY_CALL require(bool)(TMP_211)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+depositedValue = deposited[investor]
+
+IRs:
+REF_32(uint256) -> deposited[investor]
+depositedValue(uint256) := REF_32(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+deposited[investor] = 0
+
+IRs:
+REF_33(uint256) -> deposited[investor]
+REF_33(uint256) (->deposited) := 0(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+investor.transfer(depositedValue)
+
+IRs:
+Transfer dest:investor value:depositedValue"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Refunded(investor,depositedValue)
+
+IRs:
+Emit Refunded(investor,depositedValue)"];
+}
+// Function: 6915.sol-RefundVault-renounceOwnership()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+OwnershipRenounced(owner)
+
+IRs:
+Emit OwnershipRenounced(owner)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = address(0)
+
+IRs:
+TMP_185 = CONVERT 0 to address
+owner(address) := TMP_185(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 6915.sol-RefundVault-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transferOwnership(_newOwner)
+
+IRs:
+INTERNAL_CALL, Ownable._transferOwnership(address)(_newOwner)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 6915.sol-RefundableCrowdsale-_deliverTokens(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+token.transfer(_beneficiary,_tokenAmount)
+
+IRs:
+TMP_262(bool) = HIGH_LEVEL_CALL, dest:token(ERC20), function:transfer, arguments:['_beneficiary', '_tokenAmount']  "];
+}
+// Function: 6915.sol-RefundableCrowdsale-_forwardFunds()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+vault.deposit.value(msg.value)(msg.sender)
+
+IRs:
+HIGH_LEVEL_CALL, dest:vault(RefundVault), function:deposit, arguments:['msg.sender'] value:msg.value "];
+}
+// Function: 6915.sol-RefundableCrowdsale-_getTokenAmount(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+_weiAmount.mul(rate)
+
+IRs:
+TMP_264(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['_weiAmount', 'rate'] 
+RETURN TMP_264"];
+}
+// Function: 6915.sol-RefundableCrowdsale-_postValidatePurchase(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 6915.sol-RefundableCrowdsale-_preValidatePurchase(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_beneficiary != address(0))
+
+IRs:
+TMP_257 = CONVERT 0 to address
+TMP_258(bool) = _beneficiary != TMP_257
+TMP_259(None) = SOLIDITY_CALL require(bool)(TMP_258)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_weiAmount != 0)
+
+IRs:
+TMP_260(bool) = _weiAmount != 0
+TMP_261(None) = SOLIDITY_CALL require(bool)(TMP_260)"];
+}
+// Function: 6915.sol-RefundableCrowdsale-_processPurchase(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_deliverTokens(_beneficiary,_tokenAmount)
+
+IRs:
+INTERNAL_CALL, Crowdsale._deliverTokens(address,uint256)(_beneficiary,_tokenAmount)"];
+}
+// Function: 6915.sol-RefundableCrowdsale-_transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_newOwner != address(0))
+
+IRs:
+TMP_229 = CONVERT 0 to address
+TMP_230(bool) = _newOwner != TMP_229
+TMP_231(None) = SOLIDITY_CALL require(bool)(TMP_230)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,_newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,_newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = _newOwner
+
+IRs:
+owner(address) := _newOwner(address)"];
+}
+// Function: 6915.sol-RefundableCrowdsale-_updatePurchasingState(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 6915.sol-RefundableCrowdsale-buyTokens(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+weiAmount = msg.value
+
+IRs:
+weiAmount(uint256) := msg.value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_preValidatePurchase(_beneficiary,weiAmount)
+
+IRs:
+INTERNAL_CALL, TimedCrowdsale._preValidatePurchase(address,uint256)(_beneficiary,weiAmount)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+tokens = _getTokenAmount(weiAmount)
+
+IRs:
+TMP_250(uint256) = INTERNAL_CALL, Crowdsale._getTokenAmount(uint256)(weiAmount)
+tokens(uint256) := TMP_250(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+weiRaised = weiRaised.add(weiAmount)
+
+IRs:
+TMP_251(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['weiRaised', 'weiAmount'] 
+weiRaised(uint256) := TMP_251(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+_processPurchase(_beneficiary,tokens)
+
+IRs:
+INTERNAL_CALL, Crowdsale._processPurchase(address,uint256)(_beneficiary,tokens)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+TokenPurchase(msg.sender,_beneficiary,weiAmount,tokens)
+
+IRs:
+Emit TokenPurchase(msg.sender,_beneficiary,weiAmount,tokens)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+_updatePurchasingState(_beneficiary,weiAmount)
+
+IRs:
+INTERNAL_CALL, Crowdsale._updatePurchasingState(address,uint256)(_beneficiary,weiAmount)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+_forwardFunds()
+
+IRs:
+INTERNAL_CALL, RefundableCrowdsale._forwardFunds()()"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+_postValidatePurchase(_beneficiary,weiAmount)
+
+IRs:
+INTERNAL_CALL, Crowdsale._postValidatePurchase(address,uint256)(_beneficiary,weiAmount)"];
+}
+// Function: 6915.sol-RefundableCrowdsale-claimRefund()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(isFinalized)
+
+IRs:
+TMP_270(None) = SOLIDITY_CALL require(bool)(isFinalized)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(! goalReached())
+
+IRs:
+TMP_271(bool) = INTERNAL_CALL, RefundableCrowdsale.goalReached()()
+TMP_272 = UnaryType.BANG TMP_271 
+TMP_273(None) = SOLIDITY_CALL require(bool)(TMP_272)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+vault.refund(msg.sender)
+
+IRs:
+HIGH_LEVEL_CALL, dest:vault(RefundVault), function:refund, arguments:['msg.sender']  "];
+}
+// Function: 6915.sol-RefundableCrowdsale-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 6915.sol-RefundableCrowdsale-constructor(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_goal > 0)
+
+IRs:
+TMP_266(bool) = _goal > 0
+TMP_267(None) = SOLIDITY_CALL require(bool)(TMP_266)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+vault = new RefundVault(wallet)
+
+IRs:
+TMP_269(RefundVault) = new RefundVault(wallet) 
+vault(RefundVault) := TMP_269(RefundVault)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+goal = _goal
+
+IRs:
+goal(uint256) := _goal(uint256)"];
+}
+// Function: 6915.sol-RefundableCrowdsale-constructor(uint256,address,ERC20)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_rate > 0)
+
+IRs:
+TMP_240(bool) = _rate > 0
+TMP_241(None) = SOLIDITY_CALL require(bool)(TMP_240)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_wallet != address(0))
+
+IRs:
+TMP_242 = CONVERT 0 to address
+TMP_243(bool) = _wallet != TMP_242
+TMP_244(None) = SOLIDITY_CALL require(bool)(TMP_243)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(_token != address(0))
+
+IRs:
+TMP_245 = CONVERT 0 to address
+TMP_246(bool) = _token != TMP_245
+TMP_247(None) = SOLIDITY_CALL require(bool)(TMP_246)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+rate = _rate
+
+IRs:
+rate(uint256) := _rate(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+wallet = _wallet
+
+IRs:
+wallet(address) := _wallet(address)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+token = _token
+
+IRs:
+token(ERC20) := _token(ERC20)"];
+}
+// Function: 6915.sol-RefundableCrowdsale-constructor(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_openingTime >= block.timestamp)
+
+IRs:
+TMP_233(bool) = _openingTime >= block.timestamp
+TMP_234(None) = SOLIDITY_CALL require(bool)(TMP_233)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_closingTime >= _openingTime)
+
+IRs:
+TMP_235(bool) = _closingTime >= _openingTime
+TMP_236(None) = SOLIDITY_CALL require(bool)(TMP_235)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+openingTime = _openingTime
+
+IRs:
+openingTime(uint256) := _openingTime(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+closingTime = _closingTime
+
+IRs:
+closingTime(uint256) := _closingTime(uint256)"];
+}
+// Function: 6915.sol-RefundableCrowdsale-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+buyTokens(msg.sender)
+
+IRs:
+INTERNAL_CALL, Crowdsale.buyTokens(address)(msg.sender)"];
+}
+// Function: 6915.sol-RefundableCrowdsale-finalization()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+goalReached()
+
+IRs:
+TMP_276(bool) = INTERNAL_CALL, RefundableCrowdsale.goalReached()()
+CONDITION TMP_276"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+vault.close()
+
+IRs:
+HIGH_LEVEL_CALL, dest:vault(RefundVault), function:close, arguments:[]  "];
+2->4;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+vault.enableRefunds()
+
+IRs:
+HIGH_LEVEL_CALL, dest:vault(RefundVault), function:enableRefunds, arguments:[]  "];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+super.finalization()
+
+IRs:
+INTERNAL_CALL, FinalizableCrowdsale.finalization()()"];
+}
+// Function: 6915.sol-RefundableCrowdsale-finalize()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! isFinalized)
+
+IRs:
+TMP_217 = UnaryType.BANG isFinalized 
+TMP_218(None) = SOLIDITY_CALL require(bool)(TMP_217)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(hasClosed())
+
+IRs:
+TMP_219(bool) = INTERNAL_CALL, TimedCrowdsale.hasClosed()()
+TMP_220(None) = SOLIDITY_CALL require(bool)(TMP_219)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+finalization()
+
+IRs:
+INTERNAL_CALL, RefundableCrowdsale.finalization()()"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Finalized()
+
+IRs:
+Emit Finalized()"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+isFinalized = true
+
+IRs:
+isFinalized(bool) := True(bool)"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+6->1;
+}
+// Function: 6915.sol-RefundableCrowdsale-goalReached()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+weiRaised >= goal
+
+IRs:
+TMP_275(bool) = weiRaised >= goal
+RETURN TMP_275"];
+}
+// Function: 6915.sol-RefundableCrowdsale-hasClosed()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+block.timestamp > closingTime
+
+IRs:
+TMP_237(bool) = block.timestamp > closingTime
+RETURN TMP_237"];
+}
+// Function: 6915.sol-RefundableCrowdsale-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_282(bool) = msg.sender == owner
+TMP_283(None) = SOLIDITY_CALL require(bool)(TMP_282)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 6915.sol-RefundableCrowdsale-onlyWhileOpen()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(block.timestamp >= openingTime && block.timestamp <= closingTime)
+
+IRs:
+TMP_284(bool) = block.timestamp >= openingTime
+TMP_285(bool) = block.timestamp <= closingTime
+TMP_286(bool) = TMP_284 && TMP_285
+TMP_287(None) = SOLIDITY_CALL require(bool)(TMP_286)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 6915.sol-RefundableCrowdsale-renounceOwnership()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+OwnershipRenounced(owner)
+
+IRs:
+Emit OwnershipRenounced(owner)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = address(0)
+
+IRs:
+TMP_225 = CONVERT 0 to address
+owner(address) := TMP_225(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 6915.sol-RefundableCrowdsale-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+isFinalized = false
+
+IRs:
+isFinalized(bool) := False(bool)"];
+}
+// Function: 6915.sol-RefundableCrowdsale-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transferOwnership(_newOwner)
+
+IRs:
+INTERNAL_CALL, Ownable._transferOwnership(address)(_newOwner)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 6915.sol-SafeMath-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_9(uint256) = a + b
+c(uint256) := TMP_9(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(c >= a)
+
+IRs:
+TMP_10(bool) = c >= a
+TMP_11(None) = SOLIDITY_CALL assert(bool)(TMP_10)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 6915.sol-SafeMath-div(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+a / b
+
+IRs:
+TMP_5(uint256) = a / b
+RETURN TMP_5"];
+}
+// Function: 6915.sol-SafeMath-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+a == 0
+
+IRs:
+TMP_0(bool) = a == 0
+CONDITION TMP_0"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_1(uint256) = a * b
+c(uint256) := TMP_1(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+assert(bool)(c / a == b)
+
+IRs:
+TMP_2(uint256) = c / a
+TMP_3(bool) = TMP_2 == b
+TMP_4(None) = SOLIDITY_CALL assert(bool)(TMP_3)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 6915.sol-SafeMath-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(b <= a)
+
+IRs:
+TMP_6(bool) = b <= a
+TMP_7(None) = SOLIDITY_CALL assert(bool)(TMP_6)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_8(uint256) = a - b
+RETURN TMP_8"];
+}
+// Function: 6915.sol-TimedCrowdsale-_deliverTokens(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+token.transfer(_beneficiary,_tokenAmount)
+
+IRs:
+TMP_60(bool) = HIGH_LEVEL_CALL, dest:token(ERC20), function:transfer, arguments:['_beneficiary', '_tokenAmount']  "];
+}
+// Function: 6915.sol-TimedCrowdsale-_forwardFunds()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+wallet.transfer(msg.value)
+
+IRs:
+Transfer dest:wallet value:msg.value"];
+}
+// Function: 6915.sol-TimedCrowdsale-_getTokenAmount(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+_weiAmount.mul(rate)
+
+IRs:
+TMP_62(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['_weiAmount', 'rate'] 
+RETURN TMP_62"];
+}
+// Function: 6915.sol-TimedCrowdsale-_postValidatePurchase(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 6915.sol-TimedCrowdsale-_preValidatePurchase(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+super._preValidatePurchase(_beneficiary,_weiAmount)
+
+IRs:
+INTERNAL_CALL, Crowdsale._preValidatePurchase(address,uint256)(_beneficiary,_weiAmount)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyWhileOpen()
+
+IRs:
+MODIFIER_CALL, TimedCrowdsale.onlyWhileOpen()()"];
+2->1;
+}
+// Function: 6915.sol-TimedCrowdsale-_processPurchase(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_deliverTokens(_beneficiary,_tokenAmount)
+
+IRs:
+INTERNAL_CALL, Crowdsale._deliverTokens(address,uint256)(_beneficiary,_tokenAmount)"];
+}
+// Function: 6915.sol-TimedCrowdsale-_updatePurchasingState(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 6915.sol-TimedCrowdsale-buyTokens(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+weiAmount = msg.value
+
+IRs:
+weiAmount(uint256) := msg.value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_preValidatePurchase(_beneficiary,weiAmount)
+
+IRs:
+INTERNAL_CALL, TimedCrowdsale._preValidatePurchase(address,uint256)(_beneficiary,weiAmount)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+tokens = _getTokenAmount(weiAmount)
+
+IRs:
+TMP_48(uint256) = INTERNAL_CALL, Crowdsale._getTokenAmount(uint256)(weiAmount)
+tokens(uint256) := TMP_48(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+weiRaised = weiRaised.add(weiAmount)
+
+IRs:
+TMP_49(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['weiRaised', 'weiAmount'] 
+weiRaised(uint256) := TMP_49(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+_processPurchase(_beneficiary,tokens)
+
+IRs:
+INTERNAL_CALL, Crowdsale._processPurchase(address,uint256)(_beneficiary,tokens)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+TokenPurchase(msg.sender,_beneficiary,weiAmount,tokens)
+
+IRs:
+Emit TokenPurchase(msg.sender,_beneficiary,weiAmount,tokens)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+_updatePurchasingState(_beneficiary,weiAmount)
+
+IRs:
+INTERNAL_CALL, Crowdsale._updatePurchasingState(address,uint256)(_beneficiary,weiAmount)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+_forwardFunds()
+
+IRs:
+INTERNAL_CALL, Crowdsale._forwardFunds()()"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+_postValidatePurchase(_beneficiary,weiAmount)
+
+IRs:
+INTERNAL_CALL, Crowdsale._postValidatePurchase(address,uint256)(_beneficiary,weiAmount)"];
+}
+// Function: 6915.sol-TimedCrowdsale-constructor(uint256,address,ERC20)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_rate > 0)
+
+IRs:
+TMP_38(bool) = _rate > 0
+TMP_39(None) = SOLIDITY_CALL require(bool)(TMP_38)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_wallet != address(0))
+
+IRs:
+TMP_40 = CONVERT 0 to address
+TMP_41(bool) = _wallet != TMP_40
+TMP_42(None) = SOLIDITY_CALL require(bool)(TMP_41)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(_token != address(0))
+
+IRs:
+TMP_43 = CONVERT 0 to address
+TMP_44(bool) = _token != TMP_43
+TMP_45(None) = SOLIDITY_CALL require(bool)(TMP_44)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+rate = _rate
+
+IRs:
+rate(uint256) := _rate(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+wallet = _wallet
+
+IRs:
+wallet(address) := _wallet(address)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+token = _token
+
+IRs:
+token(ERC20) := _token(ERC20)"];
+}
+// Function: 6915.sol-TimedCrowdsale-constructor(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_openingTime >= block.timestamp)
+
+IRs:
+TMP_64(bool) = _openingTime >= block.timestamp
+TMP_65(None) = SOLIDITY_CALL require(bool)(TMP_64)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_closingTime >= _openingTime)
+
+IRs:
+TMP_66(bool) = _closingTime >= _openingTime
+TMP_67(None) = SOLIDITY_CALL require(bool)(TMP_66)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+openingTime = _openingTime
+
+IRs:
+openingTime(uint256) := _openingTime(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+closingTime = _closingTime
+
+IRs:
+closingTime(uint256) := _closingTime(uint256)"];
+}
+// Function: 6915.sol-TimedCrowdsale-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+buyTokens(msg.sender)
+
+IRs:
+INTERNAL_CALL, Crowdsale.buyTokens(address)(msg.sender)"];
+}
+// Function: 6915.sol-TimedCrowdsale-hasClosed()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+block.timestamp > closingTime
+
+IRs:
+TMP_68(bool) = block.timestamp > closingTime
+RETURN TMP_68"];
+}
+// Function: 6915.sol-TimedCrowdsale-onlyWhileOpen()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(block.timestamp >= openingTime && block.timestamp <= closingTime)
+
+IRs:
+TMP_71(bool) = block.timestamp >= openingTime
+TMP_72(bool) = block.timestamp <= closingTime
+TMP_73(bool) = TMP_71 && TMP_72
+TMP_74(None) = SOLIDITY_CALL require(bool)(TMP_73)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 6915.sol-TokenTimelockControllerInterface-activate()
+digraph{
+}
+// Function: 6915.sol-TokenTimelockControllerInterface-createInvestorTokenTimeLock(address,uint256,uint256,address)
+digraph{
+}
+}

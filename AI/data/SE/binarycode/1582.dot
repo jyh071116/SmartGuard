@@ -1,0 +1,414 @@
+digraph G {
+// Function: 1582.sol-BatchTokensTransfer-acceptOwnership()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == newOwner)
+
+IRs:
+TMP_12(bool) = msg.sender == newOwner
+TMP_13(None) = SOLIDITY_CALL require(bool)(TMP_12)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnerUpdate(owner,newOwner)
+
+IRs:
+Emit OwnerUpdate(owner,newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+newOwner = address(0)
+
+IRs:
+TMP_15 = CONVERT 0 to address
+newOwner(address) := TMP_15(address)"];
+}
+// Function: 1582.sol-BatchTokensTransfer-batchTokensTransfer(IERC20Token,address[],uint256[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->10;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_usersWithdrawalAccounts.length == _amounts.length)
+
+IRs:
+REF_0 -> LENGTH _usersWithdrawalAccounts
+REF_1 -> LENGTH _amounts
+TMP_17(bool) = REF_0 == REF_1
+TMP_18(None) = SOLIDITY_CALL require(bool)(TMP_17)"];
+1->4;
+2[label="Node Type: BEGIN_LOOP 2
+"];
+2->5;
+3[label="Node Type: END_LOOP 3
+"];
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+4->2;
+5[label="Node Type: IF_LOOP 5
+
+EXPRESSION:
+i < _usersWithdrawalAccounts.length
+
+IRs:
+REF_2 -> LENGTH _usersWithdrawalAccounts
+TMP_19(bool) = i < REF_2
+CONDITION TMP_19"];
+5->6[label="True"];
+5->3[label="False"];
+6[label="Node Type: IF 6
+
+EXPRESSION:
+_usersWithdrawalAccounts[i] != 0x0
+
+IRs:
+REF_3(address) -> _usersWithdrawalAccounts[i]
+TMP_20(bool) = REF_3 != 0
+CONDITION TMP_20"];
+6->7[label="True"];
+6->8[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+_token.transfer(_usersWithdrawalAccounts[i],_amounts[i])
+
+IRs:
+REF_5(address) -> _usersWithdrawalAccounts[i]
+REF_6(uint256) -> _amounts[i]
+TMP_21(bool) = HIGH_LEVEL_CALL, dest:_token(IERC20Token), function:transfer, arguments:['REF_5', 'REF_6']  "];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_22(uint256) := i(uint256)
+i(uint256) = i + 1"];
+9->5;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+ownerOnly()
+
+IRs:
+MODIFIER_CALL, Ownable.ownerOnly()()"];
+10->1;
+}
+// Function: 1582.sol-BatchTokensTransfer-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+Ownable(msg.sender)
+
+IRs:
+INTERNAL_CALL, Ownable.constructor(address)(msg.sender)"];
+}
+// Function: 1582.sol-BatchTokensTransfer-constructor(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = _owner
+
+IRs:
+owner(address) := _owner(address)"];
+}
+// Function: 1582.sol-BatchTokensTransfer-ownerOnly()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_33(bool) = msg.sender == owner
+TMP_34(None) = SOLIDITY_CALL require(bool)(TMP_33)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1582.sol-BatchTokensTransfer-transferAllTokensToOwner(IERC20Token)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+_amount = _token.balanceOf(this)
+
+IRs:
+TMP_30(uint256) = HIGH_LEVEL_CALL, dest:_token(IERC20Token), function:balanceOf, arguments:['this']  
+_amount(uint256) := TMP_30(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_token.transfer(owner,_amount)
+
+IRs:
+TMP_31(bool) = HIGH_LEVEL_CALL, dest:_token(IERC20Token), function:transfer, arguments:['owner', '_amount']  "];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+ownerOnly()
+
+IRs:
+MODIFIER_CALL, Ownable.ownerOnly()()"];
+3->1;
+}
+// Function: 1582.sol-BatchTokensTransfer-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_newOwner != owner)
+
+IRs:
+TMP_9(bool) = _newOwner != owner
+TMP_10(None) = SOLIDITY_CALL require(bool)(TMP_9)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+newOwner = _newOwner
+
+IRs:
+newOwner(address) := _newOwner(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+ownerOnly()
+
+IRs:
+MODIFIER_CALL, Ownable.ownerOnly()()"];
+3->1;
+}
+// Function: 1582.sol-BatchTokensTransfer-transferToken(IERC20Token,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_userWithdrawalAccount != 0x0 && _amount > 0)
+
+IRs:
+TMP_24(bool) = _userWithdrawalAccount != 0
+TMP_25(bool) = _amount > 0
+TMP_26(bool) = TMP_24 && TMP_25
+TMP_27(None) = SOLIDITY_CALL require(bool)(TMP_26)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_token.transfer(_userWithdrawalAccount,_amount)
+
+IRs:
+TMP_28(bool) = HIGH_LEVEL_CALL, dest:_token(IERC20Token), function:transfer, arguments:['_userWithdrawalAccount', '_amount']  "];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+ownerOnly()
+
+IRs:
+MODIFIER_CALL, Ownable.ownerOnly()()"];
+3->1;
+}
+// Function: 1582.sol-IERC20Token-allowance(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_owner
+"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_spender
+"];
+}
+// Function: 1582.sol-IERC20Token-approve(address,uint256)
+digraph{
+}
+// Function: 1582.sol-IERC20Token-balanceOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_owner
+"];
+}
+// Function: 1582.sol-IERC20Token-decimals()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 1582.sol-IERC20Token-name()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 1582.sol-IERC20Token-symbol()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 1582.sol-IERC20Token-totalSupply()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 1582.sol-IERC20Token-transfer(address,uint256)
+digraph{
+}
+// Function: 1582.sol-IERC20Token-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 1582.sol-Ownable-acceptOwnership()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == newOwner)
+
+IRs:
+TMP_3(bool) = msg.sender == newOwner
+TMP_4(None) = SOLIDITY_CALL require(bool)(TMP_3)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnerUpdate(owner,newOwner)
+
+IRs:
+Emit OwnerUpdate(owner,newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+newOwner = address(0)
+
+IRs:
+TMP_6 = CONVERT 0 to address
+newOwner(address) := TMP_6(address)"];
+}
+// Function: 1582.sol-Ownable-constructor(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = _owner
+
+IRs:
+owner(address) := _owner(address)"];
+}
+// Function: 1582.sol-Ownable-ownerOnly()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_7(bool) = msg.sender == owner
+TMP_8(None) = SOLIDITY_CALL require(bool)(TMP_7)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1582.sol-Ownable-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_newOwner != owner)
+
+IRs:
+TMP_0(bool) = _newOwner != owner
+TMP_1(None) = SOLIDITY_CALL require(bool)(TMP_0)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+newOwner = _newOwner
+
+IRs:
+newOwner(address) := _newOwner(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+ownerOnly()
+
+IRs:
+MODIFIER_CALL, Ownable.ownerOnly()()"];
+3->1;
+}
+}

@@ -1,0 +1,2434 @@
+digraph G {
+// Function: 150.sol-ERC223Receiving-tokenFallback(address,uint256,bytes)
+digraph{
+}
+// Function: 150.sol-God-allowance(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+allowed[_owner][_spender]
+
+IRs:
+REF_66(mapping(address => uint256)) -> allowed[_owner]
+REF_67(uint256) -> REF_66[_spender]
+RETURN REF_67"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+remaining
+
+IRs:
+RETURN remaining"];
+}
+// Function: 150.sol-God-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowed[msg.sender][_spender] = _value
+
+IRs:
+REF_64(mapping(address => uint256)) -> allowed[msg.sender]
+REF_65(uint256) -> REF_64[_spender]
+REF_65(uint256) (->allowed) := _value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,_value)
+
+IRs:
+Emit Approval(msg.sender,_spender,_value)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 150.sol-God-balanceOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+contractAddresses[_customerAddress]
+
+IRs:
+REF_69(bool) -> contractAddresses[_customerAddress]
+CONDITION REF_69"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+tokenBalanceLedger_[_customerAddress]
+
+IRs:
+REF_70(uint256) -> tokenBalanceLedger_[_customerAddress]
+RETURN REF_70"];
+}
+// Function: 150.sol-God-buy(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+purchaseTokens(msg.value,_referredBy)
+
+IRs:
+TMP_0(uint256) = INTERNAL_CALL, God.purchaseTokens(uint256,address)(msg.value,_referredBy)"];
+}
+// Function: 150.sol-God-buyPrice()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+tokenSupply_ == 0
+
+IRs:
+TMP_146(bool) = tokenSupply_ == 0
+CONDITION TMP_146"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+tokenPriceInitial_ + tokenPriceIncremental_
+
+IRs:
+TMP_147(uint256) = tokenPriceInitial_ + tokenPriceIncremental_
+RETURN TMP_147"];
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+_ethereum = tokensToEthereum_(1e18)
+
+IRs:
+TMP_148(uint256) = INTERNAL_CALL, God.tokensToEthereum_(uint256)(1000000000000000000)
+_ethereum(uint256) := TMP_148(uint256)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+_dividends = SafeMath.div(_ethereum,dividendFee_)
+
+IRs:
+TMP_149(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['_ethereum', 'dividendFee_'] 
+_dividends(uint256) := TMP_149(uint256)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+_taxedEthereum = SafeMath.add(_ethereum,_dividends)
+
+IRs:
+TMP_150(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['_ethereum', '_dividends'] 
+_taxedEthereum(uint256) := TMP_150(uint256)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+_taxedEthereum
+
+IRs:
+RETURN _taxedEthereum"];
+}
+// Function: 150.sol-God-calculateEthereumReceived(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_tokensToSell <= tokenSupply_)
+
+IRs:
+TMP_154(bool) = _tokensToSell <= tokenSupply_
+TMP_155(None) = SOLIDITY_CALL require(bool)(TMP_154)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+_ethereum = tokensToEthereum_(_tokensToSell)
+
+IRs:
+TMP_156(uint256) = INTERNAL_CALL, God.tokensToEthereum_(uint256)(_tokensToSell)
+_ethereum(uint256) := TMP_156(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+_dividends = SafeMath.div(_ethereum,dividendFee_)
+
+IRs:
+TMP_157(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['_ethereum', 'dividendFee_'] 
+_dividends(uint256) := TMP_157(uint256)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+_taxedEthereum = SafeMath.sub(_ethereum,_dividends)
+
+IRs:
+TMP_158(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['_ethereum', '_dividends'] 
+_taxedEthereum(uint256) := TMP_158(uint256)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+_taxedEthereum
+
+IRs:
+RETURN _taxedEthereum"];
+}
+// Function: 150.sol-God-calculateTokensReceived(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+_dividends = SafeMath.div(_ethereumToSpend,dividendFee_)
+
+IRs:
+TMP_151(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['_ethereumToSpend', 'dividendFee_'] 
+_dividends(uint256) := TMP_151(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+_taxedEthereum = SafeMath.sub(_ethereumToSpend,_dividends)
+
+IRs:
+TMP_152(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['_ethereumToSpend', '_dividends'] 
+_taxedEthereum(uint256) := TMP_152(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+_amountOfTokens = ethereumToTokens_(_taxedEthereum)
+
+IRs:
+TMP_153(uint256) = INTERNAL_CALL, God.ethereumToTokens_(uint256)(_taxedEthereum)
+_amountOfTokens(uint256) := TMP_153(uint256)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+_amountOfTokens
+
+IRs:
+RETURN _amountOfTokens"];
+}
+// Function: 150.sol-God-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+administrators[owner] = true
+
+IRs:
+REF_0(bool) -> administrators[owner]
+REF_0(bool) (->administrators) := True(bool)"];
+}
+// Function: 150.sol-God-dividendsOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+uint256(int256(profitPerShare_ * tokenBalanceLedger_[_customerAddress]) - payoutsTo_[_customerAddress]) / magnitude
+
+IRs:
+REF_72(uint256) -> tokenBalanceLedger_[_customerAddress]
+TMP_136(uint256) = profitPerShare_ * REF_72
+TMP_137 = CONVERT TMP_136 to int256
+REF_73(int256) -> payoutsTo_[_customerAddress]
+TMP_138(int256) = TMP_137 - REF_73
+TMP_139 = CONVERT TMP_138 to uint256
+TMP_140(uint256) = TMP_139 / magnitude
+RETURN TMP_140"];
+}
+// Function: 150.sol-God-ethereumToTokens_(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+_tokenPriceInitial = tokenPriceInitial_ * 1e18
+
+IRs:
+TMP_195(uint256) = tokenPriceInitial_ * 1000000000000000000
+_tokenPriceInitial(uint256) := TMP_195(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+_tokensReceived = ((SafeMath.sub((sqrt((_tokenPriceInitial ** 2) + (2 * (tokenPriceIncremental_ * 1e18) * (_ethereum * 1e18)) + (((tokenPriceIncremental_) ** 2) * (tokenSupply_ ** 2)) + (2 * (tokenPriceIncremental_) * _tokenPriceInitial * tokenSupply_))),_tokenPriceInitial)) / (tokenPriceIncremental_)) - (tokenSupply_)
+
+IRs:
+TMP_196(uint256) = _tokenPriceInitial ** 2
+TMP_197(uint256) = tokenPriceIncremental_ * 1000000000000000000
+TMP_198(uint256) = 2 * TMP_197
+TMP_199(uint256) = _ethereum * 1000000000000000000
+TMP_200(uint256) = TMP_198 * TMP_199
+TMP_201(uint256) = TMP_196 + TMP_200
+TMP_202(uint256) = tokenPriceIncremental_ ** 2
+TMP_203(uint256) = tokenSupply_ ** 2
+TMP_204(uint256) = TMP_202 * TMP_203
+TMP_205(uint256) = TMP_201 + TMP_204
+TMP_206(uint256) = 2 * tokenPriceIncremental_
+TMP_207(uint256) = TMP_206 * _tokenPriceInitial
+TMP_208(uint256) = TMP_207 * tokenSupply_
+TMP_209(uint256) = TMP_205 + TMP_208
+TMP_210(uint256) = INTERNAL_CALL, God.sqrt(uint256)(TMP_209)
+TMP_211(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['TMP_210', '_tokenPriceInitial'] 
+TMP_212(uint256) = TMP_211 / tokenPriceIncremental_
+TMP_213(uint256) = TMP_212 - tokenSupply_
+_tokensReceived(uint256) := TMP_213(uint256)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+_tokensReceived
+
+IRs:
+RETURN _tokensReceived"];
+}
+// Function: 150.sol-God-exit()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+_customerAddress = msg.sender
+
+IRs:
+_customerAddress(address) := msg.sender(address)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+_tokens = tokenBalanceLedger_[_customerAddress]
+
+IRs:
+REF_8(uint256) -> tokenBalanceLedger_[_customerAddress]
+_tokens(uint256) := REF_8(uint256)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+_tokens > 0
+
+IRs:
+TMP_22(bool) = _tokens > 0
+CONDITION TMP_22"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+sell(_tokens)
+
+IRs:
+INTERNAL_CALL, God.sell(uint256)(_tokens)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+withdraw()
+
+IRs:
+INTERNAL_CALL, God.withdraw()()"];
+}
+// Function: 150.sol-God-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+purchaseTokens(msg.value,0x0)
+
+IRs:
+TMP_1(uint256) = INTERNAL_CALL, God.purchaseTokens(uint256,address)(msg.value,0)"];
+}
+// Function: 150.sol-God-getBalance(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+tokenBalanceLedger_[_customerAddress]
+
+IRs:
+REF_71(uint256) -> tokenBalanceLedger_[_customerAddress]
+RETURN REF_71"];
+}
+// Function: 150.sol-God-getContractETH()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+address(this).balance
+
+IRs:
+TMP_131 = CONVERT this to address
+TMP_132(uint256) = SOLIDITY_CALL balance(address)(TMP_131)
+RETURN TMP_132"];
+}
+// Function: 150.sol-God-getContractPayout()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+contractPayout
+
+IRs:
+RETURN contractPayout"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyAdministrator()
+
+IRs:
+MODIFIER_CALL, God.onlyAdministrator()()"];
+2->1;
+}
+// Function: 150.sol-God-getIsProjectBonus()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+isProjectBonus
+
+IRs:
+RETURN isProjectBonus"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyAdministrator()
+
+IRs:
+MODIFIER_CALL, God.onlyAdministrator()()"];
+2->1;
+}
+// Function: 150.sol-God-getProfitPerShare()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+uint256(int256(tokenSupply_ * profitPerShare_)) / magnitude
+
+IRs:
+TMP_127(uint256) = tokenSupply_ * profitPerShare_
+TMP_128 = CONVERT TMP_127 to int256
+TMP_129 = CONVERT TMP_128 to uint256
+TMP_130(uint256) = TMP_129 / magnitude
+RETURN TMP_130"];
+}
+// Function: 150.sol-God-getProjectBonus()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+projectBonus
+
+IRs:
+RETURN projectBonus"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyAdministrator()
+
+IRs:
+MODIFIER_CALL, God.onlyAdministrator()()"];
+2->1;
+}
+// Function: 150.sol-God-injectEther()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 150.sol-God-injectEtherFromIco()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+_incomingEthereum = msg.value
+
+IRs:
+_incomingEthereum(uint256) := msg.value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_incomingEthereum > 0)
+
+IRs:
+TMP_2(bool) = _incomingEthereum > 0
+TMP_3(None) = SOLIDITY_CALL require(bool)(TMP_2)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+_dividends = SafeMath.div(_incomingEthereum,dividendFee_)
+
+IRs:
+TMP_4(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['_incomingEthereum', 'dividendFee_'] 
+_dividends(uint256) := TMP_4(uint256)"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+isProjectBonus
+
+IRs:
+CONDITION isProjectBonus"];
+4->5[label="True"];
+4->8[label="False"];
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+temp = SafeMath.div(_dividends,projectBonusRate)
+
+IRs:
+TMP_5(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['_dividends', 'projectBonusRate'] 
+temp(uint256) := TMP_5(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+_dividends = SafeMath.sub(_dividends,temp)
+
+IRs:
+TMP_6(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['_dividends', 'temp'] 
+_dividends(uint256) := TMP_6(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+projectBonus = SafeMath.add(projectBonus,temp)
+
+IRs:
+TMP_7(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['projectBonus', 'temp'] 
+projectBonus(uint256) := TMP_7(uint256)"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+profitPerShare_ += (_dividends * magnitude / (tokenSupply_))
+
+IRs:
+TMP_8(uint256) = _dividends * magnitude
+TMP_9(uint256) = TMP_8 / tokenSupply_
+profitPerShare_(uint256) = profitPerShare_ + TMP_9"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+onInjectEtherFromIco(_incomingEthereum,_dividends,profitPerShare_)
+
+IRs:
+Emit onInjectEtherFromIco(_incomingEthereum,_dividends,profitPerShare_)"];
+}
+// Function: 150.sol-God-injectEtherToDividend()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+_incomingEthereum = msg.value
+
+IRs:
+_incomingEthereum(uint256) := msg.value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_incomingEthereum > 0)
+
+IRs:
+TMP_11(bool) = _incomingEthereum > 0
+TMP_12(None) = SOLIDITY_CALL require(bool)(TMP_11)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+profitPerShare_ += (_incomingEthereum * magnitude / (tokenSupply_))
+
+IRs:
+TMP_13(uint256) = _incomingEthereum * magnitude
+TMP_14(uint256) = TMP_13 / tokenSupply_
+profitPerShare_(uint256) = profitPerShare_ + TMP_14"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onInjectEtherToDividend(msg.sender,_incomingEthereum,profitPerShare_)
+
+IRs:
+Emit onInjectEtherToDividend(msg.sender,_incomingEthereum,profitPerShare_)"];
+}
+// Function: 150.sol-God-myDividends(bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+_customerAddress = msg.sender
+
+IRs:
+_customerAddress(address) := msg.sender(address)"];
+1->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+_includeReferralBonus
+
+IRs:
+CONDITION _includeReferralBonus"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+dividendsOf(_customerAddress) + referralBalance_[_customerAddress]
+
+IRs:
+TMP_133(uint256) = INTERNAL_CALL, God.dividendsOf(address)(_customerAddress)
+REF_68(uint256) -> referralBalance_[_customerAddress]
+TMP_134(uint256) = TMP_133 + REF_68
+RETURN TMP_134"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+dividendsOf(_customerAddress)
+
+IRs:
+TMP_135(uint256) = INTERNAL_CALL, God.dividendsOf(address)(_customerAddress)
+RETURN TMP_135"];
+}
+// Function: 150.sol-God-myTokens()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+_customerAddress = msg.sender
+
+IRs:
+_customerAddress(address) := msg.sender(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+getBalance(_customerAddress)
+
+IRs:
+TMP_126(uint256) = INTERNAL_CALL, God.getBalance(address)(_customerAddress)
+RETURN TMP_126"];
+}
+// Function: 150.sol-God-onlyAdministrator()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+_customerAddress = msg.sender
+
+IRs:
+_customerAddress(address) := msg.sender(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(administrators[_customerAddress])
+
+IRs:
+REF_102(bool) -> administrators[_customerAddress]
+TMP_242(None) = SOLIDITY_CALL require(bool)(REF_102)"];
+2->3;
+3[label="Node Type: _ 3
+"];
+}
+// Function: 150.sol-God-onlyProfitsHolders()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(myDividends(true) > 0)
+
+IRs:
+TMP_239(uint256) = INTERNAL_CALL, God.myDividends(bool)(True)
+TMP_240(bool) = TMP_239 > 0
+TMP_241(None) = SOLIDITY_CALL require(bool)(TMP_240)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 150.sol-God-onlyTokenHolders()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(myTokens() > 0)
+
+IRs:
+TMP_236(uint256) = INTERNAL_CALL, God.myTokens()()
+TMP_237(bool) = TMP_236 > 0
+TMP_238(None) = SOLIDITY_CALL require(bool)(TMP_237)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 150.sol-God-purchaseTokens(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+_customerAddress = msg.sender
+
+IRs:
+_customerAddress(address) := msg.sender(address)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+_undividedDividends = SafeMath.div(_incomingEthereum,dividendFee_)
+
+IRs:
+TMP_159(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['_incomingEthereum', 'dividendFee_'] 
+_undividedDividends(uint256) := TMP_159(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+_referralBonus = SafeMath.div(_undividedDividends,3)
+
+IRs:
+TMP_160(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['_undividedDividends', '3'] 
+_referralBonus(uint256) := TMP_160(uint256)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+_taxedEthereum = SafeMath.sub(_incomingEthereum,_undividedDividends)
+
+IRs:
+TMP_161(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['_incomingEthereum', '_undividedDividends'] 
+_taxedEthereum(uint256) := TMP_161(uint256)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+_dividends = SafeMath.sub(_undividedDividends,_referralBonus)
+
+IRs:
+TMP_162(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['_undividedDividends', '_referralBonus'] 
+_dividends(uint256) := TMP_162(uint256)"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+isProjectBonus
+
+IRs:
+CONDITION isProjectBonus"];
+6->7[label="True"];
+6->10[label="False"];
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+temp = SafeMath.div(_undividedDividends,projectBonusRate)
+
+IRs:
+TMP_163(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['_undividedDividends', 'projectBonusRate'] 
+temp(uint256) := TMP_163(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+_dividends = SafeMath.sub(_dividends,temp)
+
+IRs:
+TMP_164(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['_dividends', 'temp'] 
+_dividends(uint256) := TMP_164(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+projectBonus = SafeMath.add(projectBonus,temp)
+
+IRs:
+TMP_165(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['projectBonus', 'temp'] 
+projectBonus(uint256) := TMP_165(uint256)"];
+9->10;
+10[label="Node Type: END_IF 10
+"];
+10->11;
+11[label="Node Type: NEW VARIABLE 11
+
+EXPRESSION:
+_amountOfTokens = ethereumToTokens_(_taxedEthereum)
+
+IRs:
+TMP_166(uint256) = INTERNAL_CALL, God.ethereumToTokens_(uint256)(_taxedEthereum)
+_amountOfTokens(uint256) := TMP_166(uint256)"];
+11->12;
+12[label="Node Type: NEW VARIABLE 12
+
+EXPRESSION:
+_fee = _dividends * magnitude
+
+IRs:
+TMP_167(uint256) = _dividends * magnitude
+_fee(uint256) := TMP_167(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+require(bool)(_amountOfTokens > 0 && (SafeMath.add(_amountOfTokens,tokenSupply_) > tokenSupply_))
+
+IRs:
+TMP_168(bool) = _amountOfTokens > 0
+TMP_169(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['_amountOfTokens', 'tokenSupply_'] 
+TMP_170(bool) = TMP_169 > tokenSupply_
+TMP_171(bool) = TMP_168 && TMP_170
+TMP_172(None) = SOLIDITY_CALL require(bool)(TMP_171)"];
+13->14;
+14[label="Node Type: IF 14
+
+EXPRESSION:
+_referredBy != 0x0000000000000000000000000000000000000000 && _referredBy != _customerAddress && tokenBalanceLedger_[_referredBy] >= stakingRequirement
+
+IRs:
+TMP_173(bool) = _referredBy != 0
+TMP_174(bool) = _referredBy != _customerAddress
+TMP_175(bool) = TMP_173 && TMP_174
+REF_90(uint256) -> tokenBalanceLedger_[_referredBy]
+TMP_176(bool) = REF_90 >= stakingRequirement
+TMP_177(bool) = TMP_175 && TMP_176
+CONDITION TMP_177"];
+14->15[label="True"];
+14->16[label="False"];
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+referralBalance_[_referredBy] = SafeMath.add(referralBalance_[_referredBy],_referralBonus)
+
+IRs:
+REF_91(uint256) -> referralBalance_[_referredBy]
+REF_93(uint256) -> referralBalance_[_referredBy]
+TMP_178(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_93', '_referralBonus'] 
+REF_91(uint256) (->referralBalance_) := TMP_178(uint256)"];
+15->18;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+_dividends = SafeMath.add(_dividends,_referralBonus)
+
+IRs:
+TMP_179(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['_dividends', '_referralBonus'] 
+_dividends(uint256) := TMP_179(uint256)"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+_fee = _dividends * magnitude
+
+IRs:
+TMP_180(uint256) = _dividends * magnitude
+_fee(uint256) := TMP_180(uint256)"];
+17->18;
+18[label="Node Type: END_IF 18
+"];
+18->19;
+19[label="Node Type: IF 19
+
+EXPRESSION:
+tokenSupply_ > 0
+
+IRs:
+TMP_181(bool) = tokenSupply_ > 0
+CONDITION TMP_181"];
+19->20[label="True"];
+19->23[label="False"];
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+tokenSupply_ = SafeMath.add(tokenSupply_,_amountOfTokens)
+
+IRs:
+TMP_182(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['tokenSupply_', '_amountOfTokens'] 
+tokenSupply_(uint256) := TMP_182(uint256)"];
+20->21;
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+profitPerShare_ += (_dividends * magnitude / (tokenSupply_))
+
+IRs:
+TMP_183(uint256) = _dividends * magnitude
+TMP_184(uint256) = TMP_183 / tokenSupply_
+profitPerShare_(uint256) = profitPerShare_ + TMP_184"];
+21->22;
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+_fee = _fee - (_fee - (_amountOfTokens * (_dividends * magnitude / (tokenSupply_))))
+
+IRs:
+TMP_185(uint256) = _dividends * magnitude
+TMP_186(uint256) = TMP_185 / tokenSupply_
+TMP_187(uint256) = _amountOfTokens * TMP_186
+TMP_188(uint256) = _fee - TMP_187
+TMP_189(uint256) = _fee - TMP_188
+_fee(uint256) := TMP_189(uint256)"];
+22->24;
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+tokenSupply_ = _amountOfTokens
+
+IRs:
+tokenSupply_(uint256) := _amountOfTokens(uint256)"];
+23->24;
+24[label="Node Type: END_IF 24
+"];
+24->25;
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+tokenBalanceLedger_[_customerAddress] = SafeMath.add(tokenBalanceLedger_[_customerAddress],_amountOfTokens)
+
+IRs:
+REF_96(uint256) -> tokenBalanceLedger_[_customerAddress]
+REF_98(uint256) -> tokenBalanceLedger_[_customerAddress]
+TMP_190(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_98', '_amountOfTokens'] 
+REF_96(uint256) (->tokenBalanceLedger_) := TMP_190(uint256)"];
+25->26;
+26[label="Node Type: NEW VARIABLE 26
+
+EXPRESSION:
+_updatedPayouts = int256((profitPerShare_ * _amountOfTokens) - _fee)
+
+IRs:
+TMP_191(uint256) = profitPerShare_ * _amountOfTokens
+TMP_192(uint256) = TMP_191 - _fee
+TMP_193 = CONVERT TMP_192 to int256
+_updatedPayouts(int256) := TMP_193(int256)"];
+26->27;
+27[label="Node Type: EXPRESSION 27
+
+EXPRESSION:
+payoutsTo_[_customerAddress] += _updatedPayouts
+
+IRs:
+REF_99(int256) -> payoutsTo_[_customerAddress]
+REF_99(-> payoutsTo_) = REF_99 + _updatedPayouts"];
+27->28;
+28[label="Node Type: EXPRESSION 28
+
+EXPRESSION:
+onTokenPurchase(_customerAddress,_incomingEthereum,_amountOfTokens,_referredBy)
+
+IRs:
+Emit onTokenPurchase(_customerAddress,_incomingEthereum,_amountOfTokens,_referredBy)"];
+28->29;
+29[label="Node Type: RETURN 29
+
+EXPRESSION:
+_amountOfTokens
+
+IRs:
+RETURN _amountOfTokens"];
+}
+// Function: 150.sol-God-reinvest()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->8;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+_dividends = myDividends(false)
+
+IRs:
+TMP_16(uint256) = INTERNAL_CALL, God.myDividends(bool)(False)
+_dividends(uint256) := TMP_16(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+_customerAddress = msg.sender
+
+IRs:
+_customerAddress(address) := msg.sender(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+payoutsTo_[_customerAddress] += int256(_dividends * magnitude)
+
+IRs:
+REF_5(int256) -> payoutsTo_[_customerAddress]
+TMP_17(uint256) = _dividends * magnitude
+TMP_18 = CONVERT TMP_17 to int256
+REF_5(-> payoutsTo_) = REF_5 + TMP_18"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+_dividends += referralBalance_[_customerAddress]
+
+IRs:
+REF_6(uint256) -> referralBalance_[_customerAddress]
+_dividends(uint256) = _dividends + REF_6"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+referralBalance_[_customerAddress] = 0
+
+IRs:
+REF_7(uint256) -> referralBalance_[_customerAddress]
+REF_7(uint256) (->referralBalance_) := 0(uint256)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+_tokens = purchaseTokens(_dividends,0x0)
+
+IRs:
+TMP_19(uint256) = INTERNAL_CALL, God.purchaseTokens(uint256,address)(_dividends,0)
+_tokens(uint256) := TMP_19(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+onReinvestment(_customerAddress,_dividends,_tokens)
+
+IRs:
+Emit onReinvestment(_customerAddress,_dividends,_tokens)"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+onlyProfitsHolders()
+
+IRs:
+MODIFIER_CALL, God.onlyProfitsHolders()()"];
+8->1;
+}
+// Function: 150.sol-God-sell(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->20;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+_customerAddress = msg.sender
+
+IRs:
+_customerAddress(address) := msg.sender(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_amountOfTokens <= tokenBalanceLedger_[_customerAddress])
+
+IRs:
+REF_13(uint256) -> tokenBalanceLedger_[_customerAddress]
+TMP_31(bool) = _amountOfTokens <= REF_13
+TMP_32(None) = SOLIDITY_CALL require(bool)(TMP_31)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+_tokens = _amountOfTokens
+
+IRs:
+_tokens(uint256) := _amountOfTokens(uint256)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+_ethereum = tokensToEthereum_(_tokens)
+
+IRs:
+TMP_33(uint256) = INTERNAL_CALL, God.tokensToEthereum_(uint256)(_tokens)
+_ethereum(uint256) := TMP_33(uint256)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+_dividends = SafeMath.div(_ethereum,dividendFee_)
+
+IRs:
+TMP_34(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['_ethereum', 'dividendFee_'] 
+_dividends(uint256) := TMP_34(uint256)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+_taxedEthereum = SafeMath.sub(_ethereum,_dividends)
+
+IRs:
+TMP_35(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['_ethereum', '_dividends'] 
+_taxedEthereum(uint256) := TMP_35(uint256)"];
+6->7;
+7[label="Node Type: IF 7
+
+EXPRESSION:
+isProjectBonus
+
+IRs:
+CONDITION isProjectBonus"];
+7->8[label="True"];
+7->11[label="False"];
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+temp = SafeMath.div(_dividends,projectBonusRate)
+
+IRs:
+TMP_36(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['_dividends', 'projectBonusRate'] 
+temp(uint256) := TMP_36(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+_dividends = SafeMath.sub(_dividends,temp)
+
+IRs:
+TMP_37(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['_dividends', 'temp'] 
+_dividends(uint256) := TMP_37(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+projectBonus = SafeMath.add(projectBonus,temp)
+
+IRs:
+TMP_38(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['projectBonus', 'temp'] 
+projectBonus(uint256) := TMP_38(uint256)"];
+10->11;
+11[label="Node Type: END_IF 11
+"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+tokenSupply_ = SafeMath.sub(tokenSupply_,_tokens)
+
+IRs:
+TMP_39(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['tokenSupply_', '_tokens'] 
+tokenSupply_(uint256) := TMP_39(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+tokenBalanceLedger_[_customerAddress] = SafeMath.sub(tokenBalanceLedger_[_customerAddress],_tokens)
+
+IRs:
+REF_20(uint256) -> tokenBalanceLedger_[_customerAddress]
+REF_22(uint256) -> tokenBalanceLedger_[_customerAddress]
+TMP_40(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_22', '_tokens'] 
+REF_20(uint256) (->tokenBalanceLedger_) := TMP_40(uint256)"];
+13->14;
+14[label="Node Type: NEW VARIABLE 14
+
+EXPRESSION:
+_updatedPayouts = int256(profitPerShare_ * _tokens + (_taxedEthereum * magnitude))
+
+IRs:
+TMP_41(uint256) = profitPerShare_ * _tokens
+TMP_42(uint256) = _taxedEthereum * magnitude
+TMP_43(uint256) = TMP_41 + TMP_42
+TMP_44 = CONVERT TMP_43 to int256
+_updatedPayouts(int256) := TMP_44(int256)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+payoutsTo_[_customerAddress] -= _updatedPayouts
+
+IRs:
+REF_23(int256) -> payoutsTo_[_customerAddress]
+REF_23(-> payoutsTo_) = REF_23 - _updatedPayouts"];
+15->16;
+16[label="Node Type: IF 16
+
+EXPRESSION:
+tokenSupply_ > 0
+
+IRs:
+TMP_45(bool) = tokenSupply_ > 0
+CONDITION TMP_45"];
+16->17[label="True"];
+16->18[label="False"];
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+profitPerShare_ = SafeMath.add(profitPerShare_,(_dividends * magnitude) / tokenSupply_)
+
+IRs:
+TMP_46(uint256) = _dividends * magnitude
+TMP_47(uint256) = TMP_46 / tokenSupply_
+TMP_48(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['profitPerShare_', 'TMP_47'] 
+profitPerShare_(uint256) := TMP_48(uint256)"];
+17->18;
+18[label="Node Type: END_IF 18
+"];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+onTokenSell(_customerAddress,_tokens,_taxedEthereum)
+
+IRs:
+Emit onTokenSell(_customerAddress,_tokens,_taxedEthereum)"];
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+onlyTokenHolders()
+
+IRs:
+MODIFIER_CALL, God.onlyTokenHolders()()"];
+20->1;
+}
+// Function: 150.sol-God-sellPrice()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+tokenSupply_ == 0
+
+IRs:
+TMP_141(bool) = tokenSupply_ == 0
+CONDITION TMP_141"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+tokenPriceInitial_ - tokenPriceIncremental_
+
+IRs:
+TMP_142(uint256) = tokenPriceInitial_ - tokenPriceIncremental_
+RETURN TMP_142"];
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+_ethereum = tokensToEthereum_(1e18)
+
+IRs:
+TMP_143(uint256) = INTERNAL_CALL, God.tokensToEthereum_(uint256)(1000000000000000000)
+_ethereum(uint256) := TMP_143(uint256)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+_dividends = SafeMath.div(_ethereum,dividendFee_)
+
+IRs:
+TMP_144(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['_ethereum', 'dividendFee_'] 
+_dividends(uint256) := TMP_144(uint256)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+_taxedEthereum = SafeMath.sub(_ethereum,_dividends)
+
+IRs:
+TMP_145(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['_ethereum', '_dividends'] 
+_taxedEthereum(uint256) := TMP_145(uint256)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+_taxedEthereum
+
+IRs:
+RETURN _taxedEthereum"];
+}
+// Function: 150.sol-God-setAdministrator(address,bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_identifier != owner)
+
+IRs:
+TMP_109(bool) = _identifier != owner
+TMP_110(None) = SOLIDITY_CALL require(bool)(TMP_109)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+administrators[_identifier] = _status
+
+IRs:
+REF_62(bool) -> administrators[_identifier]
+REF_62(bool) (->administrators) := _status(bool)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyAdministrator()
+
+IRs:
+MODIFIER_CALL, God.onlyAdministrator()()"];
+3->1;
+}
+// Function: 150.sol-God-setBank(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+bankAddress = _identifier
+
+IRs:
+bankAddress(address) := _identifier(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+contractAddresses[_identifier] = true
+
+IRs:
+REF_60(bool) -> contractAddresses[_identifier]
+REF_60(bool) (->contractAddresses) := True(bool)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+tokenBalanceLedger_[_identifier] = value
+
+IRs:
+REF_61(uint256) -> tokenBalanceLedger_[_identifier]
+REF_61(uint256) (->tokenBalanceLedger_) := value(uint256)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyAdministrator()
+
+IRs:
+MODIFIER_CALL, God.onlyAdministrator()()"];
+4->1;
+}
+// Function: 150.sol-God-setIsProjectBonus(bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+isProjectBonus = value
+
+IRs:
+isProjectBonus(bool) := value(bool)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyAdministrator()
+
+IRs:
+MODIFIER_CALL, God.onlyAdministrator()()"];
+2->1;
+}
+// Function: 150.sol-God-setName(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+name = _name
+
+IRs:
+name(string) := _name(string)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyAdministrator()
+
+IRs:
+MODIFIER_CALL, God.onlyAdministrator()()"];
+2->1;
+}
+// Function: 150.sol-God-setStakingRequirement(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+stakingRequirement = _amountOfTokens
+
+IRs:
+stakingRequirement(uint256) := _amountOfTokens(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyAdministrator()
+
+IRs:
+MODIFIER_CALL, God.onlyAdministrator()()"];
+2->1;
+}
+// Function: 150.sol-God-setSymbol(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+symbol = _symbol
+
+IRs:
+symbol(string) := _symbol(string)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyAdministrator()
+
+IRs:
+MODIFIER_CALL, God.onlyAdministrator()()"];
+2->1;
+}
+// Function: 150.sol-God-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+decimals = 18
+
+IRs:
+decimals(uint8) := 18(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+dividendFee_ = 10
+
+IRs:
+dividendFee_(uint8) := 10(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+tokenPriceInitial_ = 100000000000
+
+IRs:
+tokenPriceInitial_(uint256) := 100000000000(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+tokenPriceIncremental_ = 10000000000
+
+IRs:
+tokenPriceIncremental_(uint256) := 10000000000(uint256)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+magnitude = 2 ** 64
+
+IRs:
+TMP_235(uint256) = 2 ** 64
+magnitude(uint256) := TMP_235(uint256)"];
+4->5;
+5[label="Node Type: OTHER_ENTRYPOINT 5
+
+EXPRESSION:
+MIN_TOKEN_TRANSFER = 1e10
+
+IRs:
+MIN_TOKEN_TRANSFER(uint256) := 10000000000(uint256)"];
+}
+// Function: 150.sol-God-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+name = God
+
+IRs:
+name(string) := God(string)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+symbol = God
+
+IRs:
+symbol(string) := God(string)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+stakingRequirement = 100e18
+
+IRs:
+stakingRequirement(uint256) := 100000000000000000000(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+tokenSupply_ = 0
+
+IRs:
+tokenSupply_(uint256) := 0(uint256)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+contractPayout = 0
+
+IRs:
+contractPayout(int256) := 0(int256)"];
+4->5;
+5[label="Node Type: OTHER_ENTRYPOINT 5
+
+EXPRESSION:
+isProjectBonus = true
+
+IRs:
+isProjectBonus(bool) := True(bool)"];
+5->6;
+6[label="Node Type: OTHER_ENTRYPOINT 6
+
+EXPRESSION:
+projectBonus = 0
+
+IRs:
+projectBonus(uint256) := 0(uint256)"];
+6->7;
+7[label="Node Type: OTHER_ENTRYPOINT 7
+
+EXPRESSION:
+projectBonusRate = 10
+
+IRs:
+projectBonusRate(uint256) := 10(uint256)"];
+}
+// Function: 150.sol-God-sqrt(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+z = (x + 1) / 2
+
+IRs:
+TMP_229(uint256) = x + 1
+TMP_230(uint256) = TMP_229 / 2
+z(uint256) := TMP_230(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+y = x
+
+IRs:
+y(uint256) := x(uint256)"];
+2->3;
+3[label="Node Type: BEGIN_LOOP 3
+"];
+3->4;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+z < y
+
+IRs:
+TMP_231(bool) = z < y
+CONDITION TMP_231"];
+4->5[label="True"];
+4->7[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+y = z
+
+IRs:
+y(uint256) := z(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+z = (x / z + z) / 2
+
+IRs:
+TMP_232(uint256) = x / z
+TMP_233(uint256) = TMP_232 + z
+TMP_234(uint256) = TMP_233 / 2
+z(uint256) := TMP_234(uint256)"];
+6->4;
+7[label="Node Type: END_LOOP 7
+"];
+7->8;
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+y
+
+IRs:
+RETURN y"];
+}
+// Function: 150.sol-God-takeProjectBonus(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(value <= projectBonus)
+
+IRs:
+TMP_119(bool) = value <= projectBonus
+TMP_120(None) = SOLIDITY_CALL require(bool)(TMP_119)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+to.transfer(value)
+
+IRs:
+Transfer dest:to value:value"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyAdministrator()
+
+IRs:
+MODIFIER_CALL, God.onlyAdministrator()()"];
+3->1;
+}
+// Function: 150.sol-God-tokensToEthereum_(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+tokens_ = (_tokens + 1e18)
+
+IRs:
+TMP_214(uint256) = _tokens + 1000000000000000000
+tokens_(uint256) := TMP_214(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+_tokenSupply = (tokenSupply_ + 1e18)
+
+IRs:
+TMP_215(uint256) = tokenSupply_ + 1000000000000000000
+_tokenSupply(uint256) := TMP_215(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+_etherReceived = (SafeMath.sub((((tokenPriceInitial_ + (tokenPriceIncremental_ * (_tokenSupply / 1e18))) - tokenPriceIncremental_) * (tokens_ - 1e18)),(tokenPriceIncremental_ * ((tokens_ ** 2 - tokens_) / 1e18)) / 2) / 1e18)
+
+IRs:
+TMP_216(uint256) = _tokenSupply / 1000000000000000000
+TMP_217(uint256) = tokenPriceIncremental_ * TMP_216
+TMP_218(uint256) = tokenPriceInitial_ + TMP_217
+TMP_219(uint256) = TMP_218 - tokenPriceIncremental_
+TMP_220(uint256) = tokens_ - 1000000000000000000
+TMP_221(uint256) = TMP_219 * TMP_220
+TMP_222(uint256) = tokens_ ** 2
+TMP_223(uint256) = TMP_222 - tokens_
+TMP_224(uint256) = TMP_223 / 1000000000000000000
+TMP_225(uint256) = tokenPriceIncremental_ * TMP_224
+TMP_226(uint256) = TMP_225 / 2
+TMP_227(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['TMP_221', 'TMP_226'] 
+TMP_228(uint256) = TMP_227 / 1000000000000000000
+_etherReceived(uint256) := TMP_228(uint256)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+_etherReceived
+
+IRs:
+RETURN _etherReceived"];
+}
+// Function: 150.sol-God-totalEthereumBalance()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+address(this).balance
+
+IRs:
+TMP_123 = CONVERT this to address
+TMP_124(uint256) = SOLIDITY_CALL balance(address)(TMP_123)
+RETURN TMP_124"];
+}
+// Function: 150.sol-God-totalSupply()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+tokenSupply_
+
+IRs:
+RETURN tokenSupply_"];
+}
+// Function: 150.sol-God-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+_customerAddress = msg.sender
+
+IRs:
+_customerAddress(address) := msg.sender(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_amountOfTokens >= MIN_TOKEN_TRANSFER && _amountOfTokens <= tokenBalanceLedger_[_customerAddress])
+
+IRs:
+TMP_51(bool) = _amountOfTokens >= MIN_TOKEN_TRANSFER
+REF_25(uint256) -> tokenBalanceLedger_[_customerAddress]
+TMP_52(bool) = _amountOfTokens <= REF_25
+TMP_53(bool) = TMP_51 && TMP_52
+TMP_54(None) = SOLIDITY_CALL require(bool)(TMP_53)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+transferFromInternal(_customerAddress,_toAddress,_amountOfTokens,empty)
+
+IRs:
+INTERNAL_CALL, God.transferFromInternal(address,address,uint256,bytes)(_customerAddress,_toAddress,_amountOfTokens,empty)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyTokenHolders()
+
+IRs:
+MODIFIER_CALL, God.onlyTokenHolders()()"];
+6->1;
+}
+// Function: 150.sol-God-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+_customerAddress = _from
+
+IRs:
+_customerAddress(address) := _from(address)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(_amountOfTokens >= MIN_TOKEN_TRANSFER && _amountOfTokens <= tokenBalanceLedger_[_customerAddress] && _amountOfTokens <= allowed[_customerAddress][msg.sender])
+
+IRs:
+TMP_87(bool) = _amountOfTokens >= MIN_TOKEN_TRANSFER
+REF_43(uint256) -> tokenBalanceLedger_[_customerAddress]
+TMP_88(bool) = _amountOfTokens <= REF_43
+TMP_89(bool) = TMP_87 && TMP_88
+REF_44(mapping(address => uint256)) -> allowed[_customerAddress]
+REF_45(uint256) -> REF_44[msg.sender]
+TMP_90(bool) = _amountOfTokens <= REF_45
+TMP_91(bool) = TMP_89 && TMP_90
+TMP_92(None) = SOLIDITY_CALL require(bool)(TMP_91)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+transferFromInternal(_from,_toAddress,_amountOfTokens,empty)
+
+IRs:
+INTERNAL_CALL, God.transferFromInternal(address,address,uint256,bytes)(_from,_toAddress,_amountOfTokens,empty)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+allowed[_from][msg.sender] = SafeMath.sub(allowed[_from][msg.sender],_amountOfTokens)
+
+IRs:
+REF_46(mapping(address => uint256)) -> allowed[_from]
+REF_47(uint256) -> REF_46[msg.sender]
+REF_49(mapping(address => uint256)) -> allowed[_from]
+REF_50(uint256) -> REF_49[msg.sender]
+TMP_94(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_50', '_amountOfTokens'] 
+REF_47(uint256) (->allowed) := TMP_94(uint256)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 150.sol-God-transferFromInternal(address,address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_toAddress != address(0x0))
+
+IRs:
+TMP_57 = CONVERT 0 to address
+TMP_58(bool) = _toAddress != TMP_57
+TMP_59(None) = SOLIDITY_CALL require(bool)(TMP_58)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+"];
+3->4;
+4[label="Node Type: INLINE ASM 4
+"];
+4->5;
+5[label="Node Type: END INLINE ASM 5
+"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+fromLength > 0 && toLength <= 0
+
+IRs:
+TMP_60(bool) = fromLength > 0
+TMP_61(bool) = toLength <= 0
+TMP_62(bool) = TMP_60 && TMP_61
+CONDITION TMP_62"];
+6->7[label="True"];
+6->11[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+contractAddresses[_from] = true
+
+IRs:
+REF_26(bool) -> contractAddresses[_from]
+REF_26(bool) (->contractAddresses) := True(bool)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+contractPayout -= int256(_amountOfTokens)
+
+IRs:
+TMP_63 = CONVERT _amountOfTokens to int256
+contractPayout(int256) = contractPayout - TMP_63"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+tokenSupply_ = SafeMath.add(tokenSupply_,_amountOfTokens)
+
+IRs:
+TMP_64(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['tokenSupply_', '_amountOfTokens'] 
+tokenSupply_(uint256) := TMP_64(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+payoutsTo_[_toAddress] += int256(profitPerShare_ * _amountOfTokens)
+
+IRs:
+REF_28(int256) -> payoutsTo_[_toAddress]
+TMP_65(uint256) = profitPerShare_ * _amountOfTokens
+TMP_66 = CONVERT TMP_65 to int256
+REF_28(-> payoutsTo_) = REF_28 + TMP_66"];
+10->23;
+11[label="Node Type: IF 11
+
+EXPRESSION:
+fromLength <= 0 && toLength > 0
+
+IRs:
+TMP_67(bool) = fromLength <= 0
+TMP_68(bool) = toLength > 0
+TMP_69(bool) = TMP_67 && TMP_68
+CONDITION TMP_69"];
+11->12[label="True"];
+11->16[label="False"];
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+contractAddresses[_toAddress] = true
+
+IRs:
+REF_29(bool) -> contractAddresses[_toAddress]
+REF_29(bool) (->contractAddresses) := True(bool)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+contractPayout += int256(_amountOfTokens)
+
+IRs:
+TMP_70 = CONVERT _amountOfTokens to int256
+contractPayout(int256) = contractPayout + TMP_70"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+tokenSupply_ = SafeMath.sub(tokenSupply_,_amountOfTokens)
+
+IRs:
+TMP_71(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['tokenSupply_', '_amountOfTokens'] 
+tokenSupply_(uint256) := TMP_71(uint256)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+payoutsTo_[_from] -= int256(profitPerShare_ * _amountOfTokens)
+
+IRs:
+REF_31(int256) -> payoutsTo_[_from]
+TMP_72(uint256) = profitPerShare_ * _amountOfTokens
+TMP_73 = CONVERT TMP_72 to int256
+REF_31(-> payoutsTo_) = REF_31 - TMP_73"];
+15->22;
+16[label="Node Type: IF 16
+
+EXPRESSION:
+fromLength > 0 && toLength > 0
+
+IRs:
+TMP_74(bool) = fromLength > 0
+TMP_75(bool) = toLength > 0
+TMP_76(bool) = TMP_74 && TMP_75
+CONDITION TMP_76"];
+16->17[label="True"];
+16->19[label="False"];
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+contractAddresses[_from] = true
+
+IRs:
+REF_32(bool) -> contractAddresses[_from]
+REF_32(bool) (->contractAddresses) := True(bool)"];
+17->18;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+contractAddresses[_toAddress] = true
+
+IRs:
+REF_33(bool) -> contractAddresses[_toAddress]
+REF_33(bool) (->contractAddresses) := True(bool)"];
+18->21;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+payoutsTo_[_from] -= int256(profitPerShare_ * _amountOfTokens)
+
+IRs:
+REF_34(int256) -> payoutsTo_[_from]
+TMP_77(uint256) = profitPerShare_ * _amountOfTokens
+TMP_78 = CONVERT TMP_77 to int256
+REF_34(-> payoutsTo_) = REF_34 - TMP_78"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+payoutsTo_[_toAddress] += int256(profitPerShare_ * _amountOfTokens)
+
+IRs:
+REF_35(int256) -> payoutsTo_[_toAddress]
+TMP_79(uint256) = profitPerShare_ * _amountOfTokens
+TMP_80 = CONVERT TMP_79 to int256
+REF_35(-> payoutsTo_) = REF_35 + TMP_80"];
+20->21;
+21[label="Node Type: END_IF 21
+"];
+21->22;
+22[label="Node Type: END_IF 22
+"];
+22->23;
+23[label="Node Type: END_IF 23
+"];
+23->24;
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+tokenBalanceLedger_[_from] = SafeMath.sub(tokenBalanceLedger_[_from],_amountOfTokens)
+
+IRs:
+REF_36(uint256) -> tokenBalanceLedger_[_from]
+REF_38(uint256) -> tokenBalanceLedger_[_from]
+TMP_81(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_38', '_amountOfTokens'] 
+REF_36(uint256) (->tokenBalanceLedger_) := TMP_81(uint256)"];
+24->25;
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+tokenBalanceLedger_[_toAddress] = SafeMath.add(tokenBalanceLedger_[_toAddress],_amountOfTokens)
+
+IRs:
+REF_39(uint256) -> tokenBalanceLedger_[_toAddress]
+REF_41(uint256) -> tokenBalanceLedger_[_toAddress]
+TMP_82(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_41', '_amountOfTokens'] 
+REF_39(uint256) (->tokenBalanceLedger_) := TMP_82(uint256)"];
+25->26;
+26[label="Node Type: IF 26
+
+EXPRESSION:
+toLength > 0
+
+IRs:
+TMP_83(bool) = toLength > 0
+CONDITION TMP_83"];
+26->27[label="True"];
+26->29[label="False"];
+27[label="Node Type: NEW VARIABLE 27
+
+EXPRESSION:
+receiver = ERC223Receiving(_toAddress)
+
+IRs:
+TMP_84 = CONVERT _toAddress to ERC223Receiving
+receiver(ERC223Receiving) := TMP_84(ERC223Receiving)"];
+27->28;
+28[label="Node Type: EXPRESSION 28
+
+EXPRESSION:
+receiver.tokenFallback(_from,_amountOfTokens,_data)
+
+IRs:
+TMP_85(bool) = HIGH_LEVEL_CALL, dest:receiver(ERC223Receiving), function:tokenFallback, arguments:['_from', '_amountOfTokens', '_data']  "];
+28->29;
+29[label="Node Type: END_IF 29
+"];
+29->30;
+30[label="Node Type: EXPRESSION 30
+
+EXPRESSION:
+Transfer(_from,_toAddress,_amountOfTokens)
+
+IRs:
+Emit Transfer(_from,_toAddress,_amountOfTokens)"];
+}
+// Function: 150.sol-God-transferTo(address,address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_from != msg.sender
+
+IRs:
+TMP_95(bool) = _from != msg.sender
+CONDITION TMP_95"];
+1->2[label="True"];
+1->4[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_amountOfTokens >= MIN_TOKEN_TRANSFER && _amountOfTokens <= tokenBalanceLedger_[_from] && _amountOfTokens <= allowed[_from][msg.sender])
+
+IRs:
+TMP_96(bool) = _amountOfTokens >= MIN_TOKEN_TRANSFER
+REF_51(uint256) -> tokenBalanceLedger_[_from]
+TMP_97(bool) = _amountOfTokens <= REF_51
+TMP_98(bool) = TMP_96 && TMP_97
+REF_52(mapping(address => uint256)) -> allowed[_from]
+REF_53(uint256) -> REF_52[msg.sender]
+TMP_99(bool) = _amountOfTokens <= REF_53
+TMP_100(bool) = TMP_98 && TMP_99
+TMP_101(None) = SOLIDITY_CALL require(bool)(TMP_100)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+allowed[_from][msg.sender] = SafeMath.sub(allowed[_from][msg.sender],_amountOfTokens)
+
+IRs:
+REF_54(mapping(address => uint256)) -> allowed[_from]
+REF_55(uint256) -> REF_54[msg.sender]
+REF_57(mapping(address => uint256)) -> allowed[_from]
+REF_58(uint256) -> REF_57[msg.sender]
+TMP_102(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_58', '_amountOfTokens'] 
+REF_55(uint256) (->allowed) := TMP_102(uint256)"];
+3->5;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool)(_amountOfTokens >= MIN_TOKEN_TRANSFER && _amountOfTokens <= tokenBalanceLedger_[_from])
+
+IRs:
+TMP_103(bool) = _amountOfTokens >= MIN_TOKEN_TRANSFER
+REF_59(uint256) -> tokenBalanceLedger_[_from]
+TMP_104(bool) = _amountOfTokens <= REF_59
+TMP_105(bool) = TMP_103 && TMP_104
+TMP_106(None) = SOLIDITY_CALL require(bool)(TMP_105)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+transferFromInternal(_from,_to,_amountOfTokens,_data)
+
+IRs:
+INTERNAL_CALL, God.transferFromInternal(address,address,uint256,bytes)(_from,_to,_amountOfTokens,_data)"];
+}
+// Function: 150.sol-God-withdraw()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->8;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+_customerAddress = msg.sender
+
+IRs:
+_customerAddress(address) := msg.sender(address)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+_dividends = myDividends(false)
+
+IRs:
+TMP_25(uint256) = INTERNAL_CALL, God.myDividends(bool)(False)
+_dividends(uint256) := TMP_25(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+payoutsTo_[_customerAddress] += int256(_dividends * magnitude)
+
+IRs:
+REF_9(int256) -> payoutsTo_[_customerAddress]
+TMP_26(uint256) = _dividends * magnitude
+TMP_27 = CONVERT TMP_26 to int256
+REF_9(-> payoutsTo_) = REF_9 + TMP_27"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+_dividends += referralBalance_[_customerAddress]
+
+IRs:
+REF_10(uint256) -> referralBalance_[_customerAddress]
+_dividends(uint256) = _dividends + REF_10"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+referralBalance_[_customerAddress] = 0
+
+IRs:
+REF_11(uint256) -> referralBalance_[_customerAddress]
+REF_11(uint256) (->referralBalance_) := 0(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+_customerAddress.transfer(_dividends)
+
+IRs:
+Transfer dest:_customerAddress value:_dividends"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+onWithdraw(_customerAddress,_dividends)
+
+IRs:
+Emit onWithdraw(_customerAddress,_dividends)"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+onlyProfitsHolders()
+
+IRs:
+MODIFIER_CALL, God.onlyProfitsHolders()()"];
+8->1;
+}
+// Function: 150.sol-SafeMath-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_252(uint256) = a + b
+c(uint256) := TMP_252(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(c >= a)
+
+IRs:
+TMP_253(bool) = c >= a
+TMP_254(None) = SOLIDITY_CALL assert(bool)(TMP_253)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 150.sol-SafeMath-div(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a / b
+
+IRs:
+TMP_248(uint256) = a / b
+c(uint256) := TMP_248(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 150.sol-SafeMath-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+a == 0
+
+IRs:
+TMP_243(bool) = a == 0
+CONDITION TMP_243"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_244(uint256) = a * b
+c(uint256) := TMP_244(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+assert(bool)(c / a == b)
+
+IRs:
+TMP_245(uint256) = c / a
+TMP_246(bool) = TMP_245 == b
+TMP_247(None) = SOLIDITY_CALL assert(bool)(TMP_246)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 150.sol-SafeMath-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(b <= a)
+
+IRs:
+TMP_249(bool) = b <= a
+TMP_250(None) = SOLIDITY_CALL assert(bool)(TMP_249)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_251(uint256) = a - b
+RETURN TMP_251"];
+}
+}

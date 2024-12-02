@@ -1,0 +1,4042 @@
+digraph G {
+// Function: 2553.sol-ERC20Basic-balanceOf(address)
+digraph{
+}
+// Function: 2553.sol-ERC20Basic-transfer(address,uint256)
+digraph{
+}
+// Function: 2553.sol-Wallet-addOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->15;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+isOwner(_owner)
+
+IRs:
+TMP_241(bool) = INTERNAL_CALL, multiowned.isOwner(address)(_owner)
+CONDITION TMP_241"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+clearPending()
+
+IRs:
+INTERNAL_CALL, Wallet.clearPending()()"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+m_numOwners >= c_maxOwners
+
+IRs:
+TMP_243(bool) = m_numOwners >= c_maxOwners
+CONDITION TMP_243"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+reorganizeOwners()
+
+IRs:
+TMP_244(bool) = INTERNAL_CALL, multiowned.reorganizeOwners()()"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: IF 8
+
+EXPRESSION:
+m_numOwners >= c_maxOwners
+
+IRs:
+TMP_245(bool) = m_numOwners >= c_maxOwners
+CONDITION TMP_245"];
+8->9[label="True"];
+8->10[label="False"];
+9[label="Node Type: RETURN 9
+"];
+10[label="Node Type: END_IF 10
+"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+m_numOwners ++
+
+IRs:
+TMP_246(uint256) := m_numOwners(uint256)
+m_numOwners(uint256) = m_numOwners + 1"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+m_owners[m_numOwners] = uint256(_owner)
+
+IRs:
+REF_142(uint256) -> m_owners[m_numOwners]
+TMP_247 = CONVERT _owner to uint256
+REF_142(uint256) (->m_owners) := TMP_247(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+m_ownerIndex[uint256(_owner)] = m_numOwners
+
+IRs:
+TMP_248 = CONVERT _owner to uint256
+REF_143(uint256) -> m_ownerIndex[TMP_248]
+REF_143(uint256) (->m_ownerIndex) := m_numOwners(uint256)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+OwnerAdded(_owner)
+
+IRs:
+Emit OwnerAdded(_owner)"];
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+onlymanyowners(keccak256()(abi.encodePacked(msg.data,block.number)))
+
+IRs:
+TMP_250(bytes) = SOLIDITY_CALL abi.encodePacked()(msg.data,block.number)
+TMP_251(bytes32) = SOLIDITY_CALL keccak256()(TMP_250)
+MODIFIER_CALL, multiowned.onlymanyowners(bytes32)(TMP_251)"];
+15->1;
+}
+// Function: 2553.sol-Wallet-changeOwner(address,address)
+digraph{
+}
+// Function: 2553.sol-Wallet-changeRequirement(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->7;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_newRequired > m_numOwners
+
+IRs:
+TMP_264(bool) = _newRequired > m_numOwners
+CONDITION TMP_264"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+m_required = _newRequired
+
+IRs:
+m_required(uint256) := _newRequired(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+clearPending()
+
+IRs:
+INTERNAL_CALL, Wallet.clearPending()()"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+RequirementChanged(_newRequired)
+
+IRs:
+Emit RequirementChanged(_newRequired)"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+onlymanyowners(keccak256()(abi.encodePacked(msg.data,block.number)))
+
+IRs:
+TMP_267(bytes) = SOLIDITY_CALL abi.encodePacked()(msg.data,block.number)
+TMP_268(bytes32) = SOLIDITY_CALL keccak256()(TMP_267)
+MODIFIER_CALL, multiowned.onlymanyowners(bytes32)(TMP_268)"];
+7->1;
+}
+// Function: 2553.sol-Wallet-clearPending()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+length = m_pendingIndex.length
+
+IRs:
+REF_229 -> LENGTH m_pendingIndex
+length(uint256) := REF_229(uint256)"];
+1->4;
+2[label="Node Type: BEGIN_LOOP 2
+"];
+2->5;
+3[label="Node Type: END_LOOP 3
+"];
+3->8;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+4->2;
+5[label="Node Type: IF_LOOP 5
+
+EXPRESSION:
+i < length
+
+IRs:
+TMP_343(bool) = i < length
+CONDITION TMP_343"];
+5->6[label="True"];
+5->3[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+delete m_txs[m_pendingIndex[i]]
+
+IRs:
+REF_230(bytes32) -> m_pendingIndex[i]
+REF_231(Wallet.Transaction) -> m_txs[REF_230]
+m_txs = delete REF_231 "];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+++ i
+
+IRs:
+i(uint256) = i + 1"];
+7->5;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+super.clearPending()
+
+IRs:
+INTERNAL_CALL, multiowned.clearPending()()"];
+}
+// Function: 2553.sol-Wallet-confirmAndCheck(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+ownerIndex = m_ownerIndex[uint256(msg.sender)]
+
+IRs:
+TMP_277 = CONVERT msg.sender to uint256
+REF_154(uint256) -> m_ownerIndex[TMP_277]
+ownerIndex(uint256) := REF_154(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+ownerIndex == 0
+
+IRs:
+TMP_278(bool) = ownerIndex == 0
+CONDITION TMP_278"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+pending = m_pending[_operation]
+
+IRs:
+REF_155(multiowned.PendingState) -> m_pending[_operation]
+pending(multiowned.PendingState) := REF_155(multiowned.PendingState)"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+pending.yetNeeded == 0
+
+IRs:
+REF_156(uint256) -> pending.yetNeeded
+TMP_279(bool) = REF_156 == 0
+CONDITION TMP_279"];
+6->7[label="True"];
+6->11[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+pending.yetNeeded = m_required
+
+IRs:
+REF_157(uint256) -> pending.yetNeeded
+REF_157(uint256) (->pending) := m_required(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+pending.ownersDone = 0
+
+IRs:
+REF_158(uint256) -> pending.ownersDone
+REF_158(uint256) (->pending) := 0(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+pending.index = m_pendingIndex.length ++
+
+IRs:
+REF_159(uint256) -> pending.index
+REF_160 -> LENGTH m_pendingIndex
+TMP_280(uint256) := REF_160(uint256)
+REF_160(-> m_pendingIndex) = REF_160 + 1
+REF_159(uint256) (->pending) := TMP_280(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+m_pendingIndex[pending.index] = _operation
+
+IRs:
+REF_161(uint256) -> pending.index
+REF_162(bytes32) -> m_pendingIndex[REF_161]
+REF_162(bytes32) (->m_pendingIndex) := _operation(bytes32)"];
+10->11;
+11[label="Node Type: END_IF 11
+"];
+11->12;
+12[label="Node Type: NEW VARIABLE 12
+
+EXPRESSION:
+ownerIndexBit = 2 ** ownerIndex
+
+IRs:
+TMP_281(uint256) = 2 ** ownerIndex
+ownerIndexBit(uint256) := TMP_281(uint256)"];
+12->13;
+13[label="Node Type: IF 13
+
+EXPRESSION:
+pending.ownersDone & ownerIndexBit == 0
+
+IRs:
+REF_163(uint256) -> pending.ownersDone
+TMP_282(uint256) = REF_163 & ownerIndexBit
+TMP_283(bool) = TMP_282 == 0
+CONDITION TMP_283"];
+13->14[label="True"];
+13->22[label="False"];
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+Confirmation(msg.sender,_operation)
+
+IRs:
+Emit Confirmation(msg.sender,_operation)"];
+14->15;
+15[label="Node Type: IF 15
+
+EXPRESSION:
+pending.yetNeeded <= 1
+
+IRs:
+REF_164(uint256) -> pending.yetNeeded
+TMP_285(bool) = REF_164 <= 1
+CONDITION TMP_285"];
+15->16[label="True"];
+15->19[label="False"];
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+delete m_pendingIndex[m_pending[_operation].index]
+
+IRs:
+REF_165(multiowned.PendingState) -> m_pending[_operation]
+REF_166(uint256) -> REF_165.index
+REF_167(bytes32) -> m_pendingIndex[REF_166]
+m_pendingIndex = delete REF_167 "];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+delete m_pending[_operation]
+
+IRs:
+REF_168(multiowned.PendingState) -> m_pending[_operation]
+m_pending = delete REF_168 "];
+17->18;
+18[label="Node Type: RETURN 18
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+pending.yetNeeded --
+
+IRs:
+REF_169(uint256) -> pending.yetNeeded
+TMP_286(uint256) := REF_169(uint256)
+REF_169(-> pending) = REF_169 - 1"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+pending.ownersDone |= ownerIndexBit
+
+IRs:
+REF_170(uint256) -> pending.ownersDone
+REF_170(-> pending) = REF_170 | ownerIndexBit"];
+20->21;
+21[label="Node Type: END_IF 21
+"];
+21->22;
+22[label="Node Type: END_IF 22
+"];
+}
+// Function: 2553.sol-Wallet-confirmERC20(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->8;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+m_txs[_h].to != 0
+
+IRs:
+REF_215(Wallet.Transaction) -> m_txs[_h]
+REF_216(address) -> REF_215.to
+TMP_338(bool) = REF_216 != 0
+CONDITION TMP_338"];
+1->2[label="True"];
+1->7[label="False"];
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+token = ERC20Basic(m_txs[_h].token)
+
+IRs:
+REF_217(Wallet.Transaction) -> m_txs[_h]
+REF_218(address) -> REF_217.token
+TMP_339 = CONVERT REF_218 to ERC20Basic
+token(ERC20Basic) := TMP_339(ERC20Basic)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+token.transfer(m_txs[_h].to,m_txs[_h].value)
+
+IRs:
+REF_220(Wallet.Transaction) -> m_txs[_h]
+REF_221(address) -> REF_220.to
+REF_222(Wallet.Transaction) -> m_txs[_h]
+REF_223(uint256) -> REF_222.value
+TMP_340(bool) = HIGH_LEVEL_CALL, dest:token(ERC20Basic), function:transfer, arguments:['REF_221', 'REF_223']  "];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+MultiTransact(msg.sender,_h,m_txs[_h].value,m_txs[_h].to)
+
+IRs:
+REF_224(Wallet.Transaction) -> m_txs[_h]
+REF_225(uint256) -> REF_224.value
+REF_226(Wallet.Transaction) -> m_txs[_h]
+REF_227(address) -> REF_226.to
+Emit MultiTransact(msg.sender,_h,REF_225,REF_227)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+delete m_txs[_h]
+
+IRs:
+REF_228(Wallet.Transaction) -> m_txs[_h]
+m_txs = delete REF_228 "];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+7[label="Node Type: END_IF 7
+"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+onlymanyowners(_h)
+
+IRs:
+MODIFIER_CALL, multiowned.onlymanyowners(bytes32)(_h)"];
+8->1;
+}
+// Function: 2553.sol-Wallet-confirmETH(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->7;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+m_txs[_h].to != 0
+
+IRs:
+REF_193(Wallet.Transaction) -> m_txs[_h]
+REF_194(address) -> REF_193.to
+TMP_322(bool) = REF_194 != 0
+CONDITION TMP_322"];
+1->2[label="True"];
+1->6[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+m_txs[_h].to.transfer(m_txs[_h].value)
+
+IRs:
+REF_195(Wallet.Transaction) -> m_txs[_h]
+REF_196(address) -> REF_195.to
+REF_198(Wallet.Transaction) -> m_txs[_h]
+REF_199(uint256) -> REF_198.value
+Transfer dest:REF_196 value:REF_199"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+MultiTransact(msg.sender,_h,m_txs[_h].value,m_txs[_h].to)
+
+IRs:
+REF_200(Wallet.Transaction) -> m_txs[_h]
+REF_201(uint256) -> REF_200.value
+REF_202(Wallet.Transaction) -> m_txs[_h]
+REF_203(address) -> REF_202.to
+Emit MultiTransact(msg.sender,_h,REF_201,REF_203)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+delete m_txs[_h]
+
+IRs:
+REF_204(Wallet.Transaction) -> m_txs[_h]
+m_txs = delete REF_204 "];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+6[label="Node Type: END_IF 6
+"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+onlymanyowners(_h)
+
+IRs:
+MODIFIER_CALL, multiowned.onlymanyowners(bytes32)(_h)"];
+7->1;
+}
+// Function: 2553.sol-Wallet-constructor(address[],uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+m_numOwners = _owners.length + 1
+
+IRs:
+REF_124 -> LENGTH _owners
+TMP_215(uint256) = REF_124 + 1
+m_numOwners(uint256) := TMP_215(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+m_owners[1] = uint256(msg.sender)
+
+IRs:
+REF_125(uint256) -> m_owners[1]
+TMP_216 = CONVERT msg.sender to uint256
+REF_125(uint256) (->m_owners) := TMP_216(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+m_ownerIndex[uint256(msg.sender)] = 1
+
+IRs:
+TMP_217 = CONVERT msg.sender to uint256
+REF_126(uint256) -> m_ownerIndex[TMP_217]
+REF_126(uint256) (->m_ownerIndex) := 1(uint256)"];
+3->6;
+4[label="Node Type: BEGIN_LOOP 4
+"];
+4->7;
+5[label="Node Type: END_LOOP 5
+"];
+5->11;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+6->4;
+7[label="Node Type: IF_LOOP 7
+
+EXPRESSION:
+i < _owners.length
+
+IRs:
+REF_127 -> LENGTH _owners
+TMP_218(bool) = i < REF_127
+CONDITION TMP_218"];
+7->8[label="True"];
+7->5[label="False"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+m_owners[2 + i] = uint256(_owners[i])
+
+IRs:
+TMP_219(uint256) = 2 + i
+REF_128(uint256) -> m_owners[TMP_219]
+REF_129(address) -> _owners[i]
+TMP_220 = CONVERT REF_129 to uint256
+REF_128(uint256) (->m_owners) := TMP_220(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+m_ownerIndex[uint256(_owners[i])] = 2 + i
+
+IRs:
+REF_130(address) -> _owners[i]
+TMP_221 = CONVERT REF_130 to uint256
+REF_131(uint256) -> m_ownerIndex[TMP_221]
+TMP_222(uint256) = 2 + i
+REF_131(uint256) (->m_ownerIndex) := TMP_222(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+++ i
+
+IRs:
+i(uint256) = i + 1"];
+10->7;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+m_required = _required
+
+IRs:
+m_required(uint256) := _required(uint256)"];
+}
+// Function: 2553.sol-Wallet-constructor(address[],uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+multiowned(_owners,_required)
+
+IRs:
+INTERNAL_CALL, multiowned.constructor(address[],uint256)(_owners,_required)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+daylimit(_daylimit)
+
+IRs:
+INTERNAL_CALL, daylimit.constructor(uint256)(_daylimit)"];
+}
+// Function: 2553.sol-Wallet-constructor(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+m_dailyLimit = _limit
+
+IRs:
+m_dailyLimit(uint256) := _limit(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+m_lastDay = today()
+
+IRs:
+TMP_198(uint256) = INTERNAL_CALL, daylimit.today()()
+m_lastDay(uint256) := TMP_198(uint256)"];
+}
+// Function: 2553.sol-Wallet-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.value > 0
+
+IRs:
+TMP_309(bool) = msg.value > 0
+CONDITION TMP_309"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Deposit(msg.sender,msg.value)
+
+IRs:
+Emit Deposit(msg.sender,msg.value)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 2553.sol-Wallet-hasConfirmed(bytes32,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+pending = m_pending[_operation]
+
+IRs:
+REF_151(multiowned.PendingState) -> m_pending[_operation]
+pending(multiowned.PendingState) := REF_151(multiowned.PendingState)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+ownerIndex = m_ownerIndex[uint256(_owner)]
+
+IRs:
+TMP_272 = CONVERT _owner to uint256
+REF_152(uint256) -> m_ownerIndex[TMP_272]
+ownerIndex(uint256) := REF_152(uint256)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+ownerIndex == 0
+
+IRs:
+TMP_273(bool) = ownerIndex == 0
+CONDITION TMP_273"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+ownerIndexBit = 2 ** ownerIndex
+
+IRs:
+TMP_274(uint256) = 2 ** ownerIndex
+ownerIndexBit(uint256) := TMP_274(uint256)"];
+6->7;
+7[label="Node Type: IF 7
+
+EXPRESSION:
+pending.ownersDone & ownerIndexBit == 0
+
+IRs:
+REF_153(uint256) -> pending.ownersDone
+TMP_275(uint256) = REF_153 & ownerIndexBit
+TMP_276(bool) = TMP_275 == 0
+CONDITION TMP_276"];
+7->8[label="True"];
+7->9[label="False"];
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+9[label="Node Type: RETURN 9
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 2553.sol-Wallet-isOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+m_ownerIndex[uint256(_addr)] > 0
+
+IRs:
+TMP_270 = CONVERT _addr to uint256
+REF_150(uint256) -> m_ownerIndex[TMP_270]
+TMP_271(bool) = REF_150 > 0
+RETURN TMP_271"];
+}
+// Function: 2553.sol-Wallet-kill(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+selfdestruct(address)(_to)
+
+IRs:
+TMP_305(None) = SOLIDITY_CALL selfdestruct(address)(_to)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlymanyowners(keccak256()(abi.encodePacked(msg.data,block.number)))
+
+IRs:
+TMP_306(bytes) = SOLIDITY_CALL abi.encodePacked()(msg.data,block.number)
+TMP_307(bytes32) = SOLIDITY_CALL keccak256()(TMP_306)
+MODIFIER_CALL, multiowned.onlymanyowners(bytes32)(TMP_307)"];
+2->1;
+}
+// Function: 2553.sol-Wallet-limitedDaily(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+underLimit(_value)
+
+IRs:
+TMP_345(bool) = INTERNAL_CALL, daylimit.underLimit(uint256)(_value)
+CONDITION TMP_345"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: _ 2
+"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 2553.sol-Wallet-onlymanyowners(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+confirmAndCheck(_operation)
+
+IRs:
+TMP_347(bool) = INTERNAL_CALL, multiowned.confirmAndCheck(bytes32)(_operation)
+CONDITION TMP_347"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: _ 2
+"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 2553.sol-Wallet-onlyowner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+isOwner(msg.sender)
+
+IRs:
+TMP_346(bool) = INTERNAL_CALL, multiowned.isOwner(address)(msg.sender)
+CONDITION TMP_346"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: _ 2
+"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 2553.sol-Wallet-removeOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->13;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+ownerIndex = m_ownerIndex[uint256(_owner)]
+
+IRs:
+TMP_253 = CONVERT _owner to uint256
+REF_145(uint256) -> m_ownerIndex[TMP_253]
+ownerIndex(uint256) := REF_145(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+ownerIndex == 0
+
+IRs:
+TMP_254(bool) = ownerIndex == 0
+CONDITION TMP_254"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+m_required > m_numOwners - 1
+
+IRs:
+TMP_255(uint256) = m_numOwners - 1
+TMP_256(bool) = m_required > TMP_255
+CONDITION TMP_256"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: RETURN 6
+"];
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+m_owners[ownerIndex] = 0
+
+IRs:
+REF_146(uint256) -> m_owners[ownerIndex]
+REF_146(uint256) (->m_owners) := 0(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+m_ownerIndex[uint256(_owner)] = 0
+
+IRs:
+TMP_257 = CONVERT _owner to uint256
+REF_147(uint256) -> m_ownerIndex[TMP_257]
+REF_147(uint256) (->m_ownerIndex) := 0(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+clearPending()
+
+IRs:
+INTERNAL_CALL, Wallet.clearPending()()"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+reorganizeOwners()
+
+IRs:
+TMP_259(bool) = INTERNAL_CALL, multiowned.reorganizeOwners()()"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+OwnerRemoved(_owner)
+
+IRs:
+Emit OwnerRemoved(_owner)"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+onlymanyowners(keccak256()(abi.encodePacked(msg.data,block.number)))
+
+IRs:
+TMP_261(bytes) = SOLIDITY_CALL abi.encodePacked()(msg.data,block.number)
+TMP_262(bytes32) = SOLIDITY_CALL keccak256()(TMP_261)
+MODIFIER_CALL, multiowned.onlymanyowners(bytes32)(TMP_262)"];
+13->1;
+}
+// Function: 2553.sol-Wallet-reorganizeOwners()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+free = 1
+
+IRs:
+free(uint256) := 1(uint256)"];
+1->2;
+2[label="Node Type: BEGIN_LOOP 2
+"];
+2->3;
+3[label="Node Type: IF_LOOP 3
+
+EXPRESSION:
+free < m_numOwners
+
+IRs:
+TMP_287(bool) = free < m_numOwners
+CONDITION TMP_287"];
+3->4[label="True"];
+3->17[label="False"];
+4[label="Node Type: BEGIN_LOOP 4
+"];
+4->5;
+5[label="Node Type: IF_LOOP 5
+
+EXPRESSION:
+free < m_numOwners && m_owners[free] != 0
+
+IRs:
+TMP_288(bool) = free < m_numOwners
+REF_171(uint256) -> m_owners[free]
+TMP_289(bool) = REF_171 != 0
+TMP_290(bool) = TMP_288 && TMP_289
+CONDITION TMP_290"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+free ++
+
+IRs:
+TMP_291(uint256) := free(uint256)
+free(uint256) = free + 1"];
+6->5;
+7[label="Node Type: END_LOOP 7
+"];
+7->8;
+8[label="Node Type: BEGIN_LOOP 8
+"];
+8->9;
+9[label="Node Type: IF_LOOP 9
+
+EXPRESSION:
+m_numOwners > 1 && m_owners[m_numOwners] == 0
+
+IRs:
+TMP_292(bool) = m_numOwners > 1
+REF_172(uint256) -> m_owners[m_numOwners]
+TMP_293(bool) = REF_172 == 0
+TMP_294(bool) = TMP_292 && TMP_293
+CONDITION TMP_294"];
+9->10[label="True"];
+9->11[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+m_numOwners --
+
+IRs:
+TMP_295(uint256) := m_numOwners(uint256)
+m_numOwners(uint256) = m_numOwners - 1"];
+10->9;
+11[label="Node Type: END_LOOP 11
+"];
+11->12;
+12[label="Node Type: IF 12
+
+EXPRESSION:
+free < m_numOwners && m_owners[m_numOwners] != 0 && m_owners[free] == 0
+
+IRs:
+TMP_296(bool) = free < m_numOwners
+REF_173(uint256) -> m_owners[m_numOwners]
+TMP_297(bool) = REF_173 != 0
+TMP_298(bool) = TMP_296 && TMP_297
+REF_174(uint256) -> m_owners[free]
+TMP_299(bool) = REF_174 == 0
+TMP_300(bool) = TMP_298 && TMP_299
+CONDITION TMP_300"];
+12->13[label="True"];
+12->16[label="False"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+m_owners[free] = m_owners[m_numOwners]
+
+IRs:
+REF_175(uint256) -> m_owners[free]
+REF_176(uint256) -> m_owners[m_numOwners]
+REF_175(uint256) (->m_owners) := REF_176(uint256)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+m_ownerIndex[m_owners[free]] = free
+
+IRs:
+REF_177(uint256) -> m_owners[free]
+REF_178(uint256) -> m_ownerIndex[REF_177]
+REF_178(uint256) (->m_ownerIndex) := free(uint256)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+m_owners[m_numOwners] = 0
+
+IRs:
+REF_179(uint256) -> m_owners[m_numOwners]
+REF_179(uint256) (->m_owners) := 0(uint256)"];
+15->16;
+16[label="Node Type: END_IF 16
+"];
+16->3;
+17[label="Node Type: END_LOOP 17
+"];
+}
+// Function: 2553.sol-Wallet-resetSpentToday()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+m_spentToday = 0
+
+IRs:
+m_spentToday(uint256) := 0(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlymanyowners(keccak256()(abi.encodePacked(msg.data,block.number)))
+
+IRs:
+TMP_202(bytes) = SOLIDITY_CALL abi.encodePacked()(msg.data,block.number)
+TMP_203(bytes32) = SOLIDITY_CALL keccak256()(TMP_202)
+MODIFIER_CALL, multiowned.onlymanyowners(bytes32)(TMP_203)"];
+2->1;
+}
+// Function: 2553.sol-Wallet-revoke(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+ownerIndex = m_ownerIndex[uint256(msg.sender)]
+
+IRs:
+TMP_223 = CONVERT msg.sender to uint256
+REF_132(uint256) -> m_ownerIndex[TMP_223]
+ownerIndex(uint256) := REF_132(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+ownerIndex == 0
+
+IRs:
+TMP_224(bool) = ownerIndex == 0
+CONDITION TMP_224"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+ownerIndexBit = 2 ** ownerIndex
+
+IRs:
+TMP_225(uint256) = 2 ** ownerIndex
+ownerIndexBit(uint256) := TMP_225(uint256)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+pending = m_pending[_operation]
+
+IRs:
+REF_133(multiowned.PendingState) -> m_pending[_operation]
+pending(multiowned.PendingState) := REF_133(multiowned.PendingState)"];
+6->7;
+7[label="Node Type: IF 7
+
+EXPRESSION:
+pending.ownersDone & ownerIndexBit > 0
+
+IRs:
+REF_134(uint256) -> pending.ownersDone
+TMP_226(uint256) = REF_134 & ownerIndexBit
+TMP_227(bool) = TMP_226 > 0
+CONDITION TMP_227"];
+7->8[label="True"];
+7->11[label="False"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+pending.yetNeeded ++
+
+IRs:
+REF_135(uint256) -> pending.yetNeeded
+TMP_228(uint256) := REF_135(uint256)
+REF_135(-> pending) = REF_135 + 1"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+pending.ownersDone -= ownerIndexBit
+
+IRs:
+REF_136(uint256) -> pending.ownersDone
+REF_136(-> pending) = REF_136 - ownerIndexBit"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+Revoke(msg.sender,_operation)
+
+IRs:
+Emit Revoke(msg.sender,_operation)"];
+10->11;
+11[label="Node Type: END_IF 11
+"];
+}
+// Function: 2553.sol-Wallet-setDailyLimit(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+m_dailyLimit = _newLimit
+
+IRs:
+m_dailyLimit(uint256) := _newLimit(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlymanyowners(keccak256()(abi.encodePacked(msg.data,block.number)))
+
+IRs:
+TMP_199(bytes) = SOLIDITY_CALL abi.encodePacked()(msg.data,block.number)
+TMP_200(bytes32) = SOLIDITY_CALL keccak256()(TMP_199)
+MODIFIER_CALL, multiowned.onlymanyowners(bytes32)(TMP_200)"];
+2->1;
+}
+// Function: 2553.sol-Wallet-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+c_maxOwners = 250
+
+IRs:
+c_maxOwners(uint256) := 250(uint256)"];
+}
+// Function: 2553.sol-Wallet-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+version = 3
+
+IRs:
+version(uint256) := 3(uint256)"];
+}
+// Function: 2553.sol-Wallet-today()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+block.timestamp / 86400
+
+IRs:
+TMP_214(uint256) = block.timestamp / 86400
+RETURN TMP_214"];
+}
+// Function: 2553.sol-Wallet-transferERC20(address,uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->14;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+underLimit(_value)
+
+IRs:
+TMP_326(bool) = INTERNAL_CALL, daylimit.underLimit(uint256)(_value)
+CONDITION TMP_326"];
+1->2[label="True"];
+1->6[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+SingleTransact(msg.sender,_value,_to)
+
+IRs:
+Emit SingleTransact(msg.sender,_value,_to)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+token = ERC20Basic(_token)
+
+IRs:
+TMP_328 = CONVERT _token to ERC20Basic
+token(ERC20Basic) := TMP_328(ERC20Basic)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+token.transfer(_to,_value)
+
+IRs:
+TMP_329(bool) = HIGH_LEVEL_CALL, dest:token(ERC20Basic), function:transfer, arguments:['_to', '_value']  "];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+_r = keccak256()(abi.encodePacked(msg.data,block.number))
+
+IRs:
+TMP_330(bytes) = SOLIDITY_CALL abi.encodePacked()(msg.data,block.number)
+TMP_331(bytes32) = SOLIDITY_CALL keccak256()(TMP_330)
+_r(bytes32) := TMP_331(bytes32)"];
+7->8;
+8[label="Node Type: IF 8
+
+EXPRESSION:
+! confirmERC20(_r) && m_txs[_r].to == 0
+
+IRs:
+TMP_332(bool) = INTERNAL_CALL, Wallet.confirmERC20(bytes32)(_r)
+TMP_333 = UnaryType.BANG TMP_332 
+REF_207(Wallet.Transaction) -> m_txs[_r]
+REF_208(address) -> REF_207.to
+TMP_334(bool) = REF_208 == 0
+TMP_335(bool) = TMP_333 && TMP_334
+CONDITION TMP_335"];
+8->9[label="True"];
+8->13[label="False"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+m_txs[_r].to = _to
+
+IRs:
+REF_209(Wallet.Transaction) -> m_txs[_r]
+REF_210(address) -> REF_209.to
+REF_210(address) (->m_txs) := _to(address)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+m_txs[_r].value = _value
+
+IRs:
+REF_211(Wallet.Transaction) -> m_txs[_r]
+REF_212(uint256) -> REF_211.value
+REF_212(uint256) (->m_txs) := _value(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+m_txs[_r].token = _token
+
+IRs:
+REF_213(Wallet.Transaction) -> m_txs[_r]
+REF_214(address) -> REF_213.token
+REF_214(address) (->m_txs) := _token(address)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+ConfirmationERC20Needed(_r,msg.sender,_value,_to,token)
+
+IRs:
+Emit ConfirmationERC20Needed(_r,msg.sender,_value,_to,token)"];
+12->13;
+13[label="Node Type: END_IF 13
+"];
+13->15;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+onlyowner()
+
+IRs:
+MODIFIER_CALL, multiowned.onlyowner()()"];
+14->1;
+15[label="Node Type: RETURN 15
+
+EXPRESSION:
+_r
+
+IRs:
+RETURN _r"];
+}
+// Function: 2553.sol-Wallet-transferETH(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->12;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+underLimit(_value)
+
+IRs:
+TMP_311(bool) = INTERNAL_CALL, daylimit.underLimit(uint256)(_value)
+CONDITION TMP_311"];
+1->2[label="True"];
+1->5[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+SingleTransact(msg.sender,_value,_to)
+
+IRs:
+Emit SingleTransact(msg.sender,_value,_to)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_to.transfer(_value)
+
+IRs:
+Transfer dest:_to value:_value"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+_r = keccak256()(abi.encodePacked(msg.data,block.number))
+
+IRs:
+TMP_314(bytes) = SOLIDITY_CALL abi.encodePacked()(msg.data,block.number)
+TMP_315(bytes32) = SOLIDITY_CALL keccak256()(TMP_314)
+_r(bytes32) := TMP_315(bytes32)"];
+6->7;
+7[label="Node Type: IF 7
+
+EXPRESSION:
+! confirmETH(_r) && m_txs[_r].to == 0
+
+IRs:
+TMP_316(bool) = INTERNAL_CALL, Wallet.confirmETH(bytes32)(_r)
+TMP_317 = UnaryType.BANG TMP_316 
+REF_187(Wallet.Transaction) -> m_txs[_r]
+REF_188(address) -> REF_187.to
+TMP_318(bool) = REF_188 == 0
+TMP_319(bool) = TMP_317 && TMP_318
+CONDITION TMP_319"];
+7->8[label="True"];
+7->11[label="False"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+m_txs[_r].to = _to
+
+IRs:
+REF_189(Wallet.Transaction) -> m_txs[_r]
+REF_190(address) -> REF_189.to
+REF_190(address) (->m_txs) := _to(address)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+m_txs[_r].value = _value
+
+IRs:
+REF_191(Wallet.Transaction) -> m_txs[_r]
+REF_192(uint256) -> REF_191.value
+REF_192(uint256) (->m_txs) := _value(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+ConfirmationETHNeeded(_r,msg.sender,_value,_to)
+
+IRs:
+Emit ConfirmationETHNeeded(_r,msg.sender,_value,_to)"];
+10->11;
+11[label="Node Type: END_IF 11
+"];
+11->13;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+onlyowner()
+
+IRs:
+MODIFIER_CALL, multiowned.onlyowner()()"];
+12->1;
+13[label="Node Type: RETURN 13
+
+EXPRESSION:
+_r
+
+IRs:
+RETURN _r"];
+}
+// Function: 2553.sol-Wallet-underLimit(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->10;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+today() > m_lastDay
+
+IRs:
+TMP_205(uint256) = INTERNAL_CALL, daylimit.today()()
+TMP_206(bool) = TMP_205 > m_lastDay
+CONDITION TMP_206"];
+1->2[label="True"];
+1->4[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+m_spentToday = 0
+
+IRs:
+m_spentToday(uint256) := 0(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+m_lastDay = today()
+
+IRs:
+TMP_207(uint256) = INTERNAL_CALL, daylimit.today()()
+m_lastDay(uint256) := TMP_207(uint256)"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+m_spentToday + _value >= m_spentToday && m_spentToday + _value <= m_dailyLimit
+
+IRs:
+TMP_208(uint256) = m_spentToday + _value
+TMP_209(bool) = TMP_208 >= m_spentToday
+TMP_210(uint256) = m_spentToday + _value
+TMP_211(bool) = TMP_210 <= m_dailyLimit
+TMP_212(bool) = TMP_209 && TMP_211
+CONDITION TMP_212"];
+5->6[label="True"];
+5->8[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+m_spentToday += _value
+
+IRs:
+m_spentToday(uint256) = m_spentToday + _value"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: RETURN 9
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+onlyowner()
+
+IRs:
+MODIFIER_CALL, multiowned.onlyowner()()"];
+10->1;
+}
+// Function: 2553.sol-daylimit-addOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->15;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+isOwner(_owner)
+
+IRs:
+TMP_116(bool) = INTERNAL_CALL, multiowned.isOwner(address)(_owner)
+CONDITION TMP_116"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+clearPending()
+
+IRs:
+INTERNAL_CALL, multiowned.clearPending()()"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+m_numOwners >= c_maxOwners
+
+IRs:
+TMP_118(bool) = m_numOwners >= c_maxOwners
+CONDITION TMP_118"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+reorganizeOwners()
+
+IRs:
+TMP_119(bool) = INTERNAL_CALL, multiowned.reorganizeOwners()()"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: IF 8
+
+EXPRESSION:
+m_numOwners >= c_maxOwners
+
+IRs:
+TMP_120(bool) = m_numOwners >= c_maxOwners
+CONDITION TMP_120"];
+8->9[label="True"];
+8->10[label="False"];
+9[label="Node Type: RETURN 9
+"];
+10[label="Node Type: END_IF 10
+"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+m_numOwners ++
+
+IRs:
+TMP_121(uint256) := m_numOwners(uint256)
+m_numOwners(uint256) = m_numOwners + 1"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+m_owners[m_numOwners] = uint256(_owner)
+
+IRs:
+REF_78(uint256) -> m_owners[m_numOwners]
+TMP_122 = CONVERT _owner to uint256
+REF_78(uint256) (->m_owners) := TMP_122(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+m_ownerIndex[uint256(_owner)] = m_numOwners
+
+IRs:
+TMP_123 = CONVERT _owner to uint256
+REF_79(uint256) -> m_ownerIndex[TMP_123]
+REF_79(uint256) (->m_ownerIndex) := m_numOwners(uint256)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+OwnerAdded(_owner)
+
+IRs:
+Emit OwnerAdded(_owner)"];
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+onlymanyowners(keccak256()(abi.encodePacked(msg.data,block.number)))
+
+IRs:
+TMP_125(bytes) = SOLIDITY_CALL abi.encodePacked()(msg.data,block.number)
+TMP_126(bytes32) = SOLIDITY_CALL keccak256()(TMP_125)
+MODIFIER_CALL, multiowned.onlymanyowners(bytes32)(TMP_126)"];
+15->1;
+}
+// Function: 2553.sol-daylimit-changeOwner(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->13;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+isOwner(_to)
+
+IRs:
+TMP_105(bool) = INTERNAL_CALL, multiowned.isOwner(address)(_to)
+CONDITION TMP_105"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+ownerIndex = m_ownerIndex[uint256(_from)]
+
+IRs:
+TMP_106 = CONVERT _from to uint256
+REF_73(uint256) -> m_ownerIndex[TMP_106]
+ownerIndex(uint256) := REF_73(uint256)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+ownerIndex == 0
+
+IRs:
+TMP_107(bool) = ownerIndex == 0
+CONDITION TMP_107"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: RETURN 6
+"];
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+clearPending()
+
+IRs:
+INTERNAL_CALL, multiowned.clearPending()()"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+m_owners[ownerIndex] = uint256(_to)
+
+IRs:
+REF_74(uint256) -> m_owners[ownerIndex]
+TMP_109 = CONVERT _to to uint256
+REF_74(uint256) (->m_owners) := TMP_109(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+m_ownerIndex[uint256(_from)] = 0
+
+IRs:
+TMP_110 = CONVERT _from to uint256
+REF_75(uint256) -> m_ownerIndex[TMP_110]
+REF_75(uint256) (->m_ownerIndex) := 0(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+m_ownerIndex[uint256(_to)] = ownerIndex
+
+IRs:
+TMP_111 = CONVERT _to to uint256
+REF_76(uint256) -> m_ownerIndex[TMP_111]
+REF_76(uint256) (->m_ownerIndex) := ownerIndex(uint256)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+OwnerChanged(_from,_to)
+
+IRs:
+Emit OwnerChanged(_from,_to)"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+onlymanyowners(keccak256()(abi.encodePacked(msg.data,block.number)))
+
+IRs:
+TMP_113(bytes) = SOLIDITY_CALL abi.encodePacked()(msg.data,block.number)
+TMP_114(bytes32) = SOLIDITY_CALL keccak256()(TMP_113)
+MODIFIER_CALL, multiowned.onlymanyowners(bytes32)(TMP_114)"];
+13->1;
+}
+// Function: 2553.sol-daylimit-changeRequirement(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->7;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_newRequired > m_numOwners
+
+IRs:
+TMP_139(bool) = _newRequired > m_numOwners
+CONDITION TMP_139"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+m_required = _newRequired
+
+IRs:
+m_required(uint256) := _newRequired(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+clearPending()
+
+IRs:
+INTERNAL_CALL, multiowned.clearPending()()"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+RequirementChanged(_newRequired)
+
+IRs:
+Emit RequirementChanged(_newRequired)"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+onlymanyowners(keccak256()(abi.encodePacked(msg.data,block.number)))
+
+IRs:
+TMP_142(bytes) = SOLIDITY_CALL abi.encodePacked()(msg.data,block.number)
+TMP_143(bytes32) = SOLIDITY_CALL keccak256()(TMP_142)
+MODIFIER_CALL, multiowned.onlymanyowners(bytes32)(TMP_143)"];
+7->1;
+}
+// Function: 2553.sol-daylimit-clearPending()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+length = m_pendingIndex.length
+
+IRs:
+REF_116 -> LENGTH m_pendingIndex
+length(uint256) := REF_116(uint256)"];
+1->4;
+2[label="Node Type: BEGIN_LOOP 2
+"];
+2->5;
+3[label="Node Type: END_LOOP 3
+"];
+3->10;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+4->2;
+5[label="Node Type: IF_LOOP 5
+
+EXPRESSION:
+i < length
+
+IRs:
+TMP_176(bool) = i < length
+CONDITION TMP_176"];
+5->6[label="True"];
+5->3[label="False"];
+6[label="Node Type: IF 6
+
+EXPRESSION:
+m_pendingIndex[i] != 0
+
+IRs:
+REF_117(bytes32) -> m_pendingIndex[i]
+TMP_177(bool) = REF_117 != 0
+CONDITION TMP_177"];
+6->7[label="True"];
+6->8[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+delete m_pending[m_pendingIndex[i]]
+
+IRs:
+REF_118(bytes32) -> m_pendingIndex[i]
+REF_119(multiowned.PendingState) -> m_pending[REF_118]
+m_pending = delete REF_119 "];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+++ i
+
+IRs:
+i(uint256) = i + 1"];
+9->5;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+delete m_pendingIndex
+
+IRs:
+m_pendingIndex = delete m_pendingIndex "];
+}
+// Function: 2553.sol-daylimit-confirmAndCheck(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+ownerIndex = m_ownerIndex[uint256(msg.sender)]
+
+IRs:
+TMP_152 = CONVERT msg.sender to uint256
+REF_90(uint256) -> m_ownerIndex[TMP_152]
+ownerIndex(uint256) := REF_90(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+ownerIndex == 0
+
+IRs:
+TMP_153(bool) = ownerIndex == 0
+CONDITION TMP_153"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+pending = m_pending[_operation]
+
+IRs:
+REF_91(multiowned.PendingState) -> m_pending[_operation]
+pending(multiowned.PendingState) := REF_91(multiowned.PendingState)"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+pending.yetNeeded == 0
+
+IRs:
+REF_92(uint256) -> pending.yetNeeded
+TMP_154(bool) = REF_92 == 0
+CONDITION TMP_154"];
+6->7[label="True"];
+6->11[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+pending.yetNeeded = m_required
+
+IRs:
+REF_93(uint256) -> pending.yetNeeded
+REF_93(uint256) (->pending) := m_required(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+pending.ownersDone = 0
+
+IRs:
+REF_94(uint256) -> pending.ownersDone
+REF_94(uint256) (->pending) := 0(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+pending.index = m_pendingIndex.length ++
+
+IRs:
+REF_95(uint256) -> pending.index
+REF_96 -> LENGTH m_pendingIndex
+TMP_155(uint256) := REF_96(uint256)
+REF_96(-> m_pendingIndex) = REF_96 + 1
+REF_95(uint256) (->pending) := TMP_155(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+m_pendingIndex[pending.index] = _operation
+
+IRs:
+REF_97(uint256) -> pending.index
+REF_98(bytes32) -> m_pendingIndex[REF_97]
+REF_98(bytes32) (->m_pendingIndex) := _operation(bytes32)"];
+10->11;
+11[label="Node Type: END_IF 11
+"];
+11->12;
+12[label="Node Type: NEW VARIABLE 12
+
+EXPRESSION:
+ownerIndexBit = 2 ** ownerIndex
+
+IRs:
+TMP_156(uint256) = 2 ** ownerIndex
+ownerIndexBit(uint256) := TMP_156(uint256)"];
+12->13;
+13[label="Node Type: IF 13
+
+EXPRESSION:
+pending.ownersDone & ownerIndexBit == 0
+
+IRs:
+REF_99(uint256) -> pending.ownersDone
+TMP_157(uint256) = REF_99 & ownerIndexBit
+TMP_158(bool) = TMP_157 == 0
+CONDITION TMP_158"];
+13->14[label="True"];
+13->22[label="False"];
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+Confirmation(msg.sender,_operation)
+
+IRs:
+Emit Confirmation(msg.sender,_operation)"];
+14->15;
+15[label="Node Type: IF 15
+
+EXPRESSION:
+pending.yetNeeded <= 1
+
+IRs:
+REF_100(uint256) -> pending.yetNeeded
+TMP_160(bool) = REF_100 <= 1
+CONDITION TMP_160"];
+15->16[label="True"];
+15->19[label="False"];
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+delete m_pendingIndex[m_pending[_operation].index]
+
+IRs:
+REF_101(multiowned.PendingState) -> m_pending[_operation]
+REF_102(uint256) -> REF_101.index
+REF_103(bytes32) -> m_pendingIndex[REF_102]
+m_pendingIndex = delete REF_103 "];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+delete m_pending[_operation]
+
+IRs:
+REF_104(multiowned.PendingState) -> m_pending[_operation]
+m_pending = delete REF_104 "];
+17->18;
+18[label="Node Type: RETURN 18
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+pending.yetNeeded --
+
+IRs:
+REF_105(uint256) -> pending.yetNeeded
+TMP_161(uint256) := REF_105(uint256)
+REF_105(-> pending) = REF_105 - 1"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+pending.ownersDone |= ownerIndexBit
+
+IRs:
+REF_106(uint256) -> pending.ownersDone
+REF_106(-> pending) = REF_106 | ownerIndexBit"];
+20->21;
+21[label="Node Type: END_IF 21
+"];
+21->22;
+22[label="Node Type: END_IF 22
+"];
+}
+// Function: 2553.sol-daylimit-constructor(address[],uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+m_numOwners = _owners.length + 1
+
+IRs:
+REF_60 -> LENGTH _owners
+TMP_90(uint256) = REF_60 + 1
+m_numOwners(uint256) := TMP_90(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+m_owners[1] = uint256(msg.sender)
+
+IRs:
+REF_61(uint256) -> m_owners[1]
+TMP_91 = CONVERT msg.sender to uint256
+REF_61(uint256) (->m_owners) := TMP_91(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+m_ownerIndex[uint256(msg.sender)] = 1
+
+IRs:
+TMP_92 = CONVERT msg.sender to uint256
+REF_62(uint256) -> m_ownerIndex[TMP_92]
+REF_62(uint256) (->m_ownerIndex) := 1(uint256)"];
+3->6;
+4[label="Node Type: BEGIN_LOOP 4
+"];
+4->7;
+5[label="Node Type: END_LOOP 5
+"];
+5->11;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+6->4;
+7[label="Node Type: IF_LOOP 7
+
+EXPRESSION:
+i < _owners.length
+
+IRs:
+REF_63 -> LENGTH _owners
+TMP_93(bool) = i < REF_63
+CONDITION TMP_93"];
+7->8[label="True"];
+7->5[label="False"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+m_owners[2 + i] = uint256(_owners[i])
+
+IRs:
+TMP_94(uint256) = 2 + i
+REF_64(uint256) -> m_owners[TMP_94]
+REF_65(address) -> _owners[i]
+TMP_95 = CONVERT REF_65 to uint256
+REF_64(uint256) (->m_owners) := TMP_95(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+m_ownerIndex[uint256(_owners[i])] = 2 + i
+
+IRs:
+REF_66(address) -> _owners[i]
+TMP_96 = CONVERT REF_66 to uint256
+REF_67(uint256) -> m_ownerIndex[TMP_96]
+TMP_97(uint256) = 2 + i
+REF_67(uint256) (->m_ownerIndex) := TMP_97(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+++ i
+
+IRs:
+i(uint256) = i + 1"];
+10->7;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+m_required = _required
+
+IRs:
+m_required(uint256) := _required(uint256)"];
+}
+// Function: 2553.sol-daylimit-constructor(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+m_dailyLimit = _limit
+
+IRs:
+m_dailyLimit(uint256) := _limit(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+m_lastDay = today()
+
+IRs:
+TMP_178(uint256) = INTERNAL_CALL, daylimit.today()()
+m_lastDay(uint256) := TMP_178(uint256)"];
+}
+// Function: 2553.sol-daylimit-hasConfirmed(bytes32,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+pending = m_pending[_operation]
+
+IRs:
+REF_87(multiowned.PendingState) -> m_pending[_operation]
+pending(multiowned.PendingState) := REF_87(multiowned.PendingState)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+ownerIndex = m_ownerIndex[uint256(_owner)]
+
+IRs:
+TMP_147 = CONVERT _owner to uint256
+REF_88(uint256) -> m_ownerIndex[TMP_147]
+ownerIndex(uint256) := REF_88(uint256)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+ownerIndex == 0
+
+IRs:
+TMP_148(bool) = ownerIndex == 0
+CONDITION TMP_148"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+ownerIndexBit = 2 ** ownerIndex
+
+IRs:
+TMP_149(uint256) = 2 ** ownerIndex
+ownerIndexBit(uint256) := TMP_149(uint256)"];
+6->7;
+7[label="Node Type: IF 7
+
+EXPRESSION:
+pending.ownersDone & ownerIndexBit == 0
+
+IRs:
+REF_89(uint256) -> pending.ownersDone
+TMP_150(uint256) = REF_89 & ownerIndexBit
+TMP_151(bool) = TMP_150 == 0
+CONDITION TMP_151"];
+7->8[label="True"];
+7->9[label="False"];
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+9[label="Node Type: RETURN 9
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 2553.sol-daylimit-isOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+m_ownerIndex[uint256(_addr)] > 0
+
+IRs:
+TMP_145 = CONVERT _addr to uint256
+REF_86(uint256) -> m_ownerIndex[TMP_145]
+TMP_146(bool) = REF_86 > 0
+RETURN TMP_146"];
+}
+// Function: 2553.sol-daylimit-limitedDaily(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+underLimit(_value)
+
+IRs:
+TMP_197(bool) = INTERNAL_CALL, daylimit.underLimit(uint256)(_value)
+CONDITION TMP_197"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: _ 2
+"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 2553.sol-daylimit-onlymanyowners(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+confirmAndCheck(_operation)
+
+IRs:
+TMP_196(bool) = INTERNAL_CALL, multiowned.confirmAndCheck(bytes32)(_operation)
+CONDITION TMP_196"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: _ 2
+"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 2553.sol-daylimit-onlyowner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+isOwner(msg.sender)
+
+IRs:
+TMP_195(bool) = INTERNAL_CALL, multiowned.isOwner(address)(msg.sender)
+CONDITION TMP_195"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: _ 2
+"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 2553.sol-daylimit-removeOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->13;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+ownerIndex = m_ownerIndex[uint256(_owner)]
+
+IRs:
+TMP_128 = CONVERT _owner to uint256
+REF_81(uint256) -> m_ownerIndex[TMP_128]
+ownerIndex(uint256) := REF_81(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+ownerIndex == 0
+
+IRs:
+TMP_129(bool) = ownerIndex == 0
+CONDITION TMP_129"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+m_required > m_numOwners - 1
+
+IRs:
+TMP_130(uint256) = m_numOwners - 1
+TMP_131(bool) = m_required > TMP_130
+CONDITION TMP_131"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: RETURN 6
+"];
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+m_owners[ownerIndex] = 0
+
+IRs:
+REF_82(uint256) -> m_owners[ownerIndex]
+REF_82(uint256) (->m_owners) := 0(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+m_ownerIndex[uint256(_owner)] = 0
+
+IRs:
+TMP_132 = CONVERT _owner to uint256
+REF_83(uint256) -> m_ownerIndex[TMP_132]
+REF_83(uint256) (->m_ownerIndex) := 0(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+clearPending()
+
+IRs:
+INTERNAL_CALL, multiowned.clearPending()()"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+reorganizeOwners()
+
+IRs:
+TMP_134(bool) = INTERNAL_CALL, multiowned.reorganizeOwners()()"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+OwnerRemoved(_owner)
+
+IRs:
+Emit OwnerRemoved(_owner)"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+onlymanyowners(keccak256()(abi.encodePacked(msg.data,block.number)))
+
+IRs:
+TMP_136(bytes) = SOLIDITY_CALL abi.encodePacked()(msg.data,block.number)
+TMP_137(bytes32) = SOLIDITY_CALL keccak256()(TMP_136)
+MODIFIER_CALL, multiowned.onlymanyowners(bytes32)(TMP_137)"];
+13->1;
+}
+// Function: 2553.sol-daylimit-reorganizeOwners()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+free = 1
+
+IRs:
+free(uint256) := 1(uint256)"];
+1->2;
+2[label="Node Type: BEGIN_LOOP 2
+"];
+2->3;
+3[label="Node Type: IF_LOOP 3
+
+EXPRESSION:
+free < m_numOwners
+
+IRs:
+TMP_162(bool) = free < m_numOwners
+CONDITION TMP_162"];
+3->4[label="True"];
+3->17[label="False"];
+4[label="Node Type: BEGIN_LOOP 4
+"];
+4->5;
+5[label="Node Type: IF_LOOP 5
+
+EXPRESSION:
+free < m_numOwners && m_owners[free] != 0
+
+IRs:
+TMP_163(bool) = free < m_numOwners
+REF_107(uint256) -> m_owners[free]
+TMP_164(bool) = REF_107 != 0
+TMP_165(bool) = TMP_163 && TMP_164
+CONDITION TMP_165"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+free ++
+
+IRs:
+TMP_166(uint256) := free(uint256)
+free(uint256) = free + 1"];
+6->5;
+7[label="Node Type: END_LOOP 7
+"];
+7->8;
+8[label="Node Type: BEGIN_LOOP 8
+"];
+8->9;
+9[label="Node Type: IF_LOOP 9
+
+EXPRESSION:
+m_numOwners > 1 && m_owners[m_numOwners] == 0
+
+IRs:
+TMP_167(bool) = m_numOwners > 1
+REF_108(uint256) -> m_owners[m_numOwners]
+TMP_168(bool) = REF_108 == 0
+TMP_169(bool) = TMP_167 && TMP_168
+CONDITION TMP_169"];
+9->10[label="True"];
+9->11[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+m_numOwners --
+
+IRs:
+TMP_170(uint256) := m_numOwners(uint256)
+m_numOwners(uint256) = m_numOwners - 1"];
+10->9;
+11[label="Node Type: END_LOOP 11
+"];
+11->12;
+12[label="Node Type: IF 12
+
+EXPRESSION:
+free < m_numOwners && m_owners[m_numOwners] != 0 && m_owners[free] == 0
+
+IRs:
+TMP_171(bool) = free < m_numOwners
+REF_109(uint256) -> m_owners[m_numOwners]
+TMP_172(bool) = REF_109 != 0
+TMP_173(bool) = TMP_171 && TMP_172
+REF_110(uint256) -> m_owners[free]
+TMP_174(bool) = REF_110 == 0
+TMP_175(bool) = TMP_173 && TMP_174
+CONDITION TMP_175"];
+12->13[label="True"];
+12->16[label="False"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+m_owners[free] = m_owners[m_numOwners]
+
+IRs:
+REF_111(uint256) -> m_owners[free]
+REF_112(uint256) -> m_owners[m_numOwners]
+REF_111(uint256) (->m_owners) := REF_112(uint256)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+m_ownerIndex[m_owners[free]] = free
+
+IRs:
+REF_113(uint256) -> m_owners[free]
+REF_114(uint256) -> m_ownerIndex[REF_113]
+REF_114(uint256) (->m_ownerIndex) := free(uint256)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+m_owners[m_numOwners] = 0
+
+IRs:
+REF_115(uint256) -> m_owners[m_numOwners]
+REF_115(uint256) (->m_owners) := 0(uint256)"];
+15->16;
+16[label="Node Type: END_IF 16
+"];
+16->3;
+17[label="Node Type: END_LOOP 17
+"];
+}
+// Function: 2553.sol-daylimit-resetSpentToday()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+m_spentToday = 0
+
+IRs:
+m_spentToday(uint256) := 0(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlymanyowners(keccak256()(abi.encodePacked(msg.data,block.number)))
+
+IRs:
+TMP_182(bytes) = SOLIDITY_CALL abi.encodePacked()(msg.data,block.number)
+TMP_183(bytes32) = SOLIDITY_CALL keccak256()(TMP_182)
+MODIFIER_CALL, multiowned.onlymanyowners(bytes32)(TMP_183)"];
+2->1;
+}
+// Function: 2553.sol-daylimit-revoke(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+ownerIndex = m_ownerIndex[uint256(msg.sender)]
+
+IRs:
+TMP_98 = CONVERT msg.sender to uint256
+REF_68(uint256) -> m_ownerIndex[TMP_98]
+ownerIndex(uint256) := REF_68(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+ownerIndex == 0
+
+IRs:
+TMP_99(bool) = ownerIndex == 0
+CONDITION TMP_99"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+ownerIndexBit = 2 ** ownerIndex
+
+IRs:
+TMP_100(uint256) = 2 ** ownerIndex
+ownerIndexBit(uint256) := TMP_100(uint256)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+pending = m_pending[_operation]
+
+IRs:
+REF_69(multiowned.PendingState) -> m_pending[_operation]
+pending(multiowned.PendingState) := REF_69(multiowned.PendingState)"];
+6->7;
+7[label="Node Type: IF 7
+
+EXPRESSION:
+pending.ownersDone & ownerIndexBit > 0
+
+IRs:
+REF_70(uint256) -> pending.ownersDone
+TMP_101(uint256) = REF_70 & ownerIndexBit
+TMP_102(bool) = TMP_101 > 0
+CONDITION TMP_102"];
+7->8[label="True"];
+7->11[label="False"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+pending.yetNeeded ++
+
+IRs:
+REF_71(uint256) -> pending.yetNeeded
+TMP_103(uint256) := REF_71(uint256)
+REF_71(-> pending) = REF_71 + 1"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+pending.ownersDone -= ownerIndexBit
+
+IRs:
+REF_72(uint256) -> pending.ownersDone
+REF_72(-> pending) = REF_72 - ownerIndexBit"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+Revoke(msg.sender,_operation)
+
+IRs:
+Emit Revoke(msg.sender,_operation)"];
+10->11;
+11[label="Node Type: END_IF 11
+"];
+}
+// Function: 2553.sol-daylimit-setDailyLimit(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+m_dailyLimit = _newLimit
+
+IRs:
+m_dailyLimit(uint256) := _newLimit(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlymanyowners(keccak256()(abi.encodePacked(msg.data,block.number)))
+
+IRs:
+TMP_179(bytes) = SOLIDITY_CALL abi.encodePacked()(msg.data,block.number)
+TMP_180(bytes32) = SOLIDITY_CALL keccak256()(TMP_179)
+MODIFIER_CALL, multiowned.onlymanyowners(bytes32)(TMP_180)"];
+2->1;
+}
+// Function: 2553.sol-daylimit-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+c_maxOwners = 250
+
+IRs:
+c_maxOwners(uint256) := 250(uint256)"];
+}
+// Function: 2553.sol-daylimit-today()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+block.timestamp / 86400
+
+IRs:
+TMP_194(uint256) = block.timestamp / 86400
+RETURN TMP_194"];
+}
+// Function: 2553.sol-daylimit-underLimit(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->10;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+today() > m_lastDay
+
+IRs:
+TMP_185(uint256) = INTERNAL_CALL, daylimit.today()()
+TMP_186(bool) = TMP_185 > m_lastDay
+CONDITION TMP_186"];
+1->2[label="True"];
+1->4[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+m_spentToday = 0
+
+IRs:
+m_spentToday(uint256) := 0(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+m_lastDay = today()
+
+IRs:
+TMP_187(uint256) = INTERNAL_CALL, daylimit.today()()
+m_lastDay(uint256) := TMP_187(uint256)"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+m_spentToday + _value >= m_spentToday && m_spentToday + _value <= m_dailyLimit
+
+IRs:
+TMP_188(uint256) = m_spentToday + _value
+TMP_189(bool) = TMP_188 >= m_spentToday
+TMP_190(uint256) = m_spentToday + _value
+TMP_191(bool) = TMP_190 <= m_dailyLimit
+TMP_192(bool) = TMP_189 && TMP_191
+CONDITION TMP_192"];
+5->6[label="True"];
+5->8[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+m_spentToday += _value
+
+IRs:
+m_spentToday(uint256) = m_spentToday + _value"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: RETURN 9
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+onlyowner()
+
+IRs:
+MODIFIER_CALL, multiowned.onlyowner()()"];
+10->1;
+}
+// Function: 2553.sol-multiowned-addOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->15;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+isOwner(_owner)
+
+IRs:
+TMP_26(bool) = INTERNAL_CALL, multiowned.isOwner(address)(_owner)
+CONDITION TMP_26"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+clearPending()
+
+IRs:
+INTERNAL_CALL, multiowned.clearPending()()"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+m_numOwners >= c_maxOwners
+
+IRs:
+TMP_28(bool) = m_numOwners >= c_maxOwners
+CONDITION TMP_28"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+reorganizeOwners()
+
+IRs:
+TMP_29(bool) = INTERNAL_CALL, multiowned.reorganizeOwners()()"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: IF 8
+
+EXPRESSION:
+m_numOwners >= c_maxOwners
+
+IRs:
+TMP_30(bool) = m_numOwners >= c_maxOwners
+CONDITION TMP_30"];
+8->9[label="True"];
+8->10[label="False"];
+9[label="Node Type: RETURN 9
+"];
+10[label="Node Type: END_IF 10
+"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+m_numOwners ++
+
+IRs:
+TMP_31(uint256) := m_numOwners(uint256)
+m_numOwners(uint256) = m_numOwners + 1"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+m_owners[m_numOwners] = uint256(_owner)
+
+IRs:
+REF_18(uint256) -> m_owners[m_numOwners]
+TMP_32 = CONVERT _owner to uint256
+REF_18(uint256) (->m_owners) := TMP_32(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+m_ownerIndex[uint256(_owner)] = m_numOwners
+
+IRs:
+TMP_33 = CONVERT _owner to uint256
+REF_19(uint256) -> m_ownerIndex[TMP_33]
+REF_19(uint256) (->m_ownerIndex) := m_numOwners(uint256)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+OwnerAdded(_owner)
+
+IRs:
+Emit OwnerAdded(_owner)"];
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+onlymanyowners(keccak256()(abi.encodePacked(msg.data,block.number)))
+
+IRs:
+TMP_35(bytes) = SOLIDITY_CALL abi.encodePacked()(msg.data,block.number)
+TMP_36(bytes32) = SOLIDITY_CALL keccak256()(TMP_35)
+MODIFIER_CALL, multiowned.onlymanyowners(bytes32)(TMP_36)"];
+15->1;
+}
+// Function: 2553.sol-multiowned-changeOwner(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->13;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+isOwner(_to)
+
+IRs:
+TMP_15(bool) = INTERNAL_CALL, multiowned.isOwner(address)(_to)
+CONDITION TMP_15"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+ownerIndex = m_ownerIndex[uint256(_from)]
+
+IRs:
+TMP_16 = CONVERT _from to uint256
+REF_13(uint256) -> m_ownerIndex[TMP_16]
+ownerIndex(uint256) := REF_13(uint256)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+ownerIndex == 0
+
+IRs:
+TMP_17(bool) = ownerIndex == 0
+CONDITION TMP_17"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: RETURN 6
+"];
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+clearPending()
+
+IRs:
+INTERNAL_CALL, multiowned.clearPending()()"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+m_owners[ownerIndex] = uint256(_to)
+
+IRs:
+REF_14(uint256) -> m_owners[ownerIndex]
+TMP_19 = CONVERT _to to uint256
+REF_14(uint256) (->m_owners) := TMP_19(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+m_ownerIndex[uint256(_from)] = 0
+
+IRs:
+TMP_20 = CONVERT _from to uint256
+REF_15(uint256) -> m_ownerIndex[TMP_20]
+REF_15(uint256) (->m_ownerIndex) := 0(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+m_ownerIndex[uint256(_to)] = ownerIndex
+
+IRs:
+TMP_21 = CONVERT _to to uint256
+REF_16(uint256) -> m_ownerIndex[TMP_21]
+REF_16(uint256) (->m_ownerIndex) := ownerIndex(uint256)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+OwnerChanged(_from,_to)
+
+IRs:
+Emit OwnerChanged(_from,_to)"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+onlymanyowners(keccak256()(abi.encodePacked(msg.data,block.number)))
+
+IRs:
+TMP_23(bytes) = SOLIDITY_CALL abi.encodePacked()(msg.data,block.number)
+TMP_24(bytes32) = SOLIDITY_CALL keccak256()(TMP_23)
+MODIFIER_CALL, multiowned.onlymanyowners(bytes32)(TMP_24)"];
+13->1;
+}
+// Function: 2553.sol-multiowned-changeRequirement(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->7;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_newRequired > m_numOwners
+
+IRs:
+TMP_49(bool) = _newRequired > m_numOwners
+CONDITION TMP_49"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+m_required = _newRequired
+
+IRs:
+m_required(uint256) := _newRequired(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+clearPending()
+
+IRs:
+INTERNAL_CALL, multiowned.clearPending()()"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+RequirementChanged(_newRequired)
+
+IRs:
+Emit RequirementChanged(_newRequired)"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+onlymanyowners(keccak256()(abi.encodePacked(msg.data,block.number)))
+
+IRs:
+TMP_52(bytes) = SOLIDITY_CALL abi.encodePacked()(msg.data,block.number)
+TMP_53(bytes32) = SOLIDITY_CALL keccak256()(TMP_52)
+MODIFIER_CALL, multiowned.onlymanyowners(bytes32)(TMP_53)"];
+7->1;
+}
+// Function: 2553.sol-multiowned-clearPending()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+length = m_pendingIndex.length
+
+IRs:
+REF_56 -> LENGTH m_pendingIndex
+length(uint256) := REF_56(uint256)"];
+1->4;
+2[label="Node Type: BEGIN_LOOP 2
+"];
+2->5;
+3[label="Node Type: END_LOOP 3
+"];
+3->10;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+4->2;
+5[label="Node Type: IF_LOOP 5
+
+EXPRESSION:
+i < length
+
+IRs:
+TMP_86(bool) = i < length
+CONDITION TMP_86"];
+5->6[label="True"];
+5->3[label="False"];
+6[label="Node Type: IF 6
+
+EXPRESSION:
+m_pendingIndex[i] != 0
+
+IRs:
+REF_57(bytes32) -> m_pendingIndex[i]
+TMP_87(bool) = REF_57 != 0
+CONDITION TMP_87"];
+6->7[label="True"];
+6->8[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+delete m_pending[m_pendingIndex[i]]
+
+IRs:
+REF_58(bytes32) -> m_pendingIndex[i]
+REF_59(multiowned.PendingState) -> m_pending[REF_58]
+m_pending = delete REF_59 "];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+++ i
+
+IRs:
+i(uint256) = i + 1"];
+9->5;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+delete m_pendingIndex
+
+IRs:
+m_pendingIndex = delete m_pendingIndex "];
+}
+// Function: 2553.sol-multiowned-confirmAndCheck(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+ownerIndex = m_ownerIndex[uint256(msg.sender)]
+
+IRs:
+TMP_62 = CONVERT msg.sender to uint256
+REF_30(uint256) -> m_ownerIndex[TMP_62]
+ownerIndex(uint256) := REF_30(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+ownerIndex == 0
+
+IRs:
+TMP_63(bool) = ownerIndex == 0
+CONDITION TMP_63"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+pending = m_pending[_operation]
+
+IRs:
+REF_31(multiowned.PendingState) -> m_pending[_operation]
+pending(multiowned.PendingState) := REF_31(multiowned.PendingState)"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+pending.yetNeeded == 0
+
+IRs:
+REF_32(uint256) -> pending.yetNeeded
+TMP_64(bool) = REF_32 == 0
+CONDITION TMP_64"];
+6->7[label="True"];
+6->11[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+pending.yetNeeded = m_required
+
+IRs:
+REF_33(uint256) -> pending.yetNeeded
+REF_33(uint256) (->pending) := m_required(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+pending.ownersDone = 0
+
+IRs:
+REF_34(uint256) -> pending.ownersDone
+REF_34(uint256) (->pending) := 0(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+pending.index = m_pendingIndex.length ++
+
+IRs:
+REF_35(uint256) -> pending.index
+REF_36 -> LENGTH m_pendingIndex
+TMP_65(uint256) := REF_36(uint256)
+REF_36(-> m_pendingIndex) = REF_36 + 1
+REF_35(uint256) (->pending) := TMP_65(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+m_pendingIndex[pending.index] = _operation
+
+IRs:
+REF_37(uint256) -> pending.index
+REF_38(bytes32) -> m_pendingIndex[REF_37]
+REF_38(bytes32) (->m_pendingIndex) := _operation(bytes32)"];
+10->11;
+11[label="Node Type: END_IF 11
+"];
+11->12;
+12[label="Node Type: NEW VARIABLE 12
+
+EXPRESSION:
+ownerIndexBit = 2 ** ownerIndex
+
+IRs:
+TMP_66(uint256) = 2 ** ownerIndex
+ownerIndexBit(uint256) := TMP_66(uint256)"];
+12->13;
+13[label="Node Type: IF 13
+
+EXPRESSION:
+pending.ownersDone & ownerIndexBit == 0
+
+IRs:
+REF_39(uint256) -> pending.ownersDone
+TMP_67(uint256) = REF_39 & ownerIndexBit
+TMP_68(bool) = TMP_67 == 0
+CONDITION TMP_68"];
+13->14[label="True"];
+13->22[label="False"];
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+Confirmation(msg.sender,_operation)
+
+IRs:
+Emit Confirmation(msg.sender,_operation)"];
+14->15;
+15[label="Node Type: IF 15
+
+EXPRESSION:
+pending.yetNeeded <= 1
+
+IRs:
+REF_40(uint256) -> pending.yetNeeded
+TMP_70(bool) = REF_40 <= 1
+CONDITION TMP_70"];
+15->16[label="True"];
+15->19[label="False"];
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+delete m_pendingIndex[m_pending[_operation].index]
+
+IRs:
+REF_41(multiowned.PendingState) -> m_pending[_operation]
+REF_42(uint256) -> REF_41.index
+REF_43(bytes32) -> m_pendingIndex[REF_42]
+m_pendingIndex = delete REF_43 "];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+delete m_pending[_operation]
+
+IRs:
+REF_44(multiowned.PendingState) -> m_pending[_operation]
+m_pending = delete REF_44 "];
+17->18;
+18[label="Node Type: RETURN 18
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+pending.yetNeeded --
+
+IRs:
+REF_45(uint256) -> pending.yetNeeded
+TMP_71(uint256) := REF_45(uint256)
+REF_45(-> pending) = REF_45 - 1"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+pending.ownersDone |= ownerIndexBit
+
+IRs:
+REF_46(uint256) -> pending.ownersDone
+REF_46(-> pending) = REF_46 | ownerIndexBit"];
+20->21;
+21[label="Node Type: END_IF 21
+"];
+21->22;
+22[label="Node Type: END_IF 22
+"];
+}
+// Function: 2553.sol-multiowned-constructor(address[],uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+m_numOwners = _owners.length + 1
+
+IRs:
+REF_0 -> LENGTH _owners
+TMP_0(uint256) = REF_0 + 1
+m_numOwners(uint256) := TMP_0(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+m_owners[1] = uint256(msg.sender)
+
+IRs:
+REF_1(uint256) -> m_owners[1]
+TMP_1 = CONVERT msg.sender to uint256
+REF_1(uint256) (->m_owners) := TMP_1(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+m_ownerIndex[uint256(msg.sender)] = 1
+
+IRs:
+TMP_2 = CONVERT msg.sender to uint256
+REF_2(uint256) -> m_ownerIndex[TMP_2]
+REF_2(uint256) (->m_ownerIndex) := 1(uint256)"];
+3->6;
+4[label="Node Type: BEGIN_LOOP 4
+"];
+4->7;
+5[label="Node Type: END_LOOP 5
+"];
+5->11;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+6->4;
+7[label="Node Type: IF_LOOP 7
+
+EXPRESSION:
+i < _owners.length
+
+IRs:
+REF_3 -> LENGTH _owners
+TMP_3(bool) = i < REF_3
+CONDITION TMP_3"];
+7->8[label="True"];
+7->5[label="False"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+m_owners[2 + i] = uint256(_owners[i])
+
+IRs:
+TMP_4(uint256) = 2 + i
+REF_4(uint256) -> m_owners[TMP_4]
+REF_5(address) -> _owners[i]
+TMP_5 = CONVERT REF_5 to uint256
+REF_4(uint256) (->m_owners) := TMP_5(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+m_ownerIndex[uint256(_owners[i])] = 2 + i
+
+IRs:
+REF_6(address) -> _owners[i]
+TMP_6 = CONVERT REF_6 to uint256
+REF_7(uint256) -> m_ownerIndex[TMP_6]
+TMP_7(uint256) = 2 + i
+REF_7(uint256) (->m_ownerIndex) := TMP_7(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+++ i
+
+IRs:
+i(uint256) = i + 1"];
+10->7;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+m_required = _required
+
+IRs:
+m_required(uint256) := _required(uint256)"];
+}
+// Function: 2553.sol-multiowned-hasConfirmed(bytes32,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+pending = m_pending[_operation]
+
+IRs:
+REF_27(multiowned.PendingState) -> m_pending[_operation]
+pending(multiowned.PendingState) := REF_27(multiowned.PendingState)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+ownerIndex = m_ownerIndex[uint256(_owner)]
+
+IRs:
+TMP_57 = CONVERT _owner to uint256
+REF_28(uint256) -> m_ownerIndex[TMP_57]
+ownerIndex(uint256) := REF_28(uint256)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+ownerIndex == 0
+
+IRs:
+TMP_58(bool) = ownerIndex == 0
+CONDITION TMP_58"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+ownerIndexBit = 2 ** ownerIndex
+
+IRs:
+TMP_59(uint256) = 2 ** ownerIndex
+ownerIndexBit(uint256) := TMP_59(uint256)"];
+6->7;
+7[label="Node Type: IF 7
+
+EXPRESSION:
+pending.ownersDone & ownerIndexBit == 0
+
+IRs:
+REF_29(uint256) -> pending.ownersDone
+TMP_60(uint256) = REF_29 & ownerIndexBit
+TMP_61(bool) = TMP_60 == 0
+CONDITION TMP_61"];
+7->8[label="True"];
+7->9[label="False"];
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+9[label="Node Type: RETURN 9
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 2553.sol-multiowned-isOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+m_ownerIndex[uint256(_addr)] > 0
+
+IRs:
+TMP_55 = CONVERT _addr to uint256
+REF_26(uint256) -> m_ownerIndex[TMP_55]
+TMP_56(bool) = REF_26 > 0
+RETURN TMP_56"];
+}
+// Function: 2553.sol-multiowned-onlymanyowners(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+confirmAndCheck(_operation)
+
+IRs:
+TMP_89(bool) = INTERNAL_CALL, multiowned.confirmAndCheck(bytes32)(_operation)
+CONDITION TMP_89"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: _ 2
+"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 2553.sol-multiowned-onlyowner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+isOwner(msg.sender)
+
+IRs:
+TMP_88(bool) = INTERNAL_CALL, multiowned.isOwner(address)(msg.sender)
+CONDITION TMP_88"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: _ 2
+"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 2553.sol-multiowned-removeOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->13;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+ownerIndex = m_ownerIndex[uint256(_owner)]
+
+IRs:
+TMP_38 = CONVERT _owner to uint256
+REF_21(uint256) -> m_ownerIndex[TMP_38]
+ownerIndex(uint256) := REF_21(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+ownerIndex == 0
+
+IRs:
+TMP_39(bool) = ownerIndex == 0
+CONDITION TMP_39"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+m_required > m_numOwners - 1
+
+IRs:
+TMP_40(uint256) = m_numOwners - 1
+TMP_41(bool) = m_required > TMP_40
+CONDITION TMP_41"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: RETURN 6
+"];
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+m_owners[ownerIndex] = 0
+
+IRs:
+REF_22(uint256) -> m_owners[ownerIndex]
+REF_22(uint256) (->m_owners) := 0(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+m_ownerIndex[uint256(_owner)] = 0
+
+IRs:
+TMP_42 = CONVERT _owner to uint256
+REF_23(uint256) -> m_ownerIndex[TMP_42]
+REF_23(uint256) (->m_ownerIndex) := 0(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+clearPending()
+
+IRs:
+INTERNAL_CALL, multiowned.clearPending()()"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+reorganizeOwners()
+
+IRs:
+TMP_44(bool) = INTERNAL_CALL, multiowned.reorganizeOwners()()"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+OwnerRemoved(_owner)
+
+IRs:
+Emit OwnerRemoved(_owner)"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+onlymanyowners(keccak256()(abi.encodePacked(msg.data,block.number)))
+
+IRs:
+TMP_46(bytes) = SOLIDITY_CALL abi.encodePacked()(msg.data,block.number)
+TMP_47(bytes32) = SOLIDITY_CALL keccak256()(TMP_46)
+MODIFIER_CALL, multiowned.onlymanyowners(bytes32)(TMP_47)"];
+13->1;
+}
+// Function: 2553.sol-multiowned-reorganizeOwners()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+free = 1
+
+IRs:
+free(uint256) := 1(uint256)"];
+1->2;
+2[label="Node Type: BEGIN_LOOP 2
+"];
+2->3;
+3[label="Node Type: IF_LOOP 3
+
+EXPRESSION:
+free < m_numOwners
+
+IRs:
+TMP_72(bool) = free < m_numOwners
+CONDITION TMP_72"];
+3->4[label="True"];
+3->17[label="False"];
+4[label="Node Type: BEGIN_LOOP 4
+"];
+4->5;
+5[label="Node Type: IF_LOOP 5
+
+EXPRESSION:
+free < m_numOwners && m_owners[free] != 0
+
+IRs:
+TMP_73(bool) = free < m_numOwners
+REF_47(uint256) -> m_owners[free]
+TMP_74(bool) = REF_47 != 0
+TMP_75(bool) = TMP_73 && TMP_74
+CONDITION TMP_75"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+free ++
+
+IRs:
+TMP_76(uint256) := free(uint256)
+free(uint256) = free + 1"];
+6->5;
+7[label="Node Type: END_LOOP 7
+"];
+7->8;
+8[label="Node Type: BEGIN_LOOP 8
+"];
+8->9;
+9[label="Node Type: IF_LOOP 9
+
+EXPRESSION:
+m_numOwners > 1 && m_owners[m_numOwners] == 0
+
+IRs:
+TMP_77(bool) = m_numOwners > 1
+REF_48(uint256) -> m_owners[m_numOwners]
+TMP_78(bool) = REF_48 == 0
+TMP_79(bool) = TMP_77 && TMP_78
+CONDITION TMP_79"];
+9->10[label="True"];
+9->11[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+m_numOwners --
+
+IRs:
+TMP_80(uint256) := m_numOwners(uint256)
+m_numOwners(uint256) = m_numOwners - 1"];
+10->9;
+11[label="Node Type: END_LOOP 11
+"];
+11->12;
+12[label="Node Type: IF 12
+
+EXPRESSION:
+free < m_numOwners && m_owners[m_numOwners] != 0 && m_owners[free] == 0
+
+IRs:
+TMP_81(bool) = free < m_numOwners
+REF_49(uint256) -> m_owners[m_numOwners]
+TMP_82(bool) = REF_49 != 0
+TMP_83(bool) = TMP_81 && TMP_82
+REF_50(uint256) -> m_owners[free]
+TMP_84(bool) = REF_50 == 0
+TMP_85(bool) = TMP_83 && TMP_84
+CONDITION TMP_85"];
+12->13[label="True"];
+12->16[label="False"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+m_owners[free] = m_owners[m_numOwners]
+
+IRs:
+REF_51(uint256) -> m_owners[free]
+REF_52(uint256) -> m_owners[m_numOwners]
+REF_51(uint256) (->m_owners) := REF_52(uint256)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+m_ownerIndex[m_owners[free]] = free
+
+IRs:
+REF_53(uint256) -> m_owners[free]
+REF_54(uint256) -> m_ownerIndex[REF_53]
+REF_54(uint256) (->m_ownerIndex) := free(uint256)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+m_owners[m_numOwners] = 0
+
+IRs:
+REF_55(uint256) -> m_owners[m_numOwners]
+REF_55(uint256) (->m_owners) := 0(uint256)"];
+15->16;
+16[label="Node Type: END_IF 16
+"];
+16->3;
+17[label="Node Type: END_LOOP 17
+"];
+}
+// Function: 2553.sol-multiowned-revoke(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+ownerIndex = m_ownerIndex[uint256(msg.sender)]
+
+IRs:
+TMP_8 = CONVERT msg.sender to uint256
+REF_8(uint256) -> m_ownerIndex[TMP_8]
+ownerIndex(uint256) := REF_8(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+ownerIndex == 0
+
+IRs:
+TMP_9(bool) = ownerIndex == 0
+CONDITION TMP_9"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+ownerIndexBit = 2 ** ownerIndex
+
+IRs:
+TMP_10(uint256) = 2 ** ownerIndex
+ownerIndexBit(uint256) := TMP_10(uint256)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+pending = m_pending[_operation]
+
+IRs:
+REF_9(multiowned.PendingState) -> m_pending[_operation]
+pending(multiowned.PendingState) := REF_9(multiowned.PendingState)"];
+6->7;
+7[label="Node Type: IF 7
+
+EXPRESSION:
+pending.ownersDone & ownerIndexBit > 0
+
+IRs:
+REF_10(uint256) -> pending.ownersDone
+TMP_11(uint256) = REF_10 & ownerIndexBit
+TMP_12(bool) = TMP_11 > 0
+CONDITION TMP_12"];
+7->8[label="True"];
+7->11[label="False"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+pending.yetNeeded ++
+
+IRs:
+REF_11(uint256) -> pending.yetNeeded
+TMP_13(uint256) := REF_11(uint256)
+REF_11(-> pending) = REF_11 + 1"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+pending.ownersDone -= ownerIndexBit
+
+IRs:
+REF_12(uint256) -> pending.ownersDone
+REF_12(-> pending) = REF_12 - ownerIndexBit"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+Revoke(msg.sender,_operation)
+
+IRs:
+Emit Revoke(msg.sender,_operation)"];
+10->11;
+11[label="Node Type: END_IF 11
+"];
+}
+// Function: 2553.sol-multiowned-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+c_maxOwners = 250
+
+IRs:
+c_maxOwners(uint256) := 250(uint256)"];
+}
+// Function: 2553.sol-multisig-changeOwner(address,address)
+digraph{
+}
+}

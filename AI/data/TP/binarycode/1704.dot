@@ -1,0 +1,4917 @@
+digraph G {
+// Function: 1704.sol-Constants-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+MAIN_SCHEME = 1337
+
+IRs:
+MAIN_SCHEME(uint256) := 1337(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+DEFAULT_COUNTRY = 1
+
+IRs:
+DEFAULT_COUNTRY(uint256) := 1(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+SET_NICK_FEE = 10000000000000000
+
+IRs:
+SET_NICK_FEE(uint256) := 10000000000000000(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+REFERRAL_REGISTRATION_FEE = 10000000000000000
+
+IRs:
+REFERRAL_REGISTRATION_FEE(uint256) := 10000000000000000(uint256)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+TO_DIVIDENDS = 42
+
+IRs:
+TO_DIVIDENDS(uint256) := 42(uint256)"];
+4->5;
+5[label="Node Type: OTHER_ENTRYPOINT 5
+
+EXPRESSION:
+TO_REFERRAL = 10
+
+IRs:
+TO_REFERRAL(uint256) := 10(uint256)"];
+5->6;
+6[label="Node Type: OTHER_ENTRYPOINT 6
+
+EXPRESSION:
+TO_DEVELOPERS = 4
+
+IRs:
+TO_DEVELOPERS(uint256) := 4(uint256)"];
+6->7;
+7[label="Node Type: OTHER_ENTRYPOINT 7
+
+EXPRESSION:
+TO_COUNTRY = 12
+
+IRs:
+TO_COUNTRY(uint256) := 12(uint256)"];
+}
+// Function: 1704.sol-Core-active()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(startTime > 0)
+
+IRs:
+TMP_136(bool) = startTime > 0
+TMP_137(None) = SOLIDITY_CALL require(bool)(TMP_136)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(block.timestamp < endTime)
+
+IRs:
+TMP_138(bool) = block.timestamp < endTime
+TMP_139(None) = SOLIDITY_CALL require(bool)(TMP_138)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(! potWithdrawn)
+
+IRs:
+TMP_140 = UnaryType.BANG potWithdrawn 
+TMP_141(None) = SOLIDITY_CALL require(bool)(TMP_140)"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 1704.sol-Core-balanceOfVault(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_150(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_151(Dividends.Vault) -> REF_150[_owner]
+vault(Dividends.Vault) := REF_151(Dividends.Vault)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+total = vault.value.add(gainsOfVault(_schemeId,_owner))
+
+IRs:
+REF_152(uint256) -> vault.value
+TMP_131(uint256) = INTERNAL_CALL, Dividends.gainsOfVault(uint256,address)(_schemeId,_owner)
+TMP_132(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_152', 'TMP_131'] 
+total(uint256) := TMP_132(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+balance = total.div(FIXED_POINT)
+
+IRs:
+TMP_133(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['total', 'FIXED_POINT'] 
+balance(uint256) := TMP_133(uint256)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+balance
+
+IRs:
+RETURN balance"];
+}
+// Function: 1704.sol-Core-buyShares(uint256,address,uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_owner != address(0))
+
+IRs:
+TMP_99 = CONVERT 0 to address
+TMP_100(bool) = _owner != TMP_99
+TMP_101(None) = SOLIDITY_CALL require(bool)(TMP_100)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_shares > 0 && _value > 0)
+
+IRs:
+TMP_102(bool) = _shares > 0
+TMP_103(bool) = _value > 0
+TMP_104(bool) = TMP_102 && TMP_103
+TMP_105(None) = SOLIDITY_CALL require(bool)(TMP_104)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+value = _value.mul(FIXED_POINT)
+
+IRs:
+TMP_106(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['_value', 'FIXED_POINT'] 
+value(uint256) := TMP_106(uint256)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+scheme = schemeOfId[_schemeId]
+
+IRs:
+REF_90(Dividends.Scheme) -> schemeOfId[_schemeId]
+scheme(Dividends.Scheme) := REF_90(Dividends.Scheme)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+scheme.value = scheme.value.add(_value)
+
+IRs:
+REF_91(uint256) -> scheme.value
+REF_92(uint256) -> scheme.value
+TMP_107(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_92', '_value'] 
+REF_91(uint256) (->scheme) := TMP_107(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+scheme.shares = scheme.shares.add(_shares)
+
+IRs:
+REF_94(uint256) -> scheme.shares
+REF_95(uint256) -> scheme.shares
+TMP_108(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_95', '_shares'] 
+REF_94(uint256) (->scheme) := TMP_108(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+require(bool)(value > scheme.shares)
+
+IRs:
+REF_97(uint256) -> scheme.shares
+TMP_109(bool) = value > REF_97
+TMP_110(None) = SOLIDITY_CALL require(bool)(TMP_109)"];
+7->8;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+pps = value.div(scheme.shares)
+
+IRs:
+REF_99(uint256) -> scheme.shares
+TMP_111(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['value', 'REF_99'] 
+pps(uint256) := TMP_111(uint256)"];
+8->9;
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_100(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_101(Dividends.Vault) -> REF_100[_owner]
+vault(Dividends.Vault) := REF_101(Dividends.Vault)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+vault.shares = vault.shares.add(_shares)
+
+IRs:
+REF_102(uint256) -> vault.shares
+REF_103(uint256) -> vault.shares
+TMP_112(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_103', '_shares'] 
+REF_102(uint256) (->vault) := TMP_112(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+vault.mask = vault.mask.add(scheme.mask.mul(_shares))
+
+IRs:
+REF_105(uint256) -> vault.mask
+REF_106(uint256) -> vault.mask
+REF_108(uint256) -> scheme.mask
+TMP_113(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['REF_108', '_shares'] 
+TMP_114(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_106', 'TMP_113'] 
+REF_105(uint256) (->vault) := TMP_114(uint256)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+vault.value = vault.value.add(value.sub(pps.mul(scheme.shares)))
+
+IRs:
+REF_110(uint256) -> vault.value
+REF_111(uint256) -> vault.value
+REF_115(uint256) -> scheme.shares
+TMP_115(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['pps', 'REF_115'] 
+TMP_116(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['value', 'TMP_115'] 
+TMP_117(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_111', 'TMP_116'] 
+REF_110(uint256) (->vault) := TMP_117(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+scheme.mask = scheme.mask.add(pps)
+
+IRs:
+REF_116(uint256) -> scheme.mask
+REF_117(uint256) -> scheme.mask
+TMP_118(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_117', 'pps'] 
+REF_116(uint256) (->scheme) := TMP_118(uint256)"];
+}
+// Function: 1704.sol-Core-creditVault(uint256,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_132(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_133(Dividends.Vault) -> REF_132[_owner]
+vault(Dividends.Vault) := REF_133(Dividends.Vault)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+vault.value = vault.value.add(_value.mul(FIXED_POINT))
+
+IRs:
+REF_134(uint256) -> vault.value
+REF_135(uint256) -> vault.value
+TMP_126(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['_value', 'FIXED_POINT'] 
+TMP_127(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_135', 'TMP_126'] 
+REF_134(uint256) (->vault) := TMP_127(uint256)"];
+}
+// Function: 1704.sol-Core-flushVault(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+gains = gainsOfVault(_schemeId,_owner)
+
+IRs:
+TMP_119(uint256) = INTERNAL_CALL, Dividends.gainsOfVault(uint256,address)(_schemeId,_owner)
+gains(uint256) := TMP_119(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+gains > 0
+
+IRs:
+TMP_120(bool) = gains > 0
+CONDITION TMP_120"];
+2->3[label="True"];
+2->6[label="False"];
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_119(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_120(Dividends.Vault) -> REF_119[_owner]
+vault(Dividends.Vault) := REF_120(Dividends.Vault)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+vault.value = vault.value.add(gains)
+
+IRs:
+REF_121(uint256) -> vault.value
+REF_122(uint256) -> vault.value
+TMP_121(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_122', 'gains'] 
+REF_121(uint256) (->vault) := TMP_121(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+vault.mask = vault.mask.add(gains)
+
+IRs:
+REF_124(uint256) -> vault.mask
+REF_125(uint256) -> vault.mask
+TMP_122(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_125', 'gains'] 
+REF_124(uint256) (->vault) := TMP_122(uint256)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+}
+// Function: 1704.sol-Core-gainsOfVault(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+scheme = schemeOfId[_schemeId]
+
+IRs:
+REF_138(Dividends.Scheme) -> schemeOfId[_schemeId]
+scheme(Dividends.Scheme) := REF_138(Dividends.Scheme)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_139(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_140(Dividends.Vault) -> REF_139[_owner]
+vault(Dividends.Vault) := REF_140(Dividends.Vault)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+vault.shares == 0
+
+IRs:
+REF_141(uint256) -> vault.shares
+TMP_128(bool) = REF_141 == 0
+CONDITION TMP_128"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+scheme.mask.mul(vault.shares).sub(vault.mask)
+
+IRs:
+REF_142(uint256) -> scheme.mask
+REF_144(uint256) -> vault.shares
+TMP_129(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['REF_142', 'REF_144'] 
+REF_146(uint256) -> vault.mask
+TMP_130(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['TMP_129', 'REF_146'] 
+RETURN TMP_130"];
+}
+// Function: 1704.sol-Core-player()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(infoOfAddress[msg.sender].countryId > 0)
+
+IRs:
+REF_162(State.Info) -> infoOfAddress[msg.sender]
+REF_163(uint256) -> REF_162.countryId
+TMP_142(bool) = REF_163 > 0
+TMP_143(None) = SOLIDITY_CALL require(bool)(TMP_142)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1704.sol-Core-restricted()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == addressOfOwner)
+
+IRs:
+TMP_134(bool) = msg.sender == addressOfOwner
+TMP_135(None) = SOLIDITY_CALL require(bool)(TMP_134)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1704.sol-Core-sharesOfScheme(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+schemeOfId[_schemeId].shares
+
+IRs:
+REF_160(Dividends.Scheme) -> schemeOfId[_schemeId]
+REF_161(uint256) -> REF_160.shares
+RETURN REF_161"];
+}
+// Function: 1704.sol-Core-sharesOfVault(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_155(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_156(Dividends.Vault) -> REF_155[_owner]
+vault(Dividends.Vault) := REF_156(Dividends.Vault)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+vault.shares
+
+IRs:
+REF_157(uint256) -> vault.shares
+RETURN REF_157"];
+}
+// Function: 1704.sol-Core-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+MAIN_SCHEME = 1337
+
+IRs:
+MAIN_SCHEME(uint256) := 1337(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+DEFAULT_COUNTRY = 1
+
+IRs:
+DEFAULT_COUNTRY(uint256) := 1(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+SET_NICK_FEE = 10000000000000000
+
+IRs:
+SET_NICK_FEE(uint256) := 10000000000000000(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+REFERRAL_REGISTRATION_FEE = 10000000000000000
+
+IRs:
+REFERRAL_REGISTRATION_FEE(uint256) := 10000000000000000(uint256)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+TO_DIVIDENDS = 42
+
+IRs:
+TO_DIVIDENDS(uint256) := 42(uint256)"];
+4->5;
+5[label="Node Type: OTHER_ENTRYPOINT 5
+
+EXPRESSION:
+TO_REFERRAL = 10
+
+IRs:
+TO_REFERRAL(uint256) := 10(uint256)"];
+5->6;
+6[label="Node Type: OTHER_ENTRYPOINT 6
+
+EXPRESSION:
+TO_DEVELOPERS = 4
+
+IRs:
+TO_DEVELOPERS(uint256) := 4(uint256)"];
+6->7;
+7[label="Node Type: OTHER_ENTRYPOINT 7
+
+EXPRESSION:
+TO_COUNTRY = 12
+
+IRs:
+TO_COUNTRY(uint256) := 12(uint256)"];
+}
+// Function: 1704.sol-Core-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+maxTime = 0
+
+IRs:
+maxTime(uint256) := 0(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+addedTime = 0
+
+IRs:
+addedTime(uint256) := 0(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+totalPot = 0
+
+IRs:
+totalPot(uint256) := 0(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+startTime = 0
+
+IRs:
+startTime(uint256) := 0(uint256)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+endTime = 0
+
+IRs:
+endTime(uint256) := 0(uint256)"];
+4->5;
+5[label="Node Type: OTHER_ENTRYPOINT 5
+
+EXPRESSION:
+potWithdrawn = false
+
+IRs:
+potWithdrawn(bool) := False(bool)"];
+}
+// Function: 1704.sol-Core-valueOfScheme(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+schemeOfId[_schemeId].value
+
+IRs:
+REF_158(Dividends.Scheme) -> schemeOfId[_schemeId]
+REF_159(uint256) -> REF_158.value
+RETURN REF_159"];
+}
+// Function: 1704.sol-Core-valueOfVault(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_147(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_148(Dividends.Vault) -> REF_147[_owner]
+vault(Dividends.Vault) := REF_148(Dividends.Vault)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+vault.value
+
+IRs:
+REF_149(uint256) -> vault.value
+RETURN REF_149"];
+}
+// Function: 1704.sol-Core-withdrawVault(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+flushVault(_schemeId,_owner)
+
+IRs:
+INTERNAL_CALL, Dividends.flushVault(uint256,address)(_schemeId,_owner)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_127(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_128(Dividends.Vault) -> REF_127[_owner]
+vault(Dividends.Vault) := REF_128(Dividends.Vault)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+payout = vault.value.div(FIXED_POINT)
+
+IRs:
+REF_129(uint256) -> vault.value
+TMP_124(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['REF_129', 'FIXED_POINT'] 
+payout(uint256) := TMP_124(uint256)"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+payout > 0
+
+IRs:
+TMP_125(bool) = payout > 0
+CONDITION TMP_125"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+vault.value = 0
+
+IRs:
+REF_131(uint256) -> vault.value
+REF_131(uint256) (->vault) := 0(uint256)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+payout
+
+IRs:
+RETURN payout"];
+}
+// Function: 1704.sol-Dividends-balanceOfVault(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_61(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_62(Dividends.Vault) -> REF_61[_owner]
+vault(Dividends.Vault) := REF_62(Dividends.Vault)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+total = vault.value.add(gainsOfVault(_schemeId,_owner))
+
+IRs:
+REF_63(uint256) -> vault.value
+TMP_45(uint256) = INTERNAL_CALL, Dividends.gainsOfVault(uint256,address)(_schemeId,_owner)
+TMP_46(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_63', 'TMP_45'] 
+total(uint256) := TMP_46(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+balance = total.div(FIXED_POINT)
+
+IRs:
+TMP_47(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['total', 'FIXED_POINT'] 
+balance(uint256) := TMP_47(uint256)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+balance
+
+IRs:
+RETURN balance"];
+}
+// Function: 1704.sol-Dividends-buyShares(uint256,address,uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_owner != address(0))
+
+IRs:
+TMP_13 = CONVERT 0 to address
+TMP_14(bool) = _owner != TMP_13
+TMP_15(None) = SOLIDITY_CALL require(bool)(TMP_14)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_shares > 0 && _value > 0)
+
+IRs:
+TMP_16(bool) = _shares > 0
+TMP_17(bool) = _value > 0
+TMP_18(bool) = TMP_16 && TMP_17
+TMP_19(None) = SOLIDITY_CALL require(bool)(TMP_18)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+value = _value.mul(FIXED_POINT)
+
+IRs:
+TMP_20(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['_value', 'FIXED_POINT'] 
+value(uint256) := TMP_20(uint256)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+scheme = schemeOfId[_schemeId]
+
+IRs:
+REF_1(Dividends.Scheme) -> schemeOfId[_schemeId]
+scheme(Dividends.Scheme) := REF_1(Dividends.Scheme)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+scheme.value = scheme.value.add(_value)
+
+IRs:
+REF_2(uint256) -> scheme.value
+REF_3(uint256) -> scheme.value
+TMP_21(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_3', '_value'] 
+REF_2(uint256) (->scheme) := TMP_21(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+scheme.shares = scheme.shares.add(_shares)
+
+IRs:
+REF_5(uint256) -> scheme.shares
+REF_6(uint256) -> scheme.shares
+TMP_22(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_6', '_shares'] 
+REF_5(uint256) (->scheme) := TMP_22(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+require(bool)(value > scheme.shares)
+
+IRs:
+REF_8(uint256) -> scheme.shares
+TMP_23(bool) = value > REF_8
+TMP_24(None) = SOLIDITY_CALL require(bool)(TMP_23)"];
+7->8;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+pps = value.div(scheme.shares)
+
+IRs:
+REF_10(uint256) -> scheme.shares
+TMP_25(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['value', 'REF_10'] 
+pps(uint256) := TMP_25(uint256)"];
+8->9;
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_11(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_12(Dividends.Vault) -> REF_11[_owner]
+vault(Dividends.Vault) := REF_12(Dividends.Vault)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+vault.shares = vault.shares.add(_shares)
+
+IRs:
+REF_13(uint256) -> vault.shares
+REF_14(uint256) -> vault.shares
+TMP_26(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_14', '_shares'] 
+REF_13(uint256) (->vault) := TMP_26(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+vault.mask = vault.mask.add(scheme.mask.mul(_shares))
+
+IRs:
+REF_16(uint256) -> vault.mask
+REF_17(uint256) -> vault.mask
+REF_19(uint256) -> scheme.mask
+TMP_27(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['REF_19', '_shares'] 
+TMP_28(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_17', 'TMP_27'] 
+REF_16(uint256) (->vault) := TMP_28(uint256)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+vault.value = vault.value.add(value.sub(pps.mul(scheme.shares)))
+
+IRs:
+REF_21(uint256) -> vault.value
+REF_22(uint256) -> vault.value
+REF_26(uint256) -> scheme.shares
+TMP_29(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['pps', 'REF_26'] 
+TMP_30(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['value', 'TMP_29'] 
+TMP_31(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_22', 'TMP_30'] 
+REF_21(uint256) (->vault) := TMP_31(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+scheme.mask = scheme.mask.add(pps)
+
+IRs:
+REF_27(uint256) -> scheme.mask
+REF_28(uint256) -> scheme.mask
+TMP_32(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_28', 'pps'] 
+REF_27(uint256) (->scheme) := TMP_32(uint256)"];
+}
+// Function: 1704.sol-Dividends-creditVault(uint256,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_43(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_44(Dividends.Vault) -> REF_43[_owner]
+vault(Dividends.Vault) := REF_44(Dividends.Vault)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+vault.value = vault.value.add(_value.mul(FIXED_POINT))
+
+IRs:
+REF_45(uint256) -> vault.value
+REF_46(uint256) -> vault.value
+TMP_40(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['_value', 'FIXED_POINT'] 
+TMP_41(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_46', 'TMP_40'] 
+REF_45(uint256) (->vault) := TMP_41(uint256)"];
+}
+// Function: 1704.sol-Dividends-flushVault(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+gains = gainsOfVault(_schemeId,_owner)
+
+IRs:
+TMP_33(uint256) = INTERNAL_CALL, Dividends.gainsOfVault(uint256,address)(_schemeId,_owner)
+gains(uint256) := TMP_33(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+gains > 0
+
+IRs:
+TMP_34(bool) = gains > 0
+CONDITION TMP_34"];
+2->3[label="True"];
+2->6[label="False"];
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_30(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_31(Dividends.Vault) -> REF_30[_owner]
+vault(Dividends.Vault) := REF_31(Dividends.Vault)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+vault.value = vault.value.add(gains)
+
+IRs:
+REF_32(uint256) -> vault.value
+REF_33(uint256) -> vault.value
+TMP_35(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_33', 'gains'] 
+REF_32(uint256) (->vault) := TMP_35(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+vault.mask = vault.mask.add(gains)
+
+IRs:
+REF_35(uint256) -> vault.mask
+REF_36(uint256) -> vault.mask
+TMP_36(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_36', 'gains'] 
+REF_35(uint256) (->vault) := TMP_36(uint256)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+}
+// Function: 1704.sol-Dividends-gainsOfVault(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+scheme = schemeOfId[_schemeId]
+
+IRs:
+REF_49(Dividends.Scheme) -> schemeOfId[_schemeId]
+scheme(Dividends.Scheme) := REF_49(Dividends.Scheme)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_50(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_51(Dividends.Vault) -> REF_50[_owner]
+vault(Dividends.Vault) := REF_51(Dividends.Vault)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+vault.shares == 0
+
+IRs:
+REF_52(uint256) -> vault.shares
+TMP_42(bool) = REF_52 == 0
+CONDITION TMP_42"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+scheme.mask.mul(vault.shares).sub(vault.mask)
+
+IRs:
+REF_53(uint256) -> scheme.mask
+REF_55(uint256) -> vault.shares
+TMP_43(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['REF_53', 'REF_55'] 
+REF_57(uint256) -> vault.mask
+TMP_44(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['TMP_43', 'REF_57'] 
+RETURN TMP_44"];
+}
+// Function: 1704.sol-Dividends-sharesOfScheme(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+schemeOfId[_schemeId].shares
+
+IRs:
+REF_71(Dividends.Scheme) -> schemeOfId[_schemeId]
+REF_72(uint256) -> REF_71.shares
+RETURN REF_72"];
+}
+// Function: 1704.sol-Dividends-sharesOfVault(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_66(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_67(Dividends.Vault) -> REF_66[_owner]
+vault(Dividends.Vault) := REF_67(Dividends.Vault)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+vault.shares
+
+IRs:
+REF_68(uint256) -> vault.shares
+RETURN REF_68"];
+}
+// Function: 1704.sol-Dividends-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+FIXED_POINT = 1000000000000000000
+
+IRs:
+FIXED_POINT(uint256) := 1000000000000000000(uint256)"];
+}
+// Function: 1704.sol-Dividends-valueOfScheme(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+schemeOfId[_schemeId].value
+
+IRs:
+REF_69(Dividends.Scheme) -> schemeOfId[_schemeId]
+REF_70(uint256) -> REF_69.value
+RETURN REF_70"];
+}
+// Function: 1704.sol-Dividends-valueOfVault(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_58(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_59(Dividends.Vault) -> REF_58[_owner]
+vault(Dividends.Vault) := REF_59(Dividends.Vault)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+vault.value
+
+IRs:
+REF_60(uint256) -> vault.value
+RETURN REF_60"];
+}
+// Function: 1704.sol-Dividends-withdrawVault(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+flushVault(_schemeId,_owner)
+
+IRs:
+INTERNAL_CALL, Dividends.flushVault(uint256,address)(_schemeId,_owner)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_38(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_39(Dividends.Vault) -> REF_38[_owner]
+vault(Dividends.Vault) := REF_39(Dividends.Vault)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+payout = vault.value.div(FIXED_POINT)
+
+IRs:
+REF_40(uint256) -> vault.value
+TMP_38(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['REF_40', 'FIXED_POINT'] 
+payout(uint256) := TMP_38(uint256)"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+payout > 0
+
+IRs:
+TMP_39(bool) = payout > 0
+CONDITION TMP_39"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+vault.value = 0
+
+IRs:
+REF_42(uint256) -> vault.value
+REF_42(uint256) (->vault) := 0(uint256)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+payout
+
+IRs:
+RETURN payout"];
+}
+// Function: 1704.sol-ExternalView-active()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(startTime > 0)
+
+IRs:
+TMP_191(bool) = startTime > 0
+TMP_192(None) = SOLIDITY_CALL require(bool)(TMP_191)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(block.timestamp < endTime)
+
+IRs:
+TMP_193(bool) = block.timestamp < endTime
+TMP_194(None) = SOLIDITY_CALL require(bool)(TMP_193)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(! potWithdrawn)
+
+IRs:
+TMP_195 = UnaryType.BANG potWithdrawn 
+TMP_196(None) = SOLIDITY_CALL require(bool)(TMP_195)"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 1704.sol-ExternalView-balanceOfVault(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_225(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_226(Dividends.Vault) -> REF_225[_owner]
+vault(Dividends.Vault) := REF_226(Dividends.Vault)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+total = vault.value.add(gainsOfVault(_schemeId,_owner))
+
+IRs:
+REF_227(uint256) -> vault.value
+TMP_176(uint256) = INTERNAL_CALL, Dividends.gainsOfVault(uint256,address)(_schemeId,_owner)
+TMP_177(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_227', 'TMP_176'] 
+total(uint256) := TMP_177(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+balance = total.div(FIXED_POINT)
+
+IRs:
+TMP_178(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['total', 'FIXED_POINT'] 
+balance(uint256) := TMP_178(uint256)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+balance
+
+IRs:
+RETURN balance"];
+}
+// Function: 1704.sol-ExternalView-buyShares(uint256,address,uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_owner != address(0))
+
+IRs:
+TMP_144 = CONVERT 0 to address
+TMP_145(bool) = _owner != TMP_144
+TMP_146(None) = SOLIDITY_CALL require(bool)(TMP_145)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_shares > 0 && _value > 0)
+
+IRs:
+TMP_147(bool) = _shares > 0
+TMP_148(bool) = _value > 0
+TMP_149(bool) = TMP_147 && TMP_148
+TMP_150(None) = SOLIDITY_CALL require(bool)(TMP_149)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+value = _value.mul(FIXED_POINT)
+
+IRs:
+TMP_151(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['_value', 'FIXED_POINT'] 
+value(uint256) := TMP_151(uint256)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+scheme = schemeOfId[_schemeId]
+
+IRs:
+REF_165(Dividends.Scheme) -> schemeOfId[_schemeId]
+scheme(Dividends.Scheme) := REF_165(Dividends.Scheme)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+scheme.value = scheme.value.add(_value)
+
+IRs:
+REF_166(uint256) -> scheme.value
+REF_167(uint256) -> scheme.value
+TMP_152(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_167', '_value'] 
+REF_166(uint256) (->scheme) := TMP_152(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+scheme.shares = scheme.shares.add(_shares)
+
+IRs:
+REF_169(uint256) -> scheme.shares
+REF_170(uint256) -> scheme.shares
+TMP_153(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_170', '_shares'] 
+REF_169(uint256) (->scheme) := TMP_153(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+require(bool)(value > scheme.shares)
+
+IRs:
+REF_172(uint256) -> scheme.shares
+TMP_154(bool) = value > REF_172
+TMP_155(None) = SOLIDITY_CALL require(bool)(TMP_154)"];
+7->8;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+pps = value.div(scheme.shares)
+
+IRs:
+REF_174(uint256) -> scheme.shares
+TMP_156(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['value', 'REF_174'] 
+pps(uint256) := TMP_156(uint256)"];
+8->9;
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_175(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_176(Dividends.Vault) -> REF_175[_owner]
+vault(Dividends.Vault) := REF_176(Dividends.Vault)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+vault.shares = vault.shares.add(_shares)
+
+IRs:
+REF_177(uint256) -> vault.shares
+REF_178(uint256) -> vault.shares
+TMP_157(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_178', '_shares'] 
+REF_177(uint256) (->vault) := TMP_157(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+vault.mask = vault.mask.add(scheme.mask.mul(_shares))
+
+IRs:
+REF_180(uint256) -> vault.mask
+REF_181(uint256) -> vault.mask
+REF_183(uint256) -> scheme.mask
+TMP_158(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['REF_183', '_shares'] 
+TMP_159(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_181', 'TMP_158'] 
+REF_180(uint256) (->vault) := TMP_159(uint256)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+vault.value = vault.value.add(value.sub(pps.mul(scheme.shares)))
+
+IRs:
+REF_185(uint256) -> vault.value
+REF_186(uint256) -> vault.value
+REF_190(uint256) -> scheme.shares
+TMP_160(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['pps', 'REF_190'] 
+TMP_161(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['value', 'TMP_160'] 
+TMP_162(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_186', 'TMP_161'] 
+REF_185(uint256) (->vault) := TMP_162(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+scheme.mask = scheme.mask.add(pps)
+
+IRs:
+REF_191(uint256) -> scheme.mask
+REF_192(uint256) -> scheme.mask
+TMP_163(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_192', 'pps'] 
+REF_191(uint256) (->scheme) := TMP_163(uint256)"];
+}
+// Function: 1704.sol-ExternalView-codeToAddress(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+addressOfCode[_code]
+
+IRs:
+REF_247(address) -> addressOfCode[_code]
+RETURN REF_247"];
+}
+// Function: 1704.sol-ExternalView-countryInfo(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+(sharesOfScheme(_countryId),valueOfScheme(_countryId))
+
+IRs:
+TMP_183(uint256) = INTERNAL_CALL, Dividends.sharesOfScheme(uint256)(_countryId)
+TMP_184(uint256) = INTERNAL_CALL, Dividends.valueOfScheme(uint256)(_countryId)
+RETURN TMP_183,TMP_184"];
+}
+// Function: 1704.sol-ExternalView-creditVault(uint256,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_207(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_208(Dividends.Vault) -> REF_207[_owner]
+vault(Dividends.Vault) := REF_208(Dividends.Vault)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+vault.value = vault.value.add(_value.mul(FIXED_POINT))
+
+IRs:
+REF_209(uint256) -> vault.value
+REF_210(uint256) -> vault.value
+TMP_171(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['_value', 'FIXED_POINT'] 
+TMP_172(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_210', 'TMP_171'] 
+REF_209(uint256) (->vault) := TMP_172(uint256)"];
+}
+// Function: 1704.sol-ExternalView-flushVault(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+gains = gainsOfVault(_schemeId,_owner)
+
+IRs:
+TMP_164(uint256) = INTERNAL_CALL, Dividends.gainsOfVault(uint256,address)(_schemeId,_owner)
+gains(uint256) := TMP_164(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+gains > 0
+
+IRs:
+TMP_165(bool) = gains > 0
+CONDITION TMP_165"];
+2->3[label="True"];
+2->6[label="False"];
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_194(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_195(Dividends.Vault) -> REF_194[_owner]
+vault(Dividends.Vault) := REF_195(Dividends.Vault)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+vault.value = vault.value.add(gains)
+
+IRs:
+REF_196(uint256) -> vault.value
+REF_197(uint256) -> vault.value
+TMP_166(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_197', 'gains'] 
+REF_196(uint256) (->vault) := TMP_166(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+vault.mask = vault.mask.add(gains)
+
+IRs:
+REF_199(uint256) -> vault.mask
+REF_200(uint256) -> vault.mask
+TMP_167(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_200', 'gains'] 
+REF_199(uint256) (->vault) := TMP_167(uint256)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+}
+// Function: 1704.sol-ExternalView-gainsOfVault(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+scheme = schemeOfId[_schemeId]
+
+IRs:
+REF_213(Dividends.Scheme) -> schemeOfId[_schemeId]
+scheme(Dividends.Scheme) := REF_213(Dividends.Scheme)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_214(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_215(Dividends.Vault) -> REF_214[_owner]
+vault(Dividends.Vault) := REF_215(Dividends.Vault)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+vault.shares == 0
+
+IRs:
+REF_216(uint256) -> vault.shares
+TMP_173(bool) = REF_216 == 0
+CONDITION TMP_173"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+scheme.mask.mul(vault.shares).sub(vault.mask)
+
+IRs:
+REF_217(uint256) -> scheme.mask
+REF_219(uint256) -> vault.shares
+TMP_174(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['REF_217', 'REF_219'] 
+REF_221(uint256) -> vault.mask
+TMP_175(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['TMP_174', 'REF_221'] 
+RETURN TMP_175"];
+}
+// Function: 1704.sol-ExternalView-goldenTicketPrice(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+Utils.goldenTicketPrice(_x)
+
+IRs:
+TMP_188(uint256) = LIBRARY_CALL, dest:Utils, function:Utils.goldenTicketPrice(uint256), arguments:['_x'] 
+RETURN TMP_188"];
+}
+// Function: 1704.sol-ExternalView-numberOfReferralCodes(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+codesOfAddress[_player].length
+
+IRs:
+REF_243(string[]) -> codesOfAddress[_player]
+REF_244 -> LENGTH REF_243
+RETURN REF_244"];
+}
+// Function: 1704.sol-ExternalView-player()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(infoOfAddress[msg.sender].countryId > 0)
+
+IRs:
+REF_249(State.Info) -> infoOfAddress[msg.sender]
+REF_250(uint256) -> REF_249.countryId
+TMP_197(bool) = REF_250 > 0
+TMP_198(None) = SOLIDITY_CALL require(bool)(TMP_197)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1704.sol-ExternalView-playerInfo(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+info = infoOfAddress[_player]
+
+IRs:
+REF_237(State.Info) -> infoOfAddress[_player]
+info(State.Info) := REF_237(State.Info)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+(sharesOfVault(MAIN_SCHEME,_player),balanceOfVault(MAIN_SCHEME,_player),balanceOfVault(info.countryId,_player),info.referral,info.countryId,info.withdrawn,info.nick)
+
+IRs:
+TMP_185(uint256) = INTERNAL_CALL, Dividends.sharesOfVault(uint256,address)(MAIN_SCHEME,_player)
+TMP_186(uint256) = INTERNAL_CALL, Dividends.balanceOfVault(uint256,address)(MAIN_SCHEME,_player)
+REF_238(uint256) -> info.countryId
+TMP_187(uint256) = INTERNAL_CALL, Dividends.balanceOfVault(uint256,address)(REF_238,_player)
+REF_239(address) -> info.referral
+REF_240(uint256) -> info.countryId
+REF_241(uint256) -> info.withdrawn
+REF_242(string) -> info.nick
+RETURN TMP_185,TMP_186,TMP_187,REF_239,REF_240,REF_241,REF_242"];
+}
+// Function: 1704.sol-ExternalView-referralCodeAt(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+codesOfAddress[_player][i]
+
+IRs:
+REF_245(string[]) -> codesOfAddress[_player]
+REF_246(string) -> REF_245[i]
+RETURN REF_246"];
+}
+// Function: 1704.sol-ExternalView-restricted()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == addressOfOwner)
+
+IRs:
+TMP_189(bool) = msg.sender == addressOfOwner
+TMP_190(None) = SOLIDITY_CALL require(bool)(TMP_189)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1704.sol-ExternalView-sharesOfScheme(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+schemeOfId[_schemeId].shares
+
+IRs:
+REF_235(Dividends.Scheme) -> schemeOfId[_schemeId]
+REF_236(uint256) -> REF_235.shares
+RETURN REF_236"];
+}
+// Function: 1704.sol-ExternalView-sharesOfVault(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_230(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_231(Dividends.Vault) -> REF_230[_owner]
+vault(Dividends.Vault) := REF_231(Dividends.Vault)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+vault.shares
+
+IRs:
+REF_232(uint256) -> vault.shares
+RETURN REF_232"];
+}
+// Function: 1704.sol-ExternalView-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+MAIN_SCHEME = 1337
+
+IRs:
+MAIN_SCHEME(uint256) := 1337(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+DEFAULT_COUNTRY = 1
+
+IRs:
+DEFAULT_COUNTRY(uint256) := 1(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+SET_NICK_FEE = 10000000000000000
+
+IRs:
+SET_NICK_FEE(uint256) := 10000000000000000(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+REFERRAL_REGISTRATION_FEE = 10000000000000000
+
+IRs:
+REFERRAL_REGISTRATION_FEE(uint256) := 10000000000000000(uint256)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+TO_DIVIDENDS = 42
+
+IRs:
+TO_DIVIDENDS(uint256) := 42(uint256)"];
+4->5;
+5[label="Node Type: OTHER_ENTRYPOINT 5
+
+EXPRESSION:
+TO_REFERRAL = 10
+
+IRs:
+TO_REFERRAL(uint256) := 10(uint256)"];
+5->6;
+6[label="Node Type: OTHER_ENTRYPOINT 6
+
+EXPRESSION:
+TO_DEVELOPERS = 4
+
+IRs:
+TO_DEVELOPERS(uint256) := 4(uint256)"];
+6->7;
+7[label="Node Type: OTHER_ENTRYPOINT 7
+
+EXPRESSION:
+TO_COUNTRY = 12
+
+IRs:
+TO_COUNTRY(uint256) := 12(uint256)"];
+}
+// Function: 1704.sol-ExternalView-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+maxTime = 0
+
+IRs:
+maxTime(uint256) := 0(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+addedTime = 0
+
+IRs:
+addedTime(uint256) := 0(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+totalPot = 0
+
+IRs:
+totalPot(uint256) := 0(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+startTime = 0
+
+IRs:
+startTime(uint256) := 0(uint256)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+endTime = 0
+
+IRs:
+endTime(uint256) := 0(uint256)"];
+4->5;
+5[label="Node Type: OTHER_ENTRYPOINT 5
+
+EXPRESSION:
+potWithdrawn = false
+
+IRs:
+potWithdrawn(bool) := False(bool)"];
+}
+// Function: 1704.sol-ExternalView-totalInfo()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+(startTime > 0,block.timestamp >= endTime,addressOfCaptain,totalPot,endTime,sharesOfScheme(MAIN_SCHEME),valueOfScheme(MAIN_SCHEME),maxTime,addedTime,addressOfOwner)
+
+IRs:
+TMP_179(bool) = startTime > 0
+TMP_180(bool) = block.timestamp >= endTime
+TMP_181(uint256) = INTERNAL_CALL, Dividends.sharesOfScheme(uint256)(MAIN_SCHEME)
+TMP_182(uint256) = INTERNAL_CALL, Dividends.valueOfScheme(uint256)(MAIN_SCHEME)
+RETURN TMP_179,TMP_180,addressOfCaptain,totalPot,endTime,TMP_181,TMP_182,maxTime,addedTime,addressOfOwner"];
+}
+// Function: 1704.sol-ExternalView-valueOfScheme(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+schemeOfId[_schemeId].value
+
+IRs:
+REF_233(Dividends.Scheme) -> schemeOfId[_schemeId]
+REF_234(uint256) -> REF_233.value
+RETURN REF_234"];
+}
+// Function: 1704.sol-ExternalView-valueOfVault(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_222(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_223(Dividends.Vault) -> REF_222[_owner]
+vault(Dividends.Vault) := REF_223(Dividends.Vault)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+vault.value
+
+IRs:
+REF_224(uint256) -> vault.value
+RETURN REF_224"];
+}
+// Function: 1704.sol-ExternalView-withdrawVault(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+flushVault(_schemeId,_owner)
+
+IRs:
+INTERNAL_CALL, Dividends.flushVault(uint256,address)(_schemeId,_owner)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_202(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_203(Dividends.Vault) -> REF_202[_owner]
+vault(Dividends.Vault) := REF_203(Dividends.Vault)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+payout = vault.value.div(FIXED_POINT)
+
+IRs:
+REF_204(uint256) -> vault.value
+TMP_169(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['REF_204', 'FIXED_POINT'] 
+payout(uint256) := TMP_169(uint256)"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+payout > 0
+
+IRs:
+TMP_170(bool) = payout > 0
+CONDITION TMP_170"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+vault.value = 0
+
+IRs:
+REF_206(uint256) -> vault.value
+REF_206(uint256) (->vault) := 0(uint256)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+payout
+
+IRs:
+RETURN payout"];
+}
+// Function: 1704.sol-Internal-_registerReferral(string,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(Utils.validReferralCode(_code))
+
+IRs:
+TMP_234(bool) = LIBRARY_CALL, dest:Utils, function:Utils.validReferralCode(string), arguments:['_code'] 
+TMP_235(None) = SOLIDITY_CALL require(bool)(TMP_234)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(addressOfCode[_code] == address(0))
+
+IRs:
+REF_325(address) -> addressOfCode[_code]
+TMP_236 = CONVERT 0 to address
+TMP_237(bool) = REF_325 == TMP_236
+TMP_238(None) = SOLIDITY_CALL require(bool)(TMP_237)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+addressOfCode[_code] = _referral
+
+IRs:
+REF_326(address) -> addressOfCode[_code]
+REF_326(address) (->addressOfCode) := _referral(address)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+codesOfAddress[_referral].push(_code)
+
+IRs:
+REF_327(string[]) -> codesOfAddress[_referral]
+REF_329 -> LENGTH REF_327
+TMP_240(uint256) := REF_329(uint256)
+TMP_241(uint256) = TMP_240 + 1
+REF_329(uint256) (->codesOfAddress) := TMP_241(uint256)
+REF_330(string) -> REF_327[TMP_240]
+REF_330(string) (->codesOfAddress) := _code(string)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Registered(_code,_referral)
+
+IRs:
+Emit Registered(_code,_referral)"];
+}
+// Function: 1704.sol-Internal-active()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(startTime > 0)
+
+IRs:
+TMP_245(bool) = startTime > 0
+TMP_246(None) = SOLIDITY_CALL require(bool)(TMP_245)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(block.timestamp < endTime)
+
+IRs:
+TMP_247(bool) = block.timestamp < endTime
+TMP_248(None) = SOLIDITY_CALL require(bool)(TMP_247)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(! potWithdrawn)
+
+IRs:
+TMP_249 = UnaryType.BANG potWithdrawn 
+TMP_250(None) = SOLIDITY_CALL require(bool)(TMP_249)"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 1704.sol-Internal-balanceOfVault(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_312(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_313(Dividends.Vault) -> REF_312[_owner]
+vault(Dividends.Vault) := REF_313(Dividends.Vault)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+total = vault.value.add(gainsOfVault(_schemeId,_owner))
+
+IRs:
+REF_314(uint256) -> vault.value
+TMP_231(uint256) = INTERNAL_CALL, Dividends.gainsOfVault(uint256,address)(_schemeId,_owner)
+TMP_232(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_314', 'TMP_231'] 
+total(uint256) := TMP_232(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+balance = total.div(FIXED_POINT)
+
+IRs:
+TMP_233(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['total', 'FIXED_POINT'] 
+balance(uint256) := TMP_233(uint256)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+balance
+
+IRs:
+RETURN balance"];
+}
+// Function: 1704.sol-Internal-buyShares(uint256,address,uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_owner != address(0))
+
+IRs:
+TMP_199 = CONVERT 0 to address
+TMP_200(bool) = _owner != TMP_199
+TMP_201(None) = SOLIDITY_CALL require(bool)(TMP_200)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_shares > 0 && _value > 0)
+
+IRs:
+TMP_202(bool) = _shares > 0
+TMP_203(bool) = _value > 0
+TMP_204(bool) = TMP_202 && TMP_203
+TMP_205(None) = SOLIDITY_CALL require(bool)(TMP_204)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+value = _value.mul(FIXED_POINT)
+
+IRs:
+TMP_206(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['_value', 'FIXED_POINT'] 
+value(uint256) := TMP_206(uint256)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+scheme = schemeOfId[_schemeId]
+
+IRs:
+REF_252(Dividends.Scheme) -> schemeOfId[_schemeId]
+scheme(Dividends.Scheme) := REF_252(Dividends.Scheme)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+scheme.value = scheme.value.add(_value)
+
+IRs:
+REF_253(uint256) -> scheme.value
+REF_254(uint256) -> scheme.value
+TMP_207(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_254', '_value'] 
+REF_253(uint256) (->scheme) := TMP_207(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+scheme.shares = scheme.shares.add(_shares)
+
+IRs:
+REF_256(uint256) -> scheme.shares
+REF_257(uint256) -> scheme.shares
+TMP_208(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_257', '_shares'] 
+REF_256(uint256) (->scheme) := TMP_208(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+require(bool)(value > scheme.shares)
+
+IRs:
+REF_259(uint256) -> scheme.shares
+TMP_209(bool) = value > REF_259
+TMP_210(None) = SOLIDITY_CALL require(bool)(TMP_209)"];
+7->8;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+pps = value.div(scheme.shares)
+
+IRs:
+REF_261(uint256) -> scheme.shares
+TMP_211(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['value', 'REF_261'] 
+pps(uint256) := TMP_211(uint256)"];
+8->9;
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_262(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_263(Dividends.Vault) -> REF_262[_owner]
+vault(Dividends.Vault) := REF_263(Dividends.Vault)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+vault.shares = vault.shares.add(_shares)
+
+IRs:
+REF_264(uint256) -> vault.shares
+REF_265(uint256) -> vault.shares
+TMP_212(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_265', '_shares'] 
+REF_264(uint256) (->vault) := TMP_212(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+vault.mask = vault.mask.add(scheme.mask.mul(_shares))
+
+IRs:
+REF_267(uint256) -> vault.mask
+REF_268(uint256) -> vault.mask
+REF_270(uint256) -> scheme.mask
+TMP_213(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['REF_270', '_shares'] 
+TMP_214(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_268', 'TMP_213'] 
+REF_267(uint256) (->vault) := TMP_214(uint256)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+vault.value = vault.value.add(value.sub(pps.mul(scheme.shares)))
+
+IRs:
+REF_272(uint256) -> vault.value
+REF_273(uint256) -> vault.value
+REF_277(uint256) -> scheme.shares
+TMP_215(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['pps', 'REF_277'] 
+TMP_216(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['value', 'TMP_215'] 
+TMP_217(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_273', 'TMP_216'] 
+REF_272(uint256) (->vault) := TMP_217(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+scheme.mask = scheme.mask.add(pps)
+
+IRs:
+REF_278(uint256) -> scheme.mask
+REF_279(uint256) -> scheme.mask
+TMP_218(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_279', 'pps'] 
+REF_278(uint256) (->scheme) := TMP_218(uint256)"];
+}
+// Function: 1704.sol-Internal-creditVault(uint256,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_294(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_295(Dividends.Vault) -> REF_294[_owner]
+vault(Dividends.Vault) := REF_295(Dividends.Vault)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+vault.value = vault.value.add(_value.mul(FIXED_POINT))
+
+IRs:
+REF_296(uint256) -> vault.value
+REF_297(uint256) -> vault.value
+TMP_226(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['_value', 'FIXED_POINT'] 
+TMP_227(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_297', 'TMP_226'] 
+REF_296(uint256) (->vault) := TMP_227(uint256)"];
+}
+// Function: 1704.sol-Internal-flushVault(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+gains = gainsOfVault(_schemeId,_owner)
+
+IRs:
+TMP_219(uint256) = INTERNAL_CALL, Dividends.gainsOfVault(uint256,address)(_schemeId,_owner)
+gains(uint256) := TMP_219(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+gains > 0
+
+IRs:
+TMP_220(bool) = gains > 0
+CONDITION TMP_220"];
+2->3[label="True"];
+2->6[label="False"];
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_281(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_282(Dividends.Vault) -> REF_281[_owner]
+vault(Dividends.Vault) := REF_282(Dividends.Vault)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+vault.value = vault.value.add(gains)
+
+IRs:
+REF_283(uint256) -> vault.value
+REF_284(uint256) -> vault.value
+TMP_221(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_284', 'gains'] 
+REF_283(uint256) (->vault) := TMP_221(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+vault.mask = vault.mask.add(gains)
+
+IRs:
+REF_286(uint256) -> vault.mask
+REF_287(uint256) -> vault.mask
+TMP_222(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_287', 'gains'] 
+REF_286(uint256) (->vault) := TMP_222(uint256)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+}
+// Function: 1704.sol-Internal-gainsOfVault(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+scheme = schemeOfId[_schemeId]
+
+IRs:
+REF_300(Dividends.Scheme) -> schemeOfId[_schemeId]
+scheme(Dividends.Scheme) := REF_300(Dividends.Scheme)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_301(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_302(Dividends.Vault) -> REF_301[_owner]
+vault(Dividends.Vault) := REF_302(Dividends.Vault)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+vault.shares == 0
+
+IRs:
+REF_303(uint256) -> vault.shares
+TMP_228(bool) = REF_303 == 0
+CONDITION TMP_228"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+scheme.mask.mul(vault.shares).sub(vault.mask)
+
+IRs:
+REF_304(uint256) -> scheme.mask
+REF_306(uint256) -> vault.shares
+TMP_229(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['REF_304', 'REF_306'] 
+REF_308(uint256) -> vault.mask
+TMP_230(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['TMP_229', 'REF_308'] 
+RETURN TMP_230"];
+}
+// Function: 1704.sol-Internal-player()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(infoOfAddress[msg.sender].countryId > 0)
+
+IRs:
+REF_331(State.Info) -> infoOfAddress[msg.sender]
+REF_332(uint256) -> REF_331.countryId
+TMP_251(bool) = REF_332 > 0
+TMP_252(None) = SOLIDITY_CALL require(bool)(TMP_251)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1704.sol-Internal-restricted()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == addressOfOwner)
+
+IRs:
+TMP_243(bool) = msg.sender == addressOfOwner
+TMP_244(None) = SOLIDITY_CALL require(bool)(TMP_243)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1704.sol-Internal-sharesOfScheme(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+schemeOfId[_schemeId].shares
+
+IRs:
+REF_322(Dividends.Scheme) -> schemeOfId[_schemeId]
+REF_323(uint256) -> REF_322.shares
+RETURN REF_323"];
+}
+// Function: 1704.sol-Internal-sharesOfVault(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_317(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_318(Dividends.Vault) -> REF_317[_owner]
+vault(Dividends.Vault) := REF_318(Dividends.Vault)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+vault.shares
+
+IRs:
+REF_319(uint256) -> vault.shares
+RETURN REF_319"];
+}
+// Function: 1704.sol-Internal-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+MAIN_SCHEME = 1337
+
+IRs:
+MAIN_SCHEME(uint256) := 1337(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+DEFAULT_COUNTRY = 1
+
+IRs:
+DEFAULT_COUNTRY(uint256) := 1(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+SET_NICK_FEE = 10000000000000000
+
+IRs:
+SET_NICK_FEE(uint256) := 10000000000000000(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+REFERRAL_REGISTRATION_FEE = 10000000000000000
+
+IRs:
+REFERRAL_REGISTRATION_FEE(uint256) := 10000000000000000(uint256)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+TO_DIVIDENDS = 42
+
+IRs:
+TO_DIVIDENDS(uint256) := 42(uint256)"];
+4->5;
+5[label="Node Type: OTHER_ENTRYPOINT 5
+
+EXPRESSION:
+TO_REFERRAL = 10
+
+IRs:
+TO_REFERRAL(uint256) := 10(uint256)"];
+5->6;
+6[label="Node Type: OTHER_ENTRYPOINT 6
+
+EXPRESSION:
+TO_DEVELOPERS = 4
+
+IRs:
+TO_DEVELOPERS(uint256) := 4(uint256)"];
+6->7;
+7[label="Node Type: OTHER_ENTRYPOINT 7
+
+EXPRESSION:
+TO_COUNTRY = 12
+
+IRs:
+TO_COUNTRY(uint256) := 12(uint256)"];
+}
+// Function: 1704.sol-Internal-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+maxTime = 0
+
+IRs:
+maxTime(uint256) := 0(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+addedTime = 0
+
+IRs:
+addedTime(uint256) := 0(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+totalPot = 0
+
+IRs:
+totalPot(uint256) := 0(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+startTime = 0
+
+IRs:
+startTime(uint256) := 0(uint256)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+endTime = 0
+
+IRs:
+endTime(uint256) := 0(uint256)"];
+4->5;
+5[label="Node Type: OTHER_ENTRYPOINT 5
+
+EXPRESSION:
+potWithdrawn = false
+
+IRs:
+potWithdrawn(bool) := False(bool)"];
+}
+// Function: 1704.sol-Internal-valueOfScheme(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+schemeOfId[_schemeId].value
+
+IRs:
+REF_320(Dividends.Scheme) -> schemeOfId[_schemeId]
+REF_321(uint256) -> REF_320.value
+RETURN REF_321"];
+}
+// Function: 1704.sol-Internal-valueOfVault(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_309(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_310(Dividends.Vault) -> REF_309[_owner]
+vault(Dividends.Vault) := REF_310(Dividends.Vault)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+vault.value
+
+IRs:
+REF_311(uint256) -> vault.value
+RETURN REF_311"];
+}
+// Function: 1704.sol-Internal-withdrawVault(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+flushVault(_schemeId,_owner)
+
+IRs:
+INTERNAL_CALL, Dividends.flushVault(uint256,address)(_schemeId,_owner)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_289(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_290(Dividends.Vault) -> REF_289[_owner]
+vault(Dividends.Vault) := REF_290(Dividends.Vault)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+payout = vault.value.div(FIXED_POINT)
+
+IRs:
+REF_291(uint256) -> vault.value
+TMP_224(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['REF_291', 'FIXED_POINT'] 
+payout(uint256) := TMP_224(uint256)"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+payout > 0
+
+IRs:
+TMP_225(bool) = payout > 0
+CONDITION TMP_225"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+vault.value = 0
+
+IRs:
+REF_293(uint256) -> vault.value
+REF_293(uint256) (->vault) := 0(uint256)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+payout
+
+IRs:
+RETURN payout"];
+}
+// Function: 1704.sol-SafeMath-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_10(uint256) = a + b
+c(uint256) := TMP_10(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(c >= a)
+
+IRs:
+TMP_11(bool) = c >= a
+TMP_12(None) = SOLIDITY_CALL assert(bool)(TMP_11)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 1704.sol-SafeMath-div(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+a / b
+
+IRs:
+TMP_5(uint256) = a / b
+RETURN TMP_5"];
+}
+// Function: 1704.sol-SafeMath-mod(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+a % b
+
+IRs:
+TMP_6(uint256) = a % b
+RETURN TMP_6"];
+}
+// Function: 1704.sol-SafeMath-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+a == 0
+
+IRs:
+TMP_0(bool) = a == 0
+CONDITION TMP_0"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_1(uint256) = a * b
+c(uint256) := TMP_1(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+assert(bool)(c / a == b)
+
+IRs:
+TMP_2(uint256) = c / a
+TMP_3(bool) = TMP_2 == b
+TMP_4(None) = SOLIDITY_CALL assert(bool)(TMP_3)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 1704.sol-SafeMath-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(b <= a)
+
+IRs:
+TMP_7(bool) = b <= a
+TMP_8(None) = SOLIDITY_CALL assert(bool)(TMP_7)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_9(uint256) = a - b
+RETURN TMP_9"];
+}
+// Function: 1704.sol-State-active()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(startTime > 0)
+
+IRs:
+TMP_91(bool) = startTime > 0
+TMP_92(None) = SOLIDITY_CALL require(bool)(TMP_91)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(block.timestamp < endTime)
+
+IRs:
+TMP_93(bool) = block.timestamp < endTime
+TMP_94(None) = SOLIDITY_CALL require(bool)(TMP_93)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(! potWithdrawn)
+
+IRs:
+TMP_95 = UnaryType.BANG potWithdrawn 
+TMP_96(None) = SOLIDITY_CALL require(bool)(TMP_95)"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 1704.sol-State-player()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(infoOfAddress[msg.sender].countryId > 0)
+
+IRs:
+REF_87(State.Info) -> infoOfAddress[msg.sender]
+REF_88(uint256) -> REF_87.countryId
+TMP_97(bool) = REF_88 > 0
+TMP_98(None) = SOLIDITY_CALL require(bool)(TMP_97)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1704.sol-State-restricted()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == addressOfOwner)
+
+IRs:
+TMP_89(bool) = msg.sender == addressOfOwner
+TMP_90(None) = SOLIDITY_CALL require(bool)(TMP_89)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1704.sol-State-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+MAIN_SCHEME = 1337
+
+IRs:
+MAIN_SCHEME(uint256) := 1337(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+DEFAULT_COUNTRY = 1
+
+IRs:
+DEFAULT_COUNTRY(uint256) := 1(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+SET_NICK_FEE = 10000000000000000
+
+IRs:
+SET_NICK_FEE(uint256) := 10000000000000000(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+REFERRAL_REGISTRATION_FEE = 10000000000000000
+
+IRs:
+REFERRAL_REGISTRATION_FEE(uint256) := 10000000000000000(uint256)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+TO_DIVIDENDS = 42
+
+IRs:
+TO_DIVIDENDS(uint256) := 42(uint256)"];
+4->5;
+5[label="Node Type: OTHER_ENTRYPOINT 5
+
+EXPRESSION:
+TO_REFERRAL = 10
+
+IRs:
+TO_REFERRAL(uint256) := 10(uint256)"];
+5->6;
+6[label="Node Type: OTHER_ENTRYPOINT 6
+
+EXPRESSION:
+TO_DEVELOPERS = 4
+
+IRs:
+TO_DEVELOPERS(uint256) := 4(uint256)"];
+6->7;
+7[label="Node Type: OTHER_ENTRYPOINT 7
+
+EXPRESSION:
+TO_COUNTRY = 12
+
+IRs:
+TO_COUNTRY(uint256) := 12(uint256)"];
+}
+// Function: 1704.sol-State-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+maxTime = 0
+
+IRs:
+maxTime(uint256) := 0(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+addedTime = 0
+
+IRs:
+addedTime(uint256) := 0(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+totalPot = 0
+
+IRs:
+totalPot(uint256) := 0(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+startTime = 0
+
+IRs:
+startTime(uint256) := 0(uint256)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+endTime = 0
+
+IRs:
+endTime(uint256) := 0(uint256)"];
+4->5;
+5[label="Node Type: OTHER_ENTRYPOINT 5
+
+EXPRESSION:
+potWithdrawn = false
+
+IRs:
+potWithdrawn(bool) := False(bool)"];
+}
+// Function: 1704.sol-Utils-goldenTicketPrice(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+price = _x.mul(_x).div(2168819140000000000000000).add(100000000000000).add(_x.div(100000))
+
+IRs:
+TMP_48(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['_x', '_x'] 
+TMP_49(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['TMP_48', '2168819140000000000000000'] 
+TMP_50(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['TMP_49', '100000000000000'] 
+TMP_51(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['_x', '100000'] 
+TMP_52(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['TMP_50', 'TMP_51'] 
+price(uint256) := TMP_52(uint256)"];
+1->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+price < regularTicketPrice()
+
+IRs:
+TMP_53(uint256) = INTERNAL_CALL, Utils.regularTicketPrice()()
+TMP_54(bool) = price < TMP_53
+CONDITION TMP_54"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+regularTicketPrice()
+
+IRs:
+TMP_55(uint256) = INTERNAL_CALL, Utils.regularTicketPrice()()
+RETURN TMP_55"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+price
+
+IRs:
+RETURN price"];
+}
+// Function: 1704.sol-Utils-percentageOf(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+_value.mul(_p).div(100)
+
+IRs:
+TMP_61(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['_value', '_p'] 
+TMP_62(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['TMP_61', '100'] 
+RETURN TMP_62"];
+}
+// Function: 1704.sol-Utils-regularTicketPrice()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+100000000000000
+
+IRs:
+RETURN 100000000000000"];
+}
+// Function: 1704.sol-Utils-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+LAST_COUNTRY = 195
+
+IRs:
+LAST_COUNTRY(uint256) := 195(uint256)"];
+}
+// Function: 1704.sol-Utils-ticketsForWithExcess(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+tickets = _value.div(regularTicketPrice())
+
+IRs:
+TMP_56(uint256) = INTERNAL_CALL, Utils.regularTicketPrice()()
+TMP_57(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['_value', 'TMP_56'] 
+tickets(uint256) := TMP_57(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+excess = _value.sub(tickets.mul(regularTicketPrice()))
+
+IRs:
+TMP_58(uint256) = INTERNAL_CALL, Utils.regularTicketPrice()()
+TMP_59(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['tickets', 'TMP_58'] 
+TMP_60(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['_value', 'TMP_59'] 
+excess(uint256) := TMP_60(uint256)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+(tickets,excess)
+
+IRs:
+RETURN tickets,excess"];
+}
+// Function: 1704.sol-Utils-validCountryId(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+_countryId > 0 && _countryId <= LAST_COUNTRY
+
+IRs:
+TMP_86(bool) = _countryId > 0
+TMP_87(bool) = _countryId <= LAST_COUNTRY
+TMP_88(bool) = TMP_86 && TMP_87
+RETURN TMP_88"];
+}
+// Function: 1704.sol-Utils-validNick(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+bytes(_nick).length > 3
+
+IRs:
+TMP_84 = CONVERT _nick to bytes
+REF_86 -> LENGTH TMP_84
+TMP_85(bool) = REF_86 > 3
+RETURN TMP_85"];
+}
+// Function: 1704.sol-Utils-validReferralCode(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+b = bytes(_code)
+
+IRs:
+TMP_63 = CONVERT _code to bytes
+b(bytes) := TMP_63(bytes)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+b.length < 3
+
+IRs:
+REF_83 -> LENGTH b
+TMP_64(bool) = REF_83 < 3
+CONDITION TMP_64"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+4[label="Node Type: END_IF 4
+"];
+4->7;
+5[label="Node Type: BEGIN_LOOP 5
+"];
+5->8;
+6[label="Node Type: END_LOOP 6
+"];
+6->14;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+7->5;
+8[label="Node Type: IF_LOOP 8
+
+EXPRESSION:
+i < b.length
+
+IRs:
+REF_84 -> LENGTH b
+TMP_65(bool) = i < REF_84
+CONDITION TMP_65"];
+8->9[label="True"];
+8->6[label="False"];
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+c = b[i]
+
+IRs:
+REF_85(None) -> b[i]
+c(bytes1) := REF_85(None)"];
+9->10;
+10[label="Node Type: IF 10
+
+EXPRESSION:
+! (c >= 0x30 && c <= 0x39) && ! (c >= 0x41 && c <= 0x5A) && ! (c >= 0x61 && c <= 0x7A) && ! (c == 0x2D)
+
+IRs:
+TMP_66(bool) = c >= 48
+TMP_67(bool) = c <= 57
+TMP_68(bool) = TMP_66 && TMP_67
+TMP_69 = UnaryType.BANG TMP_68 
+TMP_70(bool) = c >= 65
+TMP_71(bool) = c <= 90
+TMP_72(bool) = TMP_70 && TMP_71
+TMP_73 = UnaryType.BANG TMP_72 
+TMP_74(bool) = TMP_69 && TMP_73
+TMP_75(bool) = c >= 97
+TMP_76(bool) = c <= 122
+TMP_77(bool) = TMP_75 && TMP_76
+TMP_78 = UnaryType.BANG TMP_77 
+TMP_79(bool) = TMP_74 && TMP_78
+TMP_80(bool) = c == 45
+TMP_81 = UnaryType.BANG TMP_80 
+TMP_82(bool) = TMP_79 && TMP_81
+CONDITION TMP_82"];
+10->11[label="True"];
+10->12[label="False"];
+11[label="Node Type: RETURN 11
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+12[label="Node Type: END_IF 12
+"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_83(uint256) := i(uint256)
+i(uint256) = i + 1"];
+13->8;
+14[label="Node Type: RETURN 14
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 1704.sol-WinnerWinner-_registerReferral(string,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(Utils.validReferralCode(_code))
+
+IRs:
+TMP_298(bool) = LIBRARY_CALL, dest:Utils, function:Utils.validReferralCode(string), arguments:['_code'] 
+TMP_299(None) = SOLIDITY_CALL require(bool)(TMP_298)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(addressOfCode[_code] == address(0))
+
+IRs:
+REF_419(address) -> addressOfCode[_code]
+TMP_300 = CONVERT 0 to address
+TMP_301(bool) = REF_419 == TMP_300
+TMP_302(None) = SOLIDITY_CALL require(bool)(TMP_301)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+addressOfCode[_code] = _referral
+
+IRs:
+REF_420(address) -> addressOfCode[_code]
+REF_420(address) (->addressOfCode) := _referral(address)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+codesOfAddress[_referral].push(_code)
+
+IRs:
+REF_421(string[]) -> codesOfAddress[_referral]
+REF_423 -> LENGTH REF_421
+TMP_304(uint256) := REF_423(uint256)
+TMP_305(uint256) = TMP_304 + 1
+REF_423(uint256) (->codesOfAddress) := TMP_305(uint256)
+REF_424(string) -> REF_421[TMP_304]
+REF_424(string) (->codesOfAddress) := _code(string)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Registered(_code,_referral)
+
+IRs:
+Emit Registered(_code,_referral)"];
+}
+// Function: 1704.sol-WinnerWinner-active()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(startTime > 0)
+
+IRs:
+TMP_409(bool) = startTime > 0
+TMP_410(None) = SOLIDITY_CALL require(bool)(TMP_409)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(block.timestamp < endTime)
+
+IRs:
+TMP_411(bool) = block.timestamp < endTime
+TMP_412(None) = SOLIDITY_CALL require(bool)(TMP_411)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(! potWithdrawn)
+
+IRs:
+TMP_413 = UnaryType.BANG potWithdrawn 
+TMP_414(None) = SOLIDITY_CALL require(bool)(TMP_413)"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 1704.sol-WinnerWinner-balanceOfVault(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_406(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_407(Dividends.Vault) -> REF_406[_owner]
+vault(Dividends.Vault) := REF_407(Dividends.Vault)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+total = vault.value.add(gainsOfVault(_schemeId,_owner))
+
+IRs:
+REF_408(uint256) -> vault.value
+TMP_295(uint256) = INTERNAL_CALL, Dividends.gainsOfVault(uint256,address)(_schemeId,_owner)
+TMP_296(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_408', 'TMP_295'] 
+total(uint256) := TMP_296(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+balance = total.div(FIXED_POINT)
+
+IRs:
+TMP_297(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['total', 'FIXED_POINT'] 
+balance(uint256) := TMP_297(uint256)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+balance
+
+IRs:
+RETURN balance"];
+}
+// Function: 1704.sol-WinnerWinner-buy(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->38;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.value >= Utils.regularTicketPrice())
+
+IRs:
+TMP_320(uint256) = LIBRARY_CALL, dest:Utils, function:Utils.regularTicketPrice(), arguments:[] 
+TMP_321(bool) = msg.value >= TMP_320
+TMP_322(None) = SOLIDITY_CALL require(bool)(TMP_321)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(msg.value <= 100000000000000000000000)
+
+IRs:
+TMP_323(bool) = msg.value <= 100000000000000000000000
+TMP_324(None) = SOLIDITY_CALL require(bool)(TMP_323)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(codesOfAddress[_referral].length > 0)
+
+IRs:
+REF_426(string[]) -> codesOfAddress[_referral]
+REF_427 -> LENGTH REF_426
+TMP_325(bool) = REF_427 > 0
+TMP_326(None) = SOLIDITY_CALL require(bool)(TMP_325)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool)(_countryId != MAIN_SCHEME)
+
+IRs:
+TMP_327(bool) = _countryId != MAIN_SCHEME
+TMP_328(None) = SOLIDITY_CALL require(bool)(TMP_327)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool)(Utils.validCountryId(_countryId))
+
+IRs:
+TMP_329(bool) = LIBRARY_CALL, dest:Utils, function:Utils.validCountryId(uint256), arguments:['_countryId'] 
+TMP_330(None) = SOLIDITY_CALL require(bool)(TMP_329)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+(tickets,excess) = Utils.ticketsForWithExcess(msg.value)
+
+IRs:
+TUPLE_0(uint256,uint256) = LIBRARY_CALL, dest:Utils, function:Utils.ticketsForWithExcess(uint256), arguments:['msg.value'] 
+tickets(uint256)= UNPACK TUPLE_0 index: 0 
+excess(uint256)= UNPACK TUPLE_0 index: 1 "];
+8->9;
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+value = msg.value.sub(excess)
+
+IRs:
+TMP_331(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['msg.value', 'excess'] 
+value(uint256) := TMP_331(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+require(bool)(tickets > 0)
+
+IRs:
+TMP_332(bool) = tickets > 0
+TMP_333(None) = SOLIDITY_CALL require(bool)(TMP_332)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+require(bool)(value.add(excess) == msg.value)
+
+IRs:
+TMP_334(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['value', 'excess'] 
+TMP_335(bool) = TMP_334 == msg.value
+TMP_336(None) = SOLIDITY_CALL require(bool)(TMP_335)"];
+11->12;
+12[label="Node Type: NEW VARIABLE 12
+
+EXPRESSION:
+info = infoOfAddress[msg.sender]
+
+IRs:
+REF_432(State.Info) -> infoOfAddress[msg.sender]
+info(State.Info) := REF_432(State.Info)"];
+12->13;
+13[label="Node Type: IF 13
+
+EXPRESSION:
+info.countryId == 0
+
+IRs:
+REF_433(uint256) -> info.countryId
+TMP_337(bool) = REF_433 == 0
+CONDITION TMP_337"];
+13->14[label="True"];
+13->16[label="False"];
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+info.referral = _referral
+
+IRs:
+REF_434(address) -> info.referral
+REF_434(address) (->info) := _referral(address)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+info.countryId = _countryId
+
+IRs:
+REF_435(uint256) -> info.countryId
+REF_435(uint256) (->info) := _countryId(uint256)"];
+15->16;
+16[label="Node Type: END_IF 16
+"];
+16->17;
+17[label="Node Type: NEW VARIABLE 17
+
+EXPRESSION:
+vdivs = Utils.percentageOf(value,TO_DIVIDENDS)
+
+IRs:
+TMP_338(uint256) = LIBRARY_CALL, dest:Utils, function:Utils.percentageOf(uint256,uint256), arguments:['value', 'TO_DIVIDENDS'] 
+vdivs(uint256) := TMP_338(uint256)"];
+17->18;
+18[label="Node Type: NEW VARIABLE 18
+
+EXPRESSION:
+vreferral = Utils.percentageOf(value,TO_REFERRAL)
+
+IRs:
+TMP_339(uint256) = LIBRARY_CALL, dest:Utils, function:Utils.percentageOf(uint256,uint256), arguments:['value', 'TO_REFERRAL'] 
+vreferral(uint256) := TMP_339(uint256)"];
+18->19;
+19[label="Node Type: NEW VARIABLE 19
+
+EXPRESSION:
+vdevs = Utils.percentageOf(value,TO_DEVELOPERS)
+
+IRs:
+TMP_340(uint256) = LIBRARY_CALL, dest:Utils, function:Utils.percentageOf(uint256,uint256), arguments:['value', 'TO_DEVELOPERS'] 
+vdevs(uint256) := TMP_340(uint256)"];
+19->20;
+20[label="Node Type: NEW VARIABLE 20
+
+EXPRESSION:
+vcountry = Utils.percentageOf(value,TO_COUNTRY)
+
+IRs:
+TMP_341(uint256) = LIBRARY_CALL, dest:Utils, function:Utils.percentageOf(uint256,uint256), arguments:['value', 'TO_COUNTRY'] 
+vcountry(uint256) := TMP_341(uint256)"];
+20->21;
+21[label="Node Type: NEW VARIABLE 21
+
+EXPRESSION:
+vpot = value.sub(vdivs).sub(vreferral).sub(vdevs).sub(vcountry)
+
+IRs:
+TMP_342(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['value', 'vdivs'] 
+TMP_343(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['TMP_342', 'vreferral'] 
+TMP_344(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['TMP_343', 'vdevs'] 
+TMP_345(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['TMP_344', 'vcountry'] 
+vpot(uint256) := TMP_345(uint256)"];
+21->22;
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+assert(bool)(vdivs.add(vreferral).add(vdevs).add(vcountry).add(vpot) == value)
+
+IRs:
+TMP_346(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['vdivs', 'vreferral'] 
+TMP_347(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['TMP_346', 'vdevs'] 
+TMP_348(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['TMP_347', 'vcountry'] 
+TMP_349(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['TMP_348', 'vpot'] 
+TMP_350(bool) = TMP_349 == value
+TMP_351(None) = SOLIDITY_CALL assert(bool)(TMP_350)"];
+22->23;
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+buyShares(MAIN_SCHEME,msg.sender,tickets,vdivs)
+
+IRs:
+INTERNAL_CALL, Dividends.buyShares(uint256,address,uint256,uint256)(MAIN_SCHEME,msg.sender,tickets,vdivs)"];
+23->24;
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+buyShares(info.countryId,msg.sender,tickets,vcountry)
+
+IRs:
+REF_448(uint256) -> info.countryId
+INTERNAL_CALL, Dividends.buyShares(uint256,address,uint256,uint256)(REF_448,msg.sender,tickets,vcountry)"];
+24->25;
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+creditVault(MAIN_SCHEME,info.referral,vreferral)
+
+IRs:
+REF_449(address) -> info.referral
+INTERNAL_CALL, Dividends.creditVault(uint256,address,uint256)(MAIN_SCHEME,REF_449,vreferral)"];
+25->26;
+26[label="Node Type: EXPRESSION 26
+
+EXPRESSION:
+creditVault(MAIN_SCHEME,addressOfOwner,vdevs)
+
+IRs:
+INTERNAL_CALL, Dividends.creditVault(uint256,address,uint256)(MAIN_SCHEME,addressOfOwner,vdevs)"];
+26->27;
+27[label="Node Type: IF 27
+
+EXPRESSION:
+excess > 0
+
+IRs:
+TMP_356(bool) = excess > 0
+CONDITION TMP_356"];
+27->28[label="True"];
+27->29[label="False"];
+28[label="Node Type: EXPRESSION 28
+
+EXPRESSION:
+creditVault(MAIN_SCHEME,msg.sender,excess)
+
+IRs:
+INTERNAL_CALL, Dividends.creditVault(uint256,address,uint256)(MAIN_SCHEME,msg.sender,excess)"];
+28->29;
+29[label="Node Type: END_IF 29
+"];
+29->30;
+30[label="Node Type: NEW VARIABLE 30
+
+EXPRESSION:
+goldenTickets = value.div(Utils.goldenTicketPrice(totalPot))
+
+IRs:
+TMP_358(uint256) = LIBRARY_CALL, dest:Utils, function:Utils.goldenTicketPrice(uint256), arguments:['totalPot'] 
+TMP_359(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['value', 'TMP_358'] 
+goldenTickets(uint256) := TMP_359(uint256)"];
+30->31;
+31[label="Node Type: IF 31
+
+EXPRESSION:
+goldenTickets > 0
+
+IRs:
+TMP_360(bool) = goldenTickets > 0
+CONDITION TMP_360"];
+31->39[label="True"];
+31->35[label="False"];
+33[label="Node Type: EXPRESSION 33
+
+EXPRESSION:
+addressOfCaptain = msg.sender
+
+IRs:
+addressOfCaptain(address) := msg.sender(address)"];
+33->34;
+34[label="Node Type: EXPRESSION 34
+
+EXPRESSION:
+Promoted(addressOfCaptain,goldenTickets,endTime)
+
+IRs:
+Emit Promoted(addressOfCaptain,goldenTickets,endTime)"];
+34->35;
+35[label="Node Type: END_IF 35
+"];
+35->36;
+36[label="Node Type: EXPRESSION 36
+
+EXPRESSION:
+totalPot = totalPot.add(vpot)
+
+IRs:
+TMP_362(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['totalPot', 'vpot'] 
+totalPot(uint256) := TMP_362(uint256)"];
+36->37;
+37[label="Node Type: EXPRESSION 37
+
+EXPRESSION:
+Bought(msg.sender,info.referral,info.countryId,tickets,value,excess)
+
+IRs:
+REF_453(address) -> info.referral
+REF_454(uint256) -> info.countryId
+Emit Bought(msg.sender,REF_453,REF_454,tickets,value,excess)"];
+38[label="Node Type: EXPRESSION 38
+
+EXPRESSION:
+active()
+
+IRs:
+MODIFIER_CALL, State.active()()"];
+38->1;
+39[label="Node Type: IF 39
+
+EXPRESSION:
+endTime.add(goldenTickets.mul(addedTime)) > block.timestamp.add(maxTime)
+
+IRs:
+TMP_365(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['goldenTickets', 'addedTime'] 
+TMP_366(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['endTime', 'TMP_365'] 
+TMP_367(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['block.timestamp', 'maxTime'] 
+TMP_368(bool) = TMP_366 > TMP_367
+CONDITION TMP_368"];
+39->40[label="True"];
+39->41[label="False"];
+40[label="Node Type: EXPRESSION 40
+
+EXPRESSION:
+endTime = block.timestamp.add(maxTime)
+
+IRs:
+TMP_369(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['block.timestamp', 'maxTime'] 
+endTime(uint256) := TMP_369(uint256)"];
+40->42;
+41[label="Node Type: EXPRESSION 41
+
+EXPRESSION:
+endTime = endTime.add(goldenTickets.mul(addedTime))
+
+IRs:
+TMP_370(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['goldenTickets', 'addedTime'] 
+TMP_371(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['endTime', 'TMP_370'] 
+endTime(uint256) := TMP_371(uint256)"];
+41->42;
+42[label="Node Type: END_IF 42
+"];
+42->33;
+}
+// Function: 1704.sol-WinnerWinner-buyShares(uint256,address,uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_owner != address(0))
+
+IRs:
+TMP_263 = CONVERT 0 to address
+TMP_264(bool) = _owner != TMP_263
+TMP_265(None) = SOLIDITY_CALL require(bool)(TMP_264)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_shares > 0 && _value > 0)
+
+IRs:
+TMP_266(bool) = _shares > 0
+TMP_267(bool) = _value > 0
+TMP_268(bool) = TMP_266 && TMP_267
+TMP_269(None) = SOLIDITY_CALL require(bool)(TMP_268)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+value = _value.mul(FIXED_POINT)
+
+IRs:
+TMP_270(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['_value', 'FIXED_POINT'] 
+value(uint256) := TMP_270(uint256)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+scheme = schemeOfId[_schemeId]
+
+IRs:
+REF_346(Dividends.Scheme) -> schemeOfId[_schemeId]
+scheme(Dividends.Scheme) := REF_346(Dividends.Scheme)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+scheme.value = scheme.value.add(_value)
+
+IRs:
+REF_347(uint256) -> scheme.value
+REF_348(uint256) -> scheme.value
+TMP_271(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_348', '_value'] 
+REF_347(uint256) (->scheme) := TMP_271(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+scheme.shares = scheme.shares.add(_shares)
+
+IRs:
+REF_350(uint256) -> scheme.shares
+REF_351(uint256) -> scheme.shares
+TMP_272(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_351', '_shares'] 
+REF_350(uint256) (->scheme) := TMP_272(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+require(bool)(value > scheme.shares)
+
+IRs:
+REF_353(uint256) -> scheme.shares
+TMP_273(bool) = value > REF_353
+TMP_274(None) = SOLIDITY_CALL require(bool)(TMP_273)"];
+7->8;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+pps = value.div(scheme.shares)
+
+IRs:
+REF_355(uint256) -> scheme.shares
+TMP_275(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['value', 'REF_355'] 
+pps(uint256) := TMP_275(uint256)"];
+8->9;
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_356(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_357(Dividends.Vault) -> REF_356[_owner]
+vault(Dividends.Vault) := REF_357(Dividends.Vault)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+vault.shares = vault.shares.add(_shares)
+
+IRs:
+REF_358(uint256) -> vault.shares
+REF_359(uint256) -> vault.shares
+TMP_276(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_359', '_shares'] 
+REF_358(uint256) (->vault) := TMP_276(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+vault.mask = vault.mask.add(scheme.mask.mul(_shares))
+
+IRs:
+REF_361(uint256) -> vault.mask
+REF_362(uint256) -> vault.mask
+REF_364(uint256) -> scheme.mask
+TMP_277(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['REF_364', '_shares'] 
+TMP_278(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_362', 'TMP_277'] 
+REF_361(uint256) (->vault) := TMP_278(uint256)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+vault.value = vault.value.add(value.sub(pps.mul(scheme.shares)))
+
+IRs:
+REF_366(uint256) -> vault.value
+REF_367(uint256) -> vault.value
+REF_371(uint256) -> scheme.shares
+TMP_279(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['pps', 'REF_371'] 
+TMP_280(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['value', 'TMP_279'] 
+TMP_281(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_367', 'TMP_280'] 
+REF_366(uint256) (->vault) := TMP_281(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+scheme.mask = scheme.mask.add(pps)
+
+IRs:
+REF_372(uint256) -> scheme.mask
+REF_373(uint256) -> scheme.mask
+TMP_282(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_373', 'pps'] 
+REF_372(uint256) (->scheme) := TMP_282(uint256)"];
+}
+// Function: 1704.sol-WinnerWinner-codeToAddress(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+addressOfCode[_code]
+
+IRs:
+REF_343(address) -> addressOfCode[_code]
+RETURN REF_343"];
+}
+// Function: 1704.sol-WinnerWinner-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+addressOfOwner = msg.sender
+
+IRs:
+addressOfOwner(address) := msg.sender(address)"];
+}
+// Function: 1704.sol-WinnerWinner-countryInfo(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+(sharesOfScheme(_countryId),valueOfScheme(_countryId))
+
+IRs:
+TMP_257(uint256) = INTERNAL_CALL, Dividends.sharesOfScheme(uint256)(_countryId)
+TMP_258(uint256) = INTERNAL_CALL, Dividends.valueOfScheme(uint256)(_countryId)
+RETURN TMP_257,TMP_258"];
+}
+// Function: 1704.sol-WinnerWinner-creditVault(uint256,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_388(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_389(Dividends.Vault) -> REF_388[_owner]
+vault(Dividends.Vault) := REF_389(Dividends.Vault)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+vault.value = vault.value.add(_value.mul(FIXED_POINT))
+
+IRs:
+REF_390(uint256) -> vault.value
+REF_391(uint256) -> vault.value
+TMP_290(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['_value', 'FIXED_POINT'] 
+TMP_291(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_391', 'TMP_290'] 
+REF_390(uint256) (->vault) := TMP_291(uint256)"];
+}
+// Function: 1704.sol-WinnerWinner-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+buy(addressOfOwner,DEFAULT_COUNTRY)
+
+IRs:
+INTERNAL_CALL, WinnerWinner.buy(address,uint256)(addressOfOwner,DEFAULT_COUNTRY)"];
+}
+// Function: 1704.sol-WinnerWinner-flushVault(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+gains = gainsOfVault(_schemeId,_owner)
+
+IRs:
+TMP_283(uint256) = INTERNAL_CALL, Dividends.gainsOfVault(uint256,address)(_schemeId,_owner)
+gains(uint256) := TMP_283(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+gains > 0
+
+IRs:
+TMP_284(bool) = gains > 0
+CONDITION TMP_284"];
+2->3[label="True"];
+2->6[label="False"];
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_375(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_376(Dividends.Vault) -> REF_375[_owner]
+vault(Dividends.Vault) := REF_376(Dividends.Vault)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+vault.value = vault.value.add(gains)
+
+IRs:
+REF_377(uint256) -> vault.value
+REF_378(uint256) -> vault.value
+TMP_285(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_378', 'gains'] 
+REF_377(uint256) (->vault) := TMP_285(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+vault.mask = vault.mask.add(gains)
+
+IRs:
+REF_380(uint256) -> vault.mask
+REF_381(uint256) -> vault.mask
+TMP_286(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_381', 'gains'] 
+REF_380(uint256) (->vault) := TMP_286(uint256)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+}
+// Function: 1704.sol-WinnerWinner-gainsOfVault(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+scheme = schemeOfId[_schemeId]
+
+IRs:
+REF_394(Dividends.Scheme) -> schemeOfId[_schemeId]
+scheme(Dividends.Scheme) := REF_394(Dividends.Scheme)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_395(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_396(Dividends.Vault) -> REF_395[_owner]
+vault(Dividends.Vault) := REF_396(Dividends.Vault)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+vault.shares == 0
+
+IRs:
+REF_397(uint256) -> vault.shares
+TMP_292(bool) = REF_397 == 0
+CONDITION TMP_292"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+scheme.mask.mul(vault.shares).sub(vault.mask)
+
+IRs:
+REF_398(uint256) -> scheme.mask
+REF_400(uint256) -> vault.shares
+TMP_293(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['REF_398', 'REF_400'] 
+REF_402(uint256) -> vault.mask
+TMP_294(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['TMP_293', 'REF_402'] 
+RETURN TMP_294"];
+}
+// Function: 1704.sol-WinnerWinner-giftCode(string,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_registerReferral(_code,_referral)
+
+IRs:
+INTERNAL_CALL, Internal._registerReferral(string,address)(_code,_referral)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+restricted()
+
+IRs:
+MODIFIER_CALL, State.restricted()()"];
+2->1;
+}
+// Function: 1704.sol-WinnerWinner-goldenTicketPrice(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+Utils.goldenTicketPrice(_x)
+
+IRs:
+TMP_262(uint256) = LIBRARY_CALL, dest:Utils, function:Utils.goldenTicketPrice(uint256), arguments:['_x'] 
+RETURN TMP_262"];
+}
+// Function: 1704.sol-WinnerWinner-numberOfReferralCodes(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+codesOfAddress[_player].length
+
+IRs:
+REF_339(string[]) -> codesOfAddress[_player]
+REF_340 -> LENGTH REF_339
+RETURN REF_340"];
+}
+// Function: 1704.sol-WinnerWinner-player()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(infoOfAddress[msg.sender].countryId > 0)
+
+IRs:
+REF_474(State.Info) -> infoOfAddress[msg.sender]
+REF_475(uint256) -> REF_474.countryId
+TMP_415(bool) = REF_475 > 0
+TMP_416(None) = SOLIDITY_CALL require(bool)(TMP_415)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1704.sol-WinnerWinner-playerInfo(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+info = infoOfAddress[_player]
+
+IRs:
+REF_333(State.Info) -> infoOfAddress[_player]
+info(State.Info) := REF_333(State.Info)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+(sharesOfVault(MAIN_SCHEME,_player),balanceOfVault(MAIN_SCHEME,_player),balanceOfVault(info.countryId,_player),info.referral,info.countryId,info.withdrawn,info.nick)
+
+IRs:
+TMP_259(uint256) = INTERNAL_CALL, Dividends.sharesOfVault(uint256,address)(MAIN_SCHEME,_player)
+TMP_260(uint256) = INTERNAL_CALL, Dividends.balanceOfVault(uint256,address)(MAIN_SCHEME,_player)
+REF_334(uint256) -> info.countryId
+TMP_261(uint256) = INTERNAL_CALL, Dividends.balanceOfVault(uint256,address)(REF_334,_player)
+REF_335(address) -> info.referral
+REF_336(uint256) -> info.countryId
+REF_337(uint256) -> info.withdrawn
+REF_338(string) -> info.nick
+RETURN TMP_259,TMP_260,TMP_261,REF_335,REF_336,REF_337,REF_338"];
+}
+// Function: 1704.sol-WinnerWinner-referralCodeAt(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+codesOfAddress[_player][i]
+
+IRs:
+REF_341(string[]) -> codesOfAddress[_player]
+REF_342(string) -> REF_341[i]
+RETURN REF_342"];
+}
+// Function: 1704.sol-WinnerWinner-registerCode(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(startTime > 0)
+
+IRs:
+TMP_377(bool) = startTime > 0
+TMP_378(None) = SOLIDITY_CALL require(bool)(TMP_377)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(msg.value == REFERRAL_REGISTRATION_FEE)
+
+IRs:
+TMP_379(bool) = msg.value == REFERRAL_REGISTRATION_FEE
+TMP_380(None) = SOLIDITY_CALL require(bool)(TMP_379)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_registerReferral(_code,msg.sender)
+
+IRs:
+INTERNAL_CALL, Internal._registerReferral(string,address)(_code,msg.sender)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+creditVault(MAIN_SCHEME,addressOfOwner,msg.value)
+
+IRs:
+INTERNAL_CALL, Dividends.creditVault(uint256,address,uint256)(MAIN_SCHEME,addressOfOwner,msg.value)"];
+}
+// Function: 1704.sol-WinnerWinner-restricted()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == addressOfOwner)
+
+IRs:
+TMP_407(bool) = msg.sender == addressOfOwner
+TMP_408(None) = SOLIDITY_CALL require(bool)(TMP_407)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1704.sol-WinnerWinner-setNick(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.value == SET_NICK_FEE)
+
+IRs:
+TMP_372(bool) = msg.value == SET_NICK_FEE
+TMP_373(None) = SOLIDITY_CALL require(bool)(TMP_372)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(Utils.validNick(_nick))
+
+IRs:
+TMP_374(bool) = LIBRARY_CALL, dest:Utils, function:Utils.validNick(string), arguments:['_nick'] 
+TMP_375(None) = SOLIDITY_CALL require(bool)(TMP_374)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+infoOfAddress[msg.sender].nick = _nick
+
+IRs:
+REF_462(State.Info) -> infoOfAddress[msg.sender]
+REF_463(string) -> REF_462.nick
+REF_463(string) (->infoOfAddress) := _nick(string)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+creditVault(MAIN_SCHEME,addressOfOwner,msg.value)
+
+IRs:
+INTERNAL_CALL, Dividends.creditVault(uint256,address,uint256)(MAIN_SCHEME,addressOfOwner,msg.value)"];
+}
+// Function: 1704.sol-WinnerWinner-sharesOfScheme(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+schemeOfId[_schemeId].shares
+
+IRs:
+REF_416(Dividends.Scheme) -> schemeOfId[_schemeId]
+REF_417(uint256) -> REF_416.shares
+RETURN REF_417"];
+}
+// Function: 1704.sol-WinnerWinner-sharesOfVault(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_411(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_412(Dividends.Vault) -> REF_411[_owner]
+vault(Dividends.Vault) := REF_412(Dividends.Vault)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+vault.shares
+
+IRs:
+REF_413(uint256) -> vault.shares
+RETURN REF_413"];
+}
+// Function: 1704.sol-WinnerWinner-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+MAIN_SCHEME = 1337
+
+IRs:
+MAIN_SCHEME(uint256) := 1337(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+DEFAULT_COUNTRY = 1
+
+IRs:
+DEFAULT_COUNTRY(uint256) := 1(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+SET_NICK_FEE = 10000000000000000
+
+IRs:
+SET_NICK_FEE(uint256) := 10000000000000000(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+REFERRAL_REGISTRATION_FEE = 10000000000000000
+
+IRs:
+REFERRAL_REGISTRATION_FEE(uint256) := 10000000000000000(uint256)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+TO_DIVIDENDS = 42
+
+IRs:
+TO_DIVIDENDS(uint256) := 42(uint256)"];
+4->5;
+5[label="Node Type: OTHER_ENTRYPOINT 5
+
+EXPRESSION:
+TO_REFERRAL = 10
+
+IRs:
+TO_REFERRAL(uint256) := 10(uint256)"];
+5->6;
+6[label="Node Type: OTHER_ENTRYPOINT 6
+
+EXPRESSION:
+TO_DEVELOPERS = 4
+
+IRs:
+TO_DEVELOPERS(uint256) := 4(uint256)"];
+6->7;
+7[label="Node Type: OTHER_ENTRYPOINT 7
+
+EXPRESSION:
+TO_COUNTRY = 12
+
+IRs:
+TO_COUNTRY(uint256) := 12(uint256)"];
+}
+// Function: 1704.sol-WinnerWinner-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+maxTime = 0
+
+IRs:
+maxTime(uint256) := 0(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+addedTime = 0
+
+IRs:
+addedTime(uint256) := 0(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+totalPot = 0
+
+IRs:
+totalPot(uint256) := 0(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+startTime = 0
+
+IRs:
+startTime(uint256) := 0(uint256)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+endTime = 0
+
+IRs:
+endTime(uint256) := 0(uint256)"];
+4->5;
+5[label="Node Type: OTHER_ENTRYPOINT 5
+
+EXPRESSION:
+potWithdrawn = false
+
+IRs:
+potWithdrawn(bool) := False(bool)"];
+}
+// Function: 1704.sol-WinnerWinner-start(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->11;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(startTime == 0)
+
+IRs:
+TMP_308(bool) = startTime == 0
+TMP_309(None) = SOLIDITY_CALL require(bool)(TMP_308)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_maxTime > 0 && _addedTime > 0)
+
+IRs:
+TMP_310(bool) = _maxTime > 0
+TMP_311(bool) = _addedTime > 0
+TMP_312(bool) = TMP_310 && TMP_311
+TMP_313(None) = SOLIDITY_CALL require(bool)(TMP_312)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(_maxTime > _addedTime)
+
+IRs:
+TMP_314(bool) = _maxTime > _addedTime
+TMP_315(None) = SOLIDITY_CALL require(bool)(TMP_314)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+maxTime = _maxTime
+
+IRs:
+maxTime(uint256) := _maxTime(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+addedTime = _addedTime
+
+IRs:
+addedTime(uint256) := _addedTime(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+startTime = block.timestamp
+
+IRs:
+startTime(uint256) := block.timestamp(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+endTime = startTime + maxTime
+
+IRs:
+TMP_316(uint256) = startTime + maxTime
+endTime(uint256) := TMP_316(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+addressOfCaptain = addressOfOwner
+
+IRs:
+addressOfCaptain(address) := addressOfOwner(address)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+_registerReferral(owner,addressOfOwner)
+
+IRs:
+INTERNAL_CALL, Internal._registerReferral(string,address)(owner,addressOfOwner)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+Started(startTime)
+
+IRs:
+Emit Started(startTime)"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+restricted()
+
+IRs:
+MODIFIER_CALL, State.restricted()()"];
+11->1;
+}
+// Function: 1704.sol-WinnerWinner-totalInfo()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+(startTime > 0,block.timestamp >= endTime,addressOfCaptain,totalPot,endTime,sharesOfScheme(MAIN_SCHEME),valueOfScheme(MAIN_SCHEME),maxTime,addedTime,addressOfOwner)
+
+IRs:
+TMP_253(bool) = startTime > 0
+TMP_254(bool) = block.timestamp >= endTime
+TMP_255(uint256) = INTERNAL_CALL, Dividends.sharesOfScheme(uint256)(MAIN_SCHEME)
+TMP_256(uint256) = INTERNAL_CALL, Dividends.valueOfScheme(uint256)(MAIN_SCHEME)
+RETURN TMP_253,TMP_254,addressOfCaptain,totalPot,endTime,TMP_255,TMP_256,maxTime,addedTime,addressOfOwner"];
+}
+// Function: 1704.sol-WinnerWinner-valueOfScheme(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+schemeOfId[_schemeId].value
+
+IRs:
+REF_414(Dividends.Scheme) -> schemeOfId[_schemeId]
+REF_415(uint256) -> REF_414.value
+RETURN REF_415"];
+}
+// Function: 1704.sol-WinnerWinner-valueOfVault(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_403(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_404(Dividends.Vault) -> REF_403[_owner]
+vault(Dividends.Vault) := REF_404(Dividends.Vault)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+vault.value
+
+IRs:
+REF_405(uint256) -> vault.value
+RETURN REF_405"];
+}
+// Function: 1704.sol-WinnerWinner-withdraw()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+info = infoOfAddress[msg.sender]
+
+IRs:
+REF_464(State.Info) -> infoOfAddress[msg.sender]
+info(State.Info) := REF_464(State.Info)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+payout = withdrawVault(MAIN_SCHEME,msg.sender)
+
+IRs:
+TMP_385(uint256) = INTERNAL_CALL, Dividends.withdrawVault(uint256,address)(MAIN_SCHEME,msg.sender)
+payout(uint256) := TMP_385(uint256)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+Utils.validCountryId(info.countryId)
+
+IRs:
+REF_466(uint256) -> info.countryId
+TMP_386(bool) = LIBRARY_CALL, dest:Utils, function:Utils.validCountryId(uint256), arguments:['REF_466'] 
+CONDITION TMP_386"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+payout = payout.add(withdrawVault(info.countryId,msg.sender))
+
+IRs:
+REF_468(uint256) -> info.countryId
+TMP_387(uint256) = INTERNAL_CALL, Dividends.withdrawVault(uint256,address)(REF_468,msg.sender)
+TMP_388(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['payout', 'TMP_387'] 
+payout(uint256) := TMP_388(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+payout > 0
+
+IRs:
+TMP_389(bool) = payout > 0
+CONDITION TMP_389"];
+6->7[label="True"];
+6->10[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+info.withdrawn = info.withdrawn.add(payout)
+
+IRs:
+REF_469(uint256) -> info.withdrawn
+REF_470(uint256) -> info.withdrawn
+TMP_390(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_470', 'payout'] 
+REF_469(uint256) (->info) := TMP_390(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+msg.sender.transfer(payout)
+
+IRs:
+Transfer dest:msg.sender value:payout"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+Withdrew(msg.sender,payout)
+
+IRs:
+Emit Withdrew(msg.sender,payout)"];
+9->10;
+10[label="Node Type: END_IF 10
+"];
+}
+// Function: 1704.sol-WinnerWinner-withdrawPot()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->11;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(startTime > 0)
+
+IRs:
+TMP_393(bool) = startTime > 0
+TMP_394(None) = SOLIDITY_CALL require(bool)(TMP_393)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(block.timestamp > (endTime + 600))
+
+IRs:
+TMP_395(uint256) = endTime + 600
+TMP_396(bool) = block.timestamp > TMP_395
+TMP_397(None) = SOLIDITY_CALL require(bool)(TMP_396)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(! potWithdrawn)
+
+IRs:
+TMP_398 = UnaryType.BANG potWithdrawn 
+TMP_399(None) = SOLIDITY_CALL require(bool)(TMP_398)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool)(totalPot > 0)
+
+IRs:
+TMP_400(bool) = totalPot > 0
+TMP_401(None) = SOLIDITY_CALL require(bool)(TMP_400)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool)(addressOfCaptain == msg.sender)
+
+IRs:
+TMP_402(bool) = addressOfCaptain == msg.sender
+TMP_403(None) = SOLIDITY_CALL require(bool)(TMP_402)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+payout = totalPot
+
+IRs:
+payout(uint256) := totalPot(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+totalPot = 0
+
+IRs:
+totalPot(uint256) := 0(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+potWithdrawn = true
+
+IRs:
+potWithdrawn(bool) := True(bool)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+addressOfCaptain.transfer(payout)
+
+IRs:
+Transfer dest:addressOfCaptain value:payout"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+Won(msg.sender,payout)
+
+IRs:
+Emit Won(msg.sender,payout)"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+player()
+
+IRs:
+MODIFIER_CALL, State.player()()"];
+11->1;
+}
+// Function: 1704.sol-WinnerWinner-withdrawVault(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+flushVault(_schemeId,_owner)
+
+IRs:
+INTERNAL_CALL, Dividends.flushVault(uint256,address)(_schemeId,_owner)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+vault = vaultOfAddress[_schemeId][_owner]
+
+IRs:
+REF_383(mapping(address => Dividends.Vault)) -> vaultOfAddress[_schemeId]
+REF_384(Dividends.Vault) -> REF_383[_owner]
+vault(Dividends.Vault) := REF_384(Dividends.Vault)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+payout = vault.value.div(FIXED_POINT)
+
+IRs:
+REF_385(uint256) -> vault.value
+TMP_288(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['REF_385', 'FIXED_POINT'] 
+payout(uint256) := TMP_288(uint256)"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+payout > 0
+
+IRs:
+TMP_289(bool) = payout > 0
+CONDITION TMP_289"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+vault.value = 0
+
+IRs:
+REF_387(uint256) -> vault.value
+REF_387(uint256) (->vault) := 0(uint256)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+payout
+
+IRs:
+RETURN payout"];
+}
+}

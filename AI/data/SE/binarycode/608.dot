@@ -1,0 +1,1315 @@
+digraph G {
+// Function: 608.sol-CoinLoanCS-_checkOrder(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(price > 0)
+
+IRs:
+TMP_45(bool) = price > 0
+TMP_46(None) = SOLIDITY_CALL require(bool)(TMP_45)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+orders[customer][tokens] <= 0 || orders[customer][eth] <= 0
+
+IRs:
+REF_21(mapping(string => uint256)) -> orders[customer]
+REF_22(uint256) -> REF_21[tokens]
+TMP_47(bool) = REF_22 <= 0
+REF_23(mapping(string => uint256)) -> orders[customer]
+REF_24(uint256) -> REF_23[eth]
+TMP_48(bool) = REF_24 <= 0
+TMP_49(bool) = TMP_47 || TMP_48
+CONDITION TMP_49"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+decimalsDiff = 10 ** (18 - 2 * decimals)
+
+IRs:
+TMP_50(uint256) = 2 * decimals
+TMP_51(uint256) = 18 - TMP_50
+TMP_52(uint256) = 10 ** TMP_51
+decimalsDiff(uint256) := TMP_52(uint256)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+eth = orders[customer][eth]
+
+IRs:
+REF_25(mapping(string => uint256)) -> orders[customer]
+REF_26(uint256) -> REF_25[eth]
+eth(uint256) := REF_26(uint256)"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+tokens = orders[customer][eth] / price / decimalsDiff
+
+IRs:
+REF_27(mapping(string => uint256)) -> orders[customer]
+REF_28(uint256) -> REF_27[eth]
+TMP_53(uint256) = REF_28 / price
+TMP_54(uint256) = TMP_53 / decimalsDiff
+tokens(uint256) := TMP_54(uint256)"];
+7->8;
+8[label="Node Type: IF 8
+
+EXPRESSION:
+orders[customer][tokens] < tokens
+
+IRs:
+REF_29(mapping(string => uint256)) -> orders[customer]
+REF_30(uint256) -> REF_29[tokens]
+TMP_55(bool) = REF_30 < tokens
+CONDITION TMP_55"];
+8->9[label="True"];
+8->11[label="False"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+tokens = orders[customer][tokens]
+
+IRs:
+REF_31(mapping(string => uint256)) -> orders[customer]
+REF_32(uint256) -> REF_31[tokens]
+tokens(uint256) := REF_32(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+eth = tokens * price * decimalsDiff
+
+IRs:
+TMP_56(uint256) = tokens * price
+TMP_57(uint256) = TMP_56 * decimalsDiff
+eth(uint256) := TMP_57(uint256)"];
+10->11;
+11[label="Node Type: END_IF 11
+"];
+11->12;
+12[label="Node Type: NEW VARIABLE 12
+
+EXPRESSION:
+tokenInstance = ERC20(token)
+
+IRs:
+TMP_58 = CONVERT token to ERC20
+tokenInstance(ERC20) := TMP_58(ERC20)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+require(bool)(tokenInstance.balanceOf(this) >= tokens)
+
+IRs:
+TMP_59(uint256) = HIGH_LEVEL_CALL, dest:tokenInstance(ERC20), function:balanceOf, arguments:['this']  
+TMP_60(bool) = TMP_59 >= tokens
+TMP_61(None) = SOLIDITY_CALL require(bool)(TMP_60)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+orders[customer][tokens] = orders[customer][tokens].sub(tokens)
+
+IRs:
+REF_34(mapping(string => uint256)) -> orders[customer]
+REF_35(uint256) -> REF_34[tokens]
+REF_36(mapping(string => uint256)) -> orders[customer]
+REF_37(uint256) -> REF_36[tokens]
+TMP_62(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_37', 'tokens'] 
+REF_35(uint256) (->orders) := TMP_62(uint256)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+orders[customer][eth] = orders[customer][eth].sub(eth)
+
+IRs:
+REF_39(mapping(string => uint256)) -> orders[customer]
+REF_40(uint256) -> REF_39[eth]
+REF_41(mapping(string => uint256)) -> orders[customer]
+REF_42(uint256) -> REF_41[eth]
+TMP_63(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_42', 'eth'] 
+REF_40(uint256) (->orders) := TMP_63(uint256)"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+tokenInstance.transfer(customer,tokens)
+
+IRs:
+TMP_64(bool) = HIGH_LEVEL_CALL, dest:tokenInstance(ERC20), function:transfer, arguments:['customer', 'tokens']  "];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+Sell(customer,tokens)
+
+IRs:
+Emit Sell(customer,tokens)"];
+17->18;
+18[label="Node Type: RETURN 18
+
+EXPRESSION:
+tokens
+
+IRs:
+RETURN tokens"];
+}
+// Function: 608.sol-CoinLoanCS-allowance(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+tokenOwner
+"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+spender
+"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+uint256(0)
+
+IRs:
+TMP_82 = CONVERT 0 to uint256
+RETURN TMP_82"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+remaining
+
+IRs:
+RETURN remaining"];
+}
+// Function: 608.sol-CoinLoanCS-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+spender
+"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+tokens
+"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 608.sol-CoinLoanCS-balanceOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+balances[tokenOwner]
+
+IRs:
+REF_12(uint256) -> balances[tokenOwner]
+RETURN REF_12"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+balance
+
+IRs:
+RETURN balance"];
+}
+// Function: 608.sol-CoinLoanCS-cancelOrder(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+orders[customer][eth] = 0
+
+IRs:
+REF_17(mapping(string => uint256)) -> orders[customer]
+REF_18(uint256) -> REF_17[eth]
+REF_18(uint256) (->orders) := 0(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+orders[customer][tokens] = 0
+
+IRs:
+REF_19(mapping(string => uint256)) -> orders[customer]
+REF_20(uint256) -> REF_19[tokens]
+REF_20(uint256) (->orders) := 0(uint256)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Owned.onlyOwner()()"];
+4->1;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 608.sol-CoinLoanCS-changeTotalSupply(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->13;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newSupply >= 0 && (newSupply >= _totalSupply || _totalSupply - newSupply <= balances[owner]))
+
+IRs:
+TMP_27(bool) = newSupply >= 0
+TMP_28(bool) = newSupply >= _totalSupply
+TMP_29(uint256) = _totalSupply - newSupply
+REF_3(uint256) -> balances[owner]
+TMP_30(bool) = TMP_29 <= REF_3
+TMP_31(bool) = TMP_28 || TMP_30
+TMP_32(bool) = TMP_27 && TMP_31
+TMP_33(None) = SOLIDITY_CALL require(bool)(TMP_32)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+diff = 0
+
+IRs:
+diff(uint256) := 0(uint256)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+newSupply >= _totalSupply
+
+IRs:
+TMP_34(bool) = newSupply >= _totalSupply
+CONDITION TMP_34"];
+3->4[label="True"];
+3->7[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+diff = newSupply.sub(_totalSupply)
+
+IRs:
+TMP_35(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['newSupply', '_totalSupply'] 
+diff(uint256) := TMP_35(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balances[owner] = balances[owner].add(diff)
+
+IRs:
+REF_5(uint256) -> balances[owner]
+REF_6(uint256) -> balances[owner]
+TMP_36(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_6', 'diff'] 
+REF_5(uint256) (->balances) := TMP_36(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+Transfer(address(0),owner,diff)
+
+IRs:
+TMP_37 = CONVERT 0 to address
+Emit Transfer(TMP_37,owner,diff)"];
+6->10;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+diff = _totalSupply.sub(newSupply)
+
+IRs:
+TMP_39(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['_totalSupply', 'newSupply'] 
+diff(uint256) := TMP_39(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+balances[owner] = balances[owner].sub(diff)
+
+IRs:
+REF_9(uint256) -> balances[owner]
+REF_10(uint256) -> balances[owner]
+TMP_40(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_10', 'diff'] 
+REF_9(uint256) (->balances) := TMP_40(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+Transfer(owner,address(0),diff)
+
+IRs:
+TMP_41 = CONVERT 0 to address
+Emit Transfer(owner,TMP_41,diff)"];
+9->10;
+10[label="Node Type: END_IF 10
+"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+_totalSupply = newSupply
+
+IRs:
+_totalSupply(uint256) := newSupply(uint256)"];
+11->12;
+12[label="Node Type: RETURN 12
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Owned.onlyOwner()()"];
+13->1;
+14[label="Node Type: RETURN 14
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 608.sol-CoinLoanCS-checkOrder(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+_checkOrder(customer)
+
+IRs:
+TMP_66(uint256) = INTERNAL_CALL, CoinLoanCS._checkOrder(address)(customer)
+RETURN TMP_66"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Owned.onlyOwner()()"];
+2->1;
+}
+// Function: 608.sol-CoinLoanCS-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+symbol = CLT_CS
+
+IRs:
+symbol(string) := CLT_CS(string)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+name = CoinLoan CryptoStock Promo Token
+
+IRs:
+name(string) := CoinLoan CryptoStock Promo Token(string)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+decimals = 8
+
+IRs:
+decimals(uint256) := 8(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+token = 0x2001f2A0Cf801EcFda622f6C28fb6E10d803D969
+
+IRs:
+token(address) := 182731141305751022793919001379596981569329551721(address)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+price = 3000000
+
+IRs:
+price(uint256) := 3000000(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+_totalSupply = 100000 * 10 ** decimals
+
+IRs:
+TMP_19(uint256) = 10 ** decimals
+TMP_20(uint256) = 100000 * TMP_19
+_totalSupply(uint256) := TMP_20(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+balances[owner] = _totalSupply
+
+IRs:
+REF_0(uint256) -> balances[owner]
+REF_0(uint256) (->balances) := _totalSupply(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+Transfer(address(0),owner,_totalSupply)
+
+IRs:
+TMP_21 = CONVERT 0 to address
+Emit Transfer(TMP_21,owner,_totalSupply)"];
+}
+// Function: 608.sol-CoinLoanCS-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner.transfer(msg.value)
+
+IRs:
+Transfer dest:owner value:msg.value"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+orders[msg.sender][eth] = orders[msg.sender][eth].add(msg.value)
+
+IRs:
+REF_57(mapping(string => uint256)) -> orders[msg.sender]
+REF_58(uint256) -> REF_57[eth]
+REF_59(mapping(string => uint256)) -> orders[msg.sender]
+REF_60(uint256) -> REF_59[eth]
+TMP_84(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_60', 'msg.value'] 
+REF_58(uint256) (->orders) := TMP_84(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_checkOrder(msg.sender)
+
+IRs:
+TMP_85(uint256) = INTERNAL_CALL, CoinLoanCS._checkOrder(address)(msg.sender)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+TransferETH(msg.sender,address(this),msg.value)
+
+IRs:
+TMP_86 = CONVERT this to address
+Emit TransferETH(msg.sender,TMP_86,msg.value)"];
+}
+// Function: 608.sol-CoinLoanCS-getPrice()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+price
+
+IRs:
+RETURN price"];
+}
+// Function: 608.sol-CoinLoanCS-getToken()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+token
+
+IRs:
+RETURN token"];
+}
+// Function: 608.sol-CoinLoanCS-nullifyFrom(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+returnFrom(tokenOwner,balances[tokenOwner])
+
+IRs:
+REF_69(uint256) -> balances[tokenOwner]
+TMP_97(bool) = INTERNAL_CALL, CoinLoanCS.returnFrom(address,uint256)(tokenOwner,REF_69)
+RETURN TMP_97"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Owned.onlyOwner()()"];
+2->1;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 608.sol-CoinLoanCS-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_99(bool) = msg.sender == owner
+TMP_100(None) = SOLIDITY_CALL require(bool)(TMP_99)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 608.sol-CoinLoanCS-orderEthOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+orders[customer][eth]
+
+IRs:
+REF_15(mapping(string => uint256)) -> orders[customer]
+REF_16(uint256) -> REF_15[eth]
+RETURN REF_16"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+balance
+
+IRs:
+RETURN balance"];
+}
+// Function: 608.sol-CoinLoanCS-orderTokensOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+orders[customer][tokens]
+
+IRs:
+REF_13(mapping(string => uint256)) -> orders[customer]
+REF_14(uint256) -> REF_13[tokens]
+RETURN REF_14"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+balance
+
+IRs:
+RETURN balance"];
+}
+// Function: 608.sol-CoinLoanCS-returnFrom(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+balances[tokenOwner] = balances[tokenOwner].sub(tokens)
+
+IRs:
+REF_63(uint256) -> balances[tokenOwner]
+REF_64(uint256) -> balances[tokenOwner]
+TMP_93(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_64', 'tokens'] 
+REF_63(uint256) (->balances) := TMP_93(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balances[owner] = balances[owner].add(tokens)
+
+IRs:
+REF_66(uint256) -> balances[owner]
+REF_67(uint256) -> balances[owner]
+TMP_94(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_67', 'tokens'] 
+REF_66(uint256) (->balances) := TMP_94(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+Transfer(tokenOwner,owner,tokens)
+
+IRs:
+Emit Transfer(tokenOwner,owner,tokens)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Owned.onlyOwner()()"];
+5->1;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 608.sol-CoinLoanCS-setPrice(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+price = newPrice
+
+IRs:
+price(uint256) := newPrice(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Owned.onlyOwner()()"];
+3->1;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 608.sol-CoinLoanCS-setToken(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+token = newTokenAddress
+
+IRs:
+token(address) := newTokenAddress(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Owned.onlyOwner()()"];
+3->1;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 608.sol-CoinLoanCS-totalSupply()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+_totalSupply.sub(balances[address(0)])
+
+IRs:
+TMP_25 = CONVERT 0 to address
+REF_2(uint256) -> balances[TMP_25]
+TMP_26(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['_totalSupply', 'REF_2'] 
+RETURN TMP_26"];
+}
+// Function: 608.sol-CoinLoanCS-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner || to == owner || to == address(this))
+
+IRs:
+TMP_68(bool) = msg.sender == owner
+TMP_69(bool) = to == owner
+TMP_70(bool) = TMP_68 || TMP_69
+TMP_71 = CONVERT this to address
+TMP_72(bool) = to == TMP_71
+TMP_73(bool) = TMP_70 || TMP_72
+TMP_74(None) = SOLIDITY_CALL require(bool)(TMP_73)"];
+1->11;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balances[msg.sender] = balances[msg.sender].sub(tokens)
+
+IRs:
+REF_45(uint256) -> balances[msg.sender]
+REF_46(uint256) -> balances[msg.sender]
+TMP_75(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_46', 'tokens'] 
+REF_45(uint256) (->balances) := TMP_75(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+balances[receiver] = balances[receiver].add(tokens)
+
+IRs:
+REF_48(uint256) -> balances[receiver]
+REF_49(uint256) -> balances[receiver]
+TMP_76(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_49', 'tokens'] 
+REF_48(uint256) (->balances) := TMP_76(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Transfer(msg.sender,receiver,tokens)
+
+IRs:
+Emit Transfer(msg.sender,receiver,tokens)"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+receiver == owner
+
+IRs:
+TMP_78(bool) = receiver == owner
+CONDITION TMP_78"];
+6->7[label="True"];
+6->9[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+orders[msg.sender][tokens] = orders[msg.sender][tokens].add(tokens)
+
+IRs:
+REF_51(mapping(string => uint256)) -> orders[msg.sender]
+REF_52(uint256) -> REF_51[tokens]
+REF_53(mapping(string => uint256)) -> orders[msg.sender]
+REF_54(uint256) -> REF_53[tokens]
+TMP_79(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_54', 'tokens'] 
+REF_52(uint256) (->orders) := TMP_79(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+_checkOrder(msg.sender)
+
+IRs:
+TMP_80(uint256) = INTERNAL_CALL, CoinLoanCS._checkOrder(address)(msg.sender)"];
+8->9;
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: RETURN 10
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+11[label="Node Type: IF 11
+
+EXPRESSION:
+msg.sender == owner
+
+IRs:
+TMP_81(bool) = msg.sender == owner
+CONDITION TMP_81"];
+11->12[label="True"];
+11->13[label="False"];
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+receiver = to
+
+IRs:
+receiver(address) := to(address)"];
+12->14;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+receiver = owner
+
+IRs:
+receiver(address) := owner(address)"];
+13->14;
+14[label="Node Type: END_IF 14
+"];
+14->3;
+15[label="Node Type: RETURN 15
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 608.sol-CoinLoanCS-transferAnyERC20Token(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+ERC20(tokenAddress).transfer(owner,tokens)
+
+IRs:
+TMP_88 = CONVERT tokenAddress to ERC20
+TMP_89(bool) = HIGH_LEVEL_CALL, dest:TMP_88(ERC20), function:transfer, arguments:['owner', 'tokens']  
+RETURN TMP_89"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Owned.onlyOwner()()"];
+2->1;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 608.sol-CoinLoanCS-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+from
+"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+to
+"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+tokens
+"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 608.sol-CoinLoanCS-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+owner
+
+IRs:
+RETURN owner"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Owned.onlyOwner()()"];
+3->1;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+account
+
+IRs:
+RETURN account"];
+}
+// Function: 608.sol-CoinLoanCS-transferToken(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+transferAnyERC20Token(token,tokens)
+
+IRs:
+TMP_91(bool) = INTERNAL_CALL, CoinLoanCS.transferAnyERC20Token(address,uint256)(token,tokens)
+RETURN TMP_91"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Owned.onlyOwner()()"];
+2->1;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 608.sol-ERC20-allowance(address,address)
+digraph{
+}
+// Function: 608.sol-ERC20-approve(address,uint256)
+digraph{
+}
+// Function: 608.sol-ERC20-balanceOf(address)
+digraph{
+}
+// Function: 608.sol-ERC20-totalSupply()
+digraph{
+}
+// Function: 608.sol-ERC20-transfer(address,uint256)
+digraph{
+}
+// Function: 608.sol-ERC20-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 608.sol-Owned-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 608.sol-Owned-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_16(bool) = msg.sender == owner
+TMP_17(None) = SOLIDITY_CALL require(bool)(TMP_16)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 608.sol-Owned-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+owner
+
+IRs:
+RETURN owner"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Owned.onlyOwner()()"];
+3->1;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+account
+
+IRs:
+RETURN account"];
+}
+// Function: 608.sol-SafeMath-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_0(uint256) = a + b
+c(uint256) := TMP_0(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(c >= a)
+
+IRs:
+TMP_1(bool) = c >= a
+TMP_2(None) = SOLIDITY_CALL require(bool)(TMP_1)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 608.sol-SafeMath-div(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(b > 0)
+
+IRs:
+TMP_12(bool) = b > 0
+TMP_13(None) = SOLIDITY_CALL require(bool)(TMP_12)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+c = a / b
+
+IRs:
+TMP_14(uint256) = a / b
+c(uint256) := TMP_14(uint256)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 608.sol-SafeMath-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_6(uint256) = a * b
+c(uint256) := TMP_6(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(a == 0 || c / a == b)
+
+IRs:
+TMP_7(bool) = a == 0
+TMP_8(uint256) = c / a
+TMP_9(bool) = TMP_8 == b
+TMP_10(bool) = TMP_7 || TMP_9
+TMP_11(None) = SOLIDITY_CALL require(bool)(TMP_10)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 608.sol-SafeMath-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(b <= a)
+
+IRs:
+TMP_3(bool) = b <= a
+TMP_4(None) = SOLIDITY_CALL require(bool)(TMP_3)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+c = a - b
+
+IRs:
+TMP_5(uint256) = a - b
+c(uint256) := TMP_5(uint256)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+}

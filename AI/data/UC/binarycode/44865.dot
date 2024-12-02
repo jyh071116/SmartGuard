@@ -1,0 +1,3428 @@
+digraph G {
+// Function: 44865.sol-ECTools-hexstrToBytes(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+len = bytes(_hexstr).length
+
+IRs:
+TMP_17 = CONVERT _hexstr to bytes
+REF_2 -> LENGTH TMP_17
+len(uint256) := REF_2(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(len % 2 == 0)
+
+IRs:
+TMP_18(uint256) = len % 2
+TMP_19(bool) = TMP_18 == 0
+TMP_20(None) = SOLIDITY_CALL require(bool)(TMP_19)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+bstr = bytes(new string(len / 2))
+
+IRs:
+TMP_22(uint256) = len / 2
+TMP_23 = new string(TMP_22)
+TMP_24 = CONVERT TMP_23 to bytes
+bstr(bytes) := TMP_24(bytes)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+k = 0
+
+IRs:
+k(uint256) := 0(uint256)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+"];
+6->9;
+7[label="Node Type: BEGIN_LOOP 7
+"];
+7->10;
+8[label="Node Type: END_LOOP 8
+"];
+8->16;
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+9->7;
+10[label="Node Type: IF_LOOP 10
+
+EXPRESSION:
+i < len
+
+IRs:
+TMP_25(bool) = i < len
+CONDITION TMP_25"];
+10->11[label="True"];
+10->8[label="False"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+s = substring(_hexstr,i,i + 1)
+
+IRs:
+TMP_26(uint256) = i + 1
+TMP_27(string) = INTERNAL_CALL, ECTools.substring(string,uint256,uint256)(_hexstr,i,TMP_26)
+s(string) := TMP_27(string)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+r = substring(_hexstr,i + 1,i + 2)
+
+IRs:
+TMP_28(uint256) = i + 1
+TMP_29(uint256) = i + 2
+TMP_30(string) = INTERNAL_CALL, ECTools.substring(string,uint256,uint256)(_hexstr,TMP_28,TMP_29)
+r(string) := TMP_30(string)"];
+12->13;
+13[label="Node Type: NEW VARIABLE 13
+
+EXPRESSION:
+p = parseInt16Char(s) * 16 + parseInt16Char(r)
+
+IRs:
+TMP_31(uint256) = INTERNAL_CALL, ECTools.parseInt16Char(string)(s)
+TMP_32(uint256) = TMP_31 * 16
+TMP_33(uint256) = INTERNAL_CALL, ECTools.parseInt16Char(string)(r)
+TMP_34(uint256) = TMP_32 + TMP_33
+p(uint256) := TMP_34(uint256)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+bstr[k ++] = uintToBytes32(p)[31]
+
+IRs:
+TMP_35(uint256) := k(uint256)
+k(uint256) = k + 1
+REF_3(None) -> bstr[TMP_35]
+TMP_36(bytes) = INTERNAL_CALL, ECTools.uintToBytes32(uint256)(p)
+REF_4(None) -> TMP_36[31]
+REF_3(None) (->bstr) := REF_4(None)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+i += 2
+
+IRs:
+i(uint256) = i + 2"];
+15->10;
+16[label="Node Type: RETURN 16
+
+EXPRESSION:
+bstr
+
+IRs:
+RETURN bstr"];
+}
+// Function: 44865.sol-ECTools-isSignedBy(bytes32,string,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_addr != 0x0)
+
+IRs:
+TMP_13(bool) = _addr != 0
+TMP_14(None) = SOLIDITY_CALL require(bool)(TMP_13)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+_addr == recoverSigner(_hashedMsg,_sig)
+
+IRs:
+TMP_15(address) = INTERNAL_CALL, ECTools.recoverSigner(bytes32,string)(_hashedMsg,_sig)
+TMP_16(bool) = _addr == TMP_15
+RETURN TMP_16"];
+}
+// Function: 44865.sol-ECTools-parseInt16Char(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+bresult = bytes(_char)
+
+IRs:
+TMP_37 = CONVERT _char to bytes
+bresult(bytes) := TMP_37(bytes)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+(bresult[0] >= 48) && (bresult[0] <= 57)
+
+IRs:
+REF_5(None) -> bresult[0]
+TMP_38(bool) = REF_5 >= 48
+REF_6(None) -> bresult[0]
+TMP_39(bool) = REF_6 <= 57
+TMP_40(bool) = TMP_38 && TMP_39
+CONDITION TMP_40"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+uint256(bresult[0]) - 48
+
+IRs:
+REF_7(None) -> bresult[0]
+TMP_41 = CONVERT REF_7 to uint256
+TMP_42(uint256) = TMP_41 - 48
+RETURN TMP_42"];
+4[label="Node Type: IF 4
+
+EXPRESSION:
+(bresult[0] >= 65) && (bresult[0] <= 70)
+
+IRs:
+REF_8(None) -> bresult[0]
+TMP_43(bool) = REF_8 >= 65
+REF_9(None) -> bresult[0]
+TMP_44(bool) = REF_9 <= 70
+TMP_45(bool) = TMP_43 && TMP_44
+CONDITION TMP_45"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+uint256(bresult[0]) - 55
+
+IRs:
+REF_10(None) -> bresult[0]
+TMP_46 = CONVERT REF_10 to uint256
+TMP_47(uint256) = TMP_46 - 55
+RETURN TMP_47"];
+6[label="Node Type: IF 6
+
+EXPRESSION:
+(bresult[0] >= 97) && (bresult[0] <= 102)
+
+IRs:
+REF_11(None) -> bresult[0]
+TMP_48(bool) = REF_11 >= 97
+REF_12(None) -> bresult[0]
+TMP_49(bool) = REF_12 <= 102
+TMP_50(bool) = TMP_48 && TMP_49
+CONDITION TMP_50"];
+6->7[label="True"];
+6->8[label="False"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+uint256(bresult[0]) - 87
+
+IRs:
+REF_13(None) -> bresult[0]
+TMP_51 = CONVERT REF_13 to uint256
+TMP_52(uint256) = TMP_51 - 87
+RETURN TMP_52"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_53(None) = SOLIDITY_CALL revert()()"];
+8->9;
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: END_IF 10
+"];
+10->11;
+11[label="Node Type: END_IF 11
+"];
+}
+// Function: 44865.sol-ECTools-recoverSigner(bytes32,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_hashedMsg != 0x00)
+
+IRs:
+TMP_0(bool) = _hashedMsg != 0
+TMP_1(None) = SOLIDITY_CALL require(bool)(TMP_0)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+prefix = Ethereum Signed Message:
+32
+
+IRs:
+prefix(bytes) := Ethereum Signed Message:
+32(string)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+prefixedHash = keccak256()(abi.encodePacked(prefix,_hashedMsg))
+
+IRs:
+TMP_2(bytes) = SOLIDITY_CALL abi.encodePacked()(prefix,_hashedMsg)
+TMP_3(bytes32) = SOLIDITY_CALL keccak256()(TMP_2)
+prefixedHash(bytes32) := TMP_3(bytes32)"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+bytes(_sig).length != 132
+
+IRs:
+TMP_4 = CONVERT _sig to bytes
+REF_1 -> LENGTH TMP_4
+TMP_5(bool) = REF_1 != 132
+CONDITION TMP_5"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+0x0
+
+IRs:
+RETURN 0"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+"];
+7->8;
+8[label="Node Type: NEW VARIABLE 8
+"];
+8->9;
+9[label="Node Type: NEW VARIABLE 9
+"];
+9->10;
+10[label="Node Type: NEW VARIABLE 10
+
+EXPRESSION:
+sig = hexstrToBytes(substring(_sig,2,132))
+
+IRs:
+TMP_6(string) = INTERNAL_CALL, ECTools.substring(string,uint256,uint256)(_sig,2,132)
+TMP_7(bytes) = INTERNAL_CALL, ECTools.hexstrToBytes(string)(TMP_6)
+sig(bytes) := TMP_7(bytes)"];
+10->11;
+11[label="Node Type: INLINE ASM 11
+"];
+11->12;
+12[label="Node Type: END INLINE ASM 12
+"];
+12->13;
+13[label="Node Type: IF 13
+
+EXPRESSION:
+v < 27
+
+IRs:
+TMP_8(bool) = v < 27
+CONDITION TMP_8"];
+13->14[label="True"];
+13->15[label="False"];
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+v += 27
+
+IRs:
+v(uint8) = v + 27"];
+14->15;
+15[label="Node Type: END_IF 15
+"];
+15->16;
+16[label="Node Type: IF 16
+
+EXPRESSION:
+v < 27 || v > 28
+
+IRs:
+TMP_9(bool) = v < 27
+TMP_10(bool) = v > 28
+TMP_11(bool) = TMP_9 || TMP_10
+CONDITION TMP_11"];
+16->17[label="True"];
+16->18[label="False"];
+17[label="Node Type: RETURN 17
+
+EXPRESSION:
+0x0
+
+IRs:
+RETURN 0"];
+18[label="Node Type: END_IF 18
+"];
+18->19;
+19[label="Node Type: RETURN 19
+
+EXPRESSION:
+ecrecover(bytes32,uint8,bytes32,bytes32)(prefixedHash,v,r,s)
+
+IRs:
+TMP_12(address) = SOLIDITY_CALL ecrecover(bytes32,uint8,bytes32,bytes32)(prefixedHash,v,r,s)
+RETURN TMP_12"];
+}
+// Function: 44865.sol-ECTools-substring(string,uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+strBytes = bytes(_str)
+
+IRs:
+TMP_75 = CONVERT _str to bytes
+strBytes(bytes) := TMP_75(bytes)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_startIndex <= _endIndex)
+
+IRs:
+TMP_76(bool) = _startIndex <= _endIndex
+TMP_77(None) = SOLIDITY_CALL require(bool)(TMP_76)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(_startIndex >= 0)
+
+IRs:
+TMP_78(bool) = _startIndex >= 0
+TMP_79(None) = SOLIDITY_CALL require(bool)(TMP_78)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool)(_endIndex <= strBytes.length)
+
+IRs:
+REF_17 -> LENGTH strBytes
+TMP_80(bool) = _endIndex <= REF_17
+TMP_81(None) = SOLIDITY_CALL require(bool)(TMP_80)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+result = new bytes(_endIndex - _startIndex)
+
+IRs:
+TMP_83(uint256) = _endIndex - _startIndex
+TMP_84 = new bytes(TMP_83)
+result(bytes) := TMP_84(bytes)"];
+5->8;
+6[label="Node Type: BEGIN_LOOP 6
+"];
+6->9;
+7[label="Node Type: END_LOOP 7
+"];
+7->12;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+i = _startIndex
+
+IRs:
+i(uint256) := _startIndex(uint256)"];
+8->6;
+9[label="Node Type: IF_LOOP 9
+
+EXPRESSION:
+i < _endIndex
+
+IRs:
+TMP_85(bool) = i < _endIndex
+CONDITION TMP_85"];
+9->10[label="True"];
+9->7[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+result[i - _startIndex] = strBytes[i]
+
+IRs:
+TMP_86(uint256) = i - _startIndex
+REF_18(None) -> result[TMP_86]
+REF_19(None) -> strBytes[i]
+REF_18(None) (->result) := REF_19(None)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_87(uint256) := i(uint256)
+i(uint256) = i + 1"];
+11->9;
+12[label="Node Type: RETURN 12
+
+EXPRESSION:
+string(result)
+
+IRs:
+TMP_88 = CONVERT result to string
+RETURN TMP_88"];
+}
+// Function: 44865.sol-ECTools-toEthereumSignedMessage(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+len = bytes(_msg).length
+
+IRs:
+TMP_56 = CONVERT _msg to bytes
+REF_14 -> LENGTH TMP_56
+len(uint256) := REF_14(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(len > 0)
+
+IRs:
+TMP_57(bool) = len > 0
+TMP_58(None) = SOLIDITY_CALL require(bool)(TMP_57)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+prefix = Ethereum Signed Message:
+
+
+IRs:
+prefix(bytes) := Ethereum Signed Message:
+(string)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+keccak256()(abi.encodePacked(prefix,uintToString(len),_msg))
+
+IRs:
+TMP_59(string) = INTERNAL_CALL, ECTools.uintToString(uint256)(len)
+TMP_60(bytes) = SOLIDITY_CALL abi.encodePacked()(prefix,TMP_59,_msg)
+TMP_61(bytes32) = SOLIDITY_CALL keccak256()(TMP_60)
+RETURN TMP_61"];
+}
+// Function: 44865.sol-ECTools-uintToBytes32(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+b = new bytes(32)
+
+IRs:
+TMP_55 = new bytes(32)
+b(bytes) := TMP_55(bytes)"];
+1->2;
+2[label="Node Type: INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: END INLINE ASM 3
+"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+b
+
+IRs:
+RETURN b"];
+}
+// Function: 44865.sol-ECTools-uintToString(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+len = 0
+
+IRs:
+len(uint256) := 0(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+m = _uint + 0
+
+IRs:
+TMP_62(uint256) = _uint + 0
+m(uint256) := TMP_62(uint256)"];
+2->3;
+3[label="Node Type: BEGIN_LOOP 3
+"];
+3->4;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+m != 0
+
+IRs:
+TMP_63(bool) = m != 0
+CONDITION TMP_63"];
+4->5[label="True"];
+4->7[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+len ++
+
+IRs:
+TMP_64(uint256) := len(uint256)
+len(uint256) = len + 1"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+m /= 10
+
+IRs:
+m(uint256) = m / 10"];
+6->4;
+7[label="Node Type: END_LOOP 7
+"];
+7->8;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+b = new bytes(len)
+
+IRs:
+TMP_66 = new bytes(len)
+b(bytes) := TMP_66(bytes)"];
+8->9;
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+i = len - 1
+
+IRs:
+TMP_67(uint256) = len - 1
+i(uint256) := TMP_67(uint256)"];
+9->10;
+10[label="Node Type: BEGIN_LOOP 10
+"];
+10->11;
+11[label="Node Type: IF_LOOP 11
+
+EXPRESSION:
+_uint != 0
+
+IRs:
+TMP_68(bool) = _uint != 0
+CONDITION TMP_68"];
+11->12[label="True"];
+11->15[label="False"];
+12[label="Node Type: NEW VARIABLE 12
+
+EXPRESSION:
+remainder = _uint % 10
+
+IRs:
+TMP_69(uint256) = _uint % 10
+remainder(uint256) := TMP_69(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+_uint = _uint / 10
+
+IRs:
+TMP_70(uint256) = _uint / 10
+_uint(uint256) := TMP_70(uint256)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+b[i --] = bytes1(48 + remainder)
+
+IRs:
+TMP_71(uint256) := i(uint256)
+i(uint256) = i - 1
+REF_16(bytes1) -> b[TMP_71]
+TMP_72(uint256) = 48 + remainder
+TMP_73 = CONVERT TMP_72 to bytes1
+REF_16(bytes1) (->b) := TMP_73(bytes1)"];
+14->11;
+15[label="Node Type: END_LOOP 15
+"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+str = string(b)
+
+IRs:
+TMP_74 = CONVERT b to string
+str(string) := TMP_74(string)"];
+16->17;
+17[label="Node Type: RETURN 17
+
+EXPRESSION:
+str
+
+IRs:
+RETURN str"];
+}
+// Function: 44865.sol-HumanStandardToken-allowance(address,address)
+digraph{
+}
+// Function: 44865.sol-HumanStandardToken-approve(address,uint256)
+digraph{
+}
+// Function: 44865.sol-HumanStandardToken-approveAndCall(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowed[msg.sender][_spender] = _value
+
+IRs:
+REF_51(mapping(address => uint256)) -> allowed[msg.sender]
+REF_52(uint256) -> REF_51[_spender]
+REF_52(uint256) (->allowed) := _value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,_value)
+
+IRs:
+Emit Approval(msg.sender,_spender,_value)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(_spender.call(bytes4(bytes32(keccak256()(receiveApproval(address,uint256,address,bytes)))),msg.sender,_value,this,_extraData))
+
+IRs:
+TMP_108(bytes32) = SOLIDITY_CALL keccak256()(receiveApproval(address,uint256,address,bytes))
+TMP_109 = CONVERT TMP_108 to bytes32
+TMP_110 = CONVERT TMP_109 to bytes4
+TMP_111(bool) = LOW_LEVEL_CALL, dest:_spender, function:call, arguments:['TMP_110', 'msg.sender', '_value', 'this', '_extraData']  
+TMP_112(None) = SOLIDITY_CALL require(bool)(TMP_111)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 44865.sol-HumanStandardToken-balanceOf(address)
+digraph{
+}
+// Function: 44865.sol-HumanStandardToken-constructor(uint256,string,uint8,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+balances[msg.sender] = _initialAmount
+
+IRs:
+REF_50(uint256) -> balances[msg.sender]
+REF_50(uint256) (->balances) := _initialAmount(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+totalSupply = _initialAmount
+
+IRs:
+totalSupply(uint256) := _initialAmount(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+name = _tokenName
+
+IRs:
+name(string) := _tokenName(string)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+decimals = _decimalUnits
+
+IRs:
+decimals(uint8) := _decimalUnits(uint8)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+symbol = _tokenSymbol
+
+IRs:
+symbol(string) := _tokenSymbol(string)"];
+}
+// Function: 44865.sol-HumanStandardToken-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+version = H0.1
+
+IRs:
+version(string) := H0.1(string)"];
+}
+// Function: 44865.sol-HumanStandardToken-transfer(address,uint256)
+digraph{
+}
+// Function: 44865.sol-HumanStandardToken-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 44865.sol-LedgerChannel-LCOpenTimeout(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == Channels[_lcID].partyAddresses[0] && Channels[_lcID].isOpen == false)
+
+IRs:
+REF_93(LedgerChannel.Channel) -> Channels[_lcID]
+REF_94(address[2]) -> REF_93.partyAddresses
+REF_95(address) -> REF_94[0]
+TMP_131(bool) = msg.sender == REF_95
+REF_96(LedgerChannel.Channel) -> Channels[_lcID]
+REF_97(bool) -> REF_96.isOpen
+TMP_132(bool) = REF_97 == False
+TMP_133(bool) = TMP_131 && TMP_132
+TMP_134(None) = SOLIDITY_CALL require(bool)(TMP_133)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(now > Channels[_lcID].LCopenTimeout)
+
+IRs:
+REF_98(LedgerChannel.Channel) -> Channels[_lcID]
+REF_99(uint256) -> REF_98.LCopenTimeout
+TMP_135(bool) = now > REF_99
+TMP_136(None) = SOLIDITY_CALL require(bool)(TMP_135)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+Channels[_lcID].initialDeposit[0] != 0
+
+IRs:
+REF_100(LedgerChannel.Channel) -> Channels[_lcID]
+REF_101(uint256[2]) -> REF_100.initialDeposit
+REF_102(uint256) -> REF_101[0]
+TMP_137(bool) = REF_102 != 0
+CONDITION TMP_137"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Channels[_lcID].partyAddresses[0].transfer(Channels[_lcID].ethBalances[0])
+
+IRs:
+REF_103(LedgerChannel.Channel) -> Channels[_lcID]
+REF_104(address[2]) -> REF_103.partyAddresses
+REF_105(address) -> REF_104[0]
+REF_107(LedgerChannel.Channel) -> Channels[_lcID]
+REF_108(uint256[4]) -> REF_107.ethBalances
+REF_109(uint256) -> REF_108[0]
+Transfer dest:REF_105 value:REF_109"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+Channels[_lcID].initialDeposit[1] != 0
+
+IRs:
+REF_110(LedgerChannel.Channel) -> Channels[_lcID]
+REF_111(uint256[2]) -> REF_110.initialDeposit
+REF_112(uint256) -> REF_111[1]
+TMP_139(bool) = REF_112 != 0
+CONDITION TMP_139"];
+6->7[label="True"];
+6->8[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+require(bool,string)(Channels[_lcID].token.transfer(Channels[_lcID].partyAddresses[0],Channels[_lcID].erc20Balances[0]),CreateChannel: token transfer failure)
+
+IRs:
+REF_113(LedgerChannel.Channel) -> Channels[_lcID]
+REF_114(HumanStandardToken) -> REF_113.token
+REF_116(LedgerChannel.Channel) -> Channels[_lcID]
+REF_117(address[2]) -> REF_116.partyAddresses
+REF_118(address) -> REF_117[0]
+REF_119(LedgerChannel.Channel) -> Channels[_lcID]
+REF_120(uint256[4]) -> REF_119.erc20Balances
+REF_121(uint256) -> REF_120[0]
+TMP_140(bool) = HIGH_LEVEL_CALL, dest:REF_114(HumanStandardToken), function:transfer, arguments:['REF_118', 'REF_121']  
+TMP_141(None) = SOLIDITY_CALL require(bool,string)(TMP_140,CreateChannel: token transfer failure)"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+DidLCClose(_lcID,0,Channels[_lcID].ethBalances[0],Channels[_lcID].erc20Balances[0],0,0)
+
+IRs:
+REF_122(LedgerChannel.Channel) -> Channels[_lcID]
+REF_123(uint256[4]) -> REF_122.ethBalances
+REF_124(uint256) -> REF_123[0]
+REF_125(LedgerChannel.Channel) -> Channels[_lcID]
+REF_126(uint256[4]) -> REF_125.erc20Balances
+REF_127(uint256) -> REF_126[0]
+Emit DidLCClose(_lcID,0,REF_124,REF_127,0,0)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+delete Channels[_lcID]
+
+IRs:
+REF_128(LedgerChannel.Channel) -> Channels[_lcID]
+Channels = delete REF_128 "];
+}
+// Function: 44865.sol-LedgerChannel-_isContained(bytes32,bytes,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+cursor = _hash
+
+IRs:
+cursor(bytes32) := _hash(bytes32)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->5;
+3[label="Node Type: BEGIN_LOOP 3
+"];
+3->6;
+4[label="Node Type: END_LOOP 4
+"];
+4->14;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+i = 64
+
+IRs:
+i(uint256) := 64(uint256)"];
+5->3;
+6[label="Node Type: IF_LOOP 6
+
+EXPRESSION:
+i <= _proof.length
+
+IRs:
+REF_598 -> LENGTH _proof
+TMP_319(bool) = i <= REF_598
+CONDITION TMP_319"];
+6->7[label="True"];
+6->4[label="False"];
+7[label="Node Type: INLINE ASM 7
+"];
+7->8;
+8[label="Node Type: END INLINE ASM 8
+"];
+8->9;
+9[label="Node Type: IF 9
+
+EXPRESSION:
+cursor < proofElem
+
+IRs:
+TMP_320(bool) = cursor < proofElem
+CONDITION TMP_320"];
+9->10[label="True"];
+9->11[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+cursor = keccak256()(abi.encodePacked(cursor,proofElem))
+
+IRs:
+TMP_321(bytes) = SOLIDITY_CALL abi.encodePacked()(cursor,proofElem)
+TMP_322(bytes32) = SOLIDITY_CALL keccak256()(TMP_321)
+cursor(bytes32) := TMP_322(bytes32)"];
+10->12;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+cursor = keccak256()(abi.encodePacked(proofElem,cursor))
+
+IRs:
+TMP_323(bytes) = SOLIDITY_CALL abi.encodePacked()(proofElem,cursor)
+TMP_324(bytes32) = SOLIDITY_CALL keccak256()(TMP_323)
+cursor(bytes32) := TMP_324(bytes32)"];
+11->12;
+12[label="Node Type: END_IF 12
+"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+i += 32
+
+IRs:
+i(uint256) = i + 32"];
+13->6;
+14[label="Node Type: RETURN 14
+
+EXPRESSION:
+cursor == _root
+
+IRs:
+TMP_325(bool) = cursor == _root
+RETURN TMP_325"];
+}
+// Function: 44865.sol-LedgerChannel-byzantineCloseChannel(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+channel = Channels[_lcID]
+
+IRs:
+REF_525(LedgerChannel.Channel) -> Channels[_lcID]
+channel(LedgerChannel.Channel) := REF_525(LedgerChannel.Channel)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(channel.isOpen,Channel is not open)
+
+IRs:
+REF_526(bool) -> channel.isOpen
+TMP_286(None) = SOLIDITY_CALL require(bool,string)(REF_526,Channel is not open)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(channel.isUpdateLCSettling == true)
+
+IRs:
+REF_527(bool) -> channel.isUpdateLCSettling
+TMP_287(bool) = REF_527 == True
+TMP_288(None) = SOLIDITY_CALL require(bool)(TMP_287)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool)(channel.numOpenVC == 0)
+
+IRs:
+REF_528(uint256) -> channel.numOpenVC
+TMP_289(bool) = REF_528 == 0
+TMP_290(None) = SOLIDITY_CALL require(bool)(TMP_289)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool,string)(channel.updateLCtimeout < now,LC timeout over.)
+
+IRs:
+REF_529(uint256) -> channel.updateLCtimeout
+TMP_291(bool) = REF_529 < now
+TMP_292(None) = SOLIDITY_CALL require(bool,string)(TMP_291,LC timeout over.)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+totalEthDeposit = channel.initialDeposit[0] + channel.ethBalances[2] + channel.ethBalances[3]
+
+IRs:
+REF_530(uint256[2]) -> channel.initialDeposit
+REF_531(uint256) -> REF_530[0]
+REF_532(uint256[4]) -> channel.ethBalances
+REF_533(uint256) -> REF_532[2]
+TMP_293(uint256) = REF_531 + REF_533
+REF_534(uint256[4]) -> channel.ethBalances
+REF_535(uint256) -> REF_534[3]
+TMP_294(uint256) = TMP_293 + REF_535
+totalEthDeposit(uint256) := TMP_294(uint256)"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+totalTokenDeposit = channel.initialDeposit[1] + channel.erc20Balances[2] + channel.erc20Balances[3]
+
+IRs:
+REF_536(uint256[2]) -> channel.initialDeposit
+REF_537(uint256) -> REF_536[1]
+REF_538(uint256[4]) -> channel.erc20Balances
+REF_539(uint256) -> REF_538[2]
+TMP_295(uint256) = REF_537 + REF_539
+REF_540(uint256[4]) -> channel.erc20Balances
+REF_541(uint256) -> REF_540[3]
+TMP_296(uint256) = TMP_295 + REF_541
+totalTokenDeposit(uint256) := TMP_296(uint256)"];
+7->8;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+possibleTotalEthBeforeDeposit = channel.ethBalances[0] + channel.ethBalances[1]
+
+IRs:
+REF_542(uint256[4]) -> channel.ethBalances
+REF_543(uint256) -> REF_542[0]
+REF_544(uint256[4]) -> channel.ethBalances
+REF_545(uint256) -> REF_544[1]
+TMP_297(uint256) = REF_543 + REF_545
+possibleTotalEthBeforeDeposit(uint256) := TMP_297(uint256)"];
+8->9;
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+possibleTotalTokenBeforeDeposit = channel.erc20Balances[0] + channel.erc20Balances[1]
+
+IRs:
+REF_546(uint256[4]) -> channel.erc20Balances
+REF_547(uint256) -> REF_546[0]
+REF_548(uint256[4]) -> channel.erc20Balances
+REF_549(uint256) -> REF_548[1]
+TMP_298(uint256) = REF_547 + REF_549
+possibleTotalTokenBeforeDeposit(uint256) := TMP_298(uint256)"];
+9->10;
+10[label="Node Type: IF 10
+
+EXPRESSION:
+possibleTotalEthBeforeDeposit < totalEthDeposit
+
+IRs:
+TMP_299(bool) = possibleTotalEthBeforeDeposit < totalEthDeposit
+CONDITION TMP_299"];
+10->11[label="True"];
+10->13[label="False"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+channel.ethBalances[0] += channel.ethBalances[2]
+
+IRs:
+REF_550(uint256[4]) -> channel.ethBalances
+REF_551(uint256) -> REF_550[0]
+REF_552(uint256[4]) -> channel.ethBalances
+REF_553(uint256) -> REF_552[2]
+REF_551(-> channel) = REF_551 + REF_553"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+channel.ethBalances[1] += channel.ethBalances[3]
+
+IRs:
+REF_554(uint256[4]) -> channel.ethBalances
+REF_555(uint256) -> REF_554[1]
+REF_556(uint256[4]) -> channel.ethBalances
+REF_557(uint256) -> REF_556[3]
+REF_555(-> channel) = REF_555 + REF_557"];
+12->14;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+require(bool)(possibleTotalEthBeforeDeposit == totalEthDeposit)
+
+IRs:
+TMP_300(bool) = possibleTotalEthBeforeDeposit == totalEthDeposit
+TMP_301(None) = SOLIDITY_CALL require(bool)(TMP_300)"];
+13->14;
+14[label="Node Type: END_IF 14
+"];
+14->15;
+15[label="Node Type: IF 15
+
+EXPRESSION:
+possibleTotalTokenBeforeDeposit < totalTokenDeposit
+
+IRs:
+TMP_302(bool) = possibleTotalTokenBeforeDeposit < totalTokenDeposit
+CONDITION TMP_302"];
+15->16[label="True"];
+15->18[label="False"];
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+channel.erc20Balances[0] += channel.erc20Balances[2]
+
+IRs:
+REF_558(uint256[4]) -> channel.erc20Balances
+REF_559(uint256) -> REF_558[0]
+REF_560(uint256[4]) -> channel.erc20Balances
+REF_561(uint256) -> REF_560[2]
+REF_559(-> channel) = REF_559 + REF_561"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+channel.erc20Balances[1] += channel.erc20Balances[3]
+
+IRs:
+REF_562(uint256[4]) -> channel.erc20Balances
+REF_563(uint256) -> REF_562[1]
+REF_564(uint256[4]) -> channel.erc20Balances
+REF_565(uint256) -> REF_564[3]
+REF_563(-> channel) = REF_563 + REF_565"];
+17->19;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+require(bool)(possibleTotalTokenBeforeDeposit == totalTokenDeposit)
+
+IRs:
+TMP_303(bool) = possibleTotalTokenBeforeDeposit == totalTokenDeposit
+TMP_304(None) = SOLIDITY_CALL require(bool)(TMP_303)"];
+18->19;
+19[label="Node Type: END_IF 19
+"];
+19->20;
+20[label="Node Type: NEW VARIABLE 20
+
+EXPRESSION:
+ethbalanceA = channel.ethBalances[0]
+
+IRs:
+REF_566(uint256[4]) -> channel.ethBalances
+REF_567(uint256) -> REF_566[0]
+ethbalanceA(uint256) := REF_567(uint256)"];
+20->21;
+21[label="Node Type: NEW VARIABLE 21
+
+EXPRESSION:
+ethbalanceI = channel.ethBalances[1]
+
+IRs:
+REF_568(uint256[4]) -> channel.ethBalances
+REF_569(uint256) -> REF_568[1]
+ethbalanceI(uint256) := REF_569(uint256)"];
+21->22;
+22[label="Node Type: NEW VARIABLE 22
+
+EXPRESSION:
+tokenbalanceA = channel.erc20Balances[0]
+
+IRs:
+REF_570(uint256[4]) -> channel.erc20Balances
+REF_571(uint256) -> REF_570[0]
+tokenbalanceA(uint256) := REF_571(uint256)"];
+22->23;
+23[label="Node Type: NEW VARIABLE 23
+
+EXPRESSION:
+tokenbalanceI = channel.erc20Balances[1]
+
+IRs:
+REF_572(uint256[4]) -> channel.erc20Balances
+REF_573(uint256) -> REF_572[1]
+tokenbalanceI(uint256) := REF_573(uint256)"];
+23->24;
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+channel.ethBalances[0] = 0
+
+IRs:
+REF_574(uint256[4]) -> channel.ethBalances
+REF_575(uint256) -> REF_574[0]
+REF_575(uint256) (->channel) := 0(uint256)"];
+24->25;
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+channel.ethBalances[1] = 0
+
+IRs:
+REF_576(uint256[4]) -> channel.ethBalances
+REF_577(uint256) -> REF_576[1]
+REF_577(uint256) (->channel) := 0(uint256)"];
+25->26;
+26[label="Node Type: EXPRESSION 26
+
+EXPRESSION:
+channel.erc20Balances[0] = 0
+
+IRs:
+REF_578(uint256[4]) -> channel.erc20Balances
+REF_579(uint256) -> REF_578[0]
+REF_579(uint256) (->channel) := 0(uint256)"];
+26->27;
+27[label="Node Type: EXPRESSION 27
+
+EXPRESSION:
+channel.erc20Balances[1] = 0
+
+IRs:
+REF_580(uint256[4]) -> channel.erc20Balances
+REF_581(uint256) -> REF_580[1]
+REF_581(uint256) (->channel) := 0(uint256)"];
+27->28;
+28[label="Node Type: IF 28
+
+EXPRESSION:
+ethbalanceA != 0 || ethbalanceI != 0
+
+IRs:
+TMP_305(bool) = ethbalanceA != 0
+TMP_306(bool) = ethbalanceI != 0
+TMP_307(bool) = TMP_305 || TMP_306
+CONDITION TMP_307"];
+28->29[label="True"];
+28->31[label="False"];
+29[label="Node Type: EXPRESSION 29
+
+EXPRESSION:
+channel.partyAddresses[0].transfer(ethbalanceA)
+
+IRs:
+REF_582(address[2]) -> channel.partyAddresses
+REF_583(address) -> REF_582[0]
+Transfer dest:REF_583 value:ethbalanceA"];
+29->30;
+30[label="Node Type: EXPRESSION 30
+
+EXPRESSION:
+channel.partyAddresses[1].transfer(ethbalanceI)
+
+IRs:
+REF_585(address[2]) -> channel.partyAddresses
+REF_586(address) -> REF_585[1]
+Transfer dest:REF_586 value:ethbalanceI"];
+30->31;
+31[label="Node Type: END_IF 31
+"];
+31->32;
+32[label="Node Type: IF 32
+
+EXPRESSION:
+tokenbalanceA != 0 || tokenbalanceI != 0
+
+IRs:
+TMP_310(bool) = tokenbalanceA != 0
+TMP_311(bool) = tokenbalanceI != 0
+TMP_312(bool) = TMP_310 || TMP_311
+CONDITION TMP_312"];
+32->33[label="True"];
+32->35[label="False"];
+33[label="Node Type: EXPRESSION 33
+
+EXPRESSION:
+require(bool,string)(channel.token.transfer(channel.partyAddresses[0],tokenbalanceA),byzantineCloseChannel: token transfer failure)
+
+IRs:
+REF_588(HumanStandardToken) -> channel.token
+REF_590(address[2]) -> channel.partyAddresses
+REF_591(address) -> REF_590[0]
+TMP_313(bool) = HIGH_LEVEL_CALL, dest:REF_588(HumanStandardToken), function:transfer, arguments:['REF_591', 'tokenbalanceA']  
+TMP_314(None) = SOLIDITY_CALL require(bool,string)(TMP_313,byzantineCloseChannel: token transfer failure)"];
+33->34;
+34[label="Node Type: EXPRESSION 34
+
+EXPRESSION:
+require(bool,string)(channel.token.transfer(channel.partyAddresses[1],tokenbalanceI),byzantineCloseChannel: token transfer failure)
+
+IRs:
+REF_592(HumanStandardToken) -> channel.token
+REF_594(address[2]) -> channel.partyAddresses
+REF_595(address) -> REF_594[1]
+TMP_315(bool) = HIGH_LEVEL_CALL, dest:REF_592(HumanStandardToken), function:transfer, arguments:['REF_595', 'tokenbalanceI']  
+TMP_316(None) = SOLIDITY_CALL require(bool,string)(TMP_315,byzantineCloseChannel: token transfer failure)"];
+34->35;
+35[label="Node Type: END_IF 35
+"];
+35->36;
+36[label="Node Type: EXPRESSION 36
+
+EXPRESSION:
+channel.isOpen = false
+
+IRs:
+REF_596(bool) -> channel.isOpen
+REF_596(bool) (->channel) := False(bool)"];
+36->37;
+37[label="Node Type: EXPRESSION 37
+
+EXPRESSION:
+numChannels --
+
+IRs:
+TMP_317(uint256) := numChannels(uint256)
+numChannels(uint256) = numChannels - 1"];
+37->38;
+38[label="Node Type: EXPRESSION 38
+
+EXPRESSION:
+DidLCClose(_lcID,channel.sequence,ethbalanceA,ethbalanceI,tokenbalanceA,tokenbalanceI)
+
+IRs:
+REF_597(uint256) -> channel.sequence
+Emit DidLCClose(_lcID,REF_597,ethbalanceA,ethbalanceI,tokenbalanceA,tokenbalanceI)"];
+}
+// Function: 44865.sol-LedgerChannel-closeVirtualChannel(bytes32,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(Channels[_lcID].isOpen,LC is closed.)
+
+IRs:
+REF_449(LedgerChannel.Channel) -> Channels[_lcID]
+REF_450(bool) -> REF_449.isOpen
+TMP_276(None) = SOLIDITY_CALL require(bool,string)(REF_450,LC is closed.)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(virtualChannels[_vcID].isInSettlementState,VC is not in settlement state.)
+
+IRs:
+REF_451(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_452(bool) -> REF_451.isInSettlementState
+TMP_277(None) = SOLIDITY_CALL require(bool,string)(REF_452,VC is not in settlement state.)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool,string)(virtualChannels[_vcID].updateVCtimeout < now,Update vc timeout has not elapsed.)
+
+IRs:
+REF_453(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_454(uint256) -> REF_453.updateVCtimeout
+TMP_278(bool) = REF_454 < now
+TMP_279(None) = SOLIDITY_CALL require(bool,string)(TMP_278,Update vc timeout has not elapsed.)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool,string)(! virtualChannels[_vcID].isClose,VC is already closed)
+
+IRs:
+REF_455(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_456(bool) -> REF_455.isClose
+TMP_280 = UnaryType.BANG REF_456 
+TMP_281(None) = SOLIDITY_CALL require(bool,string)(TMP_280,VC is already closed)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Channels[_lcID].numOpenVC --
+
+IRs:
+REF_457(LedgerChannel.Channel) -> Channels[_lcID]
+REF_458(uint256) -> REF_457.numOpenVC
+TMP_282(uint256) := REF_458(uint256)
+REF_458(-> Channels) = REF_458 - 1"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+virtualChannels[_vcID].isClose = true
+
+IRs:
+REF_459(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_460(bool) -> REF_459.isClose
+REF_460(bool) (->virtualChannels) := True(bool)"];
+6->7;
+7[label="Node Type: IF 7
+
+EXPRESSION:
+virtualChannels[_vcID].partyA == Channels[_lcID].partyAddresses[0]
+
+IRs:
+REF_461(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_462(address) -> REF_461.partyA
+REF_463(LedgerChannel.Channel) -> Channels[_lcID]
+REF_464(address[2]) -> REF_463.partyAddresses
+REF_465(address) -> REF_464[0]
+TMP_283(bool) = REF_462 == REF_465
+CONDITION TMP_283"];
+7->8[label="True"];
+7->12[label="False"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+Channels[_lcID].ethBalances[0] += virtualChannels[_vcID].ethBalances[0]
+
+IRs:
+REF_466(LedgerChannel.Channel) -> Channels[_lcID]
+REF_467(uint256[4]) -> REF_466.ethBalances
+REF_468(uint256) -> REF_467[0]
+REF_469(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_470(uint256[2]) -> REF_469.ethBalances
+REF_471(uint256) -> REF_470[0]
+REF_468(-> Channels) = REF_468 + REF_471"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+Channels[_lcID].ethBalances[1] += virtualChannels[_vcID].ethBalances[1]
+
+IRs:
+REF_472(LedgerChannel.Channel) -> Channels[_lcID]
+REF_473(uint256[4]) -> REF_472.ethBalances
+REF_474(uint256) -> REF_473[1]
+REF_475(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_476(uint256[2]) -> REF_475.ethBalances
+REF_477(uint256) -> REF_476[1]
+REF_474(-> Channels) = REF_474 + REF_477"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+Channels[_lcID].erc20Balances[0] += virtualChannels[_vcID].erc20Balances[0]
+
+IRs:
+REF_478(LedgerChannel.Channel) -> Channels[_lcID]
+REF_479(uint256[4]) -> REF_478.erc20Balances
+REF_480(uint256) -> REF_479[0]
+REF_481(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_482(uint256[2]) -> REF_481.erc20Balances
+REF_483(uint256) -> REF_482[0]
+REF_480(-> Channels) = REF_480 + REF_483"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+Channels[_lcID].erc20Balances[1] += virtualChannels[_vcID].erc20Balances[1]
+
+IRs:
+REF_484(LedgerChannel.Channel) -> Channels[_lcID]
+REF_485(uint256[4]) -> REF_484.erc20Balances
+REF_486(uint256) -> REF_485[1]
+REF_487(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_488(uint256[2]) -> REF_487.erc20Balances
+REF_489(uint256) -> REF_488[1]
+REF_486(-> Channels) = REF_486 + REF_489"];
+11->18;
+12[label="Node Type: IF 12
+
+EXPRESSION:
+virtualChannels[_vcID].partyB == Channels[_lcID].partyAddresses[0]
+
+IRs:
+REF_490(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_491(address) -> REF_490.partyB
+REF_492(LedgerChannel.Channel) -> Channels[_lcID]
+REF_493(address[2]) -> REF_492.partyAddresses
+REF_494(address) -> REF_493[0]
+TMP_284(bool) = REF_491 == REF_494
+CONDITION TMP_284"];
+12->13[label="True"];
+12->17[label="False"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+Channels[_lcID].ethBalances[0] += virtualChannels[_vcID].ethBalances[1]
+
+IRs:
+REF_495(LedgerChannel.Channel) -> Channels[_lcID]
+REF_496(uint256[4]) -> REF_495.ethBalances
+REF_497(uint256) -> REF_496[0]
+REF_498(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_499(uint256[2]) -> REF_498.ethBalances
+REF_500(uint256) -> REF_499[1]
+REF_497(-> Channels) = REF_497 + REF_500"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+Channels[_lcID].ethBalances[1] += virtualChannels[_vcID].ethBalances[0]
+
+IRs:
+REF_501(LedgerChannel.Channel) -> Channels[_lcID]
+REF_502(uint256[4]) -> REF_501.ethBalances
+REF_503(uint256) -> REF_502[1]
+REF_504(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_505(uint256[2]) -> REF_504.ethBalances
+REF_506(uint256) -> REF_505[0]
+REF_503(-> Channels) = REF_503 + REF_506"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+Channels[_lcID].erc20Balances[0] += virtualChannels[_vcID].erc20Balances[1]
+
+IRs:
+REF_507(LedgerChannel.Channel) -> Channels[_lcID]
+REF_508(uint256[4]) -> REF_507.erc20Balances
+REF_509(uint256) -> REF_508[0]
+REF_510(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_511(uint256[2]) -> REF_510.erc20Balances
+REF_512(uint256) -> REF_511[1]
+REF_509(-> Channels) = REF_509 + REF_512"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+Channels[_lcID].erc20Balances[1] += virtualChannels[_vcID].erc20Balances[0]
+
+IRs:
+REF_513(LedgerChannel.Channel) -> Channels[_lcID]
+REF_514(uint256[4]) -> REF_513.erc20Balances
+REF_515(uint256) -> REF_514[1]
+REF_516(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_517(uint256[2]) -> REF_516.erc20Balances
+REF_518(uint256) -> REF_517[0]
+REF_515(-> Channels) = REF_515 + REF_518"];
+16->17;
+17[label="Node Type: END_IF 17
+"];
+17->18;
+18[label="Node Type: END_IF 18
+"];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+DidVCClose(_lcID,_vcID,virtualChannels[_vcID].erc20Balances[0],virtualChannels[_vcID].erc20Balances[1])
+
+IRs:
+REF_519(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_520(uint256[2]) -> REF_519.erc20Balances
+REF_521(uint256) -> REF_520[0]
+REF_522(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_523(uint256[2]) -> REF_522.erc20Balances
+REF_524(uint256) -> REF_523[1]
+Emit DidVCClose(_lcID,_vcID,REF_521,REF_524)"];
+}
+// Function: 44865.sol-LedgerChannel-consensusCloseChannel(bytes32,uint256,uint256[4],string,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(Channels[_lcID].isOpen == true)
+
+IRs:
+REF_192(LedgerChannel.Channel) -> Channels[_lcID]
+REF_193(bool) -> REF_192.isOpen
+TMP_172(bool) = REF_193 == True
+TMP_173(None) = SOLIDITY_CALL require(bool)(TMP_172)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+totalEthDeposit = Channels[_lcID].initialDeposit[0] + Channels[_lcID].ethBalances[2] + Channels[_lcID].ethBalances[3]
+
+IRs:
+REF_194(LedgerChannel.Channel) -> Channels[_lcID]
+REF_195(uint256[2]) -> REF_194.initialDeposit
+REF_196(uint256) -> REF_195[0]
+REF_197(LedgerChannel.Channel) -> Channels[_lcID]
+REF_198(uint256[4]) -> REF_197.ethBalances
+REF_199(uint256) -> REF_198[2]
+TMP_174(uint256) = REF_196 + REF_199
+REF_200(LedgerChannel.Channel) -> Channels[_lcID]
+REF_201(uint256[4]) -> REF_200.ethBalances
+REF_202(uint256) -> REF_201[3]
+TMP_175(uint256) = TMP_174 + REF_202
+totalEthDeposit(uint256) := TMP_175(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+totalTokenDeposit = Channels[_lcID].initialDeposit[1] + Channels[_lcID].erc20Balances[2] + Channels[_lcID].erc20Balances[3]
+
+IRs:
+REF_203(LedgerChannel.Channel) -> Channels[_lcID]
+REF_204(uint256[2]) -> REF_203.initialDeposit
+REF_205(uint256) -> REF_204[1]
+REF_206(LedgerChannel.Channel) -> Channels[_lcID]
+REF_207(uint256[4]) -> REF_206.erc20Balances
+REF_208(uint256) -> REF_207[2]
+TMP_176(uint256) = REF_205 + REF_208
+REF_209(LedgerChannel.Channel) -> Channels[_lcID]
+REF_210(uint256[4]) -> REF_209.erc20Balances
+REF_211(uint256) -> REF_210[3]
+TMP_177(uint256) = TMP_176 + REF_211
+totalTokenDeposit(uint256) := TMP_177(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool)(totalEthDeposit == _balances[0] + _balances[1])
+
+IRs:
+REF_212(uint256) -> _balances[0]
+REF_213(uint256) -> _balances[1]
+TMP_178(uint256) = REF_212 + REF_213
+TMP_179(bool) = totalEthDeposit == TMP_178
+TMP_180(None) = SOLIDITY_CALL require(bool)(TMP_179)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool)(totalTokenDeposit == _balances[2] + _balances[3])
+
+IRs:
+REF_214(uint256) -> _balances[2]
+REF_215(uint256) -> _balances[3]
+TMP_181(uint256) = REF_214 + REF_215
+TMP_182(bool) = totalTokenDeposit == TMP_181
+TMP_183(None) = SOLIDITY_CALL require(bool)(TMP_182)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+_state = keccak256()(abi.encodePacked(_lcID,true,_sequence,uint256(0),bytes32(0x0),Channels[_lcID].partyAddresses[0],Channels[_lcID].partyAddresses[1],_balances[0],_balances[1],_balances[2],_balances[3]))
+
+IRs:
+TMP_184 = CONVERT 0 to uint256
+TMP_185 = CONVERT 0 to bytes32
+REF_217(LedgerChannel.Channel) -> Channels[_lcID]
+REF_218(address[2]) -> REF_217.partyAddresses
+REF_219(address) -> REF_218[0]
+REF_220(LedgerChannel.Channel) -> Channels[_lcID]
+REF_221(address[2]) -> REF_220.partyAddresses
+REF_222(address) -> REF_221[1]
+REF_223(uint256) -> _balances[0]
+REF_224(uint256) -> _balances[1]
+REF_225(uint256) -> _balances[2]
+REF_226(uint256) -> _balances[3]
+TMP_186(bytes) = SOLIDITY_CALL abi.encodePacked()(_lcID,True,_sequence,TMP_184,TMP_185,REF_219,REF_222,REF_223,REF_224,REF_225,REF_226)
+TMP_187(bytes32) = SOLIDITY_CALL keccak256()(TMP_186)
+_state(bytes32) := TMP_187(bytes32)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+require(bool)(Channels[_lcID].partyAddresses[0] == ECTools.recoverSigner(_state,_sigA))
+
+IRs:
+REF_227(LedgerChannel.Channel) -> Channels[_lcID]
+REF_228(address[2]) -> REF_227.partyAddresses
+REF_229(address) -> REF_228[0]
+TMP_188(address) = LIBRARY_CALL, dest:ECTools, function:ECTools.recoverSigner(bytes32,string), arguments:['_state', '_sigA'] 
+TMP_189(bool) = REF_229 == TMP_188
+TMP_190(None) = SOLIDITY_CALL require(bool)(TMP_189)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+require(bool)(Channels[_lcID].partyAddresses[1] == ECTools.recoverSigner(_state,_sigI))
+
+IRs:
+REF_231(LedgerChannel.Channel) -> Channels[_lcID]
+REF_232(address[2]) -> REF_231.partyAddresses
+REF_233(address) -> REF_232[1]
+TMP_191(address) = LIBRARY_CALL, dest:ECTools, function:ECTools.recoverSigner(bytes32,string), arguments:['_state', '_sigI'] 
+TMP_192(bool) = REF_233 == TMP_191
+TMP_193(None) = SOLIDITY_CALL require(bool)(TMP_192)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+Channels[_lcID].isOpen = false
+
+IRs:
+REF_235(LedgerChannel.Channel) -> Channels[_lcID]
+REF_236(bool) -> REF_235.isOpen
+REF_236(bool) (->Channels) := False(bool)"];
+9->10;
+10[label="Node Type: IF 10
+
+EXPRESSION:
+_balances[0] != 0 || _balances[1] != 0
+
+IRs:
+REF_237(uint256) -> _balances[0]
+TMP_194(bool) = REF_237 != 0
+REF_238(uint256) -> _balances[1]
+TMP_195(bool) = REF_238 != 0
+TMP_196(bool) = TMP_194 || TMP_195
+CONDITION TMP_196"];
+10->11[label="True"];
+10->13[label="False"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+Channels[_lcID].partyAddresses[0].transfer(_balances[0])
+
+IRs:
+REF_239(LedgerChannel.Channel) -> Channels[_lcID]
+REF_240(address[2]) -> REF_239.partyAddresses
+REF_241(address) -> REF_240[0]
+REF_243(uint256) -> _balances[0]
+Transfer dest:REF_241 value:REF_243"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+Channels[_lcID].partyAddresses[1].transfer(_balances[1])
+
+IRs:
+REF_244(LedgerChannel.Channel) -> Channels[_lcID]
+REF_245(address[2]) -> REF_244.partyAddresses
+REF_246(address) -> REF_245[1]
+REF_248(uint256) -> _balances[1]
+Transfer dest:REF_246 value:REF_248"];
+12->13;
+13[label="Node Type: END_IF 13
+"];
+13->14;
+14[label="Node Type: IF 14
+
+EXPRESSION:
+_balances[2] != 0 || _balances[3] != 0
+
+IRs:
+REF_249(uint256) -> _balances[2]
+TMP_199(bool) = REF_249 != 0
+REF_250(uint256) -> _balances[3]
+TMP_200(bool) = REF_250 != 0
+TMP_201(bool) = TMP_199 || TMP_200
+CONDITION TMP_201"];
+14->15[label="True"];
+14->17[label="False"];
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+require(bool,string)(Channels[_lcID].token.transfer(Channels[_lcID].partyAddresses[0],_balances[2]),happyCloseChannel: token transfer failure)
+
+IRs:
+REF_251(LedgerChannel.Channel) -> Channels[_lcID]
+REF_252(HumanStandardToken) -> REF_251.token
+REF_254(LedgerChannel.Channel) -> Channels[_lcID]
+REF_255(address[2]) -> REF_254.partyAddresses
+REF_256(address) -> REF_255[0]
+REF_257(uint256) -> _balances[2]
+TMP_202(bool) = HIGH_LEVEL_CALL, dest:REF_252(HumanStandardToken), function:transfer, arguments:['REF_256', 'REF_257']  
+TMP_203(None) = SOLIDITY_CALL require(bool,string)(TMP_202,happyCloseChannel: token transfer failure)"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+require(bool,string)(Channels[_lcID].token.transfer(Channels[_lcID].partyAddresses[1],_balances[3]),happyCloseChannel: token transfer failure)
+
+IRs:
+REF_258(LedgerChannel.Channel) -> Channels[_lcID]
+REF_259(HumanStandardToken) -> REF_258.token
+REF_261(LedgerChannel.Channel) -> Channels[_lcID]
+REF_262(address[2]) -> REF_261.partyAddresses
+REF_263(address) -> REF_262[1]
+REF_264(uint256) -> _balances[3]
+TMP_204(bool) = HIGH_LEVEL_CALL, dest:REF_259(HumanStandardToken), function:transfer, arguments:['REF_263', 'REF_264']  
+TMP_205(None) = SOLIDITY_CALL require(bool,string)(TMP_204,happyCloseChannel: token transfer failure)"];
+16->17;
+17[label="Node Type: END_IF 17
+"];
+17->18;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+numChannels --
+
+IRs:
+TMP_206(uint256) := numChannels(uint256)
+numChannels(uint256) = numChannels - 1"];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+DidLCClose(_lcID,_sequence,_balances[0],_balances[1],_balances[2],_balances[3])
+
+IRs:
+REF_265(uint256) -> _balances[0]
+REF_266(uint256) -> _balances[1]
+REF_267(uint256) -> _balances[2]
+REF_268(uint256) -> _balances[3]
+Emit DidLCClose(_lcID,_sequence,REF_265,REF_266,REF_267,REF_268)"];
+}
+// Function: 44865.sol-LedgerChannel-createChannel(bytes32,address,uint256,address,uint256[2])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(Channels[_lcID].partyAddresses[0] == address(0),Channel has already been created.)
+
+IRs:
+REF_54(LedgerChannel.Channel) -> Channels[_lcID]
+REF_55(address[2]) -> REF_54.partyAddresses
+REF_56(address) -> REF_55[0]
+TMP_113 = CONVERT 0 to address
+TMP_114(bool) = REF_56 == TMP_113
+TMP_115(None) = SOLIDITY_CALL require(bool,string)(TMP_114,Channel has already been created.)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(_partyI != 0x0,No partyI address provided to LC creation)
+
+IRs:
+TMP_116(bool) = _partyI != 0
+TMP_117(None) = SOLIDITY_CALL require(bool,string)(TMP_116,No partyI address provided to LC creation)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool,string)(_balances[0] >= 0 && _balances[1] >= 0,Balances cannot be negative)
+
+IRs:
+REF_57(uint256) -> _balances[0]
+TMP_118(bool) = REF_57 >= 0
+REF_58(uint256) -> _balances[1]
+TMP_119(bool) = REF_58 >= 0
+TMP_120(bool) = TMP_118 && TMP_119
+TMP_121(None) = SOLIDITY_CALL require(bool,string)(TMP_120,Balances cannot be negative)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Channels[_lcID].partyAddresses[0] = msg.sender
+
+IRs:
+REF_59(LedgerChannel.Channel) -> Channels[_lcID]
+REF_60(address[2]) -> REF_59.partyAddresses
+REF_61(address) -> REF_60[0]
+REF_61(address) (->Channels) := msg.sender(address)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Channels[_lcID].partyAddresses[1] = _partyI
+
+IRs:
+REF_62(LedgerChannel.Channel) -> Channels[_lcID]
+REF_63(address[2]) -> REF_62.partyAddresses
+REF_64(address) -> REF_63[1]
+REF_64(address) (->Channels) := _partyI(address)"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+_balances[0] != 0
+
+IRs:
+REF_65(uint256) -> _balances[0]
+TMP_122(bool) = REF_65 != 0
+CONDITION TMP_122"];
+6->7[label="True"];
+6->9[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+require(bool,string)(msg.value == _balances[0],Eth balance does not match sent value)
+
+IRs:
+REF_66(uint256) -> _balances[0]
+TMP_123(bool) = msg.value == REF_66
+TMP_124(None) = SOLIDITY_CALL require(bool,string)(TMP_123,Eth balance does not match sent value)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+Channels[_lcID].ethBalances[0] = msg.value
+
+IRs:
+REF_67(LedgerChannel.Channel) -> Channels[_lcID]
+REF_68(uint256[4]) -> REF_67.ethBalances
+REF_69(uint256) -> REF_68[0]
+REF_69(uint256) (->Channels) := msg.value(uint256)"];
+8->9;
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: IF 10
+
+EXPRESSION:
+_balances[1] != 0
+
+IRs:
+REF_70(uint256) -> _balances[1]
+TMP_125(bool) = REF_70 != 0
+CONDITION TMP_125"];
+10->11[label="True"];
+10->14[label="False"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+Channels[_lcID].token = HumanStandardToken(_token)
+
+IRs:
+REF_71(LedgerChannel.Channel) -> Channels[_lcID]
+REF_72(HumanStandardToken) -> REF_71.token
+TMP_126 = CONVERT _token to HumanStandardToken
+REF_72(HumanStandardToken) (->Channels) := TMP_126(HumanStandardToken)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+require(bool,string)(Channels[_lcID].token.transferFrom(msg.sender,this,_balances[1]),CreateChannel: token transfer failure)
+
+IRs:
+REF_73(LedgerChannel.Channel) -> Channels[_lcID]
+REF_74(HumanStandardToken) -> REF_73.token
+REF_76(uint256) -> _balances[1]
+TMP_127(bool) = HIGH_LEVEL_CALL, dest:REF_74(HumanStandardToken), function:transferFrom, arguments:['msg.sender', 'this', 'REF_76']  
+TMP_128(None) = SOLIDITY_CALL require(bool,string)(TMP_127,CreateChannel: token transfer failure)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+Channels[_lcID].erc20Balances[0] = _balances[1]
+
+IRs:
+REF_77(LedgerChannel.Channel) -> Channels[_lcID]
+REF_78(uint256[4]) -> REF_77.erc20Balances
+REF_79(uint256) -> REF_78[0]
+REF_80(uint256) -> _balances[1]
+REF_79(uint256) (->Channels) := REF_80(uint256)"];
+13->14;
+14[label="Node Type: END_IF 14
+"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+Channels[_lcID].sequence = 0
+
+IRs:
+REF_81(LedgerChannel.Channel) -> Channels[_lcID]
+REF_82(uint256) -> REF_81.sequence
+REF_82(uint256) (->Channels) := 0(uint256)"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+Channels[_lcID].confirmTime = _confirmTime
+
+IRs:
+REF_83(LedgerChannel.Channel) -> Channels[_lcID]
+REF_84(uint256) -> REF_83.confirmTime
+REF_84(uint256) (->Channels) := _confirmTime(uint256)"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+Channels[_lcID].LCopenTimeout = now + _confirmTime
+
+IRs:
+REF_85(LedgerChannel.Channel) -> Channels[_lcID]
+REF_86(uint256) -> REF_85.LCopenTimeout
+TMP_129(uint256) = now + _confirmTime
+REF_86(uint256) (->Channels) := TMP_129(uint256)"];
+17->18;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+Channels[_lcID].initialDeposit = _balances
+
+IRs:
+REF_87(LedgerChannel.Channel) -> Channels[_lcID]
+REF_88(uint256[2]) -> REF_87.initialDeposit
+REF_88(uint256[2]) (->Channels) := _balances(uint256[2])"];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+DidLCOpen(_lcID,msg.sender,_partyI,_balances[0],_token,_balances[1],Channels[_lcID].LCopenTimeout)
+
+IRs:
+REF_89(uint256) -> _balances[0]
+REF_90(uint256) -> _balances[1]
+REF_91(LedgerChannel.Channel) -> Channels[_lcID]
+REF_92(uint256) -> REF_91.LCopenTimeout
+Emit DidLCOpen(_lcID,msg.sender,_partyI,REF_89,_token,REF_90,REF_92)"];
+}
+// Function: 44865.sol-LedgerChannel-deposit(bytes32,address,uint256,bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(Channels[_lcID].isOpen == true,Tried adding funds to a closed channel)
+
+IRs:
+REF_160(LedgerChannel.Channel) -> Channels[_lcID]
+REF_161(bool) -> REF_160.isOpen
+TMP_155(bool) = REF_161 == True
+TMP_156(None) = SOLIDITY_CALL require(bool,string)(TMP_155,Tried adding funds to a closed channel)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(recipient == Channels[_lcID].partyAddresses[0] || recipient == Channels[_lcID].partyAddresses[1])
+
+IRs:
+REF_162(LedgerChannel.Channel) -> Channels[_lcID]
+REF_163(address[2]) -> REF_162.partyAddresses
+REF_164(address) -> REF_163[0]
+TMP_157(bool) = recipient == REF_164
+REF_165(LedgerChannel.Channel) -> Channels[_lcID]
+REF_166(address[2]) -> REF_165.partyAddresses
+REF_167(address) -> REF_166[1]
+TMP_158(bool) = recipient == REF_167
+TMP_159(bool) = TMP_157 || TMP_158
+TMP_160(None) = SOLIDITY_CALL require(bool)(TMP_159)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+Channels[_lcID].partyAddresses[0] == recipient
+
+IRs:
+REF_168(LedgerChannel.Channel) -> Channels[_lcID]
+REF_169(address[2]) -> REF_168.partyAddresses
+REF_170(address) -> REF_169[0]
+TMP_161(bool) = REF_170 == recipient
+CONDITION TMP_161"];
+3->4[label="True"];
+3->10[label="False"];
+4[label="Node Type: IF 4
+
+EXPRESSION:
+isToken
+
+IRs:
+CONDITION isToken"];
+4->5[label="True"];
+4->7[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool,string)(Channels[_lcID].token.transferFrom(msg.sender,this,_balance),deposit: token transfer failure)
+
+IRs:
+REF_171(LedgerChannel.Channel) -> Channels[_lcID]
+REF_172(HumanStandardToken) -> REF_171.token
+TMP_162(bool) = HIGH_LEVEL_CALL, dest:REF_172(HumanStandardToken), function:transferFrom, arguments:['msg.sender', 'this', '_balance']  
+TMP_163(None) = SOLIDITY_CALL require(bool,string)(TMP_162,deposit: token transfer failure)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+Channels[_lcID].erc20Balances[2] += _balance
+
+IRs:
+REF_174(LedgerChannel.Channel) -> Channels[_lcID]
+REF_175(uint256[4]) -> REF_174.erc20Balances
+REF_176(uint256) -> REF_175[2]
+REF_176(-> Channels) = REF_176 + _balance"];
+6->9;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+require(bool,string)(msg.value == _balance,state balance does not match sent value)
+
+IRs:
+TMP_164(bool) = msg.value == _balance
+TMP_165(None) = SOLIDITY_CALL require(bool,string)(TMP_164,state balance does not match sent value)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+Channels[_lcID].ethBalances[2] += msg.value
+
+IRs:
+REF_177(LedgerChannel.Channel) -> Channels[_lcID]
+REF_178(uint256[4]) -> REF_177.ethBalances
+REF_179(uint256) -> REF_178[2]
+REF_179(-> Channels) = REF_179 + msg.value"];
+8->9;
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: END_IF 10
+"];
+10->11;
+11[label="Node Type: IF 11
+
+EXPRESSION:
+Channels[_lcID].partyAddresses[1] == recipient
+
+IRs:
+REF_180(LedgerChannel.Channel) -> Channels[_lcID]
+REF_181(address[2]) -> REF_180.partyAddresses
+REF_182(address) -> REF_181[1]
+TMP_166(bool) = REF_182 == recipient
+CONDITION TMP_166"];
+11->12[label="True"];
+11->18[label="False"];
+12[label="Node Type: IF 12
+
+EXPRESSION:
+isToken
+
+IRs:
+CONDITION isToken"];
+12->13[label="True"];
+12->15[label="False"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+require(bool,string)(Channels[_lcID].token.transferFrom(msg.sender,this,_balance),deposit: token transfer failure)
+
+IRs:
+REF_183(LedgerChannel.Channel) -> Channels[_lcID]
+REF_184(HumanStandardToken) -> REF_183.token
+TMP_167(bool) = HIGH_LEVEL_CALL, dest:REF_184(HumanStandardToken), function:transferFrom, arguments:['msg.sender', 'this', '_balance']  
+TMP_168(None) = SOLIDITY_CALL require(bool,string)(TMP_167,deposit: token transfer failure)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+Channels[_lcID].erc20Balances[3] += _balance
+
+IRs:
+REF_186(LedgerChannel.Channel) -> Channels[_lcID]
+REF_187(uint256[4]) -> REF_186.erc20Balances
+REF_188(uint256) -> REF_187[3]
+REF_188(-> Channels) = REF_188 + _balance"];
+14->17;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+require(bool,string)(msg.value == _balance,state balance does not match sent value)
+
+IRs:
+TMP_169(bool) = msg.value == _balance
+TMP_170(None) = SOLIDITY_CALL require(bool,string)(TMP_169,state balance does not match sent value)"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+Channels[_lcID].ethBalances[3] += msg.value
+
+IRs:
+REF_189(LedgerChannel.Channel) -> Channels[_lcID]
+REF_190(uint256[4]) -> REF_189.ethBalances
+REF_191(uint256) -> REF_190[3]
+REF_191(-> Channels) = REF_191 + msg.value"];
+16->17;
+17[label="Node Type: END_IF 17
+"];
+17->18;
+18[label="Node Type: END_IF 18
+"];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+DidLCDeposit(_lcID,recipient,_balance,isToken)
+
+IRs:
+Emit DidLCDeposit(_lcID,recipient,_balance,isToken)"];
+}
+// Function: 44865.sol-LedgerChannel-getChannel(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+channel = Channels[id]
+
+IRs:
+REF_601(LedgerChannel.Channel) -> Channels[id]
+channel(LedgerChannel.Channel) := REF_601(LedgerChannel.Channel)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+(channel.partyAddresses,channel.ethBalances,channel.erc20Balances,channel.initialDeposit,channel.sequence,channel.confirmTime,channel.VCrootHash,channel.LCopenTimeout,channel.updateLCtimeout,channel.isOpen,channel.isUpdateLCSettling,channel.numOpenVC)
+
+IRs:
+REF_602(address[2]) -> channel.partyAddresses
+REF_603(uint256[4]) -> channel.ethBalances
+REF_604(uint256[4]) -> channel.erc20Balances
+REF_605(uint256[2]) -> channel.initialDeposit
+REF_606(uint256) -> channel.sequence
+REF_607(uint256) -> channel.confirmTime
+REF_608(bytes32) -> channel.VCrootHash
+REF_609(uint256) -> channel.LCopenTimeout
+REF_610(uint256) -> channel.updateLCtimeout
+REF_611(bool) -> channel.isOpen
+REF_612(bool) -> channel.isUpdateLCSettling
+REF_613(uint256) -> channel.numOpenVC
+RETURN REF_602,REF_603,REF_604,REF_605,REF_606,REF_607,REF_608,REF_609,REF_610,REF_611,REF_612,REF_613"];
+}
+// Function: 44865.sol-LedgerChannel-getVirtualChannel(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+virtualChannel = virtualChannels[id]
+
+IRs:
+REF_614(LedgerChannel.VirtualChannel) -> virtualChannels[id]
+virtualChannel(LedgerChannel.VirtualChannel) := REF_614(LedgerChannel.VirtualChannel)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+(virtualChannel.isClose,virtualChannel.isInSettlementState,virtualChannel.sequence,virtualChannel.challenger,virtualChannel.updateVCtimeout,virtualChannel.partyA,virtualChannel.partyB,virtualChannel.partyI,virtualChannel.ethBalances,virtualChannel.erc20Balances,virtualChannel.bond)
+
+IRs:
+REF_615(bool) -> virtualChannel.isClose
+REF_616(bool) -> virtualChannel.isInSettlementState
+REF_617(uint256) -> virtualChannel.sequence
+REF_618(address) -> virtualChannel.challenger
+REF_619(uint256) -> virtualChannel.updateVCtimeout
+REF_620(address) -> virtualChannel.partyA
+REF_621(address) -> virtualChannel.partyB
+REF_622(address) -> virtualChannel.partyI
+REF_623(uint256[2]) -> virtualChannel.ethBalances
+REF_624(uint256[2]) -> virtualChannel.erc20Balances
+REF_625(uint256[2]) -> virtualChannel.bond
+RETURN REF_615,REF_616,REF_617,REF_618,REF_619,REF_620,REF_621,REF_622,REF_623,REF_624,REF_625"];
+}
+// Function: 44865.sol-LedgerChannel-initVCstate(bytes32,bytes32,bytes,address,address,uint256[2],uint256[4],string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(Channels[_lcID].isOpen,LC is closed.)
+
+IRs:
+REF_331(LedgerChannel.Channel) -> Channels[_lcID]
+REF_332(bool) -> REF_331.isOpen
+TMP_232(None) = SOLIDITY_CALL require(bool,string)(REF_332,LC is closed.)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(! virtualChannels[_vcID].isClose,VC is closed.)
+
+IRs:
+REF_333(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_334(bool) -> REF_333.isClose
+TMP_233 = UnaryType.BANG REF_334 
+TMP_234(None) = SOLIDITY_CALL require(bool,string)(TMP_233,VC is closed.)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool,string)(Channels[_lcID].updateLCtimeout < now,LC timeout not over.)
+
+IRs:
+REF_335(LedgerChannel.Channel) -> Channels[_lcID]
+REF_336(uint256) -> REF_335.updateLCtimeout
+TMP_235(bool) = REF_336 < now
+TMP_236(None) = SOLIDITY_CALL require(bool,string)(TMP_235,LC timeout not over.)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool)(virtualChannels[_vcID].updateVCtimeout == 0)
+
+IRs:
+REF_337(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_338(uint256) -> REF_337.updateVCtimeout
+TMP_237(bool) = REF_338 == 0
+TMP_238(None) = SOLIDITY_CALL require(bool)(TMP_237)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+_initState = keccak256()(abi.encodePacked(_vcID,uint256(0),_partyA,_partyB,_bond[0],_bond[1],_balances[0],_balances[1],_balances[2],_balances[3]))
+
+IRs:
+TMP_239 = CONVERT 0 to uint256
+REF_340(uint256) -> _bond[0]
+REF_341(uint256) -> _bond[1]
+REF_342(uint256) -> _balances[0]
+REF_343(uint256) -> _balances[1]
+REF_344(uint256) -> _balances[2]
+REF_345(uint256) -> _balances[3]
+TMP_240(bytes) = SOLIDITY_CALL abi.encodePacked()(_vcID,TMP_239,_partyA,_partyB,REF_340,REF_341,REF_342,REF_343,REF_344,REF_345)
+TMP_241(bytes32) = SOLIDITY_CALL keccak256()(TMP_240)
+_initState(bytes32) := TMP_241(bytes32)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+require(bool)(_partyA == ECTools.recoverSigner(_initState,sigA))
+
+IRs:
+TMP_242(address) = LIBRARY_CALL, dest:ECTools, function:ECTools.recoverSigner(bytes32,string), arguments:['_initState', 'sigA'] 
+TMP_243(bool) = _partyA == TMP_242
+TMP_244(None) = SOLIDITY_CALL require(bool)(TMP_243)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+require(bool)(_isContained(_initState,_proof,Channels[_lcID].VCrootHash) == true)
+
+IRs:
+REF_347(LedgerChannel.Channel) -> Channels[_lcID]
+REF_348(bytes32) -> REF_347.VCrootHash
+TMP_245(bool) = INTERNAL_CALL, LedgerChannel._isContained(bytes32,bytes,bytes32)(_initState,_proof,REF_348)
+TMP_246(bool) = TMP_245 == True
+TMP_247(None) = SOLIDITY_CALL require(bool)(TMP_246)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+virtualChannels[_vcID].partyA = _partyA
+
+IRs:
+REF_349(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_350(address) -> REF_349.partyA
+REF_350(address) (->virtualChannels) := _partyA(address)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+virtualChannels[_vcID].partyB = _partyB
+
+IRs:
+REF_351(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_352(address) -> REF_351.partyB
+REF_352(address) (->virtualChannels) := _partyB(address)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+virtualChannels[_vcID].sequence = uint256(0)
+
+IRs:
+REF_353(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_354(uint256) -> REF_353.sequence
+TMP_248 = CONVERT 0 to uint256
+REF_354(uint256) (->virtualChannels) := TMP_248(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+virtualChannels[_vcID].ethBalances[0] = _balances[0]
+
+IRs:
+REF_355(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_356(uint256[2]) -> REF_355.ethBalances
+REF_357(uint256) -> REF_356[0]
+REF_358(uint256) -> _balances[0]
+REF_357(uint256) (->virtualChannels) := REF_358(uint256)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+virtualChannels[_vcID].ethBalances[1] = _balances[1]
+
+IRs:
+REF_359(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_360(uint256[2]) -> REF_359.ethBalances
+REF_361(uint256) -> REF_360[1]
+REF_362(uint256) -> _balances[1]
+REF_361(uint256) (->virtualChannels) := REF_362(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+virtualChannels[_vcID].erc20Balances[0] = _balances[2]
+
+IRs:
+REF_363(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_364(uint256[2]) -> REF_363.erc20Balances
+REF_365(uint256) -> REF_364[0]
+REF_366(uint256) -> _balances[2]
+REF_365(uint256) (->virtualChannels) := REF_366(uint256)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+virtualChannels[_vcID].erc20Balances[1] = _balances[3]
+
+IRs:
+REF_367(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_368(uint256[2]) -> REF_367.erc20Balances
+REF_369(uint256) -> REF_368[1]
+REF_370(uint256) -> _balances[3]
+REF_369(uint256) (->virtualChannels) := REF_370(uint256)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+virtualChannels[_vcID].bond = _bond
+
+IRs:
+REF_371(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_372(uint256[2]) -> REF_371.bond
+REF_372(uint256[2]) (->virtualChannels) := _bond(uint256[2])"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+virtualChannels[_vcID].updateVCtimeout = now + Channels[_lcID].confirmTime
+
+IRs:
+REF_373(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_374(uint256) -> REF_373.updateVCtimeout
+REF_375(LedgerChannel.Channel) -> Channels[_lcID]
+REF_376(uint256) -> REF_375.confirmTime
+TMP_249(uint256) = now + REF_376
+REF_374(uint256) (->virtualChannels) := TMP_249(uint256)"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+virtualChannels[_vcID].isInSettlementState = true
+
+IRs:
+REF_377(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_378(bool) -> REF_377.isInSettlementState
+REF_378(bool) (->virtualChannels) := True(bool)"];
+17->18;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+DidVCInit(_lcID,_vcID,_proof,uint256(0),_partyA,_partyB,_balances[0],_balances[1])
+
+IRs:
+TMP_250 = CONVERT 0 to uint256
+REF_379(uint256) -> _balances[0]
+REF_380(uint256) -> _balances[1]
+Emit DidVCInit(_lcID,_vcID,_proof,TMP_250,_partyA,_partyB,REF_379,REF_380)"];
+}
+// Function: 44865.sol-LedgerChannel-joinChannel(bytes32,uint256[2])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(Channels[_lcID].isOpen == false)
+
+IRs:
+REF_129(LedgerChannel.Channel) -> Channels[_lcID]
+REF_130(bool) -> REF_129.isOpen
+TMP_143(bool) = REF_130 == False
+TMP_144(None) = SOLIDITY_CALL require(bool)(TMP_143)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(msg.sender == Channels[_lcID].partyAddresses[1])
+
+IRs:
+REF_131(LedgerChannel.Channel) -> Channels[_lcID]
+REF_132(address[2]) -> REF_131.partyAddresses
+REF_133(address) -> REF_132[1]
+TMP_145(bool) = msg.sender == REF_133
+TMP_146(None) = SOLIDITY_CALL require(bool)(TMP_145)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+_balances[0] != 0
+
+IRs:
+REF_134(uint256) -> _balances[0]
+TMP_147(bool) = REF_134 != 0
+CONDITION TMP_147"];
+3->4[label="True"];
+3->6[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool,string)(msg.value == _balances[0],state balance does not match sent value)
+
+IRs:
+REF_135(uint256) -> _balances[0]
+TMP_148(bool) = msg.value == REF_135
+TMP_149(None) = SOLIDITY_CALL require(bool,string)(TMP_148,state balance does not match sent value)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Channels[_lcID].ethBalances[1] = msg.value
+
+IRs:
+REF_136(LedgerChannel.Channel) -> Channels[_lcID]
+REF_137(uint256[4]) -> REF_136.ethBalances
+REF_138(uint256) -> REF_137[1]
+REF_138(uint256) (->Channels) := msg.value(uint256)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: IF 7
+
+EXPRESSION:
+_balances[1] != 0
+
+IRs:
+REF_139(uint256) -> _balances[1]
+TMP_150(bool) = REF_139 != 0
+CONDITION TMP_150"];
+7->8[label="True"];
+7->10[label="False"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+require(bool,string)(Channels[_lcID].token.transferFrom(msg.sender,this,_balances[1]),joinChannel: token transfer failure)
+
+IRs:
+REF_140(LedgerChannel.Channel) -> Channels[_lcID]
+REF_141(HumanStandardToken) -> REF_140.token
+REF_143(uint256) -> _balances[1]
+TMP_151(bool) = HIGH_LEVEL_CALL, dest:REF_141(HumanStandardToken), function:transferFrom, arguments:['msg.sender', 'this', 'REF_143']  
+TMP_152(None) = SOLIDITY_CALL require(bool,string)(TMP_151,joinChannel: token transfer failure)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+Channels[_lcID].erc20Balances[1] = _balances[1]
+
+IRs:
+REF_144(LedgerChannel.Channel) -> Channels[_lcID]
+REF_145(uint256[4]) -> REF_144.erc20Balances
+REF_146(uint256) -> REF_145[1]
+REF_147(uint256) -> _balances[1]
+REF_146(uint256) (->Channels) := REF_147(uint256)"];
+9->10;
+10[label="Node Type: END_IF 10
+"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+Channels[_lcID].initialDeposit[0] += _balances[0]
+
+IRs:
+REF_148(LedgerChannel.Channel) -> Channels[_lcID]
+REF_149(uint256[2]) -> REF_148.initialDeposit
+REF_150(uint256) -> REF_149[0]
+REF_151(uint256) -> _balances[0]
+REF_150(-> Channels) = REF_150 + REF_151"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+Channels[_lcID].initialDeposit[1] += _balances[1]
+
+IRs:
+REF_152(LedgerChannel.Channel) -> Channels[_lcID]
+REF_153(uint256[2]) -> REF_152.initialDeposit
+REF_154(uint256) -> REF_153[1]
+REF_155(uint256) -> _balances[1]
+REF_154(-> Channels) = REF_154 + REF_155"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+Channels[_lcID].isOpen = true
+
+IRs:
+REF_156(LedgerChannel.Channel) -> Channels[_lcID]
+REF_157(bool) -> REF_156.isOpen
+REF_157(bool) (->Channels) := True(bool)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+numChannels ++
+
+IRs:
+TMP_153(uint256) := numChannels(uint256)
+numChannels(uint256) = numChannels + 1"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+DidLCJoin(_lcID,_balances[0],_balances[1])
+
+IRs:
+REF_158(uint256) -> _balances[0]
+REF_159(uint256) -> _balances[1]
+Emit DidLCJoin(_lcID,REF_158,REF_159)"];
+}
+// Function: 44865.sol-LedgerChannel-settleVC(bytes32,bytes32,uint256,address,address,uint256[4],string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(Channels[_lcID].isOpen,LC is closed.)
+
+IRs:
+REF_381(LedgerChannel.Channel) -> Channels[_lcID]
+REF_382(bool) -> REF_381.isOpen
+TMP_252(None) = SOLIDITY_CALL require(bool,string)(REF_382,LC is closed.)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(! virtualChannels[_vcID].isClose,VC is closed.)
+
+IRs:
+REF_383(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_384(bool) -> REF_383.isClose
+TMP_253 = UnaryType.BANG REF_384 
+TMP_254(None) = SOLIDITY_CALL require(bool,string)(TMP_253,VC is closed.)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool,string)(virtualChannels[_vcID].sequence < updateSeq,VC sequence is higher than update sequence.)
+
+IRs:
+REF_385(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_386(uint256) -> REF_385.sequence
+TMP_255(bool) = REF_386 < updateSeq
+TMP_256(None) = SOLIDITY_CALL require(bool,string)(TMP_255,VC sequence is higher than update sequence.)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool,string)(virtualChannels[_vcID].ethBalances[1] < updateBal[1] && virtualChannels[_vcID].erc20Balances[1] < updateBal[3],State updates may only increase recipient balance.)
+
+IRs:
+REF_387(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_388(uint256[2]) -> REF_387.ethBalances
+REF_389(uint256) -> REF_388[1]
+REF_390(uint256) -> updateBal[1]
+TMP_257(bool) = REF_389 < REF_390
+REF_391(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_392(uint256[2]) -> REF_391.erc20Balances
+REF_393(uint256) -> REF_392[1]
+REF_394(uint256) -> updateBal[3]
+TMP_258(bool) = REF_393 < REF_394
+TMP_259(bool) = TMP_257 && TMP_258
+TMP_260(None) = SOLIDITY_CALL require(bool,string)(TMP_259,State updates may only increase recipient balance.)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool,string)(virtualChannels[_vcID].bond[0] == updateBal[0] + updateBal[1] && virtualChannels[_vcID].bond[1] == updateBal[2] + updateBal[3],Incorrect balances for bonded amount)
+
+IRs:
+REF_395(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_396(uint256[2]) -> REF_395.bond
+REF_397(uint256) -> REF_396[0]
+REF_398(uint256) -> updateBal[0]
+REF_399(uint256) -> updateBal[1]
+TMP_261(uint256) = REF_398 + REF_399
+TMP_262(bool) = REF_397 == TMP_261
+REF_400(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_401(uint256[2]) -> REF_400.bond
+REF_402(uint256) -> REF_401[1]
+REF_403(uint256) -> updateBal[2]
+REF_404(uint256) -> updateBal[3]
+TMP_263(uint256) = REF_403 + REF_404
+TMP_264(bool) = REF_402 == TMP_263
+TMP_265(bool) = TMP_262 && TMP_264
+TMP_266(None) = SOLIDITY_CALL require(bool,string)(TMP_265,Incorrect balances for bonded amount)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+require(bool)(Channels[_lcID].updateLCtimeout < now)
+
+IRs:
+REF_405(LedgerChannel.Channel) -> Channels[_lcID]
+REF_406(uint256) -> REF_405.updateLCtimeout
+TMP_267(bool) = REF_406 < now
+TMP_268(None) = SOLIDITY_CALL require(bool)(TMP_267)"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+_updateState = keccak256()(abi.encodePacked(_vcID,updateSeq,_partyA,_partyB,virtualChannels[_vcID].bond[0],virtualChannels[_vcID].bond[1],updateBal[0],updateBal[1],updateBal[2],updateBal[3]))
+
+IRs:
+REF_408(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_409(uint256[2]) -> REF_408.bond
+REF_410(uint256) -> REF_409[0]
+REF_411(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_412(uint256[2]) -> REF_411.bond
+REF_413(uint256) -> REF_412[1]
+REF_414(uint256) -> updateBal[0]
+REF_415(uint256) -> updateBal[1]
+REF_416(uint256) -> updateBal[2]
+REF_417(uint256) -> updateBal[3]
+TMP_269(bytes) = SOLIDITY_CALL abi.encodePacked()(_vcID,updateSeq,_partyA,_partyB,REF_410,REF_413,REF_414,REF_415,REF_416,REF_417)
+TMP_270(bytes32) = SOLIDITY_CALL keccak256()(TMP_269)
+_updateState(bytes32) := TMP_270(bytes32)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+require(bool)(virtualChannels[_vcID].partyA == ECTools.recoverSigner(_updateState,sigA))
+
+IRs:
+REF_418(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_419(address) -> REF_418.partyA
+TMP_271(address) = LIBRARY_CALL, dest:ECTools, function:ECTools.recoverSigner(bytes32,string), arguments:['_updateState', 'sigA'] 
+TMP_272(bool) = REF_419 == TMP_271
+TMP_273(None) = SOLIDITY_CALL require(bool)(TMP_272)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+virtualChannels[_vcID].challenger = msg.sender
+
+IRs:
+REF_421(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_422(address) -> REF_421.challenger
+REF_422(address) (->virtualChannels) := msg.sender(address)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+virtualChannels[_vcID].sequence = updateSeq
+
+IRs:
+REF_423(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_424(uint256) -> REF_423.sequence
+REF_424(uint256) (->virtualChannels) := updateSeq(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+virtualChannels[_vcID].ethBalances[0] = updateBal[0]
+
+IRs:
+REF_425(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_426(uint256[2]) -> REF_425.ethBalances
+REF_427(uint256) -> REF_426[0]
+REF_428(uint256) -> updateBal[0]
+REF_427(uint256) (->virtualChannels) := REF_428(uint256)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+virtualChannels[_vcID].ethBalances[1] = updateBal[1]
+
+IRs:
+REF_429(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_430(uint256[2]) -> REF_429.ethBalances
+REF_431(uint256) -> REF_430[1]
+REF_432(uint256) -> updateBal[1]
+REF_431(uint256) (->virtualChannels) := REF_432(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+virtualChannels[_vcID].erc20Balances[0] = updateBal[2]
+
+IRs:
+REF_433(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_434(uint256[2]) -> REF_433.erc20Balances
+REF_435(uint256) -> REF_434[0]
+REF_436(uint256) -> updateBal[2]
+REF_435(uint256) (->virtualChannels) := REF_436(uint256)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+virtualChannels[_vcID].erc20Balances[1] = updateBal[3]
+
+IRs:
+REF_437(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_438(uint256[2]) -> REF_437.erc20Balances
+REF_439(uint256) -> REF_438[1]
+REF_440(uint256) -> updateBal[3]
+REF_439(uint256) (->virtualChannels) := REF_440(uint256)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+virtualChannels[_vcID].updateVCtimeout = now + Channels[_lcID].confirmTime
+
+IRs:
+REF_441(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_442(uint256) -> REF_441.updateVCtimeout
+REF_443(LedgerChannel.Channel) -> Channels[_lcID]
+REF_444(uint256) -> REF_443.confirmTime
+TMP_274(uint256) = now + REF_444
+REF_442(uint256) (->virtualChannels) := TMP_274(uint256)"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+DidVCSettle(_lcID,_vcID,updateSeq,updateBal[0],updateBal[1],msg.sender,virtualChannels[_vcID].updateVCtimeout)
+
+IRs:
+REF_445(uint256) -> updateBal[0]
+REF_446(uint256) -> updateBal[1]
+REF_447(LedgerChannel.VirtualChannel) -> virtualChannels[_vcID]
+REF_448(uint256) -> REF_447.updateVCtimeout
+Emit DidVCSettle(_lcID,_vcID,updateSeq,REF_445,REF_446,msg.sender,REF_448)"];
+}
+// Function: 44865.sol-LedgerChannel-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+NAME = Ledger Channel
+
+IRs:
+NAME(string) := Ledger Channel(string)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+VERSION = 0.0.1
+
+IRs:
+VERSION(string) := 0.0.1(string)"];
+}
+// Function: 44865.sol-LedgerChannel-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+numChannels = 0
+
+IRs:
+numChannels(uint256) := 0(uint256)"];
+}
+// Function: 44865.sol-LedgerChannel-updateLCstate(bytes32,uint256[6],bytes32,string,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+channel = Channels[_lcID]
+
+IRs:
+REF_269(LedgerChannel.Channel) -> Channels[_lcID]
+channel(LedgerChannel.Channel) := REF_269(LedgerChannel.Channel)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(channel.isOpen)
+
+IRs:
+REF_270(bool) -> channel.isOpen
+TMP_208(None) = SOLIDITY_CALL require(bool)(REF_270)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(channel.sequence < updateParams[0])
+
+IRs:
+REF_271(uint256) -> channel.sequence
+REF_272(uint256) -> updateParams[0]
+TMP_209(bool) = REF_271 < REF_272
+TMP_210(None) = SOLIDITY_CALL require(bool)(TMP_209)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool)(channel.ethBalances[0] + channel.ethBalances[1] >= updateParams[2] + updateParams[3])
+
+IRs:
+REF_273(uint256[4]) -> channel.ethBalances
+REF_274(uint256) -> REF_273[0]
+REF_275(uint256[4]) -> channel.ethBalances
+REF_276(uint256) -> REF_275[1]
+TMP_211(uint256) = REF_274 + REF_276
+REF_277(uint256) -> updateParams[2]
+REF_278(uint256) -> updateParams[3]
+TMP_212(uint256) = REF_277 + REF_278
+TMP_213(bool) = TMP_211 >= TMP_212
+TMP_214(None) = SOLIDITY_CALL require(bool)(TMP_213)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool)(channel.erc20Balances[0] + channel.erc20Balances[1] >= updateParams[4] + updateParams[5])
+
+IRs:
+REF_279(uint256[4]) -> channel.erc20Balances
+REF_280(uint256) -> REF_279[0]
+REF_281(uint256[4]) -> channel.erc20Balances
+REF_282(uint256) -> REF_281[1]
+TMP_215(uint256) = REF_280 + REF_282
+REF_283(uint256) -> updateParams[4]
+REF_284(uint256) -> updateParams[5]
+TMP_216(uint256) = REF_283 + REF_284
+TMP_217(bool) = TMP_215 >= TMP_216
+TMP_218(None) = SOLIDITY_CALL require(bool)(TMP_217)"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+channel.isUpdateLCSettling == true
+
+IRs:
+REF_285(bool) -> channel.isUpdateLCSettling
+TMP_219(bool) = REF_285 == True
+CONDITION TMP_219"];
+6->7[label="True"];
+6->8[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+require(bool)(channel.updateLCtimeout > now)
+
+IRs:
+REF_286(uint256) -> channel.updateLCtimeout
+TMP_220(bool) = REF_286 > now
+TMP_221(None) = SOLIDITY_CALL require(bool)(TMP_220)"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+_state = keccak256()(abi.encodePacked(_lcID,false,updateParams[0],updateParams[1],_VCroot,channel.partyAddresses[0],channel.partyAddresses[1],updateParams[2],updateParams[3],updateParams[4],updateParams[5]))
+
+IRs:
+REF_288(uint256) -> updateParams[0]
+REF_289(uint256) -> updateParams[1]
+REF_290(address[2]) -> channel.partyAddresses
+REF_291(address) -> REF_290[0]
+REF_292(address[2]) -> channel.partyAddresses
+REF_293(address) -> REF_292[1]
+REF_294(uint256) -> updateParams[2]
+REF_295(uint256) -> updateParams[3]
+REF_296(uint256) -> updateParams[4]
+REF_297(uint256) -> updateParams[5]
+TMP_222(bytes) = SOLIDITY_CALL abi.encodePacked()(_lcID,False,REF_288,REF_289,_VCroot,REF_291,REF_293,REF_294,REF_295,REF_296,REF_297)
+TMP_223(bytes32) = SOLIDITY_CALL keccak256()(TMP_222)
+_state(bytes32) := TMP_223(bytes32)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+require(bool)(channel.partyAddresses[0] == ECTools.recoverSigner(_state,_sigA))
+
+IRs:
+REF_298(address[2]) -> channel.partyAddresses
+REF_299(address) -> REF_298[0]
+TMP_224(address) = LIBRARY_CALL, dest:ECTools, function:ECTools.recoverSigner(bytes32,string), arguments:['_state', '_sigA'] 
+TMP_225(bool) = REF_299 == TMP_224
+TMP_226(None) = SOLIDITY_CALL require(bool)(TMP_225)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+require(bool)(channel.partyAddresses[1] == ECTools.recoverSigner(_state,_sigI))
+
+IRs:
+REF_301(address[2]) -> channel.partyAddresses
+REF_302(address) -> REF_301[1]
+TMP_227(address) = LIBRARY_CALL, dest:ECTools, function:ECTools.recoverSigner(bytes32,string), arguments:['_state', '_sigI'] 
+TMP_228(bool) = REF_302 == TMP_227
+TMP_229(None) = SOLIDITY_CALL require(bool)(TMP_228)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+channel.sequence = updateParams[0]
+
+IRs:
+REF_304(uint256) -> channel.sequence
+REF_305(uint256) -> updateParams[0]
+REF_304(uint256) (->channel) := REF_305(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+channel.numOpenVC = updateParams[1]
+
+IRs:
+REF_306(uint256) -> channel.numOpenVC
+REF_307(uint256) -> updateParams[1]
+REF_306(uint256) (->channel) := REF_307(uint256)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+channel.ethBalances[0] = updateParams[2]
+
+IRs:
+REF_308(uint256[4]) -> channel.ethBalances
+REF_309(uint256) -> REF_308[0]
+REF_310(uint256) -> updateParams[2]
+REF_309(uint256) (->channel) := REF_310(uint256)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+channel.ethBalances[1] = updateParams[3]
+
+IRs:
+REF_311(uint256[4]) -> channel.ethBalances
+REF_312(uint256) -> REF_311[1]
+REF_313(uint256) -> updateParams[3]
+REF_312(uint256) (->channel) := REF_313(uint256)"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+channel.erc20Balances[0] = updateParams[4]
+
+IRs:
+REF_314(uint256[4]) -> channel.erc20Balances
+REF_315(uint256) -> REF_314[0]
+REF_316(uint256) -> updateParams[4]
+REF_315(uint256) (->channel) := REF_316(uint256)"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+channel.erc20Balances[1] = updateParams[5]
+
+IRs:
+REF_317(uint256[4]) -> channel.erc20Balances
+REF_318(uint256) -> REF_317[1]
+REF_319(uint256) -> updateParams[5]
+REF_318(uint256) (->channel) := REF_319(uint256)"];
+17->18;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+channel.VCrootHash = _VCroot
+
+IRs:
+REF_320(bytes32) -> channel.VCrootHash
+REF_320(bytes32) (->channel) := _VCroot(bytes32)"];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+channel.isUpdateLCSettling = true
+
+IRs:
+REF_321(bool) -> channel.isUpdateLCSettling
+REF_321(bool) (->channel) := True(bool)"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+channel.updateLCtimeout = now + channel.confirmTime
+
+IRs:
+REF_322(uint256) -> channel.updateLCtimeout
+REF_323(uint256) -> channel.confirmTime
+TMP_230(uint256) = now + REF_323
+REF_322(uint256) (->channel) := TMP_230(uint256)"];
+20->21;
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+DidLCUpdateState(_lcID,updateParams[0],updateParams[1],updateParams[2],updateParams[3],updateParams[4],updateParams[5],_VCroot,channel.updateLCtimeout)
+
+IRs:
+REF_324(uint256) -> updateParams[0]
+REF_325(uint256) -> updateParams[1]
+REF_326(uint256) -> updateParams[2]
+REF_327(uint256) -> updateParams[3]
+REF_328(uint256) -> updateParams[4]
+REF_329(uint256) -> updateParams[5]
+REF_330(uint256) -> channel.updateLCtimeout
+Emit DidLCUpdateState(_lcID,REF_324,REF_325,REF_326,REF_327,REF_328,REF_329,_VCroot,REF_330)"];
+}
+// Function: 44865.sol-StandardToken-allowance(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+allowed[_owner][_spender]
+
+IRs:
+REF_33(mapping(address => uint256)) -> allowed[_owner]
+REF_34(uint256) -> REF_33[_spender]
+RETURN REF_34"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+remaining
+
+IRs:
+RETURN remaining"];
+}
+// Function: 44865.sol-StandardToken-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowed[msg.sender][_spender] = _value
+
+IRs:
+REF_31(mapping(address => uint256)) -> allowed[msg.sender]
+REF_32(uint256) -> REF_31[_spender]
+REF_32(uint256) (->allowed) := _value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,_value)
+
+IRs:
+Emit Approval(msg.sender,_spender,_value)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 44865.sol-StandardToken-balanceOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+balances[_owner]
+
+IRs:
+REF_30(uint256) -> balances[_owner]
+RETURN REF_30"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+balance
+
+IRs:
+RETURN balance"];
+}
+// Function: 44865.sol-StandardToken-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(balances[msg.sender] >= _value)
+
+IRs:
+REF_20(uint256) -> balances[msg.sender]
+TMP_89(bool) = REF_20 >= _value
+TMP_90(None) = SOLIDITY_CALL require(bool)(TMP_89)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balances[msg.sender] -= _value
+
+IRs:
+REF_21(uint256) -> balances[msg.sender]
+REF_21(-> balances) = REF_21 - _value"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balances[_to] += _value
+
+IRs:
+REF_22(uint256) -> balances[_to]
+REF_22(-> balances) = REF_22 + _value"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Transfer(msg.sender,_to,_value)
+
+IRs:
+Emit Transfer(msg.sender,_to,_value)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 44865.sol-StandardToken-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(balances[_from] >= _value && allowed[_from][msg.sender] >= _value)
+
+IRs:
+REF_23(uint256) -> balances[_from]
+TMP_92(bool) = REF_23 >= _value
+REF_24(mapping(address => uint256)) -> allowed[_from]
+REF_25(uint256) -> REF_24[msg.sender]
+TMP_93(bool) = REF_25 >= _value
+TMP_94(bool) = TMP_92 && TMP_93
+TMP_95(None) = SOLIDITY_CALL require(bool)(TMP_94)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balances[_to] += _value
+
+IRs:
+REF_26(uint256) -> balances[_to]
+REF_26(-> balances) = REF_26 + _value"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balances[_from] -= _value
+
+IRs:
+REF_27(uint256) -> balances[_from]
+REF_27(-> balances) = REF_27 - _value"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+allowed[_from][msg.sender] -= _value
+
+IRs:
+REF_28(mapping(address => uint256)) -> allowed[_from]
+REF_29(uint256) -> REF_28[msg.sender]
+REF_29(-> allowed) = REF_29 - _value"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Transfer(_from,_to,_value)
+
+IRs:
+Emit Transfer(_from,_to,_value)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 44865.sol-Token-allowance(address,address)
+digraph{
+}
+// Function: 44865.sol-Token-approve(address,uint256)
+digraph{
+}
+// Function: 44865.sol-Token-balanceOf(address)
+digraph{
+}
+// Function: 44865.sol-Token-transfer(address,uint256)
+digraph{
+}
+// Function: 44865.sol-Token-transferFrom(address,address,uint256)
+digraph{
+}
+}

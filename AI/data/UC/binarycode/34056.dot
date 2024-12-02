@@ -1,0 +1,1634 @@
+digraph G {
+// Function: 34056.sol-MultiSigWallet-MultiSigWallet(address[],uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->12;
+1[label="Node Type: BEGIN_LOOP 1
+"];
+1->4;
+2[label="Node Type: END_LOOP 2
+"];
+2->10;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+3->1;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+i < _owners.length
+
+IRs:
+REF_0 -> LENGTH _owners
+TMP_2(bool) = i < REF_0
+CONDITION TMP_2"];
+4->5[label="True"];
+4->2[label="False"];
+5[label="Node Type: IF 5
+
+EXPRESSION:
+isOwner[_owners[i]] || _owners[i] == 0
+
+IRs:
+REF_1(address) -> _owners[i]
+REF_2(bool) -> isOwner[REF_1]
+REF_3(address) -> _owners[i]
+TMP_3(bool) = REF_3 == 0
+TMP_4(bool) = REF_2 || TMP_3
+CONDITION TMP_4"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_5(None) = SOLIDITY_CALL revert()()"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+isOwner[_owners[i]] = true
+
+IRs:
+REF_4(address) -> _owners[i]
+REF_5(bool) -> isOwner[REF_4]
+REF_5(bool) (->isOwner) := True(bool)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_6(uint256) := i(uint256)
+i(uint256) = i + 1"];
+9->4;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+owners = _owners
+
+IRs:
+owners(address[]) := _owners(address[])"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+required = _required
+
+IRs:
+required(uint256) := _required(uint256)"];
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+validRequirement(_owners.length,_required)
+
+IRs:
+REF_6 -> LENGTH _owners
+MODIFIER_CALL, MultiSigWallet.validRequirement(uint256,uint256)(REF_6,_required)"];
+12->3;
+}
+// Function: 34056.sol-MultiSigWallet-addOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+isOwner[owner] = true
+
+IRs:
+REF_7(bool) -> isOwner[owner]
+REF_7(bool) (->isOwner) := True(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owners.push(owner)
+
+IRs:
+REF_9 -> LENGTH owners
+TMP_9(uint256) := REF_9(uint256)
+TMP_10(uint256) = TMP_9 + 1
+REF_9(uint256) (->owners) := TMP_10(uint256)
+REF_10(address) -> owners[TMP_9]
+REF_10(address) (->owners) := owner(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+OwnerAddition(owner)
+
+IRs:
+Emit OwnerAddition(owner)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyWallet()
+
+IRs:
+MODIFIER_CALL, MultiSigWallet.onlyWallet()()"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+ownerDoesNotExist(owner)
+
+IRs:
+MODIFIER_CALL, MultiSigWallet.ownerDoesNotExist(address)(owner)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+notNull(owner)
+
+IRs:
+MODIFIER_CALL, MultiSigWallet.notNull(address)(owner)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+validRequirement(owners.length + 1,required)
+
+IRs:
+REF_11 -> LENGTH owners
+TMP_15(uint256) = REF_11 + 1
+MODIFIER_CALL, MultiSigWallet.validRequirement(uint256,uint256)(TMP_15,required)"];
+7->1;
+}
+// Function: 34056.sol-MultiSigWallet-addTransaction(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+transactionId = transactionCount
+
+IRs:
+transactionId(uint256) := transactionCount(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+transactions[transactionId] = Transaction({destination:destination,value:value,data:data,executed:false})
+
+IRs:
+REF_43(MultiSigWallet.Transaction) -> transactions[transactionId]
+TMP_58(MultiSigWallet.Transaction) = new Transaction(destination,value,data,False)
+REF_43(MultiSigWallet.Transaction) (->transactions) := TMP_58(MultiSigWallet.Transaction)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+transactionCount += 1
+
+IRs:
+transactionCount(uint256) = transactionCount + 1"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Submission(transactionId)
+
+IRs:
+Emit Submission(transactionId)"];
+4->6;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+notNull(destination)
+
+IRs:
+MODIFIER_CALL, MultiSigWallet.notNull(address)(destination)"];
+5->1;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+transactionId
+
+IRs:
+RETURN transactionId"];
+}
+// Function: 34056.sol-MultiSigWallet-changeRequirement(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+required = _required
+
+IRs:
+required(uint256) := _required(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+RequirementChange(_required)
+
+IRs:
+Emit RequirementChange(_required)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyWallet()
+
+IRs:
+MODIFIER_CALL, MultiSigWallet.onlyWallet()()"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+validRequirement(owners.length,_required)
+
+IRs:
+REF_26 -> LENGTH owners
+MODIFIER_CALL, MultiSigWallet.validRequirement(uint256,uint256)(REF_26,_required)"];
+4->1;
+}
+// Function: 34056.sol-MultiSigWallet-confirmTransaction(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+confirmations[transactionId][msg.sender] = true
+
+IRs:
+REF_27(mapping(address => bool)) -> confirmations[transactionId]
+REF_28(bool) -> REF_27[msg.sender]
+REF_28(bool) (->confirmations) := True(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Confirmation(msg.sender,transactionId)
+
+IRs:
+Emit Confirmation(msg.sender,transactionId)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+executeTransaction(transactionId)
+
+IRs:
+INTERNAL_CALL, MultiSigWallet.executeTransaction(uint256)(transactionId)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+ownerExists(msg.sender)
+
+IRs:
+MODIFIER_CALL, MultiSigWallet.ownerExists(address)(msg.sender)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+transactionExists(transactionId)
+
+IRs:
+MODIFIER_CALL, MultiSigWallet.transactionExists(uint256)(transactionId)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+notConfirmed(transactionId,msg.sender)
+
+IRs:
+MODIFIER_CALL, MultiSigWallet.notConfirmed(uint256,address)(transactionId,msg.sender)"];
+6->1;
+}
+// Function: 34056.sol-MultiSigWallet-confirmed(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! confirmations[transactionId][owner]
+
+IRs:
+REF_72(mapping(address => bool)) -> confirmations[transactionId]
+REF_73(bool) -> REF_72[owner]
+TMP_99 = UnaryType.BANG REF_73 
+CONDITION TMP_99"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_100(None) = SOLIDITY_CALL revert()()"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 34056.sol-MultiSigWallet-executeTransaction(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->10;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+isConfirmed(transactionId)
+
+IRs:
+TMP_49(bool) = INTERNAL_CALL, MultiSigWallet.isConfirmed(uint256)(transactionId)
+CONDITION TMP_49"];
+1->2[label="True"];
+1->9[label="False"];
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+tx = transactions[transactionId]
+
+IRs:
+REF_31(MultiSigWallet.Transaction) -> transactions[transactionId]
+tx(MultiSigWallet.Transaction) := REF_31(MultiSigWallet.Transaction)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+tx.executed = true
+
+IRs:
+REF_32(bool) -> tx.executed
+REF_32(bool) (->tx) := True(bool)"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+tx.destination.call.value(tx.value)(tx.data)
+
+IRs:
+REF_33(address) -> tx.destination
+REF_36(uint256) -> tx.value
+REF_37(bytes) -> tx.data
+TMP_51(bool) = LOW_LEVEL_CALL, dest:REF_33, function:call, arguments:['REF_37'] value:REF_36 
+CONDITION TMP_51"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Execution(transactionId)
+
+IRs:
+Emit Execution(transactionId)"];
+5->8;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+ExecutionFailure(transactionId)
+
+IRs:
+Emit ExecutionFailure(transactionId)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+tx.executed = false
+
+IRs:
+REF_38(bool) -> tx.executed
+REF_38(bool) (->tx) := False(bool)"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: END_IF 9
+"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+notExecuted(transactionId)
+
+IRs:
+MODIFIER_CALL, MultiSigWallet.notExecuted(uint256)(transactionId)"];
+10->1;
+}
+// Function: 34056.sol-MultiSigWallet-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.value > 0
+
+IRs:
+TMP_0(bool) = msg.value > 0
+CONDITION TMP_0"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Deposit(msg.sender,msg.value)
+
+IRs:
+Emit Deposit(msg.sender,msg.value)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 34056.sol-MultiSigWallet-getConfirmationCount(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: BEGIN_LOOP 1
+"];
+1->4;
+2[label="Node Type: END_LOOP 2
+"];
+2->9;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+3->1;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+i < owners.length
+
+IRs:
+REF_44 -> LENGTH owners
+TMP_61(bool) = i < REF_44
+CONDITION TMP_61"];
+4->5[label="True"];
+4->2[label="False"];
+5[label="Node Type: IF 5
+
+EXPRESSION:
+confirmations[transactionId][owners[i]]
+
+IRs:
+REF_45(mapping(address => bool)) -> confirmations[transactionId]
+REF_46(address) -> owners[i]
+REF_47(bool) -> REF_45[REF_46]
+CONDITION REF_47"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+count += 1
+
+IRs:
+count(uint256) = count + 1"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_62(uint256) := i(uint256)
+i(uint256) = i + 1"];
+8->4;
+9[label="Node Type: RETURN 9
+
+EXPRESSION:
+count
+
+IRs:
+RETURN count"];
+}
+// Function: 34056.sol-MultiSigWallet-getConfirmations(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+confirmationsTemp = new address[](owners.length)
+
+IRs:
+REF_52 -> LENGTH owners
+TMP_70(address[])  = new address[](REF_52)
+confirmationsTemp(address[]) = ['TMP_70(address[])']"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+count = 0
+
+IRs:
+count(uint256) := 0(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+"];
+3->6;
+4[label="Node Type: BEGIN_LOOP 4
+"];
+4->7;
+5[label="Node Type: END_LOOP 5
+"];
+5->13;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+6->4;
+7[label="Node Type: IF_LOOP 7
+
+EXPRESSION:
+i < owners.length
+
+IRs:
+REF_53 -> LENGTH owners
+TMP_71(bool) = i < REF_53
+CONDITION TMP_71"];
+7->8[label="True"];
+7->5[label="False"];
+8[label="Node Type: IF 8
+
+EXPRESSION:
+confirmations[transactionId][owners[i]]
+
+IRs:
+REF_54(mapping(address => bool)) -> confirmations[transactionId]
+REF_55(address) -> owners[i]
+REF_56(bool) -> REF_54[REF_55]
+CONDITION REF_56"];
+8->9[label="True"];
+8->11[label="False"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+confirmationsTemp[count] = owners[i]
+
+IRs:
+REF_57(address) -> confirmationsTemp[count]
+REF_58(address) -> owners[i]
+REF_57(address) (->confirmationsTemp) := REF_58(address)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+count += 1
+
+IRs:
+count(uint256) = count + 1"];
+10->11;
+11[label="Node Type: END_IF 11
+"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_72(uint256) := i(uint256)
+i(uint256) = i + 1"];
+12->7;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+_confirmations = new address[](count)
+
+IRs:
+TMP_74(address[])  = new address[](count)
+_confirmations(address[]) = ['TMP_74(address[])']"];
+13->16;
+14[label="Node Type: BEGIN_LOOP 14
+"];
+14->17;
+15[label="Node Type: END_LOOP 15
+"];
+15->20;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+16->14;
+17[label="Node Type: IF_LOOP 17
+
+EXPRESSION:
+i < count
+
+IRs:
+TMP_75(bool) = i < count
+CONDITION TMP_75"];
+17->18[label="True"];
+17->15[label="False"];
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+_confirmations[i] = confirmationsTemp[i]
+
+IRs:
+REF_59(address) -> _confirmations[i]
+REF_60(address) -> confirmationsTemp[i]
+REF_59(address) (->_confirmations) := REF_60(address)"];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_76(uint256) := i(uint256)
+i(uint256) = i + 1"];
+19->17;
+20[label="Node Type: RETURN 20
+
+EXPRESSION:
+_confirmations
+
+IRs:
+RETURN _confirmations"];
+}
+// Function: 34056.sol-MultiSigWallet-getOwners()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+owners
+
+IRs:
+RETURN owners"];
+}
+// Function: 34056.sol-MultiSigWallet-getTransactionCount(bool,bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: BEGIN_LOOP 1
+"];
+1->4;
+2[label="Node Type: END_LOOP 2
+"];
+2->9;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+3->1;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+i < transactionCount
+
+IRs:
+TMP_63(bool) = i < transactionCount
+CONDITION TMP_63"];
+4->5[label="True"];
+4->2[label="False"];
+5[label="Node Type: IF 5
+
+EXPRESSION:
+pending && ! transactions[i].executed || executed && transactions[i].executed
+
+IRs:
+REF_48(MultiSigWallet.Transaction) -> transactions[i]
+REF_49(bool) -> REF_48.executed
+TMP_64 = UnaryType.BANG REF_49 
+TMP_65(bool) = pending && TMP_64
+REF_50(MultiSigWallet.Transaction) -> transactions[i]
+REF_51(bool) -> REF_50.executed
+TMP_66(bool) = executed && REF_51
+TMP_67(bool) = TMP_65 || TMP_66
+CONDITION TMP_67"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+count += 1
+
+IRs:
+count(uint256) = count + 1"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_68(uint256) := i(uint256)
+i(uint256) = i + 1"];
+8->4;
+9[label="Node Type: RETURN 9
+
+EXPRESSION:
+count
+
+IRs:
+RETURN count"];
+}
+// Function: 34056.sol-MultiSigWallet-getTransactionIds(uint256,uint256,bool,bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+transactionIdsTemp = new uint256[](transactionCount)
+
+IRs:
+TMP_78(uint256[])  = new uint256[](transactionCount)
+transactionIdsTemp(uint256[]) = ['TMP_78(uint256[])']"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+count = 0
+
+IRs:
+count(uint256) := 0(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+"];
+3->6;
+4[label="Node Type: BEGIN_LOOP 4
+"];
+4->7;
+5[label="Node Type: END_LOOP 5
+"];
+5->13;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+6->4;
+7[label="Node Type: IF_LOOP 7
+
+EXPRESSION:
+i < transactionCount
+
+IRs:
+TMP_79(bool) = i < transactionCount
+CONDITION TMP_79"];
+7->8[label="True"];
+7->5[label="False"];
+8[label="Node Type: IF 8
+
+EXPRESSION:
+pending && ! transactions[i].executed || executed && transactions[i].executed
+
+IRs:
+REF_61(MultiSigWallet.Transaction) -> transactions[i]
+REF_62(bool) -> REF_61.executed
+TMP_80 = UnaryType.BANG REF_62 
+TMP_81(bool) = pending && TMP_80
+REF_63(MultiSigWallet.Transaction) -> transactions[i]
+REF_64(bool) -> REF_63.executed
+TMP_82(bool) = executed && REF_64
+TMP_83(bool) = TMP_81 || TMP_82
+CONDITION TMP_83"];
+8->9[label="True"];
+8->11[label="False"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+transactionIdsTemp[count] = i
+
+IRs:
+REF_65(uint256) -> transactionIdsTemp[count]
+REF_65(uint256) (->transactionIdsTemp) := i(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+count += 1
+
+IRs:
+count(uint256) = count + 1"];
+10->11;
+11[label="Node Type: END_IF 11
+"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_84(uint256) := i(uint256)
+i(uint256) = i + 1"];
+12->7;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+_transactionIds = new uint256[](to - from)
+
+IRs:
+TMP_86(uint256) = to - from
+TMP_87(uint256[])  = new uint256[](TMP_86)
+_transactionIds(uint256[]) = ['TMP_87(uint256[])']"];
+13->16;
+14[label="Node Type: BEGIN_LOOP 14
+"];
+14->17;
+15[label="Node Type: END_LOOP 15
+"];
+15->20;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+i = from
+
+IRs:
+i(uint256) := from(uint256)"];
+16->14;
+17[label="Node Type: IF_LOOP 17
+
+EXPRESSION:
+i < to
+
+IRs:
+TMP_88(bool) = i < to
+CONDITION TMP_88"];
+17->18[label="True"];
+17->15[label="False"];
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+_transactionIds[i - from] = transactionIdsTemp[i]
+
+IRs:
+TMP_89(uint256) = i - from
+REF_66(uint256) -> _transactionIds[TMP_89]
+REF_67(uint256) -> transactionIdsTemp[i]
+REF_66(uint256) (->_transactionIds) := REF_67(uint256)"];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_90(uint256) := i(uint256)
+i(uint256) = i + 1"];
+19->17;
+20[label="Node Type: RETURN 20
+
+EXPRESSION:
+_transactionIds
+
+IRs:
+RETURN _transactionIds"];
+}
+// Function: 34056.sol-MultiSigWallet-isConfirmed(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+count = 0
+
+IRs:
+count(uint256) := 0(uint256)"];
+1->4;
+2[label="Node Type: BEGIN_LOOP 2
+"];
+2->5;
+3[label="Node Type: END_LOOP 3
+"];
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+4->2;
+5[label="Node Type: IF_LOOP 5
+
+EXPRESSION:
+i < owners.length
+
+IRs:
+REF_39 -> LENGTH owners
+TMP_55(bool) = i < REF_39
+CONDITION TMP_55"];
+5->6[label="True"];
+5->3[label="False"];
+6[label="Node Type: IF 6
+
+EXPRESSION:
+confirmations[transactionId][owners[i]]
+
+IRs:
+REF_40(mapping(address => bool)) -> confirmations[transactionId]
+REF_41(address) -> owners[i]
+REF_42(bool) -> REF_40[REF_41]
+CONDITION REF_42"];
+6->7[label="True"];
+6->8[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+count += 1
+
+IRs:
+count(uint256) = count + 1"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: IF 9
+
+EXPRESSION:
+count == required
+
+IRs:
+TMP_56(bool) = count == required
+CONDITION TMP_56"];
+9->10[label="True"];
+9->11[label="False"];
+10[label="Node Type: RETURN 10
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+11[label="Node Type: END_IF 11
+"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_57(uint256) := i(uint256)
+i(uint256) = i + 1"];
+12->5;
+}
+// Function: 34056.sol-MultiSigWallet-notConfirmed(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+confirmations[transactionId][owner]
+
+IRs:
+REF_74(mapping(address => bool)) -> confirmations[transactionId]
+REF_75(bool) -> REF_74[owner]
+CONDITION REF_75"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_101(None) = SOLIDITY_CALL revert()()"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 34056.sol-MultiSigWallet-notExecuted(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+transactions[transactionId].executed
+
+IRs:
+REF_76(MultiSigWallet.Transaction) -> transactions[transactionId]
+REF_77(bool) -> REF_76.executed
+CONDITION REF_77"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_102(None) = SOLIDITY_CALL revert()()"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 34056.sol-MultiSigWallet-notNull(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_address == 0
+
+IRs:
+TMP_103(bool) = _address == 0
+CONDITION TMP_103"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_104(None) = SOLIDITY_CALL revert()()"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 34056.sol-MultiSigWallet-notValidAddress(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_address == 0x0
+
+IRs:
+TMP_113(bool) = _address == 0
+CONDITION TMP_113"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_114(None) = SOLIDITY_CALL revert()()"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 34056.sol-MultiSigWallet-onlyWallet()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != address(this)
+
+IRs:
+TMP_91 = CONVERT this to address
+TMP_92(bool) = msg.sender != TMP_91
+CONDITION TMP_92"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_93(None) = SOLIDITY_CALL revert()()"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 34056.sol-MultiSigWallet-ownerDoesNotExist(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+isOwner[owner]
+
+IRs:
+REF_68(bool) -> isOwner[owner]
+CONDITION REF_68"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_94(None) = SOLIDITY_CALL revert()()"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 34056.sol-MultiSigWallet-ownerExists(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! isOwner[owner]
+
+IRs:
+REF_69(bool) -> isOwner[owner]
+TMP_95 = UnaryType.BANG REF_69 
+CONDITION TMP_95"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_96(None) = SOLIDITY_CALL revert()()"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 34056.sol-MultiSigWallet-removeOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->16;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+isOwner[owner] = false
+
+IRs:
+REF_12(bool) -> isOwner[owner]
+REF_12(bool) (->isOwner) := False(bool)"];
+1->4;
+2[label="Node Type: BEGIN_LOOP 2
+"];
+2->5;
+3[label="Node Type: END_LOOP 3
+"];
+3->11;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+4->2;
+5[label="Node Type: IF_LOOP 5
+
+EXPRESSION:
+i < owners.length - 1
+
+IRs:
+REF_13 -> LENGTH owners
+TMP_17(uint256) = REF_13 - 1
+TMP_18(bool) = i < TMP_17
+CONDITION TMP_18"];
+5->6[label="True"];
+5->3[label="False"];
+6[label="Node Type: IF 6
+
+EXPRESSION:
+owners[i] == owner
+
+IRs:
+REF_14(address) -> owners[i]
+TMP_19(bool) = REF_14 == owner
+CONDITION TMP_19"];
+6->7[label="True"];
+6->9[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+owners[i] = owners[owners.length - 1]
+
+IRs:
+REF_15(address) -> owners[i]
+REF_16 -> LENGTH owners
+TMP_20(uint256) = REF_16 - 1
+REF_17(address) -> owners[TMP_20]
+REF_15(address) (->owners) := REF_17(address)"];
+7->8;
+8[label="Node Type: BREAK 8
+"];
+8->3;
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_21(uint256) := i(uint256)
+i(uint256) = i + 1"];
+10->5;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+owners.length -= 1
+
+IRs:
+REF_18 -> LENGTH owners
+REF_18(-> owners) = REF_18 - 1"];
+11->12;
+12[label="Node Type: IF 12
+
+EXPRESSION:
+required > owners.length
+
+IRs:
+REF_19 -> LENGTH owners
+TMP_22(bool) = required > REF_19
+CONDITION TMP_22"];
+12->13[label="True"];
+12->14[label="False"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+changeRequirement(owners.length)
+
+IRs:
+REF_20 -> LENGTH owners
+INTERNAL_CALL, MultiSigWallet.changeRequirement(uint256)(REF_20)"];
+13->14;
+14[label="Node Type: END_IF 14
+"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+OwnerRemoval(owner)
+
+IRs:
+Emit OwnerRemoval(owner)"];
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+onlyWallet()
+
+IRs:
+MODIFIER_CALL, MultiSigWallet.onlyWallet()()"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+ownerExists(owner)
+
+IRs:
+MODIFIER_CALL, MultiSigWallet.ownerExists(address)(owner)"];
+17->1;
+}
+// Function: 34056.sol-MultiSigWallet-replaceOwner(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->14;
+1[label="Node Type: BEGIN_LOOP 1
+"];
+1->4;
+2[label="Node Type: END_LOOP 2
+"];
+2->10;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+3->1;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+i < owners.length
+
+IRs:
+REF_21 -> LENGTH owners
+TMP_27(bool) = i < REF_21
+CONDITION TMP_27"];
+4->5[label="True"];
+4->2[label="False"];
+5[label="Node Type: IF 5
+
+EXPRESSION:
+owners[i] == owner
+
+IRs:
+REF_22(address) -> owners[i]
+TMP_28(bool) = REF_22 == owner
+CONDITION TMP_28"];
+5->6[label="True"];
+5->8[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+owners[i] = newOwner
+
+IRs:
+REF_23(address) -> owners[i]
+REF_23(address) (->owners) := newOwner(address)"];
+6->7;
+7[label="Node Type: BREAK 7
+"];
+7->2;
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_29(uint256) := i(uint256)
+i(uint256) = i + 1"];
+9->4;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+isOwner[owner] = false
+
+IRs:
+REF_24(bool) -> isOwner[owner]
+REF_24(bool) (->isOwner) := False(bool)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+isOwner[newOwner] = true
+
+IRs:
+REF_25(bool) -> isOwner[newOwner]
+REF_25(bool) (->isOwner) := True(bool)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+OwnerRemoval(owner)
+
+IRs:
+Emit OwnerRemoval(owner)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+OwnerAddition(newOwner)
+
+IRs:
+Emit OwnerAddition(newOwner)"];
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+onlyWallet()
+
+IRs:
+MODIFIER_CALL, MultiSigWallet.onlyWallet()()"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+ownerExists(owner)
+
+IRs:
+MODIFIER_CALL, MultiSigWallet.ownerExists(address)(owner)"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+ownerDoesNotExist(newOwner)
+
+IRs:
+MODIFIER_CALL, MultiSigWallet.ownerDoesNotExist(address)(newOwner)"];
+16->3;
+}
+// Function: 34056.sol-MultiSigWallet-revokeConfirmation(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+confirmations[transactionId][msg.sender] = false
+
+IRs:
+REF_29(mapping(address => bool)) -> confirmations[transactionId]
+REF_30(bool) -> REF_29[msg.sender]
+REF_30(bool) (->confirmations) := False(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Revocation(msg.sender,transactionId)
+
+IRs:
+Emit Revocation(msg.sender,transactionId)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+ownerExists(msg.sender)
+
+IRs:
+MODIFIER_CALL, MultiSigWallet.ownerExists(address)(msg.sender)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+confirmed(transactionId,msg.sender)
+
+IRs:
+MODIFIER_CALL, MultiSigWallet.confirmed(uint256,address)(transactionId,msg.sender)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+notExecuted(transactionId)
+
+IRs:
+MODIFIER_CALL, MultiSigWallet.notExecuted(uint256)(transactionId)"];
+5->1;
+}
+// Function: 34056.sol-MultiSigWallet-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+MAX_OWNER_COUNT = 50
+
+IRs:
+MAX_OWNER_COUNT(uint256) := 50(uint256)"];
+}
+// Function: 34056.sol-MultiSigWallet-submitTransaction(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+transactionId = addTransaction(destination,value,data)
+
+IRs:
+TMP_38(uint256) = INTERNAL_CALL, MultiSigWallet.addTransaction(address,uint256,bytes)(destination,value,data)
+transactionId(uint256) := TMP_38(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+confirmTransaction(transactionId)
+
+IRs:
+INTERNAL_CALL, MultiSigWallet.confirmTransaction(uint256)(transactionId)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+transactionId
+
+IRs:
+RETURN transactionId"];
+}
+// Function: 34056.sol-MultiSigWallet-transactionExists(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+transactions[transactionId].destination == 0
+
+IRs:
+REF_70(MultiSigWallet.Transaction) -> transactions[transactionId]
+REF_71(address) -> REF_70.destination
+TMP_97(bool) = REF_71 == 0
+CONDITION TMP_97"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_98(None) = SOLIDITY_CALL revert()()"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 34056.sol-MultiSigWallet-validRequirement(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+ownerCount > MAX_OWNER_COUNT || _required > ownerCount || _required == 0 || ownerCount == 0
+
+IRs:
+TMP_105(bool) = ownerCount > MAX_OWNER_COUNT
+TMP_106(bool) = _required > ownerCount
+TMP_107(bool) = TMP_105 || TMP_106
+TMP_108(bool) = _required == 0
+TMP_109(bool) = TMP_107 || TMP_108
+TMP_110(bool) = ownerCount == 0
+TMP_111(bool) = TMP_109 || TMP_110
+CONDITION TMP_111"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_112(None) = SOLIDITY_CALL revert()()"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+}

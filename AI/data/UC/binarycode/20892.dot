@@ -1,0 +1,852 @@
+digraph G {
+// Function: 20892.sol-OrganizeFunds-OrganizeFunds()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 20892.sol-OrganizeFunds-addActivityAccount(address,uint256,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->12;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+activityCount >= MAX_ACCOUNTS
+
+IRs:
+TMP_7(bool) = activityCount >= MAX_ACCOUNTS
+CONDITION TMP_7"];
+1->2[label="True"];
+1->4[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+MessageEvent(err: max accounts)
+
+IRs:
+Emit MessageEvent(err: max accounts)"];
+2->3;
+3[label="Node Type: RETURN 3
+"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+activityAccounts[activityCount].addr = _addr
+
+IRs:
+REF_1(OrganizeFunds.ActivityAccount) -> activityAccounts[activityCount]
+REF_2(address) -> REF_1.addr
+REF_2(address) (->activityAccounts) := _addr(address)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+activityAccounts[activityCount].pctx10 = _pctx10
+
+IRs:
+REF_3(OrganizeFunds.ActivityAccount) -> activityAccounts[activityCount]
+REF_4(uint256) -> REF_3.pctx10
+REF_4(uint256) (->activityAccounts) := _pctx10(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+activityAccounts[activityCount].credited = 0
+
+IRs:
+REF_5(OrganizeFunds.ActivityAccount) -> activityAccounts[activityCount]
+REF_6(uint256) -> REF_5.credited
+REF_6(uint256) (->activityAccounts) := 0(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+activityAccounts[activityCount].balance = 0
+
+IRs:
+REF_7(OrganizeFunds.ActivityAccount) -> activityAccounts[activityCount]
+REF_8(uint256) -> REF_7.balance
+REF_8(uint256) (->activityAccounts) := 0(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+activityAccounts[activityCount].name = _name
+
+IRs:
+REF_9(OrganizeFunds.ActivityAccount) -> activityAccounts[activityCount]
+REF_10(string) -> REF_9.name
+REF_10(string) (->activityAccounts) := _name(string)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+++ activityCount
+
+IRs:
+activityCount(uint256) = activityCount + 1"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+MessageEvent(ok: acct added)
+
+IRs:
+Emit MessageEvent(ok: acct added)"];
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+ownerOnly()
+
+IRs:
+MODIFIER_CALL, OrganizeFunds.ownerOnly()()"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+unlockedOnly()
+
+IRs:
+MODIFIER_CALL, OrganizeFunds.unlockedOnly()()"];
+13->1;
+}
+// Function: 20892.sol-OrganizeFunds-distribute()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+this.balance < TENHUNDWEI
+
+IRs:
+REF_23(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_18(bool) = REF_23 < TENHUNDWEI
+CONDITION TMP_18"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+"];
+6->9;
+7[label="Node Type: BEGIN_LOOP 7
+"];
+7->10;
+8[label="Node Type: END_LOOP 8
+"];
+8->21;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+9->7;
+10[label="Node Type: IF_LOOP 10
+
+EXPRESSION:
+i < activityCount
+
+IRs:
+TMP_19(bool) = i < activityCount
+CONDITION TMP_19"];
+10->11[label="True"];
+10->8[label="False"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+pctx10 = activityAccounts[i].pctx10
+
+IRs:
+REF_24(OrganizeFunds.ActivityAccount) -> activityAccounts[i]
+REF_25(uint256) -> REF_24.pctx10
+pctx10(uint256) := REF_25(uint256)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+acctDist = totalFundsReceived * pctx10 / TENHUNDWEI
+
+IRs:
+TMP_20(uint256) = totalFundsReceived * pctx10
+TMP_21(uint256) = TMP_20 / TENHUNDWEI
+acctDist(uint256) := TMP_21(uint256)"];
+12->13;
+13[label="Node Type: IF 13
+
+EXPRESSION:
+activityAccounts[i].credited >= acctDist
+
+IRs:
+REF_26(OrganizeFunds.ActivityAccount) -> activityAccounts[i]
+REF_27(uint256) -> REF_26.credited
+TMP_22(bool) = REF_27 >= acctDist
+CONDITION TMP_22"];
+13->14[label="True"];
+13->15[label="False"];
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+acctDist = 0
+
+IRs:
+acctDist(uint256) := 0(uint256)"];
+14->16;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+acctDist = acctDist - activityAccounts[i].credited
+
+IRs:
+REF_28(OrganizeFunds.ActivityAccount) -> activityAccounts[i]
+REF_29(uint256) -> REF_28.credited
+TMP_23(uint256) = acctDist - REF_29
+acctDist(uint256) := TMP_23(uint256)"];
+15->16;
+16[label="Node Type: END_IF 16
+"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+activityAccounts[i].credited += acctDist
+
+IRs:
+REF_30(OrganizeFunds.ActivityAccount) -> activityAccounts[i]
+REF_31(uint256) -> REF_30.credited
+REF_31(-> activityAccounts) = REF_31 + acctDist"];
+17->18;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+activityAccounts[i].balance += acctDist
+
+IRs:
+REF_32(OrganizeFunds.ActivityAccount) -> activityAccounts[i]
+REF_33(uint256) -> REF_32.balance
+REF_33(-> activityAccounts) = REF_33 + acctDist"];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+totalFundsDistributed += acctDist
+
+IRs:
+totalFundsDistributed(uint256) = totalFundsDistributed + acctDist"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_24(uint256) := i(uint256)
+i(uint256) = i + 1"];
+20->10;
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+MessageEvent(ok: distributed funds)
+
+IRs:
+Emit MessageEvent(ok: distributed funds)"];
+}
+// Function: 20892.sol-OrganizeFunds-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+totalFundsReceived += msg.value
+
+IRs:
+totalFundsReceived(uint256) = totalFundsReceived + msg.value"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+MessageEventI(ok: received,msg.value)
+
+IRs:
+Emit MessageEventI(ok: received,msg.value)"];
+}
+// Function: 20892.sol-OrganizeFunds-getActivityAccountInfo(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: BEGIN_LOOP 1
+"];
+1->4;
+2[label="Node Type: END_LOOP 2
+"];
+2->15;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+3->1;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+i < activityCount
+
+IRs:
+TMP_12(bool) = i < activityCount
+CONDITION TMP_12"];
+4->5[label="True"];
+4->2[label="False"];
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+addr = activityAccounts[i].addr
+
+IRs:
+REF_11(OrganizeFunds.ActivityAccount) -> activityAccounts[i]
+REF_12(address) -> REF_11.addr
+addr(address) := REF_12(address)"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+addr == _addr
+
+IRs:
+TMP_13(bool) = addr == _addr
+CONDITION TMP_13"];
+6->7[label="True"];
+6->13[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+_idx = i
+
+IRs:
+_idx(uint256) := i(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+_pctx10 = activityAccounts[i].pctx10
+
+IRs:
+REF_13(OrganizeFunds.ActivityAccount) -> activityAccounts[i]
+REF_14(uint256) -> REF_13.pctx10
+_pctx10(uint256) := REF_14(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+_name = activityAccounts[i].name
+
+IRs:
+REF_15(OrganizeFunds.ActivityAccount) -> activityAccounts[i]
+REF_16(string) -> REF_15.name
+_name(string) := REF_16(string)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+_credited = activityAccounts[i].credited
+
+IRs:
+REF_17(OrganizeFunds.ActivityAccount) -> activityAccounts[i]
+REF_18(uint256) -> REF_17.credited
+_credited(uint256) := REF_18(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+_balance = activityAccounts[i].balance
+
+IRs:
+REF_19(OrganizeFunds.ActivityAccount) -> activityAccounts[i]
+REF_20(uint256) -> REF_19.balance
+_balance(uint256) := REF_20(uint256)"];
+11->12;
+12[label="Node Type: RETURN 12
+"];
+13[label="Node Type: END_IF 13
+"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_14(uint256) := i(uint256)
+i(uint256) = i + 1"];
+14->4;
+15[label="Node Type: RETURN 15
+
+EXPRESSION:
+(_idx,_pctx10,_name,_credited,_balance)
+
+IRs:
+RETURN _idx,_pctx10,_name,_credited,_balance"];
+}
+// Function: 20892.sol-OrganizeFunds-getTotalPctx10()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_totalPctx10 = 0
+
+IRs:
+_totalPctx10(uint256) := 0(uint256)"];
+1->4;
+2[label="Node Type: BEGIN_LOOP 2
+"];
+2->5;
+3[label="Node Type: END_LOOP 3
+"];
+3->8;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+4->2;
+5[label="Node Type: IF_LOOP 5
+
+EXPRESSION:
+i < activityCount
+
+IRs:
+TMP_15(bool) = i < activityCount
+CONDITION TMP_15"];
+5->6[label="True"];
+5->3[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+_totalPctx10 += activityAccounts[i].pctx10
+
+IRs:
+REF_21(OrganizeFunds.ActivityAccount) -> activityAccounts[i]
+REF_22(uint256) -> REF_21.pctx10
+_totalPctx10(uint256) = _totalPctx10 + REF_22"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_16(uint256) := i(uint256)
+i(uint256) = i + 1"];
+7->5;
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+_totalPctx10
+
+IRs:
+RETURN _totalPctx10"];
+}
+// Function: 20892.sol-OrganizeFunds-hariKari()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+selfdestruct(address)(owner)
+
+IRs:
+TMP_37(None) = SOLIDITY_CALL selfdestruct(address)(owner)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+ownerOnly()
+
+IRs:
+MODIFIER_CALL, OrganizeFunds.ownerOnly()()"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+unlockedOnly()
+
+IRs:
+MODIFIER_CALL, OrganizeFunds.unlockedOnly()()"];
+3->1;
+}
+// Function: 20892.sol-OrganizeFunds-lock()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+isLocked = true
+
+IRs:
+isLocked(bool) := True(bool)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+ownerOnly()
+
+IRs:
+MODIFIER_CALL, OrganizeFunds.ownerOnly()()"];
+2->1;
+}
+// Function: 20892.sol-OrganizeFunds-ownerOnly()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_40(bool) = msg.sender == owner
+TMP_41(None) = SOLIDITY_CALL require(bool)(TMP_40)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 20892.sol-OrganizeFunds-reset()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+totalFundsReceived = this.balance
+
+IRs:
+REF_0(uint256) = SOLIDITY_CALL balance(address)(this)
+totalFundsReceived(uint256) := REF_0([<slither.core.solidity_types.elementary_type.ElementaryType object at 0x7f329b47c7c0>])"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+totalFundsDistributed = 0
+
+IRs:
+totalFundsDistributed(uint256) := 0(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+totalFundsWithdrawn = 0
+
+IRs:
+totalFundsWithdrawn(uint256) := 0(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+activityCount = 0
+
+IRs:
+activityCount(uint256) := 0(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+MessageEvent(ok: all accts reset)
+
+IRs:
+Emit MessageEvent(ok: all accts reset)"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+ownerOnly()
+
+IRs:
+MODIFIER_CALL, OrganizeFunds.ownerOnly()()"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+unlockedOnly()
+
+IRs:
+MODIFIER_CALL, OrganizeFunds.unlockedOnly()()"];
+7->1;
+}
+// Function: 20892.sol-OrganizeFunds-setName(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+name = _name
+
+IRs:
+name(string) := _name(string)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+ownerOnly()
+
+IRs:
+MODIFIER_CALL, OrganizeFunds.ownerOnly()()"];
+2->1;
+}
+// Function: 20892.sol-OrganizeFunds-setWitdrawGas(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+withdrawGas = _withdrawGas
+
+IRs:
+withdrawGas(uint256) := _withdrawGas(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+MessageEventI(ok: withdraw gas set,withdrawGas)
+
+IRs:
+Emit MessageEventI(ok: withdraw gas set,withdrawGas)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+ownerOnly()
+
+IRs:
+MODIFIER_CALL, OrganizeFunds.ownerOnly()()"];
+3->1;
+}
+// Function: 20892.sol-OrganizeFunds-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+TENHUNDWEI = 1000
+
+IRs:
+TENHUNDWEI(uint256) := 1000(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+MAX_ACCOUNTS = 10
+
+IRs:
+MAX_ACCOUNTS(uint256) := 10(uint256)"];
+}
+// Function: 20892.sol-OrganizeFunds-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+withdrawGas = 100000
+
+IRs:
+withdrawGas(uint256) := 100000(uint256)"];
+}
+// Function: 20892.sol-OrganizeFunds-unlockedOnly()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! isLocked)
+
+IRs:
+TMP_42 = UnaryType.BANG isLocked 
+TMP_43(None) = SOLIDITY_CALL require(bool)(TMP_42)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 20892.sol-OrganizeFunds-withdraw()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: BEGIN_LOOP 1
+"];
+1->4;
+2[label="Node Type: END_LOOP 2
+"];
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+3->1;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+i < activityCount
+
+IRs:
+TMP_26(bool) = i < activityCount
+CONDITION TMP_26"];
+4->5[label="True"];
+4->2[label="False"];
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+addr = activityAccounts[i].addr
+
+IRs:
+REF_34(OrganizeFunds.ActivityAccount) -> activityAccounts[i]
+REF_35(address) -> REF_34.addr
+addr(address) := REF_35(address)"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+addr == msg.sender || msg.sender == owner
+
+IRs:
+TMP_27(bool) = addr == msg.sender
+TMP_28(bool) = msg.sender == owner
+TMP_29(bool) = TMP_27 || TMP_28
+CONDITION TMP_29"];
+6->7[label="True"];
+6->18[label="False"];
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+amount = activityAccounts[i].balance
+
+IRs:
+REF_36(OrganizeFunds.ActivityAccount) -> activityAccounts[i]
+REF_37(uint256) -> REF_36.balance
+amount(uint256) := REF_37(uint256)"];
+7->8;
+8[label="Node Type: IF 8
+
+EXPRESSION:
+amount > 0
+
+IRs:
+TMP_30(bool) = amount > 0
+CONDITION TMP_30"];
+8->9[label="True"];
+8->17[label="False"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+activityAccounts[i].balance = 0
+
+IRs:
+REF_38(OrganizeFunds.ActivityAccount) -> activityAccounts[i]
+REF_39(uint256) -> REF_38.balance
+REF_39(uint256) (->activityAccounts) := 0(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+totalFundsWithdrawn += amount
+
+IRs:
+totalFundsWithdrawn(uint256) = totalFundsWithdrawn + amount"];
+10->11;
+11[label="Node Type: IF 11
+
+EXPRESSION:
+! addr.call.gas(withdrawGas).value(amount)()
+
+IRs:
+TMP_33(bool) = LOW_LEVEL_CALL, dest:addr, function:call, arguments:[] value:amount gas:withdrawGas
+TMP_34 = UnaryType.BANG TMP_33 
+CONDITION TMP_34"];
+11->12[label="True"];
+11->16[label="False"];
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+activityAccounts[i].balance = amount
+
+IRs:
+REF_43(OrganizeFunds.ActivityAccount) -> activityAccounts[i]
+REF_44(uint256) -> REF_43.balance
+REF_44(uint256) (->activityAccounts) := amount(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+totalFundsWithdrawn -= amount
+
+IRs:
+totalFundsWithdrawn(uint256) = totalFundsWithdrawn - amount"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+MessageEvent(err: error sending funds)
+
+IRs:
+Emit MessageEvent(err: error sending funds)"];
+14->15;
+15[label="Node Type: RETURN 15
+"];
+16[label="Node Type: END_IF 16
+"];
+16->17;
+17[label="Node Type: END_IF 17
+"];
+17->18;
+18[label="Node Type: END_IF 18
+"];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_36(uint256) := i(uint256)
+i(uint256) = i + 1"];
+19->4;
+}
+}

@@ -1,0 +1,820 @@
+digraph G {
+// Function: 36022.sol-ITransferable-transfer(address,uint256)
+digraph{
+}
+// Function: 36022.sol-P4PGame-P4PGame(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+playToken = PlayToken(_tokenAddr)
+
+IRs:
+TMP_30 = CONVERT _tokenAddr to PlayToken
+playToken(PlayToken) := TMP_30(PlayToken)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+pool = _poolAddr
+
+IRs:
+pool(address) := _poolAddr(address)"];
+}
+// Function: 36022.sol-P4PGame-addGame(bytes32,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+GamePlayed(hash,board)
+
+IRs:
+Emit GamePlayed(hash,board)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, P4PGame.onlyOwner()()"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyIfActive()
+
+IRs:
+MODIFIER_CALL, P4PGame.onlyIfActive()()"];
+3->1;
+}
+// Function: 36022.sol-P4PGame-distributeTokens(address[],uint16[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(receivers.length == amounts.length)
+
+IRs:
+REF_22 -> LENGTH receivers
+REF_23 -> LENGTH amounts
+TMP_39(bool) = REF_22 == REF_23
+TMP_40(None) = SOLIDITY_CALL require(bool)(TMP_39)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+totalAmount = distributeTokensImpl(receivers,amounts)
+
+IRs:
+TMP_41(uint256) = INTERNAL_CALL, P4PGame.distributeTokensImpl(address[],uint16[])(receivers,amounts)
+totalAmount(uint256) := TMP_41(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+payoutPool(totalAmount)
+
+IRs:
+INTERNAL_CALL, P4PGame.payoutPool(uint256)(totalAmount)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, P4PGame.onlyOwner()()"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+onlyIfActive()
+
+IRs:
+MODIFIER_CALL, P4PGame.onlyIfActive()()"];
+5->1;
+}
+// Function: 36022.sol-P4PGame-distributeTokensImpl(address[],uint16[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+totalAmount = 0
+
+IRs:
+totalAmount(uint256) := 0(uint256)"];
+1->4;
+2[label="Node Type: BEGIN_LOOP 2
+"];
+2->5;
+3[label="Node Type: END_LOOP 3
+"];
+3->9;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+4->2;
+5[label="Node Type: IF_LOOP 5
+
+EXPRESSION:
+i < receivers.length
+
+IRs:
+REF_24 -> LENGTH receivers
+TMP_48(bool) = i < REF_24
+CONDITION TMP_48"];
+5->6[label="True"];
+5->3[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+playToken.mint(receivers[i],uint256(amounts[i]) * 1e18)
+
+IRs:
+REF_26(address) -> receivers[i]
+REF_27(uint16) -> amounts[i]
+TMP_49 = CONVERT REF_27 to uint256
+TMP_50(uint256) = TMP_49 * 1000000000000000000
+HIGH_LEVEL_CALL, dest:playToken(PlayToken), function:mint, arguments:['REF_26', 'TMP_50']  "];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+totalAmount += amounts[i]
+
+IRs:
+REF_28(uint16) -> amounts[i]
+totalAmount(uint256) = totalAmount + REF_28"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_52(uint256) := i(uint256)
+i(uint256) = i + 1"];
+8->5;
+9[label="Node Type: RETURN 9
+
+EXPRESSION:
+totalAmount
+
+IRs:
+RETURN totalAmount"];
+}
+// Function: 36022.sol-P4PGame-getTokenAddress()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+address(playToken)
+
+IRs:
+TMP_47 = CONVERT playToken to address
+RETURN TMP_47"];
+}
+// Function: 36022.sol-P4PGame-lockTokenController()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+playToken.lockController()
+
+IRs:
+HIGH_LEVEL_CALL, dest:playToken(PlayToken), function:lockController, arguments:[]  "];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, P4PGame.onlyOwner()()"];
+2->1;
+}
+// Function: 36022.sol-P4PGame-onlyIfActive()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(active)
+
+IRs:
+TMP_59(None) = SOLIDITY_CALL require(bool)(active)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 36022.sol-P4PGame-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_57(bool) = msg.sender == owner
+TMP_58(None) = SOLIDITY_CALL require(bool)(TMP_57)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 36022.sol-P4PGame-payoutPool(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(pool != 0)
+
+IRs:
+TMP_53(bool) = pool != 0
+TMP_54(None) = SOLIDITY_CALL require(bool)(TMP_53)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+playToken.mint(pool,amount * 1e18)
+
+IRs:
+TMP_55(uint256) = amount * 1000000000000000000
+HIGH_LEVEL_CALL, dest:playToken(PlayToken), function:mint, arguments:['pool', 'TMP_55']  "];
+}
+// Function: 36022.sol-P4PGame-setPoolContract(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+pool = _pool
+
+IRs:
+pool(address) := _pool(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, P4PGame.onlyOwner()()"];
+2->1;
+}
+// Function: 36022.sol-P4PGame-setTokenController(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+playToken.setController(_controller)
+
+IRs:
+HIGH_LEVEL_CALL, dest:playToken(PlayToken), function:setController, arguments:['_controller']  "];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, P4PGame.onlyOwner()()"];
+2->1;
+}
+// Function: 36022.sol-P4PGame-shutdown()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+active = false
+
+IRs:
+active(bool) := False(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+GameOver()
+
+IRs:
+Emit GameOver()"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, P4PGame.onlyOwner()()"];
+3->1;
+}
+// Function: 36022.sol-P4PGame-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+active = true
+
+IRs:
+active(bool) := True(bool)"];
+}
+// Function: 36022.sol-PlayToken-PlayToken(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+controller = _controller
+
+IRs:
+controller(address) := _controller(address)"];
+}
+// Function: 36022.sol-PlayToken-allowance(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+allowed[_owner][_spender]
+
+IRs:
+REF_14(mapping(address => uint256)) -> allowed[_owner]
+REF_15(uint256) -> REF_14[_spender]
+RETURN REF_15"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+remaining
+
+IRs:
+RETURN remaining"];
+}
+// Function: 36022.sol-PlayToken-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowed[msg.sender][_spender] = _value
+
+IRs:
+REF_12(mapping(address => uint256)) -> allowed[msg.sender]
+REF_13(uint256) -> REF_12[_spender]
+REF_13(uint256) (->allowed) := _value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,_value)
+
+IRs:
+Emit Approval(msg.sender,_spender,_value)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 36022.sol-PlayToken-approveAndCall(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowed[msg.sender][_spender] = _value
+
+IRs:
+REF_16(mapping(address => uint256)) -> allowed[msg.sender]
+REF_17(uint256) -> REF_16[_spender]
+REF_17(uint256) (->allowed) := _value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,_value)
+
+IRs:
+Emit Approval(msg.sender,_spender,_value)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(_spender.call(bytes4(bytes32(sha3()(receiveApproval(address,uint256,address,bytes)))),msg.sender,_value,this,_extraData))
+
+IRs:
+TMP_21(bytes32) = SOLIDITY_CALL sha3()(receiveApproval(address,uint256,address,bytes))
+TMP_22 = CONVERT TMP_21 to bytes32
+TMP_23 = CONVERT TMP_22 to bytes4
+TMP_24(bool) = LOW_LEVEL_CALL, dest:_spender, function:call, arguments:['TMP_23', 'msg.sender', '_value', 'this', '_extraData']  
+TMP_25(None) = SOLIDITY_CALL require(bool)(TMP_24)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 36022.sol-PlayToken-balanceOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+balances[_owner]
+
+IRs:
+REF_11(uint256) -> balances[_owner]
+RETURN REF_11"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+balance
+
+IRs:
+RETURN balance"];
+}
+// Function: 36022.sol-PlayToken-lockController()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+controllerLocked = true
+
+IRs:
+controllerLocked(bool) := True(bool)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyController()
+
+IRs:
+MODIFIER_CALL, PlayToken.onlyController()()"];
+2->1;
+}
+// Function: 36022.sol-PlayToken-mint(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+balances[_receiver] += _value
+
+IRs:
+REF_0(uint256) -> balances[_receiver]
+REF_0(-> balances) = REF_0 + _value"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+totalSupply += _value
+
+IRs:
+totalSupply(uint256) = totalSupply + _value"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+Transfer(0,_receiver,_value)
+
+IRs:
+Emit Transfer(0,_receiver,_value)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyController()
+
+IRs:
+MODIFIER_CALL, PlayToken.onlyController()()"];
+4->1;
+}
+// Function: 36022.sol-PlayToken-onlyController()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == controller)
+
+IRs:
+TMP_28(bool) = msg.sender == controller
+TMP_29(None) = SOLIDITY_CALL require(bool)(TMP_28)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 36022.sol-PlayToken-setController(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! controllerLocked)
+
+IRs:
+TMP_0 = UnaryType.BANG controllerLocked 
+TMP_1(None) = SOLIDITY_CALL require(bool)(TMP_0)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+controller = _newController
+
+IRs:
+controller(address) := _newController(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyController()
+
+IRs:
+MODIFIER_CALL, PlayToken.onlyController()()"];
+3->1;
+}
+// Function: 36022.sol-PlayToken-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+totalSupply = 0
+
+IRs:
+totalSupply(uint256) := 0(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+name = PLAY
+
+IRs:
+name(string) := PLAY(string)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+decimals = 18
+
+IRs:
+decimals(uint8) := 18(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+symbol = PLY
+
+IRs:
+symbol(string) := PLY(string)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+version = 1
+
+IRs:
+version(string) := 1(string)"];
+4->5;
+5[label="Node Type: OTHER_ENTRYPOINT 5
+
+EXPRESSION:
+controllerLocked = false
+
+IRs:
+controllerLocked(bool) := False(bool)"];
+}
+// Function: 36022.sol-PlayToken-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)((_to != 0) && (_to != address(this)))
+
+IRs:
+TMP_6(bool) = _to != 0
+TMP_7 = CONVERT this to address
+TMP_8(bool) = _to != TMP_7
+TMP_9(bool) = TMP_6 && TMP_8
+TMP_10(None) = SOLIDITY_CALL require(bool)(TMP_9)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(balances[msg.sender] >= _value)
+
+IRs:
+REF_1(uint256) -> balances[msg.sender]
+TMP_11(bool) = REF_1 >= _value
+TMP_12(None) = SOLIDITY_CALL require(bool)(TMP_11)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balances[msg.sender] -= _value
+
+IRs:
+REF_2(uint256) -> balances[msg.sender]
+REF_2(-> balances) = REF_2 - _value"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+balances[_to] += _value
+
+IRs:
+REF_3(uint256) -> balances[_to]
+REF_3(-> balances) = REF_3 + _value"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Transfer(msg.sender,_to,_value)
+
+IRs:
+Emit Transfer(msg.sender,_to,_value)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 36022.sol-PlayToken-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(balances[_from] >= _value && allowed[_from][msg.sender] >= _value)
+
+IRs:
+REF_4(uint256) -> balances[_from]
+TMP_14(bool) = REF_4 >= _value
+REF_5(mapping(address => uint256)) -> allowed[_from]
+REF_6(uint256) -> REF_5[msg.sender]
+TMP_15(bool) = REF_6 >= _value
+TMP_16(bool) = TMP_14 && TMP_15
+TMP_17(None) = SOLIDITY_CALL require(bool)(TMP_16)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balances[_to] += _value
+
+IRs:
+REF_7(uint256) -> balances[_to]
+REF_7(-> balances) = REF_7 + _value"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balances[_from] -= _value
+
+IRs:
+REF_8(uint256) -> balances[_from]
+REF_8(-> balances) = REF_8 - _value"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+allowed[_from][msg.sender] -= _value
+
+IRs:
+REF_9(mapping(address => uint256)) -> allowed[_from]
+REF_10(uint256) -> REF_9[msg.sender]
+REF_10(-> allowed) = REF_10 - _value"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Transfer(_from,_to,_value)
+
+IRs:
+Emit Transfer(_from,_to,_value)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 36022.sol-PlayToken-withdrawTokens(ITransferable,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_token.transfer(_to,_amount)
+
+IRs:
+TMP_26(bool) = HIGH_LEVEL_CALL, dest:_token(ITransferable), function:transfer, arguments:['_to', '_amount']  "];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyController()
+
+IRs:
+MODIFIER_CALL, PlayToken.onlyController()()"];
+2->1;
+}
+}

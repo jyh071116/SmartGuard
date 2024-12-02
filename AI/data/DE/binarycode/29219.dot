@@ -1,0 +1,602 @@
+digraph G {
+// Function: 29219.sol-CrowdsaleProxy-CrowdsaleProxy(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+target = ICrowdsale(_target)
+
+IRs:
+TMP_1 = CONVERT _target to ICrowdsale
+target(ICrowdsale) := TMP_1(ICrowdsale)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = _owner
+
+IRs:
+owner(address) := _owner(address)"];
+}
+// Function: 29219.sol-CrowdsaleProxy-contribute()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+target.contributeFor.value(msg.value)(msg.sender)
+
+IRs:
+TMP_5(uint256) = HIGH_LEVEL_CALL, dest:target(ICrowdsale), function:contributeFor, arguments:['msg.sender'] value:msg.value "];
+}
+// Function: 29219.sol-CrowdsaleProxy-contributeFor(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+target.contributeFor.value(msg.value)(_beneficiary)
+
+IRs:
+TMP_7(uint256) = HIGH_LEVEL_CALL, dest:target(ICrowdsale), function:contributeFor, arguments:['_beneficiary'] value:msg.value "];
+}
+// Function: 29219.sol-CrowdsaleProxy-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+target.contributeFor.value(msg.value)(msg.sender)
+
+IRs:
+TMP_3(uint256) = HIGH_LEVEL_CALL, dest:target(ICrowdsale), function:contributeFor, arguments:['msg.sender'] value:msg.value "];
+}
+// Function: 29219.sol-CrowdsaleProxyFactory-CrowdsaleProxyFactory(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+targetCrowdsale = _targetCrowdsale
+
+IRs:
+targetCrowdsale(address) := _targetCrowdsale(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+targetToken = _targetToken
+
+IRs:
+targetToken(address) := _targetToken(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+personalCrowdsaleProxyTarget = new PersonalCrowdsaleProxy()
+
+IRs:
+TMP_29(PersonalCrowdsaleProxy) = new PersonalCrowdsaleProxy() 
+personalCrowdsaleProxyTarget(address) := TMP_29(PersonalCrowdsaleProxy)"];
+}
+// Function: 29219.sol-CrowdsaleProxyFactory-createPersonalDepositAddress(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+proxy = new PersonalCrowdsaleProxyDispatcher(personalCrowdsaleProxyTarget,targetCrowdsale,targetToken,_passphraseHash)
+
+IRs:
+TMP_37(PersonalCrowdsaleProxyDispatcher) = new PersonalCrowdsaleProxyDispatcher(personalCrowdsaleProxyTarget,targetCrowdsale,targetToken,_passphraseHash) 
+proxy(address) := TMP_37(PersonalCrowdsaleProxyDispatcher)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+ProxyCreated(proxy,msg.sender)
+
+IRs:
+Emit ProxyCreated(proxy,msg.sender)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+proxy
+
+IRs:
+RETURN proxy"];
+}
+// Function: 29219.sol-CrowdsaleProxyFactory-createPersonalDepositAddressFor(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+proxy = PersonalCrowdsaleProxy(new PersonalCrowdsaleProxyDispatcher(personalCrowdsaleProxyTarget,targetCrowdsale,targetToken,keccak256()(bytes32(_beneficiary))))
+
+IRs:
+TMP_40 = CONVERT _beneficiary to bytes32
+TMP_41(bytes32) = SOLIDITY_CALL keccak256()(TMP_40)
+TMP_42(PersonalCrowdsaleProxyDispatcher) = new PersonalCrowdsaleProxyDispatcher(personalCrowdsaleProxyTarget,targetCrowdsale,targetToken,TMP_41) 
+TMP_43 = CONVERT TMP_42 to PersonalCrowdsaleProxy
+proxy(PersonalCrowdsaleProxy) := TMP_43(PersonalCrowdsaleProxy)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+proxy.setBeneficiary(_beneficiary,bytes32(_beneficiary))
+
+IRs:
+TMP_44 = CONVERT _beneficiary to bytes32
+HIGH_LEVEL_CALL, dest:proxy(PersonalCrowdsaleProxy), function:setBeneficiary, arguments:['_beneficiary', 'TMP_44']  "];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+ProxyCreated(proxy,_beneficiary)
+
+IRs:
+Emit ProxyCreated(proxy,_beneficiary)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+proxy
+
+IRs:
+RETURN proxy"];
+}
+// Function: 29219.sol-CrowdsaleProxyFactory-createProxyAddress()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+proxy = new CrowdsaleProxy(msg.sender,targetCrowdsale)
+
+IRs:
+TMP_31(CrowdsaleProxy) = new CrowdsaleProxy(msg.sender,targetCrowdsale) 
+proxy(address) := TMP_31(CrowdsaleProxy)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+ProxyCreated(proxy,msg.sender)
+
+IRs:
+Emit ProxyCreated(proxy,msg.sender)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+proxy
+
+IRs:
+RETURN proxy"];
+}
+// Function: 29219.sol-CrowdsaleProxyFactory-createProxyAddressFor(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+proxy = new CrowdsaleProxy(_beneficiary,targetCrowdsale)
+
+IRs:
+TMP_34(CrowdsaleProxy) = new CrowdsaleProxy(_beneficiary,targetCrowdsale) 
+proxy(address) := TMP_34(CrowdsaleProxy)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+ProxyCreated(proxy,_beneficiary)
+
+IRs:
+Emit ProxyCreated(proxy,_beneficiary)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+proxy
+
+IRs:
+RETURN proxy"];
+}
+// Function: 29219.sol-ICrowdsale-balanceOf(address)
+digraph{
+}
+// Function: 29219.sol-ICrowdsale-contribute()
+digraph{
+}
+// Function: 29219.sol-ICrowdsale-contributeFor(address)
+digraph{
+}
+// Function: 29219.sol-ICrowdsale-ethBalanceOf(address)
+digraph{
+}
+// Function: 29219.sol-ICrowdsale-fallback()
+digraph{
+}
+// Function: 29219.sol-ICrowdsale-getRate(uint256,uint256)
+digraph{
+}
+// Function: 29219.sol-ICrowdsale-hasBalance(address,uint256)
+digraph{
+}
+// Function: 29219.sol-ICrowdsale-isEnded()
+digraph{
+}
+// Function: 29219.sol-ICrowdsale-isInPresalePhase()
+digraph{
+}
+// Function: 29219.sol-ICrowdsale-refund()
+digraph{
+}
+// Function: 29219.sol-ICrowdsale-refundTo(address)
+digraph{
+}
+// Function: 29219.sol-ICrowdsale-refundableEthBalanceOf(address)
+digraph{
+}
+// Function: 29219.sol-ICrowdsale-toTokens(uint256,uint256)
+digraph{
+}
+// Function: 29219.sol-ICrowdsale-withdrawEther()
+digraph{
+}
+// Function: 29219.sol-ICrowdsale-withdrawEtherTo(address)
+digraph{
+}
+// Function: 29219.sol-ICrowdsale-withdrawTokens()
+digraph{
+}
+// Function: 29219.sol-ICrowdsale-withdrawTokensTo(address)
+digraph{
+}
+// Function: 29219.sol-ICrowdsaleProxy-contribute()
+digraph{
+}
+// Function: 29219.sol-ICrowdsaleProxy-contributeFor(address)
+digraph{
+}
+// Function: 29219.sol-ICrowdsaleProxy-fallback()
+digraph{
+}
+// Function: 29219.sol-IPersonalCrowdsaleProxy-fallback()
+digraph{
+}
+// Function: 29219.sol-IPersonalCrowdsaleProxy-invest()
+digraph{
+}
+// Function: 29219.sol-IPersonalCrowdsaleProxy-refund()
+digraph{
+}
+// Function: 29219.sol-IPersonalCrowdsaleProxy-updateEtherBalance()
+digraph{
+}
+// Function: 29219.sol-IPersonalCrowdsaleProxy-updateTokenBalance()
+digraph{
+}
+// Function: 29219.sol-IPersonalCrowdsaleProxy-withdrawEther()
+digraph{
+}
+// Function: 29219.sol-IPersonalCrowdsaleProxy-withdrawTokens()
+digraph{
+}
+// Function: 29219.sol-IToken-allowance(address,address)
+digraph{
+}
+// Function: 29219.sol-IToken-approve(address,uint256)
+digraph{
+}
+// Function: 29219.sol-IToken-balanceOf(address)
+digraph{
+}
+// Function: 29219.sol-IToken-totalSupply()
+digraph{
+}
+// Function: 29219.sol-IToken-transfer(address,uint256)
+digraph{
+}
+// Function: 29219.sol-IToken-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 29219.sol-PersonalCrowdsaleProxy-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 29219.sol-PersonalCrowdsaleProxy-invest()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+targetCrowdsale.contribute.value(this.balance)()
+
+IRs:
+REF_8(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_13(uint256) = HIGH_LEVEL_CALL, dest:targetCrowdsale(ICrowdsale), function:contribute, arguments:[] value:REF_8 "];
+}
+// Function: 29219.sol-PersonalCrowdsaleProxy-refund()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+targetCrowdsale.refund()
+
+IRs:
+HIGH_LEVEL_CALL, dest:targetCrowdsale(ICrowdsale), function:refund, arguments:[]  "];
+}
+// Function: 29219.sol-PersonalCrowdsaleProxy-setBeneficiary(address,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(keccak256()(_passphrase) == passphraseHash)
+
+IRs:
+TMP_8(bytes32) = SOLIDITY_CALL keccak256()(_passphrase)
+TMP_9(bool) = TMP_8 == passphraseHash
+TMP_10(None) = SOLIDITY_CALL require(bool)(TMP_9)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+beneficiary = _beneficiary
+
+IRs:
+beneficiary(address) := _beneficiary(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+when_beneficiary_is_unknown()
+
+IRs:
+MODIFIER_CALL, PersonalCrowdsaleProxy.when_beneficiary_is_unknown()()"];
+3->1;
+}
+// Function: 29219.sol-PersonalCrowdsaleProxy-updateEtherBalance()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+targetCrowdsale.withdrawEther()
+
+IRs:
+HIGH_LEVEL_CALL, dest:targetCrowdsale(ICrowdsale), function:withdrawEther, arguments:[]  "];
+}
+// Function: 29219.sol-PersonalCrowdsaleProxy-updateTokenBalance()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+targetCrowdsale.withdrawTokens()
+
+IRs:
+HIGH_LEVEL_CALL, dest:targetCrowdsale(ICrowdsale), function:withdrawTokens, arguments:[]  "];
+}
+// Function: 29219.sol-PersonalCrowdsaleProxy-when_beneficiary_is_known()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(beneficiary != address(0))
+
+IRs:
+TMP_22 = CONVERT 0 to address
+TMP_23(bool) = beneficiary != TMP_22
+TMP_24(None) = SOLIDITY_CALL require(bool)(TMP_23)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 29219.sol-PersonalCrowdsaleProxy-when_beneficiary_is_unknown()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(beneficiary == address(0))
+
+IRs:
+TMP_25 = CONVERT 0 to address
+TMP_26(bool) = beneficiary == TMP_25
+TMP_27(None) = SOLIDITY_CALL require(bool)(TMP_26)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 29219.sol-PersonalCrowdsaleProxy-withdrawEther()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+beneficiary.transfer(this.balance)
+
+IRs:
+REF_15(uint256) = SOLIDITY_CALL balance(address)(this)
+Transfer dest:beneficiary value:REF_15"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+when_beneficiary_is_known()
+
+IRs:
+MODIFIER_CALL, PersonalCrowdsaleProxy.when_beneficiary_is_known()()"];
+2->1;
+}
+// Function: 29219.sol-PersonalCrowdsaleProxy-withdrawTokens()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+balance = targetToken.balanceOf(this)
+
+IRs:
+TMP_16(uint256) = HIGH_LEVEL_CALL, dest:targetToken(IToken), function:balanceOf, arguments:['this']  
+balance(uint256) := TMP_16(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+targetToken.transfer(beneficiary,balance)
+
+IRs:
+TMP_17(bool) = HIGH_LEVEL_CALL, dest:targetToken(IToken), function:transfer, arguments:['beneficiary', 'balance']  "];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+when_beneficiary_is_known()
+
+IRs:
+MODIFIER_CALL, PersonalCrowdsaleProxy.when_beneficiary_is_known()()"];
+3->1;
+}
+// Function: 29219.sol-PersonalCrowdsaleProxyDispatcher-PersonalCrowdsaleProxyDispatcher(address,address,address,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+targetCrowdsale = _targetCrowdsale
+
+IRs:
+targetCrowdsale(address) := _targetCrowdsale(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+targetToken = _targetToken
+
+IRs:
+targetToken(address) := _targetToken(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+passphraseHash = _passphraseHash
+
+IRs:
+passphraseHash(bytes32) := _passphraseHash(bytes32)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+SimpleDispatcher(_target)
+
+IRs:
+INTERNAL_CALL, SimpleDispatcher.SimpleDispatcher(address)(_target)"];
+4->1;
+}
+// Function: 29219.sol-PersonalCrowdsaleProxyDispatcher-SimpleDispatcher(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+target = _target
+
+IRs:
+target(address) := _target(address)"];
+}
+// Function: 29219.sol-PersonalCrowdsaleProxyDispatcher-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+dest = target
+
+IRs:
+dest(address) := target(address)"];
+1->2;
+2[label="Node Type: INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: END INLINE ASM 3
+"];
+}
+// Function: 29219.sol-SimpleDispatcher-SimpleDispatcher(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+target = _target
+
+IRs:
+target(address) := _target(address)"];
+}
+// Function: 29219.sol-SimpleDispatcher-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+dest = target
+
+IRs:
+dest(address) := target(address)"];
+1->2;
+2[label="Node Type: INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: END INLINE ASM 3
+"];
+}
+}

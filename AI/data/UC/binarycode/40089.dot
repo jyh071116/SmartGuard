@@ -1,0 +1,2401 @@
+digraph G {
+// Function: 40089.sol-CertificationDb-CertificationDb(address,uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->8;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.value > 0
+
+IRs:
+TMP_74(bool) = msg.value > 0
+CONDITION TMP_74"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+_certifierDb == 0
+
+IRs:
+TMP_75(bool) = _certifierDb == 0
+CONDITION TMP_75"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: THROW 5
+"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+certifierDb = CertifierDbI(_certifierDb)
+
+IRs:
+TMP_76 = CONVERT _certifierDb to CertifierDbI
+certifierDb(CertifierDbI) := TMP_76(CertifierDbI)"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+WithFee(beneficiary,certificationQueryFee)
+
+IRs:
+INTERNAL_CALL, WithFee.WithFee(address,uint256)(beneficiary,certificationQueryFee)"];
+8->1;
+}
+// Function: 40089.sol-CertificationDb-Owned()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 40089.sol-CertificationDb-PullPaymentCapable()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+0 < this.balance
+
+IRs:
+REF_11(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_48(bool) = 0 < REF_11
+CONDITION TMP_48"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+asyncSend(msg.sender,this.balance)
+
+IRs:
+REF_12(uint256) = SOLIDITY_CALL balance(address)(this)
+INTERNAL_CALL, PullPaymentCapable.asyncSend(address,uint256)(msg.sender,REF_12)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 40089.sol-CertificationDb-WithBeneficiary(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_beneficiary == 0
+
+IRs:
+TMP_62(bool) = _beneficiary == 0
+CONDITION TMP_62"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+beneficiary = _beneficiary
+
+IRs:
+beneficiary(address) := _beneficiary(address)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+msg.value > 0
+
+IRs:
+TMP_63(bool) = msg.value > 0
+CONDITION TMP_63"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+asyncSend(beneficiary,msg.value)
+
+IRs:
+INTERNAL_CALL, PullPaymentCapable.asyncSend(address,uint256)(beneficiary,msg.value)"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+}
+// Function: 40089.sol-CertificationDb-WithFee(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+queryFee = _queryFee
+
+IRs:
+queryFee(uint256) := _queryFee(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+WithBeneficiary(beneficiary)
+
+IRs:
+INTERNAL_CALL, WithBeneficiary.WithBeneficiary(address)(beneficiary)"];
+2->1;
+}
+// Function: 40089.sol-CertificationDb-addCertificationDocument(address,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+success = addCertificationDocumentInternal(student,document)
+
+IRs:
+TMP_106(bool) = INTERNAL_CALL, CertificationDb.addCertificationDocumentInternal(address,bytes32)(student,document)
+success(bool) := TMP_106(bool)"];
+1->3;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+fromCertifier()
+
+IRs:
+MODIFIER_CALL, CertificationDb.fromCertifier()()"];
+2->1;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 40089.sol-CertificationDb-addCertificationDocumentInternal(address,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! studentCertifications[student].certified || document == 0
+
+IRs:
+REF_56(CertificationDb.Certification) -> studentCertifications[student]
+REF_57(bool) -> REF_56.certified
+TMP_109 = UnaryType.BANG REF_57 
+TMP_110(bool) = document == 0
+TMP_111(bool) = TMP_109 || TMP_110
+CONDITION TMP_111"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+certification = studentCertifications[student]
+
+IRs:
+REF_58(CertificationDb.Certification) -> studentCertifications[student]
+certification(CertificationDb.Certification) := REF_58(CertificationDb.Certification)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+! certification.documentStatuses[document].isValid
+
+IRs:
+REF_59(mapping(bytes32 => CertificationDb.DocumentStatus)) -> certification.documentStatuses
+REF_60(CertificationDb.DocumentStatus) -> REF_59[document]
+REF_61(bool) -> REF_60.isValid
+TMP_112 = UnaryType.BANG REF_61 
+CONDITION TMP_112"];
+5->6[label="True"];
+5->9[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+certification.documentStatuses[document] = DocumentStatus(true,certification.documents.length)
+
+IRs:
+REF_62(mapping(bytes32 => CertificationDb.DocumentStatus)) -> certification.documentStatuses
+REF_63(CertificationDb.DocumentStatus) -> REF_62[document]
+REF_64(bytes32[]) -> certification.documents
+REF_65 -> LENGTH REF_64
+TMP_113(CertificationDb.DocumentStatus) = new DocumentStatus(True,REF_65)
+REF_63(CertificationDb.DocumentStatus) (->certification) := TMP_113(CertificationDb.DocumentStatus)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+certification.documents.push(document)
+
+IRs:
+REF_66(bytes32[]) -> certification.documents
+REF_68 -> LENGTH REF_66
+TMP_115(uint256) := REF_68(uint256)
+TMP_116(uint256) = TMP_115 + 1
+REF_68(uint256) (->certification) := TMP_116(uint256)
+REF_69(bytes32) -> REF_66[TMP_115]
+REF_69(bytes32) (->certification) := document(bytes32)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+LogCertificationDocumentAdded(student,document)
+
+IRs:
+Emit LogCertificationDocumentAdded(student,document)"];
+8->9;
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+success = true
+
+IRs:
+success(bool) := True(bool)"];
+10->11;
+11[label="Node Type: RETURN 11
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 40089.sol-CertificationDb-addCertificationDocumentToSelf(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+success = addCertificationDocumentInternal(msg.sender,document)
+
+IRs:
+TMP_108(bool) = INTERNAL_CALL, CertificationDb.addCertificationDocumentInternal(address,bytes32)(msg.sender,document)
+success(bool) := TMP_108(bool)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 40089.sol-CertificationDb-asyncSend(address,uint256)
+digraph{
+}
+// Function: 40089.sol-CertificationDb-certify(address,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->13;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+student == 0 || studentCertifications[student].certified
+
+IRs:
+TMP_83(bool) = student == 0
+REF_22(CertificationDb.Certification) -> studentCertifications[student]
+REF_23(bool) -> REF_22.certified
+TMP_84(bool) = TMP_83 || REF_23
+CONDITION TMP_84"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+documentExists = document != 0
+
+IRs:
+TMP_85(bool) = document != 0
+documentExists(bool) := TMP_85(bool)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+studentCertifications[student] = Certification(true,now,msg.sender,new bytes32[](0),certifiedStudents.length)
+
+IRs:
+REF_24(CertificationDb.Certification) -> studentCertifications[student]
+TMP_87(bytes32[])  = new bytes32[](0)
+REF_25 -> LENGTH certifiedStudents
+TMP_88(CertificationDb.Certification) = new Certification(True,now,msg.sender,TMP_87,REF_25)
+REF_24(CertificationDb.Certification) (->studentCertifications) := TMP_88(CertificationDb.Certification)"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+documentExists
+
+IRs:
+CONDITION documentExists"];
+6->7[label="True"];
+6->9[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+studentCertifications[student].documentStatuses[document] = DocumentStatus(true,studentCertifications[student].documents.length)
+
+IRs:
+REF_26(CertificationDb.Certification) -> studentCertifications[student]
+REF_27(mapping(bytes32 => CertificationDb.DocumentStatus)) -> REF_26.documentStatuses
+REF_28(CertificationDb.DocumentStatus) -> REF_27[document]
+REF_29(CertificationDb.Certification) -> studentCertifications[student]
+REF_30(bytes32[]) -> REF_29.documents
+REF_31 -> LENGTH REF_30
+TMP_89(CertificationDb.DocumentStatus) = new DocumentStatus(True,REF_31)
+REF_28(CertificationDb.DocumentStatus) (->studentCertifications) := TMP_89(CertificationDb.DocumentStatus)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+studentCertifications[student].documents.push(document)
+
+IRs:
+REF_32(CertificationDb.Certification) -> studentCertifications[student]
+REF_33(bytes32[]) -> REF_32.documents
+REF_35 -> LENGTH REF_33
+TMP_91(uint256) := REF_35(uint256)
+TMP_92(uint256) = TMP_91 + 1
+REF_35(uint256) (->studentCertifications) := TMP_92(uint256)
+REF_36(bytes32) -> REF_33[TMP_91]
+REF_36(bytes32) (->studentCertifications) := document(bytes32)"];
+8->9;
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+certifiedStudents.push(student)
+
+IRs:
+REF_38 -> LENGTH certifiedStudents
+TMP_94(uint256) := REF_38(uint256)
+TMP_95(uint256) = TMP_94 + 1
+REF_38(uint256) (->certifiedStudents) := TMP_95(uint256)
+REF_39(address) -> certifiedStudents[TMP_94]
+REF_39(address) (->certifiedStudents) := student(address)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+LogStudentCertified(student,now,msg.sender,document)
+
+IRs:
+Emit LogStudentCertified(student,now,msg.sender,document)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+success = true
+
+IRs:
+success(bool) := True(bool)"];
+12->14;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+fromCertifier()
+
+IRs:
+MODIFIER_CALL, CertificationDb.fromCertifier()()"];
+13->1;
+14[label="Node Type: RETURN 14
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 40089.sol-CertificationDb-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+asyncSend(beneficiary,msg.value)
+
+IRs:
+INTERNAL_CALL, PullPaymentCapable.asyncSend(address,uint256)(beneficiary,msg.value)"];
+}
+// Function: 40089.sol-CertificationDb-fixBalance()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+fixBalanceInternal(getBeneficiary())
+
+IRs:
+TMP_131(address) = INTERNAL_CALL, WithBeneficiary.getBeneficiary()()
+TMP_132(bool) = INTERNAL_CALL, PullPaymentCapable.fixBalanceInternal(address)(TMP_131)
+RETURN TMP_132"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 40089.sol-CertificationDb-fixBalanceInternal(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+totalBalance < this.balance
+
+IRs:
+REF_19(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_55(bool) = totalBalance < REF_19
+CONDITION TMP_55"];
+1->2[label="True"];
+1->5[label="False"];
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+amount = this.balance - totalBalance
+
+IRs:
+REF_20(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_56([<slither.core.solidity_types.elementary_type.ElementaryType object at 0x7f41aa3b6b90>]) = REF_20 - totalBalance
+amount(uint256) := TMP_56([<slither.core.solidity_types.elementary_type.ElementaryType object at 0x7f41aa3b6b90>])"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+payments[dest] += amount
+
+IRs:
+REF_21(uint256) -> payments[dest]
+REF_21(-> payments) = REF_21 + amount"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+LogPaymentReceived(dest,amount)
+
+IRs:
+Emit LogPaymentReceived(dest,amount)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 40089.sol-CertificationDb-fromCertifier()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! certifierDb.isCertifier(msg.sender)
+
+IRs:
+TMP_137(bool) = HIGH_LEVEL_CALL, dest:certifierDb(CertifierDbI), function:isCertifier, arguments:['msg.sender']  
+TMP_138 = UnaryType.BANG TMP_137 
+CONDITION TMP_138"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 40089.sol-CertificationDb-fromOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != owner
+
+IRs:
+TMP_136(bool) = msg.sender != owner
+CONDITION TMP_136"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 40089.sol-CertificationDb-getBeneficiary()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+beneficiary
+
+IRs:
+RETURN beneficiary"];
+}
+// Function: 40089.sol-CertificationDb-getCertification(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+certification = studentCertifications[student]
+
+IRs:
+REF_98(CertificationDb.Certification) -> studentCertifications[student]
+certification(CertificationDb.Certification) := REF_98(CertificationDb.Certification)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+(certification.certified,certification.timestamp,certification.certifier,certification.documents.length)
+
+IRs:
+REF_99(bool) -> certification.certified
+REF_100(uint256) -> certification.timestamp
+REF_101(address) -> certification.certifier
+REF_102(bytes32[]) -> certification.documents
+REF_103 -> LENGTH REF_102
+RETURN REF_99,REF_100,REF_101,REF_103"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+requestFeePaid()
+
+IRs:
+MODIFIER_CALL, WithFee.requestFeePaid()()"];
+3->1;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+(certified,timestamp,certifier,documentCount)
+
+IRs:
+RETURN certified,timestamp,certifier,documentCount"];
+}
+// Function: 40089.sol-CertificationDb-getCertificationDocumentAtIndex(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+document = studentCertifications[student].documents[index]
+
+IRs:
+REF_106(CertificationDb.Certification) -> studentCertifications[student]
+REF_107(bytes32[]) -> REF_106.documents
+REF_108(bytes32) -> REF_107[index]
+document(bytes32) := REF_108(bytes32)"];
+1->3;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+requestFeePaid()
+
+IRs:
+MODIFIER_CALL, WithFee.requestFeePaid()()"];
+2->1;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+document
+
+IRs:
+RETURN document"];
+}
+// Function: 40089.sol-CertificationDb-getCertifiedStudentAtIndex(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+student = certifiedStudents[index]
+
+IRs:
+REF_97(address) -> certifiedStudents[index]
+student(address) := REF_97(address)"];
+1->3;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+requestFeePaid()
+
+IRs:
+MODIFIER_CALL, WithFee.requestFeePaid()()"];
+2->1;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+student
+
+IRs:
+RETURN student"];
+}
+// Function: 40089.sol-CertificationDb-getCertifiedStudentsCount()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+count = certifiedStudents.length
+
+IRs:
+REF_96 -> LENGTH certifiedStudents
+count(uint256) := REF_96(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+count
+
+IRs:
+RETURN count"];
+}
+// Function: 40089.sol-CertificationDb-getCertifierDb()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+certifierDb
+
+IRs:
+RETURN certifierDb"];
+}
+// Function: 40089.sol-CertificationDb-getOwner()
+digraph{
+}
+// Function: 40089.sol-CertificationDb-getPaymentOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+payments[beneficiary]
+
+IRs:
+REF_14(uint256) -> payments[beneficiary]
+RETURN REF_14"];
+}
+// Function: 40089.sol-CertificationDb-getQueryFee()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+queryFee
+
+IRs:
+RETURN queryFee"];
+}
+// Function: 40089.sol-CertificationDb-getTotalBalance()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+totalBalance
+
+IRs:
+RETURN totalBalance"];
+}
+// Function: 40089.sol-CertificationDb-isCertification(address,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+isIndeed = studentCertifications[student].documentStatuses[document].isValid
+
+IRs:
+REF_109(CertificationDb.Certification) -> studentCertifications[student]
+REF_110(mapping(bytes32 => CertificationDb.DocumentStatus)) -> REF_109.documentStatuses
+REF_111(CertificationDb.DocumentStatus) -> REF_110[document]
+REF_112(bool) -> REF_111.isValid
+isIndeed(bool) := REF_112(bool)"];
+1->3;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+requestFeePaid()
+
+IRs:
+MODIFIER_CALL, WithFee.requestFeePaid()()"];
+2->1;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+isIndeed
+
+IRs:
+RETURN isIndeed"];
+}
+// Function: 40089.sol-CertificationDb-isCertified(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+isIndeed = studentCertifications[student].certified
+
+IRs:
+REF_104(CertificationDb.Certification) -> studentCertifications[student]
+REF_105(bool) -> REF_104.certified
+isIndeed(bool) := REF_105(bool)"];
+1->3;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+requestFeePaid()
+
+IRs:
+MODIFIER_CALL, WithFee.requestFeePaid()()"];
+2->1;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+isIndeed
+
+IRs:
+RETURN isIndeed"];
+}
+// Function: 40089.sol-CertificationDb-removeCertificationDocument(address,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+success = removeCertificationDocumentInternal(student,document)
+
+IRs:
+TMP_118(bool) = INTERNAL_CALL, CertificationDb.removeCertificationDocumentInternal(address,bytes32)(student,document)
+success(bool) := TMP_118(bool)"];
+1->3;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+fromCertifier()
+
+IRs:
+MODIFIER_CALL, CertificationDb.fromCertifier()()"];
+2->1;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 40089.sol-CertificationDb-removeCertificationDocumentFromSelf(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+success = removeCertificationDocumentInternal(msg.sender,document)
+
+IRs:
+TMP_120(bool) = INTERNAL_CALL, CertificationDb.removeCertificationDocumentInternal(address,bytes32)(msg.sender,document)
+success(bool) := TMP_120(bool)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 40089.sol-CertificationDb-removeCertificationDocumentInternal(address,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! studentCertifications[student].certified
+
+IRs:
+REF_70(CertificationDb.Certification) -> studentCertifications[student]
+REF_71(bool) -> REF_70.certified
+TMP_121 = UnaryType.BANG REF_71 
+CONDITION TMP_121"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+certification = studentCertifications[student]
+
+IRs:
+REF_72(CertificationDb.Certification) -> studentCertifications[student]
+certification(CertificationDb.Certification) := REF_72(CertificationDb.Certification)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+certification.documentStatuses[document].isValid
+
+IRs:
+REF_73(mapping(bytes32 => CertificationDb.DocumentStatus)) -> certification.documentStatuses
+REF_74(CertificationDb.DocumentStatus) -> REF_73[document]
+REF_75(bool) -> REF_74.isValid
+CONDITION REF_75"];
+5->6[label="True"];
+5->14[label="False"];
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+index = certification.documentStatuses[document].index
+
+IRs:
+REF_76(mapping(bytes32 => CertificationDb.DocumentStatus)) -> certification.documentStatuses
+REF_77(CertificationDb.DocumentStatus) -> REF_76[document]
+REF_78(uint256) -> REF_77.index
+index(uint256) := REF_78(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+delete certification.documentStatuses[document]
+
+IRs:
+REF_79(mapping(bytes32 => CertificationDb.DocumentStatus)) -> certification.documentStatuses
+REF_80(CertificationDb.DocumentStatus) -> REF_79[document]
+REF_79 = delete REF_80 "];
+7->8;
+8[label="Node Type: IF 8
+
+EXPRESSION:
+certification.documents.length > 1
+
+IRs:
+REF_81(bytes32[]) -> certification.documents
+REF_82 -> LENGTH REF_81
+TMP_122(bool) = REF_82 > 1
+CONDITION TMP_122"];
+8->9[label="True"];
+8->11[label="False"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+certification.documents[index] = certification.documents[certification.documents.length - 1]
+
+IRs:
+REF_83(bytes32[]) -> certification.documents
+REF_84(bytes32) -> REF_83[index]
+REF_85(bytes32[]) -> certification.documents
+REF_86(bytes32[]) -> certification.documents
+REF_87 -> LENGTH REF_86
+TMP_123(uint256) = REF_87 - 1
+REF_88(bytes32) -> REF_85[TMP_123]
+REF_84(bytes32) (->certification) := REF_88(bytes32)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+certification.documentStatuses[certification.documents[index]].index = index
+
+IRs:
+REF_89(mapping(bytes32 => CertificationDb.DocumentStatus)) -> certification.documentStatuses
+REF_90(bytes32[]) -> certification.documents
+REF_91(bytes32) -> REF_90[index]
+REF_92(CertificationDb.DocumentStatus) -> REF_89[REF_91]
+REF_93(uint256) -> REF_92.index
+REF_93(uint256) (->certification) := index(uint256)"];
+10->11;
+11[label="Node Type: END_IF 11
+"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+certification.documents.length --
+
+IRs:
+REF_94(bytes32[]) -> certification.documents
+REF_95 -> LENGTH REF_94
+TMP_124(uint256) := REF_95(uint256)
+REF_95(-> certification) = REF_95 - 1"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+LogCertificationDocumentRemoved(student,document)
+
+IRs:
+Emit LogCertificationDocumentRemoved(student,document)"];
+13->14;
+14[label="Node Type: END_IF 14
+"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+success = true
+
+IRs:
+success(bool) := True(bool)"];
+15->16;
+16[label="Node Type: RETURN 16
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 40089.sol-CertificationDb-requestFeePaid()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.value < queryFee
+
+IRs:
+TMP_133(bool) = msg.value < queryFee
+CONDITION TMP_133"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+asyncSend(getBeneficiary(),msg.value)
+
+IRs:
+TMP_134(address) = INTERNAL_CALL, WithBeneficiary.getBeneficiary()()
+INTERNAL_CALL, PullPaymentCapable.asyncSend(address,uint256)(TMP_134,msg.value)"];
+4->5;
+5[label="Node Type: _ 5
+"];
+}
+// Function: 40089.sol-CertificationDb-setBeneficiary(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->9;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+newBeneficiary == 0
+
+IRs:
+TMP_65(bool) = newBeneficiary == 0
+CONDITION TMP_65"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+beneficiary != newBeneficiary
+
+IRs:
+TMP_66(bool) = beneficiary != newBeneficiary
+CONDITION TMP_66"];
+4->5[label="True"];
+4->7[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+LogBeneficiarySet(beneficiary,newBeneficiary)
+
+IRs:
+Emit LogBeneficiarySet(beneficiary,newBeneficiary)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+beneficiary = newBeneficiary
+
+IRs:
+beneficiary(address) := newBeneficiary(address)"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+success = true
+
+IRs:
+success(bool) := True(bool)"];
+8->10;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+fromOwner()
+
+IRs:
+MODIFIER_CALL, Owned.fromOwner()()"];
+9->1;
+10[label="Node Type: RETURN 10
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 40089.sol-CertificationDb-setCertifierDb(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->9;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+newCertifierDb == 0
+
+IRs:
+TMP_78(bool) = newCertifierDb == 0
+CONDITION TMP_78"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+certifierDb != newCertifierDb
+
+IRs:
+TMP_79(bool) = certifierDb != newCertifierDb
+CONDITION TMP_79"];
+4->5[label="True"];
+4->7[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+LogCertifierDbChanged(certifierDb,newCertifierDb)
+
+IRs:
+Emit LogCertifierDbChanged(certifierDb,newCertifierDb)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+certifierDb = CertifierDbI(newCertifierDb)
+
+IRs:
+TMP_81 = CONVERT newCertifierDb to CertifierDbI
+certifierDb(CertifierDbI) := TMP_81(CertifierDbI)"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+success = true
+
+IRs:
+success(bool) := True(bool)"];
+8->10;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+fromOwner()
+
+IRs:
+MODIFIER_CALL, Owned.fromOwner()()"];
+9->1;
+10[label="Node Type: RETURN 10
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 40089.sol-CertificationDb-setOwner(address)
+digraph{
+}
+// Function: 40089.sol-CertificationDb-setQueryFee(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+queryFee != newQueryFee
+
+IRs:
+TMP_59(bool) = queryFee != newQueryFee
+CONDITION TMP_59"];
+1->2[label="True"];
+1->4[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+LogQueryFeeSet(queryFee,newQueryFee)
+
+IRs:
+Emit LogQueryFeeSet(queryFee,newQueryFee)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+queryFee = newQueryFee
+
+IRs:
+queryFee(uint256) := newQueryFee(uint256)"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+success = true
+
+IRs:
+success(bool) := True(bool)"];
+5->7;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+fromOwner()
+
+IRs:
+MODIFIER_CALL, Owned.fromOwner()()"];
+6->1;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 40089.sol-CertificationDb-uncertify(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->13;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! studentCertifications[student].certified || studentCertifications[student].documents.length > 0
+
+IRs:
+REF_40(CertificationDb.Certification) -> studentCertifications[student]
+REF_41(bool) -> REF_40.certified
+TMP_98 = UnaryType.BANG REF_41 
+REF_42(CertificationDb.Certification) -> studentCertifications[student]
+REF_43(bytes32[]) -> REF_42.documents
+REF_44 -> LENGTH REF_43
+TMP_99(bool) = REF_44 > 0
+TMP_100(bool) = TMP_98 || TMP_99
+CONDITION TMP_100"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+index = studentCertifications[student].index
+
+IRs:
+REF_45(CertificationDb.Certification) -> studentCertifications[student]
+REF_46(uint256) -> REF_45.index
+index(uint256) := REF_46(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+delete studentCertifications[student]
+
+IRs:
+REF_47(CertificationDb.Certification) -> studentCertifications[student]
+studentCertifications = delete REF_47 "];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+certifiedStudents.length > 1
+
+IRs:
+REF_48 -> LENGTH certifiedStudents
+TMP_101(bool) = REF_48 > 1
+CONDITION TMP_101"];
+6->7[label="True"];
+6->9[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+certifiedStudents[index] = certifiedStudents[certifiedStudents.length - 1]
+
+IRs:
+REF_49(address) -> certifiedStudents[index]
+REF_50 -> LENGTH certifiedStudents
+TMP_102(uint256) = REF_50 - 1
+REF_51(address) -> certifiedStudents[TMP_102]
+REF_49(address) (->certifiedStudents) := REF_51(address)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+studentCertifications[certifiedStudents[index]].index = index
+
+IRs:
+REF_52(address) -> certifiedStudents[index]
+REF_53(CertificationDb.Certification) -> studentCertifications[REF_52]
+REF_54(uint256) -> REF_53.index
+REF_54(uint256) (->studentCertifications) := index(uint256)"];
+8->9;
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+certifiedStudents.length --
+
+IRs:
+REF_55 -> LENGTH certifiedStudents
+TMP_103(uint256) := REF_55(uint256)
+REF_55(-> certifiedStudents) = REF_55 - 1"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+LogStudentUncertified(student,now,msg.sender)
+
+IRs:
+Emit LogStudentUncertified(student,now,msg.sender)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+success = true
+
+IRs:
+success(bool) := True(bool)"];
+12->14;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+fromCertifier()
+
+IRs:
+MODIFIER_CALL, CertificationDb.fromCertifier()()"];
+13->1;
+14[label="Node Type: RETURN 14
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 40089.sol-CertificationDb-withdrawPayments()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+payment = payments[msg.sender]
+
+IRs:
+REF_15(uint256) -> payments[msg.sender]
+payment(uint256) := REF_15(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+payments[msg.sender] = 0
+
+IRs:
+REF_16(uint256) -> payments[msg.sender]
+REF_16(uint256) (->payments) := 0(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+totalBalance -= payment
+
+IRs:
+totalBalance(uint256) = totalBalance - payment"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+! msg.sender.call.value(payment)()
+
+IRs:
+TMP_53(bool) = LOW_LEVEL_CALL, dest:msg.sender, function:call, arguments:[] value:payment 
+TMP_54 = UnaryType.BANG TMP_53 
+CONDITION TMP_54"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: THROW 5
+"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+success = true
+
+IRs:
+success(bool) := True(bool)"];
+7->8;
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 40089.sol-CertificationDbI-addCertificationDocument(address,bytes32)
+digraph{
+}
+// Function: 40089.sol-CertificationDbI-addCertificationDocumentToSelf(bytes32)
+digraph{
+}
+// Function: 40089.sol-CertificationDbI-certify(address,bytes32)
+digraph{
+}
+// Function: 40089.sol-CertificationDbI-getCertification(address)
+digraph{
+}
+// Function: 40089.sol-CertificationDbI-getCertificationDocumentAtIndex(address,uint256)
+digraph{
+}
+// Function: 40089.sol-CertificationDbI-getCertifiedStudentAtIndex(uint256)
+digraph{
+}
+// Function: 40089.sol-CertificationDbI-getCertifiedStudentsCount()
+digraph{
+}
+// Function: 40089.sol-CertificationDbI-getCertifierDb()
+digraph{
+}
+// Function: 40089.sol-CertificationDbI-isCertification(address,bytes32)
+digraph{
+}
+// Function: 40089.sol-CertificationDbI-isCertified(address)
+digraph{
+}
+// Function: 40089.sol-CertificationDbI-removeCertificationDocument(address,bytes32)
+digraph{
+}
+// Function: 40089.sol-CertificationDbI-removeCertificationDocumentFromSelf(bytes32)
+digraph{
+}
+// Function: 40089.sol-CertificationDbI-setCertifierDb(address)
+digraph{
+}
+// Function: 40089.sol-CertificationDbI-uncertify(address)
+digraph{
+}
+// Function: 40089.sol-CertifierDbI-addCertifier(address)
+digraph{
+}
+// Function: 40089.sol-CertifierDbI-getCertifierAtIndex(uint256)
+digraph{
+}
+// Function: 40089.sol-CertifierDbI-getCertifierStatus(address)
+digraph{
+}
+// Function: 40089.sol-CertifierDbI-getCertifiersCount()
+digraph{
+}
+// Function: 40089.sol-CertifierDbI-isCertifier(address)
+digraph{
+}
+// Function: 40089.sol-CertifierDbI-removeCertifier(address)
+digraph{
+}
+// Function: 40089.sol-Owned-Owned()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 40089.sol-Owned-fromOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != owner
+
+IRs:
+TMP_4(bool) = msg.sender != owner
+CONDITION TMP_4"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 40089.sol-Owned-getOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+owner
+
+IRs:
+RETURN owner"];
+}
+// Function: 40089.sol-Owned-setOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->9;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+newOwner == 0
+
+IRs:
+TMP_0(bool) = newOwner == 0
+CONDITION TMP_0"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+owner != newOwner
+
+IRs:
+TMP_1(bool) = owner != newOwner
+CONDITION TMP_1"];
+4->5[label="True"];
+4->7[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+LogOwnerChanged(owner,newOwner)
+
+IRs:
+Emit LogOwnerChanged(owner,newOwner)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+success = true
+
+IRs:
+success(bool) := True(bool)"];
+8->10;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+fromOwner()
+
+IRs:
+MODIFIER_CALL, Owned.fromOwner()()"];
+9->1;
+10[label="Node Type: RETURN 10
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 40089.sol-OwnedI-getOwner()
+digraph{
+}
+// Function: 40089.sol-OwnedI-setOwner(address)
+digraph{
+}
+// Function: 40089.sol-PullPaymentCapable-PullPaymentCapable()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+0 < this.balance
+
+IRs:
+REF_0(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_38(bool) = 0 < REF_0
+CONDITION TMP_38"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+asyncSend(msg.sender,this.balance)
+
+IRs:
+REF_1(uint256) = SOLIDITY_CALL balance(address)(this)
+INTERNAL_CALL, PullPaymentCapable.asyncSend(address,uint256)(msg.sender,REF_1)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 40089.sol-PullPaymentCapable-asyncSend(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+amount > 0
+
+IRs:
+TMP_40(bool) = amount > 0
+CONDITION TMP_40"];
+1->2[label="True"];
+1->5[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+totalBalance += amount
+
+IRs:
+totalBalance(uint256) = totalBalance + amount"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+payments[dest] += amount
+
+IRs:
+REF_2(uint256) -> payments[dest]
+REF_2(-> payments) = REF_2 + amount"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+LogPaymentReceived(dest,amount)
+
+IRs:
+Emit LogPaymentReceived(dest,amount)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+}
+// Function: 40089.sol-PullPaymentCapable-fixBalance()
+digraph{
+}
+// Function: 40089.sol-PullPaymentCapable-fixBalanceInternal(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+totalBalance < this.balance
+
+IRs:
+REF_8(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_45(bool) = totalBalance < REF_8
+CONDITION TMP_45"];
+1->2[label="True"];
+1->5[label="False"];
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+amount = this.balance - totalBalance
+
+IRs:
+REF_9(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_46([<slither.core.solidity_types.elementary_type.ElementaryType object at 0x7f41aa3b4460>]) = REF_9 - totalBalance
+amount(uint256) := TMP_46([<slither.core.solidity_types.elementary_type.ElementaryType object at 0x7f41aa3b4460>])"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+payments[dest] += amount
+
+IRs:
+REF_10(uint256) -> payments[dest]
+REF_10(-> payments) = REF_10 + amount"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+LogPaymentReceived(dest,amount)
+
+IRs:
+Emit LogPaymentReceived(dest,amount)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 40089.sol-PullPaymentCapable-getPaymentOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+payments[beneficiary]
+
+IRs:
+REF_3(uint256) -> payments[beneficiary]
+RETURN REF_3"];
+}
+// Function: 40089.sol-PullPaymentCapable-getTotalBalance()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+totalBalance
+
+IRs:
+RETURN totalBalance"];
+}
+// Function: 40089.sol-PullPaymentCapable-withdrawPayments()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+payment = payments[msg.sender]
+
+IRs:
+REF_4(uint256) -> payments[msg.sender]
+payment(uint256) := REF_4(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+payments[msg.sender] = 0
+
+IRs:
+REF_5(uint256) -> payments[msg.sender]
+REF_5(uint256) (->payments) := 0(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+totalBalance -= payment
+
+IRs:
+totalBalance(uint256) = totalBalance - payment"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+! msg.sender.call.value(payment)()
+
+IRs:
+TMP_43(bool) = LOW_LEVEL_CALL, dest:msg.sender, function:call, arguments:[] value:payment 
+TMP_44 = UnaryType.BANG TMP_43 
+CONDITION TMP_44"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: THROW 5
+"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+success = true
+
+IRs:
+success(bool) := True(bool)"];
+7->8;
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 40089.sol-WithBeneficiary-Owned()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 40089.sol-WithBeneficiary-WithBeneficiary(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_beneficiary == 0
+
+IRs:
+TMP_9(bool) = _beneficiary == 0
+CONDITION TMP_9"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+beneficiary = _beneficiary
+
+IRs:
+beneficiary(address) := _beneficiary(address)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+msg.value > 0
+
+IRs:
+TMP_10(bool) = msg.value > 0
+CONDITION TMP_10"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+asyncSend(beneficiary,msg.value)
+
+IRs:
+INTERNAL_CALL, WithBeneficiary.asyncSend(address,uint256)(beneficiary,msg.value)"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+}
+// Function: 40089.sol-WithBeneficiary-asyncSend(address,uint256)
+digraph{
+}
+// Function: 40089.sol-WithBeneficiary-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+asyncSend(beneficiary,msg.value)
+
+IRs:
+INTERNAL_CALL, WithBeneficiary.asyncSend(address,uint256)(beneficiary,msg.value)"];
+}
+// Function: 40089.sol-WithBeneficiary-fromOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != owner
+
+IRs:
+TMP_17(bool) = msg.sender != owner
+CONDITION TMP_17"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 40089.sol-WithBeneficiary-getBeneficiary()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+beneficiary
+
+IRs:
+RETURN beneficiary"];
+}
+// Function: 40089.sol-WithBeneficiary-getOwner()
+digraph{
+}
+// Function: 40089.sol-WithBeneficiary-setBeneficiary(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->9;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+newBeneficiary == 0
+
+IRs:
+TMP_12(bool) = newBeneficiary == 0
+CONDITION TMP_12"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+beneficiary != newBeneficiary
+
+IRs:
+TMP_13(bool) = beneficiary != newBeneficiary
+CONDITION TMP_13"];
+4->5[label="True"];
+4->7[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+LogBeneficiarySet(beneficiary,newBeneficiary)
+
+IRs:
+Emit LogBeneficiarySet(beneficiary,newBeneficiary)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+beneficiary = newBeneficiary
+
+IRs:
+beneficiary(address) := newBeneficiary(address)"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+success = true
+
+IRs:
+success(bool) := True(bool)"];
+8->10;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+fromOwner()
+
+IRs:
+MODIFIER_CALL, Owned.fromOwner()()"];
+9->1;
+10[label="Node Type: RETURN 10
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 40089.sol-WithBeneficiary-setOwner(address)
+digraph{
+}
+// Function: 40089.sol-WithFee-Owned()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 40089.sol-WithFee-WithBeneficiary(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_beneficiary == 0
+
+IRs:
+TMP_18(bool) = _beneficiary == 0
+CONDITION TMP_18"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+beneficiary = _beneficiary
+
+IRs:
+beneficiary(address) := _beneficiary(address)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+msg.value > 0
+
+IRs:
+TMP_19(bool) = msg.value > 0
+CONDITION TMP_19"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+asyncSend(beneficiary,msg.value)
+
+IRs:
+INTERNAL_CALL, WithBeneficiary.asyncSend(address,uint256)(beneficiary,msg.value)"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+}
+// Function: 40089.sol-WithFee-WithFee(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+queryFee = _queryFee
+
+IRs:
+queryFee(uint256) := _queryFee(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+WithBeneficiary(beneficiary)
+
+IRs:
+INTERNAL_CALL, WithBeneficiary.WithBeneficiary(address)(beneficiary)"];
+2->1;
+}
+// Function: 40089.sol-WithFee-asyncSend(address,uint256)
+digraph{
+}
+// Function: 40089.sol-WithFee-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+asyncSend(beneficiary,msg.value)
+
+IRs:
+INTERNAL_CALL, WithBeneficiary.asyncSend(address,uint256)(beneficiary,msg.value)"];
+}
+// Function: 40089.sol-WithFee-fromOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != owner
+
+IRs:
+TMP_34(bool) = msg.sender != owner
+CONDITION TMP_34"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 40089.sol-WithFee-getBeneficiary()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+beneficiary
+
+IRs:
+RETURN beneficiary"];
+}
+// Function: 40089.sol-WithFee-getOwner()
+digraph{
+}
+// Function: 40089.sol-WithFee-getQueryFee()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+queryFee
+
+IRs:
+RETURN queryFee"];
+}
+// Function: 40089.sol-WithFee-requestFeePaid()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.value < queryFee
+
+IRs:
+TMP_35(bool) = msg.value < queryFee
+CONDITION TMP_35"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+asyncSend(getBeneficiary(),msg.value)
+
+IRs:
+TMP_36(address) = INTERNAL_CALL, WithBeneficiary.getBeneficiary()()
+INTERNAL_CALL, WithBeneficiary.asyncSend(address,uint256)(TMP_36,msg.value)"];
+4->5;
+5[label="Node Type: _ 5
+"];
+}
+// Function: 40089.sol-WithFee-setBeneficiary(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->9;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+newBeneficiary == 0
+
+IRs:
+TMP_21(bool) = newBeneficiary == 0
+CONDITION TMP_21"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+beneficiary != newBeneficiary
+
+IRs:
+TMP_22(bool) = beneficiary != newBeneficiary
+CONDITION TMP_22"];
+4->5[label="True"];
+4->7[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+LogBeneficiarySet(beneficiary,newBeneficiary)
+
+IRs:
+Emit LogBeneficiarySet(beneficiary,newBeneficiary)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+beneficiary = newBeneficiary
+
+IRs:
+beneficiary(address) := newBeneficiary(address)"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+success = true
+
+IRs:
+success(bool) := True(bool)"];
+8->10;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+fromOwner()
+
+IRs:
+MODIFIER_CALL, Owned.fromOwner()()"];
+9->1;
+10[label="Node Type: RETURN 10
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 40089.sol-WithFee-setOwner(address)
+digraph{
+}
+// Function: 40089.sol-WithFee-setQueryFee(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+queryFee != newQueryFee
+
+IRs:
+TMP_31(bool) = queryFee != newQueryFee
+CONDITION TMP_31"];
+1->2[label="True"];
+1->4[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+LogQueryFeeSet(queryFee,newQueryFee)
+
+IRs:
+Emit LogQueryFeeSet(queryFee,newQueryFee)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+queryFee = newQueryFee
+
+IRs:
+queryFee(uint256) := newQueryFee(uint256)"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+success = true
+
+IRs:
+success(bool) := True(bool)"];
+5->7;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+fromOwner()
+
+IRs:
+MODIFIER_CALL, Owned.fromOwner()()"];
+6->1;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+}

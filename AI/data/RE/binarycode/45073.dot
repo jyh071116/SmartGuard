@@ -1,0 +1,552 @@
+digraph G {
+// Function: 45073.sol-MultiSigWallet-addOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(ownersCount < MAX_OWNER_COUNT,MSW: MAX_OWNER_COUNT reached)
+
+IRs:
+TMP_33(bool) = ownersCount < MAX_OWNER_COUNT
+TMP_34(None) = SOLIDITY_CALL require(bool,string)(TMP_33,MSW: MAX_OWNER_COUNT reached)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(isOwner[_owner] == false,MSW: Already owner)
+
+IRs:
+REF_14(bool) -> isOwner[_owner]
+TMP_35(bool) = REF_14 == False
+TMP_36(None) = SOLIDITY_CALL require(bool,string)(TMP_35,MSW: Already owner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+ownersCount += 1
+
+IRs:
+ownersCount(uint256) = ownersCount + 1"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+isOwner[_owner] = true
+
+IRs:
+REF_15(bool) -> isOwner[_owner]
+REF_15(bool) (->isOwner) := True(bool)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+OwnerAdded(_owner)
+
+IRs:
+Emit OwnerAdded(_owner)"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyWallet()
+
+IRs:
+MODIFIER_CALL, MultiSigWallet.onlyWallet()()"];
+6->1;
+}
+// Function: 45073.sol-MultiSigWallet-changeThreshold(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(_newThreshold > 0 && _newThreshold <= ownersCount,MSW: Invalid new threshold)
+
+IRs:
+TMP_45(bool) = _newThreshold > 0
+TMP_46(bool) = _newThreshold <= ownersCount
+TMP_47(bool) = TMP_45 && TMP_46
+TMP_48(None) = SOLIDITY_CALL require(bool,string)(TMP_47,MSW: Invalid new threshold)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+threshold = _newThreshold
+
+IRs:
+threshold(uint256) := _newThreshold(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+ThresholdChanged(_newThreshold)
+
+IRs:
+Emit ThresholdChanged(_newThreshold)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyWallet()
+
+IRs:
+MODIFIER_CALL, MultiSigWallet.onlyWallet()()"];
+4->1;
+}
+// Function: 45073.sol-MultiSigWallet-constructor(uint256,address[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(_owners.length > 0 && _owners.length <= MAX_OWNER_COUNT,MSW: Not enough or too many owners)
+
+IRs:
+REF_0 -> LENGTH _owners
+TMP_0(bool) = REF_0 > 0
+REF_1 -> LENGTH _owners
+TMP_1(bool) = REF_1 <= MAX_OWNER_COUNT
+TMP_2(bool) = TMP_0 && TMP_1
+TMP_3(None) = SOLIDITY_CALL require(bool,string)(TMP_2,MSW: Not enough or too many owners)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(_threshold > 0 && _threshold <= _owners.length,MSW: Invalid threshold)
+
+IRs:
+TMP_4(bool) = _threshold > 0
+REF_2 -> LENGTH _owners
+TMP_5(bool) = _threshold <= REF_2
+TMP_6(bool) = TMP_4 && TMP_5
+TMP_7(None) = SOLIDITY_CALL require(bool,string)(TMP_6,MSW: Invalid threshold)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+ownersCount = _owners.length
+
+IRs:
+REF_3 -> LENGTH _owners
+ownersCount(uint256) := REF_3(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+threshold = _threshold
+
+IRs:
+threshold(uint256) := _threshold(uint256)"];
+4->7;
+5[label="Node Type: BEGIN_LOOP 5
+"];
+5->8;
+6[label="Node Type: END_LOOP 6
+"];
+6->12;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+7->5;
+8[label="Node Type: IF_LOOP 8
+
+EXPRESSION:
+i < _owners.length
+
+IRs:
+REF_4 -> LENGTH _owners
+TMP_8(bool) = i < REF_4
+CONDITION TMP_8"];
+8->9[label="True"];
+8->6[label="False"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+isOwner[_owners[i]] = true
+
+IRs:
+REF_5(address) -> _owners[i]
+REF_6(bool) -> isOwner[REF_5]
+REF_6(bool) (->isOwner) := True(bool)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+OwnerAdded(_owners[i])
+
+IRs:
+REF_7(address) -> _owners[i]
+Emit OwnerAdded(REF_7)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_10(uint256) := i(uint256)
+i(uint256) = i + 1"];
+11->8;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+ThresholdChanged(_threshold)
+
+IRs:
+Emit ThresholdChanged(_threshold)"];
+}
+// Function: 45073.sol-MultiSigWallet-execute(address,uint256,bytes,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+count = _signatures.length / 65
+
+IRs:
+REF_8 -> LENGTH _signatures
+TMP_12(uint256) = REF_8 / 65
+count(uint256) := TMP_12(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool,string)(count >= threshold,MSW: Not enough signatures)
+
+IRs:
+TMP_13(bool) = count >= threshold
+TMP_14(None) = SOLIDITY_CALL require(bool,string)(TMP_13,MSW: Not enough signatures)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+txHash = keccak256(bytes)(abi.encodePacked(bytes1(0x19),bytes1(0),address(this),_to,_value,_data,nonce))
+
+IRs:
+TMP_15 = CONVERT 25 to bytes1
+TMP_16 = CONVERT 0 to bytes1
+TMP_17 = CONVERT this to address
+TMP_18(bytes) = SOLIDITY_CALL abi.encodePacked()(TMP_15,TMP_16,TMP_17,_to,_value,_data,nonce)
+TMP_19(bytes32) = SOLIDITY_CALL keccak256(bytes)(TMP_18)
+txHash(bytes32) := TMP_19(bytes32)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+nonce += 1
+
+IRs:
+nonce(uint256) = nonce + 1"];
+7->8;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+valid = 0
+
+IRs:
+valid(uint256) := 0(uint256)"];
+8->9;
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+lastSigner = address(0)
+
+IRs:
+TMP_20 = CONVERT 0 to address
+lastSigner(address) := TMP_20(address)"];
+9->12;
+10[label="Node Type: BEGIN_LOOP 10
+"];
+10->13;
+11[label="Node Type: END_LOOP 11
+"];
+11->29;
+12[label="Node Type: NEW VARIABLE 12
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+12->10;
+13[label="Node Type: IF_LOOP 13
+
+EXPRESSION:
+i < count
+
+IRs:
+TMP_21(bool) = i < count
+CONDITION TMP_21"];
+13->14[label="True"];
+13->11[label="False"];
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+(v,r,s) = splitSignature(_signatures,i)
+
+IRs:
+TUPLE_0(uint8,bytes32,bytes32) = INTERNAL_CALL, MultiSigWallet.splitSignature(bytes,uint256)(_signatures,i)
+v(uint8)= UNPACK TUPLE_0 index: 0 
+r(bytes32)= UNPACK TUPLE_0 index: 1 
+s(bytes32)= UNPACK TUPLE_0 index: 2 "];
+14->15;
+15[label="Node Type: NEW VARIABLE 15
+
+EXPRESSION:
+recovered = ecrecover(bytes32,uint8,bytes32,bytes32)(keccak256(bytes)(abi.encodePacked(Ethereum Signed Message:
+32,txHash)),v,r,s)
+
+IRs:
+TMP_22(bytes) = SOLIDITY_CALL abi.encodePacked()(Ethereum Signed Message:
+32,txHash)
+TMP_23(bytes32) = SOLIDITY_CALL keccak256(bytes)(TMP_22)
+TMP_24(address) = SOLIDITY_CALL ecrecover(bytes32,uint8,bytes32,bytes32)(TMP_23,v,r,s)
+recovered(address) := TMP_24(address)"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+require(bool,string)(recovered > lastSigner,MSW: Badly ordered signatures)
+
+IRs:
+TMP_25(bool) = recovered > lastSigner
+TMP_26(None) = SOLIDITY_CALL require(bool,string)(TMP_25,MSW: Badly ordered signatures)"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+lastSigner = recovered
+
+IRs:
+lastSigner(address) := recovered(address)"];
+17->18;
+18[label="Node Type: IF 18
+
+EXPRESSION:
+isOwner[recovered]
+
+IRs:
+REF_11(bool) -> isOwner[recovered]
+CONDITION REF_11"];
+18->19[label="True"];
+18->27[label="False"];
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+valid += 1
+
+IRs:
+valid(uint256) = valid + 1"];
+19->20;
+20[label="Node Type: IF 20
+
+EXPRESSION:
+valid >= threshold
+
+IRs:
+TMP_27(bool) = valid >= threshold
+CONDITION TMP_27"];
+20->21[label="True"];
+20->26[label="False"];
+21[label="Node Type: NEW VARIABLE 21
+"];
+21->22;
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+(success,None) = _to.call.value(_value)(_data)
+
+IRs:
+TUPLE_1(bool,bytes) = LOW_LEVEL_CALL, dest:_to, function:call, arguments:['_data'] value:_value 
+success(bool)= UNPACK TUPLE_1 index: 0 "];
+22->23;
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+require(bool,string)(success,MSW: External call failed)
+
+IRs:
+TMP_29(None) = SOLIDITY_CALL require(bool,string)(success,MSW: External call failed)"];
+23->24;
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+Executed(_to,_value,_data)
+
+IRs:
+Emit Executed(_to,_value,_data)"];
+24->25;
+25[label="Node Type: RETURN 25
+"];
+26[label="Node Type: END_IF 26
+"];
+26->27;
+27[label="Node Type: END_IF 27
+"];
+27->28;
+28[label="Node Type: EXPRESSION 28
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_31(uint256) := i(uint256)
+i(uint256) = i + 1"];
+28->13;
+29[label="Node Type: EXPRESSION 29
+
+EXPRESSION:
+revert(string)(MSW: Not enough valid signatures)
+
+IRs:
+TMP_32(None) = SOLIDITY_CALL revert(string)(MSW: Not enough valid signatures)"];
+}
+// Function: 45073.sol-MultiSigWallet-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+Received(msg.value,msg.sender)
+
+IRs:
+Emit Received(msg.value,msg.sender)"];
+}
+// Function: 45073.sol-MultiSigWallet-onlyWallet()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(msg.sender == address(this),MSW: Calling account is not wallet)
+
+IRs:
+TMP_56 = CONVERT this to address
+TMP_57(bool) = msg.sender == TMP_56
+TMP_58(None) = SOLIDITY_CALL require(bool,string)(TMP_57,MSW: Calling account is not wallet)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 45073.sol-MultiSigWallet-removeOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(ownersCount > threshold,MSW: Too few owners left)
+
+IRs:
+TMP_39(bool) = ownersCount > threshold
+TMP_40(None) = SOLIDITY_CALL require(bool,string)(TMP_39,MSW: Too few owners left)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(isOwner[_owner] == true,MSW: Not an owner)
+
+IRs:
+REF_16(bool) -> isOwner[_owner]
+TMP_41(bool) = REF_16 == True
+TMP_42(None) = SOLIDITY_CALL require(bool,string)(TMP_41,MSW: Not an owner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+ownersCount -= 1
+
+IRs:
+ownersCount(uint256) = ownersCount - 1"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+delete isOwner[_owner]
+
+IRs:
+REF_17(bool) -> isOwner[_owner]
+isOwner = delete REF_17 "];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+OwnerRemoved(_owner)
+
+IRs:
+Emit OwnerRemoved(_owner)"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyWallet()
+
+IRs:
+MODIFIER_CALL, MultiSigWallet.onlyWallet()()"];
+6->1;
+}
+// Function: 45073.sol-MultiSigWallet-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+MAX_OWNER_COUNT = 10
+
+IRs:
+MAX_OWNER_COUNT(uint256) := 10(uint256)"];
+}
+// Function: 45073.sol-MultiSigWallet-splitSignature(bytes,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: INLINE ASM 1
+"];
+1->2;
+2[label="Node Type: END INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool,string)(v == 27 || v == 28,MSW: Invalid v)
+
+IRs:
+TMP_51(bool) = v == 27
+TMP_52(bool) = v == 28
+TMP_53(bool) = TMP_51 || TMP_52
+TMP_54(None) = SOLIDITY_CALL require(bool,string)(TMP_53,MSW: Invalid v)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+(v,r,s)
+
+IRs:
+RETURN v,r,s"];
+}
+}

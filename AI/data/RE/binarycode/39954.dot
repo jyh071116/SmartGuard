@@ -1,0 +1,7191 @@
+digraph G {
+// Function: 39954.sol-Dice-Dice()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+oraclize_setProof(proofType_TLSNotary | proofStorage_IPFS)
+
+IRs:
+TMP_394(bytes1) = proofType_TLSNotary | proofStorage_IPFS
+INTERNAL_CALL, usingOraclize.oraclize_setProof(bytes1)(TMP_394)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+houseAddress = msg.sender
+
+IRs:
+houseAddress(address) := msg.sender(address)"];
+}
+// Function: 39954.sol-Dice-__callback(bytes32,string,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+numberRolled = parseInt(result)
+
+IRs:
+TMP_515(uint256) = INTERNAL_CALL, usingOraclize.parseInt(string)(result)
+numberRolled(uint256) := TMP_515(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+bets[myid].numberRolled = numberRolled
+
+IRs:
+REF_224(Dice.Bet) -> bets[myid]
+REF_225(uint256) -> REF_224.numberRolled
+REF_225(uint256) (->bets) := numberRolled(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+isWinningBet(bets[myid],numberRolled)
+
+IRs:
+REF_226(Dice.Bet) -> bets[myid]
+INTERNAL_CALL, Dice.isWinningBet(Dice.Bet,uint256)(REF_226,numberRolled)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+isLosingBet(bets[myid],numberRolled)
+
+IRs:
+REF_227(Dice.Bet) -> bets[myid]
+INTERNAL_CALL, Dice.isLosingBet(Dice.Bet,uint256)(REF_227,numberRolled)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+delete profitDistributed
+
+IRs:
+profitDistributed = delete profitDistributed "];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyOraclize()
+
+IRs:
+MODIFIER_CALL, Dice.onlyOraclize()()"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+onlyIfBetExist(myid)
+
+IRs:
+MODIFIER_CALL, Dice.onlyIfBetExist(bytes32)(myid)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+onlyIfNotProcessed(myid)
+
+IRs:
+MODIFIER_CALL, Dice.onlyIfNotProcessed(bytes32)(myid)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+onlyIfValidRoll(myid,result)
+
+IRs:
+MODIFIER_CALL, Dice.onlyIfValidRoll(bytes32,string)(myid,result)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+onlyIfBetSizeIsStillCorrect(myid)
+
+IRs:
+MODIFIER_CALL, Dice.onlyIfBetSizeIsStillCorrect(bytes32)(myid)"];
+10->1;
+}
+// Function: 39954.sol-Dice-addInvestorAtID(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+investorIDs[msg.sender] = id
+
+IRs:
+REF_199(uint256) -> investorIDs[msg.sender]
+REF_199(uint256) (->investorIDs) := id(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+investors[id].investorAddress = msg.sender
+
+IRs:
+REF_200(Dice.Investor) -> investors[id]
+REF_201(address) -> REF_200.investorAddress
+REF_201(address) (->investors) := msg.sender(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+investors[id].amountInvested = msg.value
+
+IRs:
+REF_202(Dice.Investor) -> investors[id]
+REF_203(uint256) -> REF_202.amountInvested
+REF_203(uint256) (->investors) := msg.value(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+invested += msg.value
+
+IRs:
+invested(uint256) = invested + msg.value"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+LOG_InvestorEntrance(msg.sender,msg.value)
+
+IRs:
+Emit LOG_InvestorEntrance(msg.sender,msg.value)"];
+}
+// Function: 39954.sol-Dice-bet()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->13;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+oraclizeFee = OraclizeI(OAR.getAddress()).getPrice(URL,ORACLIZE_GAS_LIMIT + safeGas)
+
+IRs:
+TMP_491(address) = HIGH_LEVEL_CALL, dest:OAR(OraclizeAddrResolverI), function:getAddress, arguments:[]  
+TMP_492 = CONVERT TMP_491 to OraclizeI
+TMP_493(uint256) = ORACLIZE_GAS_LIMIT + safeGas
+TMP_494(uint256) = HIGH_LEVEL_CALL, dest:TMP_492(OraclizeI), function:getPrice, arguments:['URL', 'TMP_493']  
+oraclizeFee(uint256) := TMP_494(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+oraclizeFee >= msg.value
+
+IRs:
+TMP_495(bool) = oraclizeFee >= msg.value
+CONDITION TMP_495"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: THROW 3
+"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+betValue = msg.value - oraclizeFee
+
+IRs:
+TMP_496(uint256) = msg.value - oraclizeFee
+betValue(uint256) := TMP_496(uint256)"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+(((betValue * ((10000 - edge) - pwin)) / pwin) <= (maxWin * getBankroll()) / 10000) && (betValue >= minBet)
+
+IRs:
+TMP_497(uint256) = 10000 - edge
+TMP_498(uint256) = TMP_497 - pwin
+TMP_499(uint256) = betValue * TMP_498
+TMP_500(uint256) = TMP_499 / pwin
+TMP_501(uint256) = INTERNAL_CALL, Dice.getBankroll()()
+TMP_502(uint256) = maxWin * TMP_501
+TMP_503(uint256) = TMP_502 / 10000
+TMP_504(bool) = TMP_500 <= TMP_503
+TMP_505(bool) = betValue >= minBet
+TMP_506(bool) = TMP_504 && TMP_505
+CONDITION TMP_506"];
+6->7[label="True"];
+6->11[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+LOG_NewBet(msg.sender,betValue)
+
+IRs:
+Emit LOG_NewBet(msg.sender,betValue)"];
+7->8;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+myid = oraclize_query(nested,[URL] ['json(https://api.random.org/json-rpc/1/invoke).result.random.data.0', '\n{"jsonrpc":"2.0","method":"generateSignedIntegers","params":{"apiKey":${[decrypt] BD/A+lI7OwcDJW+y4Qo1cDia95LO/jW5x1X12pluCsF5Z/U9GbhKxVk3OPEjWBskxHy980dPa5y9y0XVg6TknHK9z+bK9gckTQUPP7LUonPlxdhHnyhq1t1uop06yXzkIn6rER/huIwvrk0rt6eVW3RBqSDpK3o=},"n":1,"min":1,"max":10000${[identity] "}"},"id":1${[identity] "}"}'],ORACLIZE_GAS_LIMIT + safeGas)
+
+IRs:
+TMP_508(uint256) = ORACLIZE_GAS_LIMIT + safeGas
+TMP_509(bytes32) = INTERNAL_CALL, usingOraclize.oraclize_query(string,string,uint256)(nested,[URL] ['json(https://api.random.org/json-rpc/1/invoke).result.random.data.0', '\n{"jsonrpc":"2.0","method":"generateSignedIntegers","params":{"apiKey":${[decrypt] BD/A+lI7OwcDJW+y4Qo1cDia95LO/jW5x1X12pluCsF5Z/U9GbhKxVk3OPEjWBskxHy980dPa5y9y0XVg6TknHK9z+bK9gckTQUPP7LUonPlxdhHnyhq1t1uop06yXzkIn6rER/huIwvrk0rt6eVW3RBqSDpK3o=},"n":1,"min":1,"max":10000${[identity] "}"},"id":1${[identity] "}"}'],TMP_508)
+myid(bytes32) := TMP_509(bytes32)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+bets[myid] = Bet(msg.sender,betValue,0)
+
+IRs:
+REF_220(Dice.Bet) -> bets[myid]
+TMP_510(Dice.Bet) = new Bet(msg.sender,betValue,0)
+REF_220(Dice.Bet) (->bets) := TMP_510(Dice.Bet)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+betsKeys.push(myid)
+
+IRs:
+REF_222 -> LENGTH betsKeys
+TMP_512(uint256) := REF_222(uint256)
+TMP_513(uint256) = TMP_512 + 1
+REF_222(uint256) (->betsKeys) := TMP_513(uint256)
+REF_223(bytes32) -> betsKeys[TMP_512]
+REF_223(bytes32) (->betsKeys) := myid(bytes32)"];
+10->12;
+11[label="Node Type: THROW 11
+"];
+12[label="Node Type: END_IF 12
+"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+onlyIfNotStopped()
+
+IRs:
+MODIFIER_CALL, Dice.onlyIfNotStopped()()"];
+13->1;
+}
+// Function: 39954.sol-Dice-changeGasLimitOfSafeSend(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+safeGas = newGasLimit
+
+IRs:
+safeGas(uint256) := newGasLimit(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+LOG_GasLimitChanged(safeGas,newGasLimit)
+
+IRs:
+Emit LOG_GasLimitChanged(safeGas,newGasLimit)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Dice.onlyOwner()()"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyIfValidGas(newGasLimit)
+
+IRs:
+MODIFIER_CALL, Dice.onlyIfValidGas(uint256)(newGasLimit)"];
+4->1;
+}
+// Function: 39954.sol-Dice-changeHouseAddress(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+newHouse == address(0x0)
+
+IRs:
+TMP_593 = CONVERT 0 to address
+TMP_594(bool) = newHouse == TMP_593
+CONDITION TMP_594"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+houseAddress = newHouse
+
+IRs:
+houseAddress(address) := newHouse(address)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+LOG_HouseAddressChanged(houseAddress,newHouse)
+
+IRs:
+Emit LOG_HouseAddressChanged(houseAddress,newHouse)"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Dice.onlyOwner()()"];
+6->1;
+}
+// Function: 39954.sol-Dice-changeOraclizeConfig(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+oraclize_setConfig(_config)
+
+IRs:
+INTERNAL_CALL, usingOraclize.oraclize_setConfig(bytes32)(_config)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Dice.onlyOwner()()"];
+2->1;
+}
+// Function: 39954.sol-Dice-changeOraclizeProofType(bytes1)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_proofType == 0x00
+
+IRs:
+TMP_450(bool) = _proofType == 0
+CONDITION TMP_450"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+oraclize_setProof(_proofType | proofStorage_IPFS)
+
+IRs:
+TMP_451(bytes1) = _proofType | proofStorage_IPFS
+INTERNAL_CALL, usingOraclize.oraclize_setProof(bytes1)(TMP_451)"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Dice.onlyOwner()()"];
+5->1;
+}
+// Function: 39954.sol-Dice-changeOwnerAddress(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+newOwner == address(0x0)
+
+IRs:
+TMP_597 = CONVERT 0 to address
+TMP_598(bool) = newOwner == TMP_597
+CONDITION TMP_598"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+LOG_OwnerAddressChanged(owner,newOwner)
+
+IRs:
+Emit LOG_OwnerAddressChanged(owner,newOwner)"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Dice.onlyOwner()()"];
+6->1;
+}
+// Function: 39954.sol-Dice-coupon(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+oraclize = OraclizeI(OAR.getAddress())
+
+IRs:
+TMP_642(address) = HIGH_LEVEL_CALL, dest:OAR(OraclizeAddrResolverI), function:getAddress, arguments:[]  
+TMP_643 = CONVERT TMP_642 to OraclizeI
+oraclize(OraclizeI) := TMP_643(OraclizeI)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+oraclize.useCoupon(code)
+
+IRs:
+HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:useCoupon, arguments:['code']  "];
+2->3;
+3[label="Node Type: _ 3
+"];
+}
+// Function: 39954.sol-Dice-divest()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+divest(msg.sender)
+
+IRs:
+INTERNAL_CALL, Dice.divest(address)(msg.sender)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyInvestors()
+
+IRs:
+MODIFIER_CALL, Dice.onlyInvestors()()"];
+2->1;
+}
+// Function: 39954.sol-Dice-divest(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->23;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+profitDistribution()
+
+IRs:
+INTERNAL_CALL, Dice.profitDistribution()()"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+currentID = investorIDs[currentInvestor]
+
+IRs:
+REF_246(uint256) -> investorIDs[currentInvestor]
+currentID(uint256) := REF_246(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+amountToReturn = getBalance(currentInvestor)
+
+IRs:
+TMP_571(uint256) = INTERNAL_CALL, Dice.getBalance(address)(currentInvestor)
+amountToReturn(uint256) := TMP_571(uint256)"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+(invested >= investors[currentID].amountInvested)
+
+IRs:
+REF_247(Dice.Investor) -> investors[currentID]
+REF_248(uint256) -> REF_247.amountInvested
+TMP_572(bool) = invested >= REF_248
+CONDITION TMP_572"];
+4->5[label="True"];
+4->20[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+invested -= investors[currentID].amountInvested
+
+IRs:
+REF_249(Dice.Investor) -> investors[currentID]
+REF_250(uint256) -> REF_249.amountInvested
+invested(uint256) = invested - REF_250"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+divestFeeAmount = (amountToReturn * divestFee) / 10000
+
+IRs:
+TMP_573(uint256) = amountToReturn * divestFee
+TMP_574(uint256) = TMP_573 / 10000
+divestFeeAmount(uint256) := TMP_574(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+amountToReturn -= divestFeeAmount
+
+IRs:
+amountToReturn(uint256) = amountToReturn - divestFeeAmount"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+delete investors[currentID]
+
+IRs:
+REF_251(Dice.Investor) -> investors[currentID]
+investors = delete REF_251 "];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+delete investorIDs[currentInvestor]
+
+IRs:
+REF_252(uint256) -> investorIDs[currentInvestor]
+investorIDs = delete REF_252 "];
+9->10;
+10[label="Node Type: IF 10
+
+EXPRESSION:
+currentID != numInvestors
+
+IRs:
+TMP_575(bool) = currentID != numInvestors
+CONDITION TMP_575"];
+10->11[label="True"];
+10->15[label="False"];
+11[label="Node Type: NEW VARIABLE 11
+
+EXPRESSION:
+lastInvestor = investors[numInvestors]
+
+IRs:
+REF_253(Dice.Investor) -> investors[numInvestors]
+lastInvestor(Dice.Investor) := REF_253(Dice.Investor)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+investorIDs[lastInvestor.investorAddress] = currentID
+
+IRs:
+REF_254(address) -> lastInvestor.investorAddress
+REF_255(uint256) -> investorIDs[REF_254]
+REF_255(uint256) (->investorIDs) := currentID(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+investors[currentID] = lastInvestor
+
+IRs:
+REF_256(Dice.Investor) -> investors[currentID]
+REF_256(Dice.Investor) (->investors) := lastInvestor(Dice.Investor)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+delete investors[numInvestors]
+
+IRs:
+REF_257(Dice.Investor) -> investors[numInvestors]
+investors = delete REF_257 "];
+14->15;
+15[label="Node Type: END_IF 15
+"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+numInvestors --
+
+IRs:
+TMP_576(uint256) := numInvestors(uint256)
+numInvestors(uint256) = numInvestors - 1"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+safeSend(currentInvestor,amountToReturn)
+
+IRs:
+INTERNAL_CALL, Dice.safeSend(address,uint256)(currentInvestor,amountToReturn)"];
+17->18;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+safeSend(houseAddress,divestFeeAmount)
+
+IRs:
+INTERNAL_CALL, Dice.safeSend(address,uint256)(houseAddress,divestFeeAmount)"];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+LOG_InvestorExit(currentInvestor,amountToReturn)
+
+IRs:
+Emit LOG_InvestorExit(currentInvestor,amountToReturn)"];
+19->22;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+isStopped = true
+
+IRs:
+isStopped(bool) := True(bool)"];
+20->21;
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+LOG_EmergencyAutoStop()
+
+IRs:
+Emit LOG_EmergencyAutoStop()"];
+21->22;
+22[label="Node Type: END_IF 22
+"];
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+investorsInvariant()
+
+IRs:
+MODIFIER_CALL, Dice.investorsInvariant()()"];
+23->1;
+}
+// Function: 39954.sol-Dice-executeEmergencyWithdrawal()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->19;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+amountToWithdraw = this.balance
+
+IRs:
+REF_265(uint256) = SOLIDITY_CALL balance(address)(this)
+amountToWithdraw(uint256) := REF_265([<slither.core.solidity_types.elementary_type.ElementaryType object at 0x7fba1f87ad10>])"];
+2->5;
+3[label="Node Type: BEGIN_LOOP 3
+"];
+3->6;
+4[label="Node Type: END_LOOP 4
+"];
+4->12;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+i = 1
+
+IRs:
+i(uint256) := 1(uint256)"];
+5->3;
+6[label="Node Type: IF_LOOP 6
+
+EXPRESSION:
+i <= numInvestors
+
+IRs:
+TMP_614(bool) = i <= numInvestors
+CONDITION TMP_614"];
+6->7[label="True"];
+6->4[label="False"];
+7[label="Node Type: IF 7
+
+EXPRESSION:
+investors[i].votedForEmergencyWithdrawal == true
+
+IRs:
+REF_266(Dice.Investor) -> investors[i]
+REF_267(bool) -> REF_266.votedForEmergencyWithdrawal
+TMP_615(bool) = REF_267 == True
+CONDITION TMP_615"];
+7->8[label="True"];
+7->10[label="False"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+numOfVotesInFavour ++
+
+IRs:
+TMP_616(uint256) := numOfVotesInFavour(uint256)
+numOfVotesInFavour(uint256) = numOfVotesInFavour + 1"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+delete investors[i].votedForEmergencyWithdrawal
+
+IRs:
+REF_268(Dice.Investor) -> investors[i]
+REF_269(bool) -> REF_268.votedForEmergencyWithdrawal
+REF_268 = delete REF_269 "];
+9->10;
+10[label="Node Type: END_IF 10
+"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_617(uint256) := i(uint256)
+i(uint256) = i + 1"];
+11->6;
+12[label="Node Type: IF 12
+
+EXPRESSION:
+numOfVotesInFavour >= emergencyWithdrawalRatio * numInvestors / 100
+
+IRs:
+TMP_618(uint256) = emergencyWithdrawalRatio * numInvestors
+TMP_619(uint256) = TMP_618 / 100
+TMP_620(bool) = numOfVotesInFavour >= TMP_619
+CONDITION TMP_620"];
+12->13[label="True"];
+12->17[label="False"];
+13[label="Node Type: IF 13
+
+EXPRESSION:
+! proposedWithdrawal.toAddress.send(amountToWithdraw)
+
+IRs:
+REF_270(address) -> proposedWithdrawal.toAddress
+TMP_621 = SEND dest:REF_270 value:amountToWithdraw
+TMP_622 = UnaryType.BANG TMP_621 
+CONDITION TMP_622"];
+13->14[label="True"];
+13->15[label="False"];
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+LOG_EmergencyWithdrawalFailed(proposedWithdrawal.toAddress)
+
+IRs:
+REF_272(address) -> proposedWithdrawal.toAddress
+Emit LOG_EmergencyWithdrawalFailed(REF_272)"];
+14->16;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+LOG_EmergencyWithdrawalSucceeded(proposedWithdrawal.toAddress,amountToWithdraw)
+
+IRs:
+REF_273(address) -> proposedWithdrawal.toAddress
+Emit LOG_EmergencyWithdrawalSucceeded(REF_273,amountToWithdraw)"];
+15->16;
+16[label="Node Type: END_IF 16
+"];
+16->18;
+17[label="Node Type: THROW 17
+"];
+18[label="Node Type: END_IF 18
+"];
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Dice.onlyOwner()()"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+onlyAfterProposed()
+
+IRs:
+MODIFIER_CALL, Dice.onlyAfterProposed()()"];
+20->21;
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+onlyIfStopped()
+
+IRs:
+MODIFIER_CALL, Dice.onlyIfStopped()()"];
+21->22;
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+onlyIfEmergencyTimeOutHasPassed()
+
+IRs:
+MODIFIER_CALL, Dice.onlyIfEmergencyTimeOutHasPassed()()"];
+22->1;
+}
+// Function: 39954.sol-Dice-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+bet()
+
+IRs:
+INTERNAL_CALL, Dice.bet()()"];
+}
+// Function: 39954.sol-Dice-forceDivestOfAllInvestors()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->8;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+copyNumInvestors = numInvestors
+
+IRs:
+copyNumInvestors(uint256) := numInvestors(uint256)"];
+1->4;
+2[label="Node Type: BEGIN_LOOP 2
+"];
+2->5;
+3[label="Node Type: END_LOOP 3
+"];
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+i = 1
+
+IRs:
+i(uint256) := 1(uint256)"];
+4->2;
+5[label="Node Type: IF_LOOP 5
+
+EXPRESSION:
+i <= copyNumInvestors
+
+IRs:
+TMP_582(bool) = i <= copyNumInvestors
+CONDITION TMP_582"];
+5->6[label="True"];
+5->3[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+divest(investors[1].investorAddress)
+
+IRs:
+REF_258(Dice.Investor) -> investors[1]
+REF_259(address) -> REF_258.investorAddress
+INTERNAL_CALL, Dice.divest(address)(REF_259)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_584(uint256) := i(uint256)
+i(uint256) = i + 1"];
+7->5;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Dice.onlyOwner()()"];
+8->1;
+}
+// Function: 39954.sol-Dice-forceDivestOfOneInvestor(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+divest(currentInvestor)
+
+IRs:
+INTERNAL_CALL, Dice.divest(address)(currentInvestor)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+delete proposedWithdrawal
+
+IRs:
+proposedWithdrawal = delete proposedWithdrawal "];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Dice.onlyOwner()()"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyIfStopped()
+
+IRs:
+MODIFIER_CALL, Dice.onlyIfStopped()()"];
+4->1;
+}
+// Function: 39954.sol-Dice-getBalance(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+invested = investors[investorIDs[currentInvestor]].amountInvested
+
+IRs:
+REF_185(uint256) -> investorIDs[currentInvestor]
+REF_186(Dice.Investor) -> investors[REF_185]
+REF_187(uint256) -> REF_186.amountInvested
+invested(uint256) := REF_187(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+profit = getProfitShare(currentInvestor)
+
+IRs:
+TMP_433(uint256) = INTERNAL_CALL, Dice.getProfitShare(address)(currentInvestor)
+profit(uint256) := TMP_433(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+losses = getLossesShare(currentInvestor)
+
+IRs:
+TMP_434(uint256) = INTERNAL_CALL, Dice.getLossesShare(address)(currentInvestor)
+losses(uint256) := TMP_434(uint256)"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+(invested + profit < profit) || (invested + profit < invested) || (invested + profit < losses)
+
+IRs:
+TMP_435(uint256) = invested + profit
+TMP_436(bool) = TMP_435 < profit
+TMP_437(uint256) = invested + profit
+TMP_438(bool) = TMP_437 < invested
+TMP_439(bool) = TMP_436 || TMP_438
+TMP_440(uint256) = invested + profit
+TMP_441(bool) = TMP_440 < losses
+TMP_442(bool) = TMP_439 || TMP_441
+CONDITION TMP_442"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+invested + profit - losses
+
+IRs:
+TMP_443(uint256) = invested + profit
+TMP_444(uint256) = TMP_443 - losses
+RETURN TMP_444"];
+}
+// Function: 39954.sol-Dice-getBankroll()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+(invested < investorsProfit) || (invested + investorsProfit < invested) || (invested + investorsProfit < investorsLosses)
+
+IRs:
+TMP_396(bool) = invested < investorsProfit
+TMP_397(uint256) = invested + investorsProfit
+TMP_398(bool) = TMP_397 < invested
+TMP_399(bool) = TMP_396 || TMP_398
+TMP_400(uint256) = invested + investorsProfit
+TMP_401(bool) = TMP_400 < investorsLosses
+TMP_402(bool) = TMP_399 || TMP_401
+CONDITION TMP_402"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+invested + investorsProfit - investorsLosses
+
+IRs:
+TMP_403(uint256) = invested + investorsProfit
+TMP_404(uint256) = TMP_403 - investorsLosses
+RETURN TMP_404"];
+}
+// Function: 39954.sol-Dice-getBet(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+id < betsKeys.length
+
+IRs:
+REF_166 -> LENGTH betsKeys
+TMP_411(bool) = id < REF_166
+CONDITION TMP_411"];
+1->2[label="True"];
+1->4[label="False"];
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+betKey = betsKeys[id]
+
+IRs:
+REF_167(bytes32) -> betsKeys[id]
+betKey(bytes32) := REF_167(bytes32)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+(bets[betKey].playerAddress,bets[betKey].amountBet,bets[betKey].numberRolled)
+
+IRs:
+REF_168(Dice.Bet) -> bets[betKey]
+REF_169(address) -> REF_168.playerAddress
+REF_170(Dice.Bet) -> bets[betKey]
+REF_171(uint256) -> REF_170.amountBet
+REF_172(Dice.Bet) -> bets[betKey]
+REF_173(uint256) -> REF_172.numberRolled
+RETURN REF_169,REF_171,REF_173"];
+4[label="Node Type: END_IF 4
+"];
+}
+// Function: 39954.sol-Dice-getCodeSize(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: INLINE ASM 1
+"];
+1->2;
+2[label="Node Type: END INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+_size
+
+IRs:
+RETURN _size"];
+}
+// Function: 39954.sol-Dice-getLossesShare(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+investors[investorIDs[currentInvestor]].amountInvested * (investorsLosses) / invested
+
+IRs:
+REF_179(uint256) -> investorIDs[currentInvestor]
+REF_180(Dice.Investor) -> investors[REF_179]
+REF_181(uint256) -> REF_180.amountInvested
+TMP_429(uint256) = REF_181 * investorsLosses
+TMP_430(uint256) = TMP_429 / invested
+RETURN TMP_430"];
+}
+// Function: 39954.sol-Dice-getMaxBetAmount()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+oraclizeFee = OraclizeI(OAR.getAddress()).getPrice(URL,ORACLIZE_GAS_LIMIT + safeGas)
+
+IRs:
+TMP_417(address) = HIGH_LEVEL_CALL, dest:OAR(OraclizeAddrResolverI), function:getAddress, arguments:[]  
+TMP_418 = CONVERT TMP_417 to OraclizeI
+TMP_419(uint256) = ORACLIZE_GAS_LIMIT + safeGas
+TMP_420(uint256) = HIGH_LEVEL_CALL, dest:TMP_418(OraclizeI), function:getPrice, arguments:['URL', 'TMP_419']  
+oraclizeFee(uint256) := TMP_420(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+betValue = (maxWin * getBankroll()) * pwin / (10000 * (10000 - edge - pwin))
+
+IRs:
+TMP_421(uint256) = INTERNAL_CALL, Dice.getBankroll()()
+TMP_422(uint256) = maxWin * TMP_421
+TMP_423(uint256) = TMP_422 * pwin
+TMP_424(uint256) = 10000 - edge
+TMP_425(uint256) = TMP_424 - pwin
+TMP_426(uint256) = 10000 * TMP_425
+TMP_427(uint256) = TMP_423 / TMP_426
+betValue(uint256) := TMP_427(uint256)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+betValue + oraclizeFee
+
+IRs:
+TMP_428(uint256) = betValue + oraclizeFee
+RETURN TMP_428"];
+}
+// Function: 39954.sol-Dice-getMinBetAmount()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+oraclizeFee = OraclizeI(OAR.getAddress()).getPrice(URL,ORACLIZE_GAS_LIMIT + safeGas)
+
+IRs:
+TMP_412(address) = HIGH_LEVEL_CALL, dest:OAR(OraclizeAddrResolverI), function:getAddress, arguments:[]  
+TMP_413 = CONVERT TMP_412 to OraclizeI
+TMP_414(uint256) = ORACLIZE_GAS_LIMIT + safeGas
+TMP_415(uint256) = HIGH_LEVEL_CALL, dest:TMP_413(OraclizeI), function:getPrice, arguments:['URL', 'TMP_414']  
+oraclizeFee(uint256) := TMP_415(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+oraclizeFee + minBet
+
+IRs:
+TMP_416(uint256) = oraclizeFee + minBet
+RETURN TMP_416"];
+}
+// Function: 39954.sol-Dice-getMinInvestment()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+numInvestors == maxInvestors
+
+IRs:
+TMP_405(bool) = numInvestors == maxInvestors
+CONDITION TMP_405"];
+1->2[label="True"];
+1->4[label="False"];
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+investorID = searchSmallestInvestor()
+
+IRs:
+TMP_406(uint256) = INTERNAL_CALL, Dice.searchSmallestInvestor()()
+investorID(uint256) := TMP_406(uint256)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+getBalance(investors[investorID].investorAddress)
+
+IRs:
+REF_163(Dice.Investor) -> investors[investorID]
+REF_164(address) -> REF_163.investorAddress
+TMP_407(uint256) = INTERNAL_CALL, Dice.getBalance(address)(REF_164)
+RETURN TMP_407"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+}
+// Function: 39954.sol-Dice-getProfitShare(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+investors[investorIDs[currentInvestor]].amountInvested * (investorsProfit) / invested
+
+IRs:
+REF_182(uint256) -> investorIDs[currentInvestor]
+REF_183(Dice.Investor) -> investors[REF_182]
+REF_184(uint256) -> REF_183.amountInvested
+TMP_431(uint256) = REF_184 * investorsProfit
+TMP_432(uint256) = TMP_431 / invested
+RETURN TMP_432"];
+}
+// Function: 39954.sol-Dice-getStatus()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+bankroll = getBankroll()
+
+IRs:
+TMP_408(uint256) = INTERNAL_CALL, Dice.getBankroll()()
+bankroll(uint256) := TMP_408(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+minInvestment = getMinInvestment()
+
+IRs:
+TMP_409(uint256) = INTERNAL_CALL, Dice.getMinInvestment()()
+minInvestment(uint256) := TMP_409(uint256)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+(bankroll,pwin,edge,maxWin,minBet,(investorsProfit - investorsLosses),minInvestment,betsKeys.length)
+
+IRs:
+TMP_410(uint256) = investorsProfit - investorsLosses
+REF_165 -> LENGTH betsKeys
+RETURN bankroll,pwin,edge,maxWin,minBet,TMP_410,minInvestment,REF_165"];
+}
+// Function: 39954.sol-Dice-increaseInvestment()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+profitDistribution()
+
+IRs:
+INTERNAL_CALL, Dice.profitDistribution()()"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+investors[investorIDs[msg.sender]].amountInvested += msg.value
+
+IRs:
+REF_241(uint256) -> investorIDs[msg.sender]
+REF_242(Dice.Investor) -> investors[REF_241]
+REF_243(uint256) -> REF_242.amountInvested
+REF_243(-> investors) = REF_243 + msg.value"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+invested += msg.value
+
+IRs:
+invested(uint256) = invested + msg.value"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyIfNotStopped()
+
+IRs:
+MODIFIER_CALL, Dice.onlyIfNotStopped()()"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+onlyMoreThanZero()
+
+IRs:
+MODIFIER_CALL, Dice.onlyMoreThanZero()()"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyInvestors()
+
+IRs:
+MODIFIER_CALL, Dice.onlyInvestors()()"];
+6->1;
+}
+// Function: 39954.sol-Dice-indexOf(string,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+h = bytes(_haystack)
+
+IRs:
+TMP_311 = CONVERT _haystack to bytes
+h(bytes) := TMP_311(bytes)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+n = bytes(_needle)
+
+IRs:
+TMP_312 = CONVERT _needle to bytes
+n(bytes) := TMP_312(bytes)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+h.length < 1 || n.length < 1 || (n.length > h.length)
+
+IRs:
+REF_124 -> LENGTH h
+TMP_313(bool) = REF_124 < 1
+REF_125 -> LENGTH n
+TMP_314(bool) = REF_125 < 1
+TMP_315(bool) = TMP_313 || TMP_314
+REF_126 -> LENGTH n
+REF_127 -> LENGTH h
+TMP_316(bool) = REF_126 > REF_127
+TMP_317(bool) = TMP_315 || TMP_316
+CONDITION TMP_317"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+- 1
+
+IRs:
+TMP_318(uint256) = 0 - 1
+RETURN TMP_318"];
+5[label="Node Type: IF 5
+
+EXPRESSION:
+h.length > (2 ** 128 - 1)
+
+IRs:
+REF_128 -> LENGTH h
+TMP_319(uint256) = 2 ** 128
+TMP_320(uint256) = TMP_319 - 1
+TMP_321(bool) = REF_128 > TMP_320
+CONDITION TMP_321"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+- 1
+
+IRs:
+TMP_322(uint256) = 0 - 1
+RETURN TMP_322"];
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+subindex = 0
+
+IRs:
+subindex(uint256) := 0(uint256)"];
+7->10;
+8[label="Node Type: BEGIN_LOOP 8
+"];
+8->11;
+9[label="Node Type: END_LOOP 9
+"];
+9->23;
+10[label="Node Type: NEW VARIABLE 10
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+10->8;
+11[label="Node Type: IF_LOOP 11
+
+EXPRESSION:
+i < h.length
+
+IRs:
+REF_129 -> LENGTH h
+TMP_323(bool) = i < REF_129
+CONDITION TMP_323"];
+11->12[label="True"];
+11->9[label="False"];
+12[label="Node Type: IF 12
+
+EXPRESSION:
+h[i] == n[0]
+
+IRs:
+REF_130(None) -> h[i]
+REF_131(None) -> n[0]
+TMP_324(bool) = REF_130 == REF_131
+CONDITION TMP_324"];
+12->13[label="True"];
+12->21[label="False"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+subindex = 1
+
+IRs:
+subindex(uint256) := 1(uint256)"];
+13->14;
+14[label="Node Type: BEGIN_LOOP 14
+"];
+14->15;
+15[label="Node Type: IF_LOOP 15
+
+EXPRESSION:
+subindex < n.length && (i + subindex) < h.length && h[i + subindex] == n[subindex]
+
+IRs:
+REF_132 -> LENGTH n
+TMP_325(bool) = subindex < REF_132
+TMP_326(uint256) = i + subindex
+REF_133 -> LENGTH h
+TMP_327(bool) = TMP_326 < REF_133
+TMP_328(bool) = TMP_325 && TMP_327
+TMP_329(uint256) = i + subindex
+REF_134(None) -> h[TMP_329]
+REF_135(None) -> n[subindex]
+TMP_330(bool) = REF_134 == REF_135
+TMP_331(bool) = TMP_328 && TMP_330
+CONDITION TMP_331"];
+15->16[label="True"];
+15->17[label="False"];
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+subindex ++
+
+IRs:
+TMP_332(uint256) := subindex(uint256)
+subindex(uint256) = subindex + 1"];
+16->15;
+17[label="Node Type: END_LOOP 17
+"];
+17->18;
+18[label="Node Type: IF 18
+
+EXPRESSION:
+subindex == n.length
+
+IRs:
+REF_136 -> LENGTH n
+TMP_333(bool) = subindex == REF_136
+CONDITION TMP_333"];
+18->19[label="True"];
+18->20[label="False"];
+19[label="Node Type: RETURN 19
+
+EXPRESSION:
+int256(i)
+
+IRs:
+TMP_334 = CONVERT i to int256
+RETURN TMP_334"];
+20[label="Node Type: END_IF 20
+"];
+20->21;
+21[label="Node Type: END_IF 21
+"];
+21->22;
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_335(uint256) := i(uint256)
+i(uint256) = i + 1"];
+22->11;
+23[label="Node Type: RETURN 23
+
+EXPRESSION:
+- 1
+
+IRs:
+TMP_336(uint256) = 0 - 1
+RETURN TMP_336"];
+}
+// Function: 39954.sol-Dice-investorsInvariant()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: _ 1
+"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+numInvestors > maxInvestors
+
+IRs:
+TMP_686(bool) = numInvestors > maxInvestors
+CONDITION TMP_686"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: THROW 3
+"];
+4[label="Node Type: END_IF 4
+"];
+}
+// Function: 39954.sol-Dice-isLosingBet(Dice.Bet,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->10;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+LOG_BetLost(thisBet.playerAddress,numberRolled)
+
+IRs:
+REF_233(address) -> thisBet.playerAddress
+Emit LOG_BetLost(REF_233,numberRolled)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+safeSend(thisBet.playerAddress,1)
+
+IRs:
+REF_234(address) -> thisBet.playerAddress
+INTERNAL_CALL, Dice.safeSend(address,uint256)(REF_234,1)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+(investorsProfit + thisBet.amountBet < investorsProfit) || (investorsProfit + thisBet.amountBet < thisBet.amountBet) || (thisBet.amountBet == 1)
+
+IRs:
+REF_235(uint256) -> thisBet.amountBet
+TMP_537(uint256) = investorsProfit + REF_235
+TMP_538(bool) = TMP_537 < investorsProfit
+REF_236(uint256) -> thisBet.amountBet
+TMP_539(uint256) = investorsProfit + REF_236
+REF_237(uint256) -> thisBet.amountBet
+TMP_540(bool) = TMP_539 < REF_237
+TMP_541(bool) = TMP_538 || TMP_540
+REF_238(uint256) -> thisBet.amountBet
+TMP_542(bool) = REF_238 == 1
+TMP_543(bool) = TMP_541 || TMP_542
+CONDITION TMP_543"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: THROW 4
+"];
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+totalProfit = investorsProfit + (thisBet.amountBet - 1)
+
+IRs:
+REF_239(uint256) -> thisBet.amountBet
+TMP_544(uint256) = REF_239 - 1
+TMP_545(uint256) = investorsProfit + TMP_544
+totalProfit(uint256) := TMP_545(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+investorsProfit += (thisBet.amountBet - 1) * (10000 - houseEdge) / 10000
+
+IRs:
+REF_240(uint256) -> thisBet.amountBet
+TMP_546(uint256) = REF_240 - 1
+TMP_547(uint256) = 10000 - houseEdge
+TMP_548(uint256) = TMP_546 * TMP_547
+TMP_549(uint256) = TMP_548 / 10000
+investorsProfit(uint256) = investorsProfit + TMP_549"];
+7->8;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+houseProfit = totalProfit - investorsProfit
+
+IRs:
+TMP_550(uint256) = totalProfit - investorsProfit
+houseProfit(uint256) := TMP_550(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+safeSend(houseAddress,houseProfit)
+
+IRs:
+INTERNAL_CALL, Dice.safeSend(address,uint256)(houseAddress,houseProfit)"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+onlyLosingBets(numberRolled)
+
+IRs:
+MODIFIER_CALL, Dice.onlyLosingBets(uint256)(numberRolled)"];
+10->1;
+}
+// Function: 39954.sol-Dice-isWinningBet(Dice.Bet,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->8;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+winAmount = (thisBet.amountBet * (10000 - edge)) / pwin
+
+IRs:
+REF_228(uint256) -> thisBet.amountBet
+TMP_523(uint256) = 10000 - edge
+TMP_524(uint256) = REF_228 * TMP_523
+TMP_525(uint256) = TMP_524 / pwin
+winAmount(uint256) := TMP_525(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+LOG_BetWon(thisBet.playerAddress,numberRolled,winAmount)
+
+IRs:
+REF_229(address) -> thisBet.playerAddress
+Emit LOG_BetWon(REF_229,numberRolled,winAmount)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+safeSend(thisBet.playerAddress,winAmount)
+
+IRs:
+REF_230(address) -> thisBet.playerAddress
+INTERNAL_CALL, Dice.safeSend(address,uint256)(REF_230,winAmount)"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+(investorsLosses + winAmount < investorsLosses) || (investorsLosses + winAmount < thisBet.amountBet)
+
+IRs:
+TMP_528(uint256) = investorsLosses + winAmount
+TMP_529(bool) = TMP_528 < investorsLosses
+TMP_530(uint256) = investorsLosses + winAmount
+REF_231(uint256) -> thisBet.amountBet
+TMP_531(bool) = TMP_530 < REF_231
+TMP_532(bool) = TMP_529 || TMP_531
+CONDITION TMP_532"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: THROW 5
+"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+investorsLosses += winAmount - thisBet.amountBet
+
+IRs:
+REF_232(uint256) -> thisBet.amountBet
+TMP_533(uint256) = winAmount - REF_232
+investorsLosses(uint256) = investorsLosses + TMP_533"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+onlyWinningBets(numberRolled)
+
+IRs:
+MODIFIER_CALL, Dice.onlyWinningBets(uint256)(numberRolled)"];
+8->1;
+}
+// Function: 39954.sol-Dice-newInvestor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->8;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+profitDistribution()
+
+IRs:
+INTERNAL_CALL, Dice.profitDistribution()()"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+numInvestors == maxInvestors
+
+IRs:
+TMP_558(bool) = numInvestors == maxInvestors
+CONDITION TMP_558"];
+2->3[label="True"];
+2->5[label="False"];
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+smallestInvestorID = searchSmallestInvestor()
+
+IRs:
+TMP_559(uint256) = INTERNAL_CALL, Dice.searchSmallestInvestor()()
+smallestInvestorID(uint256) := TMP_559(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+divest(investors[smallestInvestorID].investorAddress)
+
+IRs:
+REF_244(Dice.Investor) -> investors[smallestInvestorID]
+REF_245(address) -> REF_244.investorAddress
+INTERNAL_CALL, Dice.divest(address)(REF_245)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+numInvestors ++
+
+IRs:
+TMP_561(uint256) := numInvestors(uint256)
+numInvestors(uint256) = numInvestors + 1"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+addInvestorAtID(numInvestors)
+
+IRs:
+INTERNAL_CALL, Dice.addInvestorAtID(uint256)(numInvestors)"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+onlyIfNotStopped()
+
+IRs:
+MODIFIER_CALL, Dice.onlyIfNotStopped()()"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+onlyMoreThanZero()
+
+IRs:
+MODIFIER_CALL, Dice.onlyMoreThanZero()()"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+onlyNotInvestors()
+
+IRs:
+MODIFIER_CALL, Dice.onlyNotInvestors()()"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+onlyMoreThanMinInvestment()
+
+IRs:
+MODIFIER_CALL, Dice.onlyMoreThanMinInvestment()()"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+investorsInvariant()
+
+IRs:
+MODIFIER_CALL, Dice.investorsInvariant()()"];
+12->1;
+}
+// Function: 39954.sol-Dice-numBets()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+betsKeys.length
+
+IRs:
+REF_174 -> LENGTH betsKeys
+RETURN REF_174"];
+}
+// Function: 39954.sol-Dice-onlyAfterProposed()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+proposedWithdrawal.toAddress == 0
+
+IRs:
+REF_299(address) -> proposedWithdrawal.toAddress
+TMP_678(bool) = REF_299 == 0
+CONDITION TMP_678"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 39954.sol-Dice-onlyIfBetExist(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+bets[myid].playerAddress == address(0x0)
+
+IRs:
+REF_279(Dice.Bet) -> bets[myid]
+REF_280(address) -> REF_279.playerAddress
+TMP_654 = CONVERT 0 to address
+TMP_655(bool) = REF_280 == TMP_654
+CONDITION TMP_655"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 39954.sol-Dice-onlyIfBetSizeIsStillCorrect(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+(((bets[myid].amountBet * ((10000 - edge) - pwin)) / pwin) <= (maxWin * getBankroll()) / 10000) && (bets[myid].amountBet >= minBet)
+
+IRs:
+REF_281(Dice.Bet) -> bets[myid]
+REF_282(uint256) -> REF_281.amountBet
+TMP_656(uint256) = 10000 - edge
+TMP_657(uint256) = TMP_656 - pwin
+TMP_658(uint256) = REF_282 * TMP_657
+TMP_659(uint256) = TMP_658 / pwin
+TMP_660(uint256) = INTERNAL_CALL, Dice.getBankroll()()
+TMP_661(uint256) = maxWin * TMP_660
+TMP_662(uint256) = TMP_661 / 10000
+TMP_663(bool) = TMP_659 <= TMP_662
+REF_283(Dice.Bet) -> bets[myid]
+REF_284(uint256) -> REF_283.amountBet
+TMP_664(bool) = REF_284 >= minBet
+TMP_665(bool) = TMP_663 && TMP_664
+CONDITION TMP_665"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: _ 2
+"];
+2->6;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+bets[myid].numberRolled = INVALID_BET_MARKER
+
+IRs:
+REF_285(Dice.Bet) -> bets[myid]
+REF_286(uint256) -> REF_285.numberRolled
+REF_286(uint256) (->bets) := INVALID_BET_MARKER(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+safeSend(bets[myid].playerAddress,bets[myid].amountBet)
+
+IRs:
+REF_287(Dice.Bet) -> bets[myid]
+REF_288(address) -> REF_287.playerAddress
+REF_289(Dice.Bet) -> bets[myid]
+REF_290(uint256) -> REF_289.amountBet
+INTERNAL_CALL, Dice.safeSend(address,uint256)(REF_288,REF_290)"];
+4->5;
+5[label="Node Type: RETURN 5
+"];
+6[label="Node Type: END_IF 6
+"];
+}
+// Function: 39954.sol-Dice-onlyIfEmergencyTimeOutHasPassed()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+proposedWithdrawal.atTime + EMERGENCY_TIMEOUT > now
+
+IRs:
+REF_302(uint256) -> proposedWithdrawal.atTime
+TMP_684(uint256) = REF_302 + EMERGENCY_TIMEOUT
+TMP_685(bool) = TMP_684 > now
+CONDITION TMP_685"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 39954.sol-Dice-onlyIfNotProcessed(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+bets[myid].numberRolled > 0
+
+IRs:
+REF_300(Dice.Bet) -> bets[myid]
+REF_301(uint256) -> REF_300.numberRolled
+TMP_683(bool) = REF_301 > 0
+CONDITION TMP_683"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 39954.sol-Dice-onlyIfNotStopped()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+isStopped
+
+IRs:
+CONDITION isStopped"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 39954.sol-Dice-onlyIfProfitNotDistributed()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! profitDistributed
+
+IRs:
+TMP_679 = UnaryType.BANG profitDistributed 
+CONDITION TMP_679"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: _ 2
+"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 39954.sol-Dice-onlyIfStopped()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! isStopped
+
+IRs:
+TMP_645 = UnaryType.BANG isStopped 
+CONDITION TMP_645"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 39954.sol-Dice-onlyIfValidGas(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+ORACLIZE_GAS_LIMIT + newGasLimit < ORACLIZE_GAS_LIMIT
+
+IRs:
+TMP_680(uint256) = ORACLIZE_GAS_LIMIT + newGasLimit
+TMP_681(bool) = TMP_680 < ORACLIZE_GAS_LIMIT
+CONDITION TMP_681"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+newGasLimit < 25000
+
+IRs:
+TMP_682(bool) = newGasLimit < 25000
+CONDITION TMP_682"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: THROW 5
+"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: _ 7
+"];
+}
+// Function: 39954.sol-Dice-onlyIfValidRoll(bytes32,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+numberRolled = parseInt(result)
+
+IRs:
+TMP_667(uint256) = INTERNAL_CALL, usingOraclize.parseInt(string)(result)
+numberRolled(uint256) := TMP_667(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+(numberRolled < 1 || numberRolled > 10000) && bets[myid].numberRolled == 0
+
+IRs:
+TMP_668(bool) = numberRolled < 1
+TMP_669(bool) = numberRolled > 10000
+TMP_670(bool) = TMP_668 || TMP_669
+REF_291(Dice.Bet) -> bets[myid]
+REF_292(uint256) -> REF_291.numberRolled
+TMP_671(bool) = REF_292 == 0
+TMP_672(bool) = TMP_670 && TMP_671
+CONDITION TMP_672"];
+2->3[label="True"];
+2->6[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+bets[myid].numberRolled = INVALID_BET_MARKER
+
+IRs:
+REF_293(Dice.Bet) -> bets[myid]
+REF_294(uint256) -> REF_293.numberRolled
+REF_294(uint256) (->bets) := INVALID_BET_MARKER(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+safeSend(bets[myid].playerAddress,bets[myid].amountBet)
+
+IRs:
+REF_295(Dice.Bet) -> bets[myid]
+REF_296(address) -> REF_295.playerAddress
+REF_297(Dice.Bet) -> bets[myid]
+REF_298(uint256) -> REF_297.amountBet
+INTERNAL_CALL, Dice.safeSend(address,uint256)(REF_296,REF_298)"];
+4->5;
+5[label="Node Type: RETURN 5
+"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: _ 7
+"];
+}
+// Function: 39954.sol-Dice-onlyInvestors()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+investorIDs[msg.sender] == 0
+
+IRs:
+REF_277(uint256) -> investorIDs[msg.sender]
+TMP_646(bool) = REF_277 == 0
+CONDITION TMP_646"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 39954.sol-Dice-onlyLosingBets(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+numberRolled - 1 >= pwin
+
+IRs:
+TMP_676(uint256) = numberRolled - 1
+TMP_677(bool) = TMP_676 >= pwin
+CONDITION TMP_677"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: _ 2
+"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 39954.sol-Dice-onlyMoreThanMinInvestment()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.value <= getMinInvestment()
+
+IRs:
+TMP_651(uint256) = INTERNAL_CALL, Dice.getMinInvestment()()
+TMP_652(bool) = msg.value <= TMP_651
+CONDITION TMP_652"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 39954.sol-Dice-onlyMoreThanZero()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.value == 0
+
+IRs:
+TMP_653(bool) = msg.value == 0
+CONDITION TMP_653"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 39954.sol-Dice-onlyNotInvestors()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+investorIDs[msg.sender] != 0
+
+IRs:
+REF_278(uint256) -> investorIDs[msg.sender]
+TMP_647(bool) = REF_278 != 0
+CONDITION TMP_647"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 39954.sol-Dice-onlyOraclize()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != oraclize_cbAddress()
+
+IRs:
+TMP_649(address) = INTERNAL_CALL, usingOraclize.oraclize_cbAddress()()
+TMP_650(bool) = msg.sender != TMP_649
+CONDITION TMP_650"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 39954.sol-Dice-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+owner != msg.sender
+
+IRs:
+TMP_648(bool) = owner != msg.sender
+CONDITION TMP_648"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 39954.sol-Dice-onlyWinningBets(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+numberRolled - 1 < pwin
+
+IRs:
+TMP_674(uint256) = numberRolled - 1
+TMP_675(bool) = TMP_674 < pwin
+CONDITION TMP_675"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: _ 2
+"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 39954.sol-Dice-oraclizeAPI()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+address(OAR) == 0
+
+IRs:
+TMP_637 = CONVERT OAR to address
+TMP_638(bool) = TMP_637 == 0
+CONDITION TMP_638"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+oraclize_setNetwork(networkID_auto)
+
+IRs:
+TMP_639(bool) = INTERNAL_CALL, usingOraclize.oraclize_setNetwork(uint8)(networkID_auto)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+oraclize = OraclizeI(OAR.getAddress())
+
+IRs:
+TMP_640(address) = HIGH_LEVEL_CALL, dest:OAR(OraclizeAddrResolverI), function:getAddress, arguments:[]  
+TMP_641 = CONVERT TMP_640 to OraclizeI
+oraclize(OraclizeI) := TMP_641(OraclizeI)"];
+4->5;
+5[label="Node Type: _ 5
+"];
+}
+// Function: 39954.sol-Dice-oraclize_cbAddress()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+oraclize.cbAddress()
+
+IRs:
+TMP_270(address) = HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:cbAddress, arguments:[]  
+RETURN TMP_270"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+oraclizeAPI()
+
+IRs:
+MODIFIER_CALL, usingOraclize.oraclizeAPI()()"];
+2->1;
+}
+// Function: 39954.sol-Dice-oraclize_query(string,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+price = oraclize.getPrice(datasource)
+
+IRs:
+TMP_214(uint256) = HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:getPrice, arguments:['datasource']  
+price(uint256) := TMP_214(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+price > 1000000000000000000 + tx.gasprice * 200000
+
+IRs:
+TMP_215(uint256) = tx.gasprice * 200000
+TMP_216(uint256) = 1000000000000000000 + TMP_215
+TMP_217(bool) = price > TMP_216
+CONDITION TMP_217"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+oraclize.query.value(price)(0,datasource,arg)
+
+IRs:
+TMP_219(bytes32) = HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:query, arguments:['0', 'datasource', 'arg'] value:price 
+RETURN TMP_219"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+oraclizeAPI()
+
+IRs:
+MODIFIER_CALL, usingOraclize.oraclizeAPI()()"];
+6->1;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+id
+
+IRs:
+RETURN id"];
+}
+// Function: 39954.sol-Dice-oraclize_query(string,string,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+price = oraclize.getPrice(datasource)
+
+IRs:
+TMP_242(uint256) = HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:getPrice, arguments:['datasource']  
+price(uint256) := TMP_242(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+price > 1000000000000000000 + tx.gasprice * 200000
+
+IRs:
+TMP_243(uint256) = tx.gasprice * 200000
+TMP_244(uint256) = 1000000000000000000 + TMP_243
+TMP_245(bool) = price > TMP_244
+CONDITION TMP_245"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+oraclize.query2.value(price)(0,datasource,arg1,arg2)
+
+IRs:
+TMP_247(bytes32) = HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:query2, arguments:['0', 'datasource', 'arg1', 'arg2'] value:price 
+RETURN TMP_247"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+oraclizeAPI()
+
+IRs:
+MODIFIER_CALL, usingOraclize.oraclizeAPI()()"];
+6->1;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+id
+
+IRs:
+RETURN id"];
+}
+// Function: 39954.sol-Dice-oraclize_query(string,string,string,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+price = oraclize.getPrice(datasource,gaslimit)
+
+IRs:
+TMP_263(uint256) = HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:getPrice, arguments:['datasource', 'gaslimit']  
+price(uint256) := TMP_263(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+price > 1000000000000000000 + tx.gasprice * gaslimit
+
+IRs:
+TMP_264(uint256) = tx.gasprice * gaslimit
+TMP_265(uint256) = 1000000000000000000 + TMP_264
+TMP_266(bool) = price > TMP_265
+CONDITION TMP_266"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+oraclize.query2_withGasLimit.value(price)(0,datasource,arg1,arg2,gaslimit)
+
+IRs:
+TMP_268(bytes32) = HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:query2_withGasLimit, arguments:['0', 'datasource', 'arg1', 'arg2', 'gaslimit'] value:price 
+RETURN TMP_268"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+oraclizeAPI()
+
+IRs:
+MODIFIER_CALL, usingOraclize.oraclizeAPI()()"];
+6->1;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+id
+
+IRs:
+RETURN id"];
+}
+// Function: 39954.sol-Dice-oraclize_query(string,string,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+price = oraclize.getPrice(datasource,gaslimit)
+
+IRs:
+TMP_235(uint256) = HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:getPrice, arguments:['datasource', 'gaslimit']  
+price(uint256) := TMP_235(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+price > 1000000000000000000 + tx.gasprice * gaslimit
+
+IRs:
+TMP_236(uint256) = tx.gasprice * gaslimit
+TMP_237(uint256) = 1000000000000000000 + TMP_236
+TMP_238(bool) = price > TMP_237
+CONDITION TMP_238"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+oraclize.query_withGasLimit.value(price)(0,datasource,arg,gaslimit)
+
+IRs:
+TMP_240(bytes32) = HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:query_withGasLimit, arguments:['0', 'datasource', 'arg', 'gaslimit'] value:price 
+RETURN TMP_240"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+oraclizeAPI()
+
+IRs:
+MODIFIER_CALL, usingOraclize.oraclizeAPI()()"];
+6->1;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+id
+
+IRs:
+RETURN id"];
+}
+// Function: 39954.sol-Dice-oraclize_query(uint256,string,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+price = oraclize.getPrice(datasource)
+
+IRs:
+TMP_221(uint256) = HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:getPrice, arguments:['datasource']  
+price(uint256) := TMP_221(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+price > 1000000000000000000 + tx.gasprice * 200000
+
+IRs:
+TMP_222(uint256) = tx.gasprice * 200000
+TMP_223(uint256) = 1000000000000000000 + TMP_222
+TMP_224(bool) = price > TMP_223
+CONDITION TMP_224"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+oraclize.query.value(price)(timestamp,datasource,arg)
+
+IRs:
+TMP_226(bytes32) = HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:query, arguments:['timestamp', 'datasource', 'arg'] value:price 
+RETURN TMP_226"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+oraclizeAPI()
+
+IRs:
+MODIFIER_CALL, usingOraclize.oraclizeAPI()()"];
+6->1;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+id
+
+IRs:
+RETURN id"];
+}
+// Function: 39954.sol-Dice-oraclize_query(uint256,string,string,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+price = oraclize.getPrice(datasource)
+
+IRs:
+TMP_249(uint256) = HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:getPrice, arguments:['datasource']  
+price(uint256) := TMP_249(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+price > 1000000000000000000 + tx.gasprice * 200000
+
+IRs:
+TMP_250(uint256) = tx.gasprice * 200000
+TMP_251(uint256) = 1000000000000000000 + TMP_250
+TMP_252(bool) = price > TMP_251
+CONDITION TMP_252"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+oraclize.query2.value(price)(timestamp,datasource,arg1,arg2)
+
+IRs:
+TMP_254(bytes32) = HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:query2, arguments:['timestamp', 'datasource', 'arg1', 'arg2'] value:price 
+RETURN TMP_254"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+oraclizeAPI()
+
+IRs:
+MODIFIER_CALL, usingOraclize.oraclizeAPI()()"];
+6->1;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+id
+
+IRs:
+RETURN id"];
+}
+// Function: 39954.sol-Dice-oraclize_query(uint256,string,string,string,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+price = oraclize.getPrice(datasource,gaslimit)
+
+IRs:
+TMP_256(uint256) = HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:getPrice, arguments:['datasource', 'gaslimit']  
+price(uint256) := TMP_256(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+price > 1000000000000000000 + tx.gasprice * gaslimit
+
+IRs:
+TMP_257(uint256) = tx.gasprice * gaslimit
+TMP_258(uint256) = 1000000000000000000 + TMP_257
+TMP_259(bool) = price > TMP_258
+CONDITION TMP_259"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+oraclize.query2_withGasLimit.value(price)(timestamp,datasource,arg1,arg2,gaslimit)
+
+IRs:
+TMP_261(bytes32) = HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:query2_withGasLimit, arguments:['timestamp', 'datasource', 'arg1', 'arg2', 'gaslimit'] value:price 
+RETURN TMP_261"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+oraclizeAPI()
+
+IRs:
+MODIFIER_CALL, usingOraclize.oraclizeAPI()()"];
+6->1;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+id
+
+IRs:
+RETURN id"];
+}
+// Function: 39954.sol-Dice-oraclize_query(uint256,string,string,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+price = oraclize.getPrice(datasource,gaslimit)
+
+IRs:
+TMP_228(uint256) = HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:getPrice, arguments:['datasource', 'gaslimit']  
+price(uint256) := TMP_228(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+price > 1000000000000000000 + tx.gasprice * gaslimit
+
+IRs:
+TMP_229(uint256) = tx.gasprice * gaslimit
+TMP_230(uint256) = 1000000000000000000 + TMP_229
+TMP_231(bool) = price > TMP_230
+CONDITION TMP_231"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+oraclize.query_withGasLimit.value(price)(timestamp,datasource,arg,gaslimit)
+
+IRs:
+TMP_233(bytes32) = HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:query_withGasLimit, arguments:['timestamp', 'datasource', 'arg', 'gaslimit'] value:price 
+RETURN TMP_233"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+oraclizeAPI()
+
+IRs:
+MODIFIER_CALL, usingOraclize.oraclizeAPI()()"];
+6->1;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+id
+
+IRs:
+RETURN id"];
+}
+// Function: 39954.sol-Dice-oraclize_setConfig(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+oraclize.setConfig(config)
+
+IRs:
+HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:setConfig, arguments:['config']  
+RETURN TMP_276"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+oraclizeAPI()
+
+IRs:
+MODIFIER_CALL, usingOraclize.oraclizeAPI()()"];
+2->1;
+}
+// Function: 39954.sol-Dice-oraclize_setCustomGasPrice(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+oraclize.setCustomGasPrice(gasPrice)
+
+IRs:
+HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:setCustomGasPrice, arguments:['gasPrice']  
+RETURN TMP_274"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+oraclizeAPI()
+
+IRs:
+MODIFIER_CALL, usingOraclize.oraclizeAPI()()"];
+2->1;
+}
+// Function: 39954.sol-Dice-oraclize_setNetwork(uint8)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+getCodeSize(0x1d3b2638a7cc9f2cb3d298a3da7a90b67e5506ed) > 0
+
+IRs:
+TMP_205(uint256) = INTERNAL_CALL, usingOraclize.getCodeSize(address)(166879805866326139730078904348178637806357513965)
+TMP_206(bool) = TMP_205 > 0
+CONDITION TMP_206"];
+1->2[label="True"];
+1->4[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OAR = OraclizeAddrResolverI(0x1d3b2638a7cc9f2cb3d298a3da7a90b67e5506ed)
+
+IRs:
+TMP_207 = CONVERT 166879805866326139730078904348178637806357513965 to OraclizeAddrResolverI
+OAR(OraclizeAddrResolverI) := TMP_207(OraclizeAddrResolverI)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+getCodeSize(0xc03a2615d5efaf5f49f60b7bb6583eaec212fdf1) > 0
+
+IRs:
+TMP_208(uint256) = INTERNAL_CALL, usingOraclize.getCodeSize(address)(1097422988916857156046675838961943218895050702321)
+TMP_209(bool) = TMP_208 > 0
+CONDITION TMP_209"];
+5->6[label="True"];
+5->8[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+OAR = OraclizeAddrResolverI(0xc03a2615d5efaf5f49f60b7bb6583eaec212fdf1)
+
+IRs:
+TMP_210 = CONVERT 1097422988916857156046675838961943218895050702321 to OraclizeAddrResolverI
+OAR(OraclizeAddrResolverI) := TMP_210(OraclizeAddrResolverI)"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: IF 9
+
+EXPRESSION:
+getCodeSize(0x51efaf4c8b3c9afbd5ab9f4bbc82784ab6ef8faa) > 0
+
+IRs:
+TMP_211(uint256) = INTERNAL_CALL, usingOraclize.getCodeSize(address)(467773401235755137097289008257078260350600581034)
+TMP_212(bool) = TMP_211 > 0
+CONDITION TMP_212"];
+9->10[label="True"];
+9->12[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+OAR = OraclizeAddrResolverI(0x51efaf4c8b3c9afbd5ab9f4bbc82784ab6ef8faa)
+
+IRs:
+TMP_213 = CONVERT 467773401235755137097289008257078260350600581034 to OraclizeAddrResolverI
+OAR(OraclizeAddrResolverI) := TMP_213(OraclizeAddrResolverI)"];
+10->11;
+11[label="Node Type: RETURN 11
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+12[label="Node Type: END_IF 12
+"];
+12->13;
+13[label="Node Type: RETURN 13
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+}
+// Function: 39954.sol-Dice-oraclize_setProof(bytes1)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+oraclize.setProofType(proofP)
+
+IRs:
+HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:setProofType, arguments:['proofP']  
+RETURN TMP_272"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+oraclizeAPI()
+
+IRs:
+MODIFIER_CALL, usingOraclize.oraclizeAPI()()"];
+2->1;
+}
+// Function: 39954.sol-Dice-parseAddr(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+tmp = bytes(_a)
+
+IRs:
+TMP_278 = CONVERT _a to bytes
+tmp(bytes) := TMP_278(bytes)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+iaddr = 0
+
+IRs:
+iaddr(uint160) := 0(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+"];
+4->7;
+5[label="Node Type: BEGIN_LOOP 5
+"];
+5->8;
+6[label="Node Type: END_LOOP 6
+"];
+6->26;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+i = 2
+
+IRs:
+i(uint256) := 2(uint256)"];
+7->5;
+8[label="Node Type: IF_LOOP 8
+
+EXPRESSION:
+i < 2 + 2 * 20
+
+IRs:
+TMP_279(uint256) = 2 * 20
+TMP_280(uint256) = 2 + TMP_279
+TMP_281(bool) = i < TMP_280
+CONDITION TMP_281"];
+8->9[label="True"];
+8->6[label="False"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+iaddr *= 256
+
+IRs:
+iaddr(uint160) = iaddr * 256"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+b1 = uint160(tmp[i])
+
+IRs:
+REF_111(None) -> tmp[i]
+TMP_282 = CONVERT REF_111 to uint160
+b1(uint160) := TMP_282(uint160)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+b2 = uint160(tmp[i + 1])
+
+IRs:
+TMP_283(uint256) = i + 1
+REF_112(None) -> tmp[TMP_283]
+TMP_284 = CONVERT REF_112 to uint160
+b2(uint160) := TMP_284(uint160)"];
+11->12;
+12[label="Node Type: IF 12
+
+EXPRESSION:
+(b1 >= 97) && (b1 <= 102)
+
+IRs:
+TMP_285(bool) = b1 >= 97
+TMP_286(bool) = b1 <= 102
+TMP_287(bool) = TMP_285 && TMP_286
+CONDITION TMP_287"];
+12->13[label="True"];
+12->14[label="False"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+b1 -= 87
+
+IRs:
+b1(uint160) = b1 - 87"];
+13->17;
+14[label="Node Type: IF 14
+
+EXPRESSION:
+(b1 >= 48) && (b1 <= 57)
+
+IRs:
+TMP_288(bool) = b1 >= 48
+TMP_289(bool) = b1 <= 57
+TMP_290(bool) = TMP_288 && TMP_289
+CONDITION TMP_290"];
+14->15[label="True"];
+14->16[label="False"];
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+b1 -= 48
+
+IRs:
+b1(uint160) = b1 - 48"];
+15->16;
+16[label="Node Type: END_IF 16
+"];
+16->17;
+17[label="Node Type: END_IF 17
+"];
+17->18;
+18[label="Node Type: IF 18
+
+EXPRESSION:
+(b2 >= 97) && (b2 <= 102)
+
+IRs:
+TMP_291(bool) = b2 >= 97
+TMP_292(bool) = b2 <= 102
+TMP_293(bool) = TMP_291 && TMP_292
+CONDITION TMP_293"];
+18->19[label="True"];
+18->20[label="False"];
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+b2 -= 87
+
+IRs:
+b2(uint160) = b2 - 87"];
+19->23;
+20[label="Node Type: IF 20
+
+EXPRESSION:
+(b2 >= 48) && (b2 <= 57)
+
+IRs:
+TMP_294(bool) = b2 >= 48
+TMP_295(bool) = b2 <= 57
+TMP_296(bool) = TMP_294 && TMP_295
+CONDITION TMP_296"];
+20->21[label="True"];
+20->22[label="False"];
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+b2 -= 48
+
+IRs:
+b2(uint160) = b2 - 48"];
+21->22;
+22[label="Node Type: END_IF 22
+"];
+22->23;
+23[label="Node Type: END_IF 23
+"];
+23->24;
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+iaddr += (b1 * 16 + b2)
+
+IRs:
+TMP_297(uint160) = b1 * 16
+TMP_298(uint160) = TMP_297 + b2
+iaddr(uint160) = iaddr + TMP_298"];
+24->25;
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+i += 2
+
+IRs:
+i(uint256) = i + 2"];
+25->8;
+26[label="Node Type: RETURN 26
+
+EXPRESSION:
+address(iaddr)
+
+IRs:
+TMP_299 = CONVERT iaddr to address
+RETURN TMP_299"];
+}
+// Function: 39954.sol-Dice-parseInt(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+parseInt(_a,0)
+
+IRs:
+TMP_368(uint256) = INTERNAL_CALL, usingOraclize.parseInt(string,uint256)(_a,0)
+RETURN TMP_368"];
+}
+// Function: 39954.sol-Dice-parseInt(string,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+bresult = bytes(_a)
+
+IRs:
+TMP_369 = CONVERT _a to bytes
+bresult(bytes) := TMP_369(bytes)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+mint = 0
+
+IRs:
+mint(uint256) := 0(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+decimals = false
+
+IRs:
+decimals(bool) := False(bool)"];
+3->6;
+4[label="Node Type: BEGIN_LOOP 4
+"];
+4->7;
+5[label="Node Type: END_LOOP 5
+"];
+5->22;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+6->4;
+7[label="Node Type: IF_LOOP 7
+
+EXPRESSION:
+i < bresult.length
+
+IRs:
+REF_157 -> LENGTH bresult
+TMP_370(bool) = i < REF_157
+CONDITION TMP_370"];
+7->8[label="True"];
+7->5[label="False"];
+8[label="Node Type: IF 8
+
+EXPRESSION:
+(bresult[i] >= 48) && (bresult[i] <= 57)
+
+IRs:
+REF_158(None) -> bresult[i]
+TMP_371(bool) = REF_158 >= 48
+REF_159(None) -> bresult[i]
+TMP_372(bool) = REF_159 <= 57
+TMP_373(bool) = TMP_371 && TMP_372
+CONDITION TMP_373"];
+8->9[label="True"];
+8->17[label="False"];
+9[label="Node Type: IF 9
+
+EXPRESSION:
+decimals
+
+IRs:
+CONDITION decimals"];
+9->10[label="True"];
+9->14[label="False"];
+10[label="Node Type: IF 10
+
+EXPRESSION:
+_b == 0
+
+IRs:
+TMP_374(bool) = _b == 0
+CONDITION TMP_374"];
+10->11[label="True"];
+10->12[label="False"];
+11[label="Node Type: BREAK 11
+"];
+11->5;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+_b --
+
+IRs:
+TMP_375(uint256) := _b(uint256)
+_b(uint256) = _b - 1"];
+12->13;
+13[label="Node Type: END_IF 13
+"];
+13->14;
+14[label="Node Type: END_IF 14
+"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+mint *= 10
+
+IRs:
+mint(uint256) = mint * 10"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+mint += uint256(bresult[i]) - 48
+
+IRs:
+REF_160(None) -> bresult[i]
+TMP_376 = CONVERT REF_160 to uint256
+TMP_377(uint256) = TMP_376 - 48
+mint(uint256) = mint + TMP_377"];
+16->20;
+17[label="Node Type: IF 17
+
+EXPRESSION:
+bresult[i] == 46
+
+IRs:
+REF_161(None) -> bresult[i]
+TMP_378(bool) = REF_161 == 46
+CONDITION TMP_378"];
+17->18[label="True"];
+17->19[label="False"];
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+decimals = true
+
+IRs:
+decimals(bool) := True(bool)"];
+18->19;
+19[label="Node Type: END_IF 19
+"];
+19->20;
+20[label="Node Type: END_IF 20
+"];
+20->21;
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_379(uint256) := i(uint256)
+i(uint256) = i + 1"];
+21->7;
+22[label="Node Type: IF 22
+
+EXPRESSION:
+_b > 0
+
+IRs:
+TMP_380(bool) = _b > 0
+CONDITION TMP_380"];
+22->23[label="True"];
+22->24[label="False"];
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+mint *= 10 ** _b
+
+IRs:
+TMP_381(uint256) = 10 ** _b
+mint(uint256) = mint * TMP_381"];
+23->24;
+24[label="Node Type: END_IF 24
+"];
+24->25;
+25[label="Node Type: RETURN 25
+
+EXPRESSION:
+mint
+
+IRs:
+RETURN mint"];
+}
+// Function: 39954.sol-Dice-profitDistribution()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->23;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->4;
+2[label="Node Type: BEGIN_LOOP 2
+"];
+2->5;
+3[label="Node Type: END_LOOP 3
+"];
+3->19;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+i = 1
+
+IRs:
+i(uint256) := 1(uint256)"];
+4->2;
+5[label="Node Type: IF_LOOP 5
+
+EXPRESSION:
+i <= numInvestors
+
+IRs:
+TMP_473(bool) = i <= numInvestors
+CONDITION TMP_473"];
+5->6[label="True"];
+5->3[label="False"];
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+currentInvestor = investors[i].investorAddress
+
+IRs:
+REF_204(Dice.Investor) -> investors[i]
+REF_205(address) -> REF_204.investorAddress
+currentInvestor(address) := REF_205(address)"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+profitOfInvestor = getProfitShare(currentInvestor)
+
+IRs:
+TMP_474(uint256) = INTERNAL_CALL, Dice.getProfitShare(address)(currentInvestor)
+profitOfInvestor(uint256) := TMP_474(uint256)"];
+7->8;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+lossesOfInvestor = getLossesShare(currentInvestor)
+
+IRs:
+TMP_475(uint256) = INTERNAL_CALL, Dice.getLossesShare(address)(currentInvestor)
+lossesOfInvestor(uint256) := TMP_475(uint256)"];
+8->9;
+9[label="Node Type: IF 9
+
+EXPRESSION:
+(investors[i].amountInvested + profitOfInvestor >= investors[i].amountInvested) && (investors[i].amountInvested + profitOfInvestor >= lossesOfInvestor)
+
+IRs:
+REF_206(Dice.Investor) -> investors[i]
+REF_207(uint256) -> REF_206.amountInvested
+TMP_476(uint256) = REF_207 + profitOfInvestor
+REF_208(Dice.Investor) -> investors[i]
+REF_209(uint256) -> REF_208.amountInvested
+TMP_477(bool) = TMP_476 >= REF_209
+REF_210(Dice.Investor) -> investors[i]
+REF_211(uint256) -> REF_210.amountInvested
+TMP_478(uint256) = REF_211 + profitOfInvestor
+TMP_479(bool) = TMP_478 >= lossesOfInvestor
+TMP_480(bool) = TMP_477 && TMP_479
+CONDITION TMP_480"];
+9->10[label="True"];
+9->12[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+investors[i].amountInvested += profitOfInvestor - lossesOfInvestor
+
+IRs:
+REF_212(Dice.Investor) -> investors[i]
+REF_213(uint256) -> REF_212.amountInvested
+TMP_481(uint256) = profitOfInvestor - lossesOfInvestor
+REF_213(-> investors) = REF_213 + TMP_481"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+LOG_InvestorCapitalUpdate(currentInvestor,int256(profitOfInvestor - lossesOfInvestor))
+
+IRs:
+TMP_482(uint256) = profitOfInvestor - lossesOfInvestor
+TMP_483 = CONVERT TMP_482 to int256
+Emit LOG_InvestorCapitalUpdate(currentInvestor,TMP_483)"];
+11->14;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+isStopped = true
+
+IRs:
+isStopped(bool) := True(bool)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+LOG_EmergencyAutoStop()
+
+IRs:
+Emit LOG_EmergencyAutoStop()"];
+13->14;
+14[label="Node Type: END_IF 14
+"];
+14->15;
+15[label="Node Type: IF 15
+
+EXPRESSION:
+copyInvested + investors[i].amountInvested >= copyInvested
+
+IRs:
+REF_214(Dice.Investor) -> investors[i]
+REF_215(uint256) -> REF_214.amountInvested
+TMP_486(uint256) = copyInvested + REF_215
+TMP_487(bool) = TMP_486 >= copyInvested
+CONDITION TMP_487"];
+15->16[label="True"];
+15->17[label="False"];
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+copyInvested += investors[i].amountInvested
+
+IRs:
+REF_216(Dice.Investor) -> investors[i]
+REF_217(uint256) -> REF_216.amountInvested
+copyInvested(uint256) = copyInvested + REF_217"];
+16->17;
+17[label="Node Type: END_IF 17
+"];
+17->18;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_488(uint256) := i(uint256)
+i(uint256) = i + 1"];
+18->5;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+delete investorsProfit
+
+IRs:
+investorsProfit = delete investorsProfit "];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+delete investorsLosses
+
+IRs:
+investorsLosses = delete investorsLosses "];
+20->21;
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+invested = copyInvested
+
+IRs:
+invested(uint256) := copyInvested(uint256)"];
+21->22;
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+profitDistributed = true
+
+IRs:
+profitDistributed(bool) := True(bool)"];
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+onlyIfProfitNotDistributed()
+
+IRs:
+MODIFIER_CALL, Dice.onlyIfProfitNotDistributed()()"];
+23->1;
+}
+// Function: 39954.sol-Dice-proposeEmergencyWithdrawal(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->9;
+1[label="Node Type: BEGIN_LOOP 1
+"];
+1->4;
+2[label="Node Type: END_LOOP 2
+"];
+2->7;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+i = 1
+
+IRs:
+i(uint256) := 1(uint256)"];
+3->1;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+i <= numInvestors
+
+IRs:
+TMP_608(bool) = i <= numInvestors
+CONDITION TMP_608"];
+4->5[label="True"];
+4->2[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+delete investors[i].votedForEmergencyWithdrawal
+
+IRs:
+REF_263(Dice.Investor) -> investors[i]
+REF_264(bool) -> REF_263.votedForEmergencyWithdrawal
+REF_263 = delete REF_264 "];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_609(uint256) := i(uint256)
+i(uint256) = i + 1"];
+6->4;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+proposedWithdrawal = WithdrawalProposal(withdrawalAddress,now)
+
+IRs:
+TMP_610(Dice.WithdrawalProposal) = new WithdrawalProposal(withdrawalAddress,now)
+proposedWithdrawal(Dice.WithdrawalProposal) := TMP_610(Dice.WithdrawalProposal)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+LOG_EmergencyWithdrawalProposed()
+
+IRs:
+Emit LOG_EmergencyWithdrawalProposed()"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+onlyIfStopped()
+
+IRs:
+MODIFIER_CALL, Dice.onlyIfStopped()()"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Dice.onlyOwner()()"];
+10->3;
+}
+// Function: 39954.sol-Dice-resumeContract()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+isStopped = false
+
+IRs:
+isStopped(bool) := False(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+LOG_ContractResumed()
+
+IRs:
+Emit LOG_ContractResumed()"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Dice.onlyOwner()()"];
+3->1;
+}
+// Function: 39954.sol-Dice-safeSend(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+value == 0
+
+IRs:
+TMP_456(bool) = value == 0
+CONDITION TMP_456"];
+1->2[label="True"];
+1->4[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+LOG_ZeroSend()
+
+IRs:
+Emit LOG_ZeroSend()"];
+2->3;
+3[label="Node Type: RETURN 3
+"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+this.balance < value
+
+IRs:
+REF_192(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_458(bool) = REF_192 < value
+CONDITION TMP_458"];
+5->6[label="True"];
+5->8[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+LOG_ValueIsTooBig()
+
+IRs:
+Emit LOG_ValueIsTooBig()"];
+6->7;
+7[label="Node Type: RETURN 7
+"];
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: IF 9
+
+EXPRESSION:
+! (addr.call.gas(safeGas).value(value)())
+
+IRs:
+TMP_462(bool) = LOW_LEVEL_CALL, dest:addr, function:call, arguments:[] value:value gas:safeGas
+TMP_463 = UnaryType.BANG TMP_462 
+CONDITION TMP_463"];
+9->10[label="True"];
+9->16[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+LOG_FailedSend(addr,value)
+
+IRs:
+Emit LOG_FailedSend(addr,value)"];
+10->11;
+11[label="Node Type: IF 11
+
+EXPRESSION:
+addr != houseAddress
+
+IRs:
+TMP_465(bool) = addr != houseAddress
+CONDITION TMP_465"];
+11->12[label="True"];
+11->15[label="False"];
+12[label="Node Type: IF 12
+
+EXPRESSION:
+! (houseAddress.call.gas(safeGas).value(value)())
+
+IRs:
+TMP_468(bool) = LOW_LEVEL_CALL, dest:houseAddress, function:call, arguments:[] value:value gas:safeGas
+TMP_469 = UnaryType.BANG TMP_468 
+CONDITION TMP_469"];
+12->13[label="True"];
+12->14[label="False"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+LOG_FailedSend(houseAddress,value)
+
+IRs:
+Emit LOG_FailedSend(houseAddress,value)"];
+13->14;
+14[label="Node Type: END_IF 14
+"];
+14->15;
+15[label="Node Type: END_IF 15
+"];
+15->16;
+16[label="Node Type: END_IF 16
+"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+LOG_SuccessfulSend(addr,value)
+
+IRs:
+Emit LOG_SuccessfulSend(addr,value)"];
+}
+// Function: 39954.sol-Dice-searchSmallestInvestor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+investorID = 1
+
+IRs:
+investorID(uint256) := 1(uint256)"];
+1->4;
+2[label="Node Type: BEGIN_LOOP 2
+"];
+2->5;
+3[label="Node Type: END_LOOP 3
+"];
+3->10;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+i = 1
+
+IRs:
+i(uint256) := 1(uint256)"];
+4->2;
+5[label="Node Type: IF_LOOP 5
+
+EXPRESSION:
+i <= numInvestors
+
+IRs:
+TMP_445(bool) = i <= numInvestors
+CONDITION TMP_445"];
+5->6[label="True"];
+5->3[label="False"];
+6[label="Node Type: IF 6
+
+EXPRESSION:
+getBalance(investors[i].investorAddress) < getBalance(investors[investorID].investorAddress)
+
+IRs:
+REF_188(Dice.Investor) -> investors[i]
+REF_189(address) -> REF_188.investorAddress
+TMP_446(uint256) = INTERNAL_CALL, Dice.getBalance(address)(REF_189)
+REF_190(Dice.Investor) -> investors[investorID]
+REF_191(address) -> REF_190.investorAddress
+TMP_447(uint256) = INTERNAL_CALL, Dice.getBalance(address)(REF_191)
+TMP_448(bool) = TMP_446 < TMP_447
+CONDITION TMP_448"];
+6->7[label="True"];
+6->8[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+investorID = i
+
+IRs:
+investorID(uint256) := i(uint256)"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_449(uint256) := i(uint256)
+i(uint256) = i + 1"];
+9->5;
+10[label="Node Type: RETURN 10
+
+EXPRESSION:
+investorID
+
+IRs:
+RETURN investorID"];
+}
+// Function: 39954.sol-Dice-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+day = 60 * 60 * 24
+
+IRs:
+TMP_629(uint256) = 60 * 60
+TMP_630(uint256) = TMP_629 * 24
+day(uint256) := TMP_630(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+week = 60 * 60 * 24 * 7
+
+IRs:
+TMP_631(uint256) = 60 * 60
+TMP_632(uint256) = TMP_631 * 24
+TMP_633(uint256) = TMP_632 * 7
+week(uint256) := TMP_633(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+month = 60 * 60 * 24 * 30
+
+IRs:
+TMP_634(uint256) = 60 * 60
+TMP_635(uint256) = TMP_634 * 24
+TMP_636(uint256) = TMP_635 * 30
+month(uint256) := TMP_636(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+proofType_NONE = 0x00
+
+IRs:
+proofType_NONE(bytes1) := 0(uint256)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+proofType_TLSNotary = 0x10
+
+IRs:
+proofType_TLSNotary(bytes1) := 16(uint256)"];
+4->5;
+5[label="Node Type: OTHER_ENTRYPOINT 5
+
+EXPRESSION:
+proofStorage_IPFS = 0x01
+
+IRs:
+proofStorage_IPFS(bytes1) := 1(uint256)"];
+5->6;
+6[label="Node Type: OTHER_ENTRYPOINT 6
+
+EXPRESSION:
+networkID_auto = 0
+
+IRs:
+networkID_auto(uint8) := 0(uint256)"];
+6->7;
+7[label="Node Type: OTHER_ENTRYPOINT 7
+
+EXPRESSION:
+networkID_mainnet = 1
+
+IRs:
+networkID_mainnet(uint8) := 1(uint256)"];
+7->8;
+8[label="Node Type: OTHER_ENTRYPOINT 8
+
+EXPRESSION:
+networkID_testnet = 2
+
+IRs:
+networkID_testnet(uint8) := 2(uint256)"];
+8->9;
+9[label="Node Type: OTHER_ENTRYPOINT 9
+
+EXPRESSION:
+networkID_morden = 2
+
+IRs:
+networkID_morden(uint8) := 2(uint256)"];
+9->10;
+10[label="Node Type: OTHER_ENTRYPOINT 10
+
+EXPRESSION:
+networkID_consensys = 161
+
+IRs:
+networkID_consensys(uint8) := 161(uint256)"];
+10->11;
+11[label="Node Type: OTHER_ENTRYPOINT 11
+
+EXPRESSION:
+pwin = 7500
+
+IRs:
+pwin(uint256) := 7500(uint256)"];
+11->12;
+12[label="Node Type: OTHER_ENTRYPOINT 12
+
+EXPRESSION:
+edge = 190
+
+IRs:
+edge(uint256) := 190(uint256)"];
+12->13;
+13[label="Node Type: OTHER_ENTRYPOINT 13
+
+EXPRESSION:
+maxWin = 100
+
+IRs:
+maxWin(uint256) := 100(uint256)"];
+13->14;
+14[label="Node Type: OTHER_ENTRYPOINT 14
+
+EXPRESSION:
+minBet = 200000000000000000
+
+IRs:
+minBet(uint256) := 200000000000000000(uint256)"];
+14->15;
+15[label="Node Type: OTHER_ENTRYPOINT 15
+
+EXPRESSION:
+maxInvestors = 10
+
+IRs:
+maxInvestors(uint256) := 10(uint256)"];
+15->16;
+16[label="Node Type: OTHER_ENTRYPOINT 16
+
+EXPRESSION:
+houseEdge = 25
+
+IRs:
+houseEdge(uint256) := 25(uint256)"];
+16->17;
+17[label="Node Type: OTHER_ENTRYPOINT 17
+
+EXPRESSION:
+divestFee = 50
+
+IRs:
+divestFee(uint256) := 50(uint256)"];
+17->18;
+18[label="Node Type: OTHER_ENTRYPOINT 18
+
+EXPRESSION:
+emergencyWithdrawalRatio = 10
+
+IRs:
+emergencyWithdrawalRatio(uint256) := 10(uint256)"];
+18->19;
+19[label="Node Type: OTHER_ENTRYPOINT 19
+
+EXPRESSION:
+safeGas = 2300
+
+IRs:
+safeGas(uint256) := 2300(uint256)"];
+19->20;
+20[label="Node Type: OTHER_ENTRYPOINT 20
+
+EXPRESSION:
+ORACLIZE_GAS_LIMIT = 175000
+
+IRs:
+ORACLIZE_GAS_LIMIT(uint256) := 175000(uint256)"];
+20->21;
+21[label="Node Type: OTHER_ENTRYPOINT 21
+
+EXPRESSION:
+INVALID_BET_MARKER = 99999
+
+IRs:
+INVALID_BET_MARKER(uint256) := 99999(uint256)"];
+21->22;
+22[label="Node Type: OTHER_ENTRYPOINT 22
+
+EXPRESSION:
+EMERGENCY_TIMEOUT = 259200
+
+IRs:
+EMERGENCY_TIMEOUT(uint256) := 259200(uint256)"];
+22->23;
+23[label="Node Type: OTHER_ENTRYPOINT 23
+
+EXPRESSION:
+numInvestors = 0
+
+IRs:
+numInvestors(uint256) := 0(uint256)"];
+23->24;
+24[label="Node Type: OTHER_ENTRYPOINT 24
+
+EXPRESSION:
+invested = 0
+
+IRs:
+invested(uint256) := 0(uint256)"];
+24->25;
+25[label="Node Type: OTHER_ENTRYPOINT 25
+
+EXPRESSION:
+investorsProfit = 0
+
+IRs:
+investorsProfit(uint256) := 0(uint256)"];
+25->26;
+26[label="Node Type: OTHER_ENTRYPOINT 26
+
+EXPRESSION:
+investorsLosses = 0
+
+IRs:
+investorsLosses(uint256) := 0(uint256)"];
+}
+// Function: 39954.sol-Dice-stopContract()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+isStopped = true
+
+IRs:
+isStopped(bool) := True(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+LOG_ContractStopped()
+
+IRs:
+Emit LOG_ContractStopped()"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Dice.onlyOwner()()"];
+3->1;
+}
+// Function: 39954.sol-Dice-strCompare(string,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+a = bytes(_a)
+
+IRs:
+TMP_300 = CONVERT _a to bytes
+a(bytes) := TMP_300(bytes)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+b = bytes(_b)
+
+IRs:
+TMP_301 = CONVERT _b to bytes
+b(bytes) := TMP_301(bytes)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+minLength = a.length
+
+IRs:
+REF_113 -> LENGTH a
+minLength(uint256) := REF_113(uint256)"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+b.length < minLength
+
+IRs:
+REF_114 -> LENGTH b
+TMP_302(bool) = REF_114 < minLength
+CONDITION TMP_302"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+minLength = b.length
+
+IRs:
+REF_115 -> LENGTH b
+minLength(uint256) := REF_115(uint256)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+6->9;
+7[label="Node Type: BEGIN_LOOP 7
+"];
+7->10;
+8[label="Node Type: END_LOOP 8
+"];
+8->18;
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+9->7;
+10[label="Node Type: IF_LOOP 10
+
+EXPRESSION:
+i < minLength
+
+IRs:
+TMP_303(bool) = i < minLength
+CONDITION TMP_303"];
+10->11[label="True"];
+10->8[label="False"];
+11[label="Node Type: IF 11
+
+EXPRESSION:
+a[i] < b[i]
+
+IRs:
+REF_116(None) -> a[i]
+REF_117(None) -> b[i]
+TMP_304(bool) = REF_116 < REF_117
+CONDITION TMP_304"];
+11->12[label="True"];
+11->13[label="False"];
+12[label="Node Type: RETURN 12
+
+EXPRESSION:
+- 1
+
+IRs:
+TMP_305(uint256) = 0 - 1
+RETURN TMP_305"];
+13[label="Node Type: IF 13
+
+EXPRESSION:
+a[i] > b[i]
+
+IRs:
+REF_118(None) -> a[i]
+REF_119(None) -> b[i]
+TMP_306(bool) = REF_118 > REF_119
+CONDITION TMP_306"];
+13->14[label="True"];
+13->15[label="False"];
+14[label="Node Type: RETURN 14
+
+EXPRESSION:
+1
+
+IRs:
+RETURN 1"];
+15[label="Node Type: END_IF 15
+"];
+15->16;
+16[label="Node Type: END_IF 16
+"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_307(uint256) := i(uint256)
+i(uint256) = i + 1"];
+17->10;
+18[label="Node Type: IF 18
+
+EXPRESSION:
+a.length < b.length
+
+IRs:
+REF_120 -> LENGTH a
+REF_121 -> LENGTH b
+TMP_308(bool) = REF_120 < REF_121
+CONDITION TMP_308"];
+18->19[label="True"];
+18->20[label="False"];
+19[label="Node Type: RETURN 19
+
+EXPRESSION:
+- 1
+
+IRs:
+TMP_309(uint256) = 0 - 1
+RETURN TMP_309"];
+20[label="Node Type: IF 20
+
+EXPRESSION:
+a.length > b.length
+
+IRs:
+REF_122 -> LENGTH a
+REF_123 -> LENGTH b
+TMP_310(bool) = REF_122 > REF_123
+CONDITION TMP_310"];
+20->21[label="True"];
+20->22[label="False"];
+21[label="Node Type: RETURN 21
+
+EXPRESSION:
+1
+
+IRs:
+RETURN 1"];
+22[label="Node Type: RETURN 22
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+}
+// Function: 39954.sol-Dice-strConcat(string,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+strConcat(_a,_b,,,)
+
+IRs:
+TMP_367(string) = INTERNAL_CALL, usingOraclize.strConcat(string,string,string,string,string)(_a,_b,,,)
+RETURN TMP_367"];
+}
+// Function: 39954.sol-Dice-strConcat(string,string,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+strConcat(_a,_b,_c,,)
+
+IRs:
+TMP_366(string) = INTERNAL_CALL, usingOraclize.strConcat(string,string,string,string,string)(_a,_b,_c,,)
+RETURN TMP_366"];
+}
+// Function: 39954.sol-Dice-strConcat(string,string,string,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+strConcat(_a,_b,_c,_d,)
+
+IRs:
+TMP_365(string) = INTERNAL_CALL, usingOraclize.strConcat(string,string,string,string,string)(_a,_b,_c,_d,)
+RETURN TMP_365"];
+}
+// Function: 39954.sol-Dice-strConcat(string,string,string,string,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+_ba = bytes(_a)
+
+IRs:
+TMP_337 = CONVERT _a to bytes
+_ba(bytes) := TMP_337(bytes)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+_bb = bytes(_b)
+
+IRs:
+TMP_338 = CONVERT _b to bytes
+_bb(bytes) := TMP_338(bytes)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+_bc = bytes(_c)
+
+IRs:
+TMP_339 = CONVERT _c to bytes
+_bc(bytes) := TMP_339(bytes)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+_bd = bytes(_d)
+
+IRs:
+TMP_340 = CONVERT _d to bytes
+_bd(bytes) := TMP_340(bytes)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+_be = bytes(_e)
+
+IRs:
+TMP_341 = CONVERT _e to bytes
+_be(bytes) := TMP_341(bytes)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+abcde = new string(_ba.length + _bb.length + _bc.length + _bd.length + _be.length)
+
+IRs:
+REF_137 -> LENGTH _ba
+REF_138 -> LENGTH _bb
+TMP_343(uint256) = REF_137 + REF_138
+REF_139 -> LENGTH _bc
+TMP_344(uint256) = TMP_343 + REF_139
+REF_140 -> LENGTH _bd
+TMP_345(uint256) = TMP_344 + REF_140
+REF_141 -> LENGTH _be
+TMP_346(uint256) = TMP_345 + REF_141
+TMP_347 = new string(TMP_346)
+abcde(string) := TMP_347(string)"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+babcde = bytes(abcde)
+
+IRs:
+TMP_348 = CONVERT abcde to bytes
+babcde(bytes) := TMP_348(bytes)"];
+7->8;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+k = 0
+
+IRs:
+k(uint256) := 0(uint256)"];
+8->11;
+9[label="Node Type: BEGIN_LOOP 9
+"];
+9->12;
+10[label="Node Type: END_LOOP 10
+"];
+10->17;
+11[label="Node Type: NEW VARIABLE 11
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+11->9;
+12[label="Node Type: IF_LOOP 12
+
+EXPRESSION:
+i < _ba.length
+
+IRs:
+REF_142 -> LENGTH _ba
+TMP_349(bool) = i < REF_142
+CONDITION TMP_349"];
+12->13[label="True"];
+12->10[label="False"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+babcde[k ++] = _ba[i]
+
+IRs:
+TMP_350(uint256) := k(uint256)
+k(uint256) = k + 1
+REF_143(None) -> babcde[TMP_350]
+REF_144(None) -> _ba[i]
+REF_143(None) (->babcde) := REF_144(None)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_351(uint256) := i(uint256)
+i(uint256) = i + 1"];
+14->12;
+15[label="Node Type: BEGIN_LOOP 15
+"];
+15->18;
+16[label="Node Type: END_LOOP 16
+"];
+16->23;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+17->15;
+18[label="Node Type: IF_LOOP 18
+
+EXPRESSION:
+i < _bb.length
+
+IRs:
+REF_145 -> LENGTH _bb
+TMP_352(bool) = i < REF_145
+CONDITION TMP_352"];
+18->19[label="True"];
+18->16[label="False"];
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+babcde[k ++] = _bb[i]
+
+IRs:
+TMP_353(uint256) := k(uint256)
+k(uint256) = k + 1
+REF_146(None) -> babcde[TMP_353]
+REF_147(None) -> _bb[i]
+REF_146(None) (->babcde) := REF_147(None)"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_354(uint256) := i(uint256)
+i(uint256) = i + 1"];
+20->18;
+21[label="Node Type: BEGIN_LOOP 21
+"];
+21->24;
+22[label="Node Type: END_LOOP 22
+"];
+22->29;
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+23->21;
+24[label="Node Type: IF_LOOP 24
+
+EXPRESSION:
+i < _bc.length
+
+IRs:
+REF_148 -> LENGTH _bc
+TMP_355(bool) = i < REF_148
+CONDITION TMP_355"];
+24->25[label="True"];
+24->22[label="False"];
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+babcde[k ++] = _bc[i]
+
+IRs:
+TMP_356(uint256) := k(uint256)
+k(uint256) = k + 1
+REF_149(None) -> babcde[TMP_356]
+REF_150(None) -> _bc[i]
+REF_149(None) (->babcde) := REF_150(None)"];
+25->26;
+26[label="Node Type: EXPRESSION 26
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_357(uint256) := i(uint256)
+i(uint256) = i + 1"];
+26->24;
+27[label="Node Type: BEGIN_LOOP 27
+"];
+27->30;
+28[label="Node Type: END_LOOP 28
+"];
+28->35;
+29[label="Node Type: EXPRESSION 29
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+29->27;
+30[label="Node Type: IF_LOOP 30
+
+EXPRESSION:
+i < _bd.length
+
+IRs:
+REF_151 -> LENGTH _bd
+TMP_358(bool) = i < REF_151
+CONDITION TMP_358"];
+30->31[label="True"];
+30->28[label="False"];
+31[label="Node Type: EXPRESSION 31
+
+EXPRESSION:
+babcde[k ++] = _bd[i]
+
+IRs:
+TMP_359(uint256) := k(uint256)
+k(uint256) = k + 1
+REF_152(None) -> babcde[TMP_359]
+REF_153(None) -> _bd[i]
+REF_152(None) (->babcde) := REF_153(None)"];
+31->32;
+32[label="Node Type: EXPRESSION 32
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_360(uint256) := i(uint256)
+i(uint256) = i + 1"];
+32->30;
+33[label="Node Type: BEGIN_LOOP 33
+"];
+33->36;
+34[label="Node Type: END_LOOP 34
+"];
+34->39;
+35[label="Node Type: EXPRESSION 35
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+35->33;
+36[label="Node Type: IF_LOOP 36
+
+EXPRESSION:
+i < _be.length
+
+IRs:
+REF_154 -> LENGTH _be
+TMP_361(bool) = i < REF_154
+CONDITION TMP_361"];
+36->37[label="True"];
+36->34[label="False"];
+37[label="Node Type: EXPRESSION 37
+
+EXPRESSION:
+babcde[k ++] = _be[i]
+
+IRs:
+TMP_362(uint256) := k(uint256)
+k(uint256) = k + 1
+REF_155(None) -> babcde[TMP_362]
+REF_156(None) -> _be[i]
+REF_155(None) (->babcde) := REF_156(None)"];
+37->38;
+38[label="Node Type: EXPRESSION 38
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_363(uint256) := i(uint256)
+i(uint256) = i + 1"];
+38->36;
+39[label="Node Type: RETURN 39
+
+EXPRESSION:
+string(babcde)
+
+IRs:
+TMP_364 = CONVERT babcde to string
+RETURN TMP_364"];
+}
+// Function: 39954.sol-Dice-uint2str(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+i == 0
+
+IRs:
+TMP_382(bool) = i == 0
+CONDITION TMP_382"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+j = i
+
+IRs:
+j(uint256) := i(uint256)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+"];
+5->6;
+6[label="Node Type: BEGIN_LOOP 6
+"];
+6->7;
+7[label="Node Type: IF_LOOP 7
+
+EXPRESSION:
+j != 0
+
+IRs:
+TMP_383(bool) = j != 0
+CONDITION TMP_383"];
+7->8[label="True"];
+7->10[label="False"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+len ++
+
+IRs:
+TMP_384(uint256) := len(uint256)
+len(uint256) = len + 1"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+j /= 10
+
+IRs:
+j(uint256) = j / 10"];
+9->7;
+10[label="Node Type: END_LOOP 10
+"];
+10->11;
+11[label="Node Type: NEW VARIABLE 11
+
+EXPRESSION:
+bstr = new bytes(len)
+
+IRs:
+TMP_386 = new bytes(len)
+bstr(bytes) := TMP_386(bytes)"];
+11->12;
+12[label="Node Type: NEW VARIABLE 12
+
+EXPRESSION:
+k = len - 1
+
+IRs:
+TMP_387(uint256) = len - 1
+k(uint256) := TMP_387(uint256)"];
+12->13;
+13[label="Node Type: BEGIN_LOOP 13
+"];
+13->14;
+14[label="Node Type: IF_LOOP 14
+
+EXPRESSION:
+i != 0
+
+IRs:
+TMP_388(bool) = i != 0
+CONDITION TMP_388"];
+14->15[label="True"];
+14->17[label="False"];
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+bstr[k --] = bytes1(48 + i % 10)
+
+IRs:
+TMP_389(uint256) := k(uint256)
+k(uint256) = k - 1
+REF_162(bytes1) -> bstr[TMP_389]
+TMP_390(uint256) = i % 10
+TMP_391(uint256) = 48 + TMP_390
+TMP_392 = CONVERT TMP_391 to bytes1
+REF_162(bytes1) (->bstr) := TMP_392(bytes1)"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+i /= 10
+
+IRs:
+i(uint256) = i / 10"];
+16->14;
+17[label="Node Type: END_LOOP 17
+"];
+17->18;
+18[label="Node Type: RETURN 18
+
+EXPRESSION:
+string(bstr)
+
+IRs:
+TMP_393 = CONVERT bstr to string
+RETURN TMP_393"];
+}
+// Function: 39954.sol-Dice-voteEmergencyWithdrawal(bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+investors[investorIDs[msg.sender]].votedForEmergencyWithdrawal = vote
+
+IRs:
+REF_260(uint256) -> investorIDs[msg.sender]
+REF_261(Dice.Investor) -> investors[REF_260]
+REF_262(bool) -> REF_261.votedForEmergencyWithdrawal
+REF_262(bool) (->investors) := vote(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+LOG_EmergencyWithdrawalVote(msg.sender,vote)
+
+IRs:
+Emit LOG_EmergencyWithdrawalVote(msg.sender,vote)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyInvestors()
+
+IRs:
+MODIFIER_CALL, Dice.onlyInvestors()()"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyAfterProposed()
+
+IRs:
+MODIFIER_CALL, Dice.onlyAfterProposed()()"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+onlyIfStopped()
+
+IRs:
+MODIFIER_CALL, Dice.onlyIfStopped()()"];
+5->1;
+}
+// Function: 39954.sol-OraclizeAddrResolverI-getAddress()
+digraph{
+}
+// Function: 39954.sol-OraclizeI-getPrice(string)
+digraph{
+}
+// Function: 39954.sol-OraclizeI-getPrice(string,uint256)
+digraph{
+}
+// Function: 39954.sol-OraclizeI-query(uint256,string,string)
+digraph{
+}
+// Function: 39954.sol-OraclizeI-query2(uint256,string,string,string)
+digraph{
+}
+// Function: 39954.sol-OraclizeI-query2_withGasLimit(uint256,string,string,string,uint256)
+digraph{
+}
+// Function: 39954.sol-OraclizeI-query_withGasLimit(uint256,string,string,uint256)
+digraph{
+}
+// Function: 39954.sol-OraclizeI-setConfig(bytes32)
+digraph{
+}
+// Function: 39954.sol-OraclizeI-setCustomGasPrice(uint256)
+digraph{
+}
+// Function: 39954.sol-OraclizeI-setProofType(bytes1)
+digraph{
+}
+// Function: 39954.sol-OraclizeI-useCoupon(string)
+digraph{
+}
+// Function: 39954.sol-usingOraclize-coupon(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+oraclize = OraclizeI(OAR.getAddress())
+
+IRs:
+TMP_202(address) = HIGH_LEVEL_CALL, dest:OAR(OraclizeAddrResolverI), function:getAddress, arguments:[]  
+TMP_203 = CONVERT TMP_202 to OraclizeI
+oraclize(OraclizeI) := TMP_203(OraclizeI)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+oraclize.useCoupon(code)
+
+IRs:
+HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:useCoupon, arguments:['code']  "];
+2->3;
+3[label="Node Type: _ 3
+"];
+}
+// Function: 39954.sol-usingOraclize-getCodeSize(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: INLINE ASM 1
+"];
+1->2;
+2[label="Node Type: END INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+_size
+
+IRs:
+RETURN _size"];
+}
+// Function: 39954.sol-usingOraclize-indexOf(string,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+h = bytes(_haystack)
+
+IRs:
+TMP_106 = CONVERT _haystack to bytes
+h(bytes) := TMP_106(bytes)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+n = bytes(_needle)
+
+IRs:
+TMP_107 = CONVERT _needle to bytes
+n(bytes) := TMP_107(bytes)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+h.length < 1 || n.length < 1 || (n.length > h.length)
+
+IRs:
+REF_41 -> LENGTH h
+TMP_108(bool) = REF_41 < 1
+REF_42 -> LENGTH n
+TMP_109(bool) = REF_42 < 1
+TMP_110(bool) = TMP_108 || TMP_109
+REF_43 -> LENGTH n
+REF_44 -> LENGTH h
+TMP_111(bool) = REF_43 > REF_44
+TMP_112(bool) = TMP_110 || TMP_111
+CONDITION TMP_112"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+- 1
+
+IRs:
+TMP_113(uint256) = 0 - 1
+RETURN TMP_113"];
+5[label="Node Type: IF 5
+
+EXPRESSION:
+h.length > (2 ** 128 - 1)
+
+IRs:
+REF_45 -> LENGTH h
+TMP_114(uint256) = 2 ** 128
+TMP_115(uint256) = TMP_114 - 1
+TMP_116(bool) = REF_45 > TMP_115
+CONDITION TMP_116"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+- 1
+
+IRs:
+TMP_117(uint256) = 0 - 1
+RETURN TMP_117"];
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+subindex = 0
+
+IRs:
+subindex(uint256) := 0(uint256)"];
+7->10;
+8[label="Node Type: BEGIN_LOOP 8
+"];
+8->11;
+9[label="Node Type: END_LOOP 9
+"];
+9->23;
+10[label="Node Type: NEW VARIABLE 10
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+10->8;
+11[label="Node Type: IF_LOOP 11
+
+EXPRESSION:
+i < h.length
+
+IRs:
+REF_46 -> LENGTH h
+TMP_118(bool) = i < REF_46
+CONDITION TMP_118"];
+11->12[label="True"];
+11->9[label="False"];
+12[label="Node Type: IF 12
+
+EXPRESSION:
+h[i] == n[0]
+
+IRs:
+REF_47(None) -> h[i]
+REF_48(None) -> n[0]
+TMP_119(bool) = REF_47 == REF_48
+CONDITION TMP_119"];
+12->13[label="True"];
+12->21[label="False"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+subindex = 1
+
+IRs:
+subindex(uint256) := 1(uint256)"];
+13->14;
+14[label="Node Type: BEGIN_LOOP 14
+"];
+14->15;
+15[label="Node Type: IF_LOOP 15
+
+EXPRESSION:
+subindex < n.length && (i + subindex) < h.length && h[i + subindex] == n[subindex]
+
+IRs:
+REF_49 -> LENGTH n
+TMP_120(bool) = subindex < REF_49
+TMP_121(uint256) = i + subindex
+REF_50 -> LENGTH h
+TMP_122(bool) = TMP_121 < REF_50
+TMP_123(bool) = TMP_120 && TMP_122
+TMP_124(uint256) = i + subindex
+REF_51(None) -> h[TMP_124]
+REF_52(None) -> n[subindex]
+TMP_125(bool) = REF_51 == REF_52
+TMP_126(bool) = TMP_123 && TMP_125
+CONDITION TMP_126"];
+15->16[label="True"];
+15->17[label="False"];
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+subindex ++
+
+IRs:
+TMP_127(uint256) := subindex(uint256)
+subindex(uint256) = subindex + 1"];
+16->15;
+17[label="Node Type: END_LOOP 17
+"];
+17->18;
+18[label="Node Type: IF 18
+
+EXPRESSION:
+subindex == n.length
+
+IRs:
+REF_53 -> LENGTH n
+TMP_128(bool) = subindex == REF_53
+CONDITION TMP_128"];
+18->19[label="True"];
+18->20[label="False"];
+19[label="Node Type: RETURN 19
+
+EXPRESSION:
+int256(i)
+
+IRs:
+TMP_129 = CONVERT i to int256
+RETURN TMP_129"];
+20[label="Node Type: END_IF 20
+"];
+20->21;
+21[label="Node Type: END_IF 21
+"];
+21->22;
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_130(uint256) := i(uint256)
+i(uint256) = i + 1"];
+22->11;
+23[label="Node Type: RETURN 23
+
+EXPRESSION:
+- 1
+
+IRs:
+TMP_131(uint256) = 0 - 1
+RETURN TMP_131"];
+}
+// Function: 39954.sol-usingOraclize-oraclizeAPI()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+address(OAR) == 0
+
+IRs:
+TMP_197 = CONVERT OAR to address
+TMP_198(bool) = TMP_197 == 0
+CONDITION TMP_198"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+oraclize_setNetwork(networkID_auto)
+
+IRs:
+TMP_199(bool) = INTERNAL_CALL, usingOraclize.oraclize_setNetwork(uint8)(networkID_auto)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+oraclize = OraclizeI(OAR.getAddress())
+
+IRs:
+TMP_200(address) = HIGH_LEVEL_CALL, dest:OAR(OraclizeAddrResolverI), function:getAddress, arguments:[]  
+TMP_201 = CONVERT TMP_200 to OraclizeI
+oraclize(OraclizeI) := TMP_201(OraclizeI)"];
+4->5;
+5[label="Node Type: _ 5
+"];
+}
+// Function: 39954.sol-usingOraclize-oraclize_cbAddress()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+oraclize.cbAddress()
+
+IRs:
+TMP_65(address) = HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:cbAddress, arguments:[]  
+RETURN TMP_65"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+oraclizeAPI()
+
+IRs:
+MODIFIER_CALL, usingOraclize.oraclizeAPI()()"];
+2->1;
+}
+// Function: 39954.sol-usingOraclize-oraclize_query(string,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+price = oraclize.getPrice(datasource)
+
+IRs:
+TMP_9(uint256) = HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:getPrice, arguments:['datasource']  
+price(uint256) := TMP_9(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+price > 1000000000000000000 + tx.gasprice * 200000
+
+IRs:
+TMP_10(uint256) = tx.gasprice * 200000
+TMP_11(uint256) = 1000000000000000000 + TMP_10
+TMP_12(bool) = price > TMP_11
+CONDITION TMP_12"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+oraclize.query.value(price)(0,datasource,arg)
+
+IRs:
+TMP_14(bytes32) = HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:query, arguments:['0', 'datasource', 'arg'] value:price 
+RETURN TMP_14"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+oraclizeAPI()
+
+IRs:
+MODIFIER_CALL, usingOraclize.oraclizeAPI()()"];
+6->1;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+id
+
+IRs:
+RETURN id"];
+}
+// Function: 39954.sol-usingOraclize-oraclize_query(string,string,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+price = oraclize.getPrice(datasource)
+
+IRs:
+TMP_37(uint256) = HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:getPrice, arguments:['datasource']  
+price(uint256) := TMP_37(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+price > 1000000000000000000 + tx.gasprice * 200000
+
+IRs:
+TMP_38(uint256) = tx.gasprice * 200000
+TMP_39(uint256) = 1000000000000000000 + TMP_38
+TMP_40(bool) = price > TMP_39
+CONDITION TMP_40"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+oraclize.query2.value(price)(0,datasource,arg1,arg2)
+
+IRs:
+TMP_42(bytes32) = HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:query2, arguments:['0', 'datasource', 'arg1', 'arg2'] value:price 
+RETURN TMP_42"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+oraclizeAPI()
+
+IRs:
+MODIFIER_CALL, usingOraclize.oraclizeAPI()()"];
+6->1;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+id
+
+IRs:
+RETURN id"];
+}
+// Function: 39954.sol-usingOraclize-oraclize_query(string,string,string,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+price = oraclize.getPrice(datasource,gaslimit)
+
+IRs:
+TMP_58(uint256) = HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:getPrice, arguments:['datasource', 'gaslimit']  
+price(uint256) := TMP_58(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+price > 1000000000000000000 + tx.gasprice * gaslimit
+
+IRs:
+TMP_59(uint256) = tx.gasprice * gaslimit
+TMP_60(uint256) = 1000000000000000000 + TMP_59
+TMP_61(bool) = price > TMP_60
+CONDITION TMP_61"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+oraclize.query2_withGasLimit.value(price)(0,datasource,arg1,arg2,gaslimit)
+
+IRs:
+TMP_63(bytes32) = HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:query2_withGasLimit, arguments:['0', 'datasource', 'arg1', 'arg2', 'gaslimit'] value:price 
+RETURN TMP_63"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+oraclizeAPI()
+
+IRs:
+MODIFIER_CALL, usingOraclize.oraclizeAPI()()"];
+6->1;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+id
+
+IRs:
+RETURN id"];
+}
+// Function: 39954.sol-usingOraclize-oraclize_query(string,string,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+price = oraclize.getPrice(datasource,gaslimit)
+
+IRs:
+TMP_30(uint256) = HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:getPrice, arguments:['datasource', 'gaslimit']  
+price(uint256) := TMP_30(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+price > 1000000000000000000 + tx.gasprice * gaslimit
+
+IRs:
+TMP_31(uint256) = tx.gasprice * gaslimit
+TMP_32(uint256) = 1000000000000000000 + TMP_31
+TMP_33(bool) = price > TMP_32
+CONDITION TMP_33"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+oraclize.query_withGasLimit.value(price)(0,datasource,arg,gaslimit)
+
+IRs:
+TMP_35(bytes32) = HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:query_withGasLimit, arguments:['0', 'datasource', 'arg', 'gaslimit'] value:price 
+RETURN TMP_35"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+oraclizeAPI()
+
+IRs:
+MODIFIER_CALL, usingOraclize.oraclizeAPI()()"];
+6->1;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+id
+
+IRs:
+RETURN id"];
+}
+// Function: 39954.sol-usingOraclize-oraclize_query(uint256,string,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+price = oraclize.getPrice(datasource)
+
+IRs:
+TMP_16(uint256) = HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:getPrice, arguments:['datasource']  
+price(uint256) := TMP_16(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+price > 1000000000000000000 + tx.gasprice * 200000
+
+IRs:
+TMP_17(uint256) = tx.gasprice * 200000
+TMP_18(uint256) = 1000000000000000000 + TMP_17
+TMP_19(bool) = price > TMP_18
+CONDITION TMP_19"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+oraclize.query.value(price)(timestamp,datasource,arg)
+
+IRs:
+TMP_21(bytes32) = HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:query, arguments:['timestamp', 'datasource', 'arg'] value:price 
+RETURN TMP_21"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+oraclizeAPI()
+
+IRs:
+MODIFIER_CALL, usingOraclize.oraclizeAPI()()"];
+6->1;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+id
+
+IRs:
+RETURN id"];
+}
+// Function: 39954.sol-usingOraclize-oraclize_query(uint256,string,string,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+price = oraclize.getPrice(datasource)
+
+IRs:
+TMP_44(uint256) = HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:getPrice, arguments:['datasource']  
+price(uint256) := TMP_44(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+price > 1000000000000000000 + tx.gasprice * 200000
+
+IRs:
+TMP_45(uint256) = tx.gasprice * 200000
+TMP_46(uint256) = 1000000000000000000 + TMP_45
+TMP_47(bool) = price > TMP_46
+CONDITION TMP_47"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+oraclize.query2.value(price)(timestamp,datasource,arg1,arg2)
+
+IRs:
+TMP_49(bytes32) = HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:query2, arguments:['timestamp', 'datasource', 'arg1', 'arg2'] value:price 
+RETURN TMP_49"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+oraclizeAPI()
+
+IRs:
+MODIFIER_CALL, usingOraclize.oraclizeAPI()()"];
+6->1;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+id
+
+IRs:
+RETURN id"];
+}
+// Function: 39954.sol-usingOraclize-oraclize_query(uint256,string,string,string,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+price = oraclize.getPrice(datasource,gaslimit)
+
+IRs:
+TMP_51(uint256) = HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:getPrice, arguments:['datasource', 'gaslimit']  
+price(uint256) := TMP_51(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+price > 1000000000000000000 + tx.gasprice * gaslimit
+
+IRs:
+TMP_52(uint256) = tx.gasprice * gaslimit
+TMP_53(uint256) = 1000000000000000000 + TMP_52
+TMP_54(bool) = price > TMP_53
+CONDITION TMP_54"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+oraclize.query2_withGasLimit.value(price)(timestamp,datasource,arg1,arg2,gaslimit)
+
+IRs:
+TMP_56(bytes32) = HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:query2_withGasLimit, arguments:['timestamp', 'datasource', 'arg1', 'arg2', 'gaslimit'] value:price 
+RETURN TMP_56"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+oraclizeAPI()
+
+IRs:
+MODIFIER_CALL, usingOraclize.oraclizeAPI()()"];
+6->1;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+id
+
+IRs:
+RETURN id"];
+}
+// Function: 39954.sol-usingOraclize-oraclize_query(uint256,string,string,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+price = oraclize.getPrice(datasource,gaslimit)
+
+IRs:
+TMP_23(uint256) = HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:getPrice, arguments:['datasource', 'gaslimit']  
+price(uint256) := TMP_23(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+price > 1000000000000000000 + tx.gasprice * gaslimit
+
+IRs:
+TMP_24(uint256) = tx.gasprice * gaslimit
+TMP_25(uint256) = 1000000000000000000 + TMP_24
+TMP_26(bool) = price > TMP_25
+CONDITION TMP_26"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+oraclize.query_withGasLimit.value(price)(timestamp,datasource,arg,gaslimit)
+
+IRs:
+TMP_28(bytes32) = HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:query_withGasLimit, arguments:['timestamp', 'datasource', 'arg', 'gaslimit'] value:price 
+RETURN TMP_28"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+oraclizeAPI()
+
+IRs:
+MODIFIER_CALL, usingOraclize.oraclizeAPI()()"];
+6->1;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+id
+
+IRs:
+RETURN id"];
+}
+// Function: 39954.sol-usingOraclize-oraclize_setConfig(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+oraclize.setConfig(config)
+
+IRs:
+HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:setConfig, arguments:['config']  
+RETURN TMP_71"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+oraclizeAPI()
+
+IRs:
+MODIFIER_CALL, usingOraclize.oraclizeAPI()()"];
+2->1;
+}
+// Function: 39954.sol-usingOraclize-oraclize_setCustomGasPrice(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+oraclize.setCustomGasPrice(gasPrice)
+
+IRs:
+HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:setCustomGasPrice, arguments:['gasPrice']  
+RETURN TMP_69"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+oraclizeAPI()
+
+IRs:
+MODIFIER_CALL, usingOraclize.oraclizeAPI()()"];
+2->1;
+}
+// Function: 39954.sol-usingOraclize-oraclize_setNetwork(uint8)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+getCodeSize(0x1d3b2638a7cc9f2cb3d298a3da7a90b67e5506ed) > 0
+
+IRs:
+TMP_0(uint256) = INTERNAL_CALL, usingOraclize.getCodeSize(address)(166879805866326139730078904348178637806357513965)
+TMP_1(bool) = TMP_0 > 0
+CONDITION TMP_1"];
+1->2[label="True"];
+1->4[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OAR = OraclizeAddrResolverI(0x1d3b2638a7cc9f2cb3d298a3da7a90b67e5506ed)
+
+IRs:
+TMP_2 = CONVERT 166879805866326139730078904348178637806357513965 to OraclizeAddrResolverI
+OAR(OraclizeAddrResolverI) := TMP_2(OraclizeAddrResolverI)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+getCodeSize(0xc03a2615d5efaf5f49f60b7bb6583eaec212fdf1) > 0
+
+IRs:
+TMP_3(uint256) = INTERNAL_CALL, usingOraclize.getCodeSize(address)(1097422988916857156046675838961943218895050702321)
+TMP_4(bool) = TMP_3 > 0
+CONDITION TMP_4"];
+5->6[label="True"];
+5->8[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+OAR = OraclizeAddrResolverI(0xc03a2615d5efaf5f49f60b7bb6583eaec212fdf1)
+
+IRs:
+TMP_5 = CONVERT 1097422988916857156046675838961943218895050702321 to OraclizeAddrResolverI
+OAR(OraclizeAddrResolverI) := TMP_5(OraclizeAddrResolverI)"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: IF 9
+
+EXPRESSION:
+getCodeSize(0x51efaf4c8b3c9afbd5ab9f4bbc82784ab6ef8faa) > 0
+
+IRs:
+TMP_6(uint256) = INTERNAL_CALL, usingOraclize.getCodeSize(address)(467773401235755137097289008257078260350600581034)
+TMP_7(bool) = TMP_6 > 0
+CONDITION TMP_7"];
+9->10[label="True"];
+9->12[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+OAR = OraclizeAddrResolverI(0x51efaf4c8b3c9afbd5ab9f4bbc82784ab6ef8faa)
+
+IRs:
+TMP_8 = CONVERT 467773401235755137097289008257078260350600581034 to OraclizeAddrResolverI
+OAR(OraclizeAddrResolverI) := TMP_8(OraclizeAddrResolverI)"];
+10->11;
+11[label="Node Type: RETURN 11
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+12[label="Node Type: END_IF 12
+"];
+12->13;
+13[label="Node Type: RETURN 13
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+}
+// Function: 39954.sol-usingOraclize-oraclize_setProof(bytes1)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+oraclize.setProofType(proofP)
+
+IRs:
+HIGH_LEVEL_CALL, dest:oraclize(OraclizeI), function:setProofType, arguments:['proofP']  
+RETURN TMP_67"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+oraclizeAPI()
+
+IRs:
+MODIFIER_CALL, usingOraclize.oraclizeAPI()()"];
+2->1;
+}
+// Function: 39954.sol-usingOraclize-parseAddr(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+tmp = bytes(_a)
+
+IRs:
+TMP_73 = CONVERT _a to bytes
+tmp(bytes) := TMP_73(bytes)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+iaddr = 0
+
+IRs:
+iaddr(uint160) := 0(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+"];
+4->7;
+5[label="Node Type: BEGIN_LOOP 5
+"];
+5->8;
+6[label="Node Type: END_LOOP 6
+"];
+6->26;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+i = 2
+
+IRs:
+i(uint256) := 2(uint256)"];
+7->5;
+8[label="Node Type: IF_LOOP 8
+
+EXPRESSION:
+i < 2 + 2 * 20
+
+IRs:
+TMP_74(uint256) = 2 * 20
+TMP_75(uint256) = 2 + TMP_74
+TMP_76(bool) = i < TMP_75
+CONDITION TMP_76"];
+8->9[label="True"];
+8->6[label="False"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+iaddr *= 256
+
+IRs:
+iaddr(uint160) = iaddr * 256"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+b1 = uint160(tmp[i])
+
+IRs:
+REF_28(None) -> tmp[i]
+TMP_77 = CONVERT REF_28 to uint160
+b1(uint160) := TMP_77(uint160)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+b2 = uint160(tmp[i + 1])
+
+IRs:
+TMP_78(uint256) = i + 1
+REF_29(None) -> tmp[TMP_78]
+TMP_79 = CONVERT REF_29 to uint160
+b2(uint160) := TMP_79(uint160)"];
+11->12;
+12[label="Node Type: IF 12
+
+EXPRESSION:
+(b1 >= 97) && (b1 <= 102)
+
+IRs:
+TMP_80(bool) = b1 >= 97
+TMP_81(bool) = b1 <= 102
+TMP_82(bool) = TMP_80 && TMP_81
+CONDITION TMP_82"];
+12->13[label="True"];
+12->14[label="False"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+b1 -= 87
+
+IRs:
+b1(uint160) = b1 - 87"];
+13->17;
+14[label="Node Type: IF 14
+
+EXPRESSION:
+(b1 >= 48) && (b1 <= 57)
+
+IRs:
+TMP_83(bool) = b1 >= 48
+TMP_84(bool) = b1 <= 57
+TMP_85(bool) = TMP_83 && TMP_84
+CONDITION TMP_85"];
+14->15[label="True"];
+14->16[label="False"];
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+b1 -= 48
+
+IRs:
+b1(uint160) = b1 - 48"];
+15->16;
+16[label="Node Type: END_IF 16
+"];
+16->17;
+17[label="Node Type: END_IF 17
+"];
+17->18;
+18[label="Node Type: IF 18
+
+EXPRESSION:
+(b2 >= 97) && (b2 <= 102)
+
+IRs:
+TMP_86(bool) = b2 >= 97
+TMP_87(bool) = b2 <= 102
+TMP_88(bool) = TMP_86 && TMP_87
+CONDITION TMP_88"];
+18->19[label="True"];
+18->20[label="False"];
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+b2 -= 87
+
+IRs:
+b2(uint160) = b2 - 87"];
+19->23;
+20[label="Node Type: IF 20
+
+EXPRESSION:
+(b2 >= 48) && (b2 <= 57)
+
+IRs:
+TMP_89(bool) = b2 >= 48
+TMP_90(bool) = b2 <= 57
+TMP_91(bool) = TMP_89 && TMP_90
+CONDITION TMP_91"];
+20->21[label="True"];
+20->22[label="False"];
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+b2 -= 48
+
+IRs:
+b2(uint160) = b2 - 48"];
+21->22;
+22[label="Node Type: END_IF 22
+"];
+22->23;
+23[label="Node Type: END_IF 23
+"];
+23->24;
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+iaddr += (b1 * 16 + b2)
+
+IRs:
+TMP_92(uint160) = b1 * 16
+TMP_93(uint160) = TMP_92 + b2
+iaddr(uint160) = iaddr + TMP_93"];
+24->25;
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+i += 2
+
+IRs:
+i(uint256) = i + 2"];
+25->8;
+26[label="Node Type: RETURN 26
+
+EXPRESSION:
+address(iaddr)
+
+IRs:
+TMP_94 = CONVERT iaddr to address
+RETURN TMP_94"];
+}
+// Function: 39954.sol-usingOraclize-parseInt(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+parseInt(_a,0)
+
+IRs:
+TMP_163(uint256) = INTERNAL_CALL, usingOraclize.parseInt(string,uint256)(_a,0)
+RETURN TMP_163"];
+}
+// Function: 39954.sol-usingOraclize-parseInt(string,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+bresult = bytes(_a)
+
+IRs:
+TMP_164 = CONVERT _a to bytes
+bresult(bytes) := TMP_164(bytes)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+mint = 0
+
+IRs:
+mint(uint256) := 0(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+decimals = false
+
+IRs:
+decimals(bool) := False(bool)"];
+3->6;
+4[label="Node Type: BEGIN_LOOP 4
+"];
+4->7;
+5[label="Node Type: END_LOOP 5
+"];
+5->22;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+6->4;
+7[label="Node Type: IF_LOOP 7
+
+EXPRESSION:
+i < bresult.length
+
+IRs:
+REF_74 -> LENGTH bresult
+TMP_165(bool) = i < REF_74
+CONDITION TMP_165"];
+7->8[label="True"];
+7->5[label="False"];
+8[label="Node Type: IF 8
+
+EXPRESSION:
+(bresult[i] >= 48) && (bresult[i] <= 57)
+
+IRs:
+REF_75(None) -> bresult[i]
+TMP_166(bool) = REF_75 >= 48
+REF_76(None) -> bresult[i]
+TMP_167(bool) = REF_76 <= 57
+TMP_168(bool) = TMP_166 && TMP_167
+CONDITION TMP_168"];
+8->9[label="True"];
+8->17[label="False"];
+9[label="Node Type: IF 9
+
+EXPRESSION:
+decimals
+
+IRs:
+CONDITION decimals"];
+9->10[label="True"];
+9->14[label="False"];
+10[label="Node Type: IF 10
+
+EXPRESSION:
+_b == 0
+
+IRs:
+TMP_169(bool) = _b == 0
+CONDITION TMP_169"];
+10->11[label="True"];
+10->12[label="False"];
+11[label="Node Type: BREAK 11
+"];
+11->5;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+_b --
+
+IRs:
+TMP_170(uint256) := _b(uint256)
+_b(uint256) = _b - 1"];
+12->13;
+13[label="Node Type: END_IF 13
+"];
+13->14;
+14[label="Node Type: END_IF 14
+"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+mint *= 10
+
+IRs:
+mint(uint256) = mint * 10"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+mint += uint256(bresult[i]) - 48
+
+IRs:
+REF_77(None) -> bresult[i]
+TMP_171 = CONVERT REF_77 to uint256
+TMP_172(uint256) = TMP_171 - 48
+mint(uint256) = mint + TMP_172"];
+16->20;
+17[label="Node Type: IF 17
+
+EXPRESSION:
+bresult[i] == 46
+
+IRs:
+REF_78(None) -> bresult[i]
+TMP_173(bool) = REF_78 == 46
+CONDITION TMP_173"];
+17->18[label="True"];
+17->19[label="False"];
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+decimals = true
+
+IRs:
+decimals(bool) := True(bool)"];
+18->19;
+19[label="Node Type: END_IF 19
+"];
+19->20;
+20[label="Node Type: END_IF 20
+"];
+20->21;
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_174(uint256) := i(uint256)
+i(uint256) = i + 1"];
+21->7;
+22[label="Node Type: IF 22
+
+EXPRESSION:
+_b > 0
+
+IRs:
+TMP_175(bool) = _b > 0
+CONDITION TMP_175"];
+22->23[label="True"];
+22->24[label="False"];
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+mint *= 10 ** _b
+
+IRs:
+TMP_176(uint256) = 10 ** _b
+mint(uint256) = mint * TMP_176"];
+23->24;
+24[label="Node Type: END_IF 24
+"];
+24->25;
+25[label="Node Type: RETURN 25
+
+EXPRESSION:
+mint
+
+IRs:
+RETURN mint"];
+}
+// Function: 39954.sol-usingOraclize-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+day = 60 * 60 * 24
+
+IRs:
+TMP_189(uint256) = 60 * 60
+TMP_190(uint256) = TMP_189 * 24
+day(uint256) := TMP_190(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+week = 60 * 60 * 24 * 7
+
+IRs:
+TMP_191(uint256) = 60 * 60
+TMP_192(uint256) = TMP_191 * 24
+TMP_193(uint256) = TMP_192 * 7
+week(uint256) := TMP_193(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+month = 60 * 60 * 24 * 30
+
+IRs:
+TMP_194(uint256) = 60 * 60
+TMP_195(uint256) = TMP_194 * 24
+TMP_196(uint256) = TMP_195 * 30
+month(uint256) := TMP_196(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+proofType_NONE = 0x00
+
+IRs:
+proofType_NONE(bytes1) := 0(uint256)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+proofType_TLSNotary = 0x10
+
+IRs:
+proofType_TLSNotary(bytes1) := 16(uint256)"];
+4->5;
+5[label="Node Type: OTHER_ENTRYPOINT 5
+
+EXPRESSION:
+proofStorage_IPFS = 0x01
+
+IRs:
+proofStorage_IPFS(bytes1) := 1(uint256)"];
+5->6;
+6[label="Node Type: OTHER_ENTRYPOINT 6
+
+EXPRESSION:
+networkID_auto = 0
+
+IRs:
+networkID_auto(uint8) := 0(uint256)"];
+6->7;
+7[label="Node Type: OTHER_ENTRYPOINT 7
+
+EXPRESSION:
+networkID_mainnet = 1
+
+IRs:
+networkID_mainnet(uint8) := 1(uint256)"];
+7->8;
+8[label="Node Type: OTHER_ENTRYPOINT 8
+
+EXPRESSION:
+networkID_testnet = 2
+
+IRs:
+networkID_testnet(uint8) := 2(uint256)"];
+8->9;
+9[label="Node Type: OTHER_ENTRYPOINT 9
+
+EXPRESSION:
+networkID_morden = 2
+
+IRs:
+networkID_morden(uint8) := 2(uint256)"];
+9->10;
+10[label="Node Type: OTHER_ENTRYPOINT 10
+
+EXPRESSION:
+networkID_consensys = 161
+
+IRs:
+networkID_consensys(uint8) := 161(uint256)"];
+}
+// Function: 39954.sol-usingOraclize-strCompare(string,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+a = bytes(_a)
+
+IRs:
+TMP_95 = CONVERT _a to bytes
+a(bytes) := TMP_95(bytes)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+b = bytes(_b)
+
+IRs:
+TMP_96 = CONVERT _b to bytes
+b(bytes) := TMP_96(bytes)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+minLength = a.length
+
+IRs:
+REF_30 -> LENGTH a
+minLength(uint256) := REF_30(uint256)"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+b.length < minLength
+
+IRs:
+REF_31 -> LENGTH b
+TMP_97(bool) = REF_31 < minLength
+CONDITION TMP_97"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+minLength = b.length
+
+IRs:
+REF_32 -> LENGTH b
+minLength(uint256) := REF_32(uint256)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+6->9;
+7[label="Node Type: BEGIN_LOOP 7
+"];
+7->10;
+8[label="Node Type: END_LOOP 8
+"];
+8->18;
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+9->7;
+10[label="Node Type: IF_LOOP 10
+
+EXPRESSION:
+i < minLength
+
+IRs:
+TMP_98(bool) = i < minLength
+CONDITION TMP_98"];
+10->11[label="True"];
+10->8[label="False"];
+11[label="Node Type: IF 11
+
+EXPRESSION:
+a[i] < b[i]
+
+IRs:
+REF_33(None) -> a[i]
+REF_34(None) -> b[i]
+TMP_99(bool) = REF_33 < REF_34
+CONDITION TMP_99"];
+11->12[label="True"];
+11->13[label="False"];
+12[label="Node Type: RETURN 12
+
+EXPRESSION:
+- 1
+
+IRs:
+TMP_100(uint256) = 0 - 1
+RETURN TMP_100"];
+13[label="Node Type: IF 13
+
+EXPRESSION:
+a[i] > b[i]
+
+IRs:
+REF_35(None) -> a[i]
+REF_36(None) -> b[i]
+TMP_101(bool) = REF_35 > REF_36
+CONDITION TMP_101"];
+13->14[label="True"];
+13->15[label="False"];
+14[label="Node Type: RETURN 14
+
+EXPRESSION:
+1
+
+IRs:
+RETURN 1"];
+15[label="Node Type: END_IF 15
+"];
+15->16;
+16[label="Node Type: END_IF 16
+"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_102(uint256) := i(uint256)
+i(uint256) = i + 1"];
+17->10;
+18[label="Node Type: IF 18
+
+EXPRESSION:
+a.length < b.length
+
+IRs:
+REF_37 -> LENGTH a
+REF_38 -> LENGTH b
+TMP_103(bool) = REF_37 < REF_38
+CONDITION TMP_103"];
+18->19[label="True"];
+18->20[label="False"];
+19[label="Node Type: RETURN 19
+
+EXPRESSION:
+- 1
+
+IRs:
+TMP_104(uint256) = 0 - 1
+RETURN TMP_104"];
+20[label="Node Type: IF 20
+
+EXPRESSION:
+a.length > b.length
+
+IRs:
+REF_39 -> LENGTH a
+REF_40 -> LENGTH b
+TMP_105(bool) = REF_39 > REF_40
+CONDITION TMP_105"];
+20->21[label="True"];
+20->22[label="False"];
+21[label="Node Type: RETURN 21
+
+EXPRESSION:
+1
+
+IRs:
+RETURN 1"];
+22[label="Node Type: RETURN 22
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+}
+// Function: 39954.sol-usingOraclize-strConcat(string,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+strConcat(_a,_b,,,)
+
+IRs:
+TMP_162(string) = INTERNAL_CALL, usingOraclize.strConcat(string,string,string,string,string)(_a,_b,,,)
+RETURN TMP_162"];
+}
+// Function: 39954.sol-usingOraclize-strConcat(string,string,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+strConcat(_a,_b,_c,,)
+
+IRs:
+TMP_161(string) = INTERNAL_CALL, usingOraclize.strConcat(string,string,string,string,string)(_a,_b,_c,,)
+RETURN TMP_161"];
+}
+// Function: 39954.sol-usingOraclize-strConcat(string,string,string,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+strConcat(_a,_b,_c,_d,)
+
+IRs:
+TMP_160(string) = INTERNAL_CALL, usingOraclize.strConcat(string,string,string,string,string)(_a,_b,_c,_d,)
+RETURN TMP_160"];
+}
+// Function: 39954.sol-usingOraclize-strConcat(string,string,string,string,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+_ba = bytes(_a)
+
+IRs:
+TMP_132 = CONVERT _a to bytes
+_ba(bytes) := TMP_132(bytes)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+_bb = bytes(_b)
+
+IRs:
+TMP_133 = CONVERT _b to bytes
+_bb(bytes) := TMP_133(bytes)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+_bc = bytes(_c)
+
+IRs:
+TMP_134 = CONVERT _c to bytes
+_bc(bytes) := TMP_134(bytes)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+_bd = bytes(_d)
+
+IRs:
+TMP_135 = CONVERT _d to bytes
+_bd(bytes) := TMP_135(bytes)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+_be = bytes(_e)
+
+IRs:
+TMP_136 = CONVERT _e to bytes
+_be(bytes) := TMP_136(bytes)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+abcde = new string(_ba.length + _bb.length + _bc.length + _bd.length + _be.length)
+
+IRs:
+REF_54 -> LENGTH _ba
+REF_55 -> LENGTH _bb
+TMP_138(uint256) = REF_54 + REF_55
+REF_56 -> LENGTH _bc
+TMP_139(uint256) = TMP_138 + REF_56
+REF_57 -> LENGTH _bd
+TMP_140(uint256) = TMP_139 + REF_57
+REF_58 -> LENGTH _be
+TMP_141(uint256) = TMP_140 + REF_58
+TMP_142 = new string(TMP_141)
+abcde(string) := TMP_142(string)"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+babcde = bytes(abcde)
+
+IRs:
+TMP_143 = CONVERT abcde to bytes
+babcde(bytes) := TMP_143(bytes)"];
+7->8;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+k = 0
+
+IRs:
+k(uint256) := 0(uint256)"];
+8->11;
+9[label="Node Type: BEGIN_LOOP 9
+"];
+9->12;
+10[label="Node Type: END_LOOP 10
+"];
+10->17;
+11[label="Node Type: NEW VARIABLE 11
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+11->9;
+12[label="Node Type: IF_LOOP 12
+
+EXPRESSION:
+i < _ba.length
+
+IRs:
+REF_59 -> LENGTH _ba
+TMP_144(bool) = i < REF_59
+CONDITION TMP_144"];
+12->13[label="True"];
+12->10[label="False"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+babcde[k ++] = _ba[i]
+
+IRs:
+TMP_145(uint256) := k(uint256)
+k(uint256) = k + 1
+REF_60(None) -> babcde[TMP_145]
+REF_61(None) -> _ba[i]
+REF_60(None) (->babcde) := REF_61(None)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_146(uint256) := i(uint256)
+i(uint256) = i + 1"];
+14->12;
+15[label="Node Type: BEGIN_LOOP 15
+"];
+15->18;
+16[label="Node Type: END_LOOP 16
+"];
+16->23;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+17->15;
+18[label="Node Type: IF_LOOP 18
+
+EXPRESSION:
+i < _bb.length
+
+IRs:
+REF_62 -> LENGTH _bb
+TMP_147(bool) = i < REF_62
+CONDITION TMP_147"];
+18->19[label="True"];
+18->16[label="False"];
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+babcde[k ++] = _bb[i]
+
+IRs:
+TMP_148(uint256) := k(uint256)
+k(uint256) = k + 1
+REF_63(None) -> babcde[TMP_148]
+REF_64(None) -> _bb[i]
+REF_63(None) (->babcde) := REF_64(None)"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_149(uint256) := i(uint256)
+i(uint256) = i + 1"];
+20->18;
+21[label="Node Type: BEGIN_LOOP 21
+"];
+21->24;
+22[label="Node Type: END_LOOP 22
+"];
+22->29;
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+23->21;
+24[label="Node Type: IF_LOOP 24
+
+EXPRESSION:
+i < _bc.length
+
+IRs:
+REF_65 -> LENGTH _bc
+TMP_150(bool) = i < REF_65
+CONDITION TMP_150"];
+24->25[label="True"];
+24->22[label="False"];
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+babcde[k ++] = _bc[i]
+
+IRs:
+TMP_151(uint256) := k(uint256)
+k(uint256) = k + 1
+REF_66(None) -> babcde[TMP_151]
+REF_67(None) -> _bc[i]
+REF_66(None) (->babcde) := REF_67(None)"];
+25->26;
+26[label="Node Type: EXPRESSION 26
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_152(uint256) := i(uint256)
+i(uint256) = i + 1"];
+26->24;
+27[label="Node Type: BEGIN_LOOP 27
+"];
+27->30;
+28[label="Node Type: END_LOOP 28
+"];
+28->35;
+29[label="Node Type: EXPRESSION 29
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+29->27;
+30[label="Node Type: IF_LOOP 30
+
+EXPRESSION:
+i < _bd.length
+
+IRs:
+REF_68 -> LENGTH _bd
+TMP_153(bool) = i < REF_68
+CONDITION TMP_153"];
+30->31[label="True"];
+30->28[label="False"];
+31[label="Node Type: EXPRESSION 31
+
+EXPRESSION:
+babcde[k ++] = _bd[i]
+
+IRs:
+TMP_154(uint256) := k(uint256)
+k(uint256) = k + 1
+REF_69(None) -> babcde[TMP_154]
+REF_70(None) -> _bd[i]
+REF_69(None) (->babcde) := REF_70(None)"];
+31->32;
+32[label="Node Type: EXPRESSION 32
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_155(uint256) := i(uint256)
+i(uint256) = i + 1"];
+32->30;
+33[label="Node Type: BEGIN_LOOP 33
+"];
+33->36;
+34[label="Node Type: END_LOOP 34
+"];
+34->39;
+35[label="Node Type: EXPRESSION 35
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+35->33;
+36[label="Node Type: IF_LOOP 36
+
+EXPRESSION:
+i < _be.length
+
+IRs:
+REF_71 -> LENGTH _be
+TMP_156(bool) = i < REF_71
+CONDITION TMP_156"];
+36->37[label="True"];
+36->34[label="False"];
+37[label="Node Type: EXPRESSION 37
+
+EXPRESSION:
+babcde[k ++] = _be[i]
+
+IRs:
+TMP_157(uint256) := k(uint256)
+k(uint256) = k + 1
+REF_72(None) -> babcde[TMP_157]
+REF_73(None) -> _be[i]
+REF_72(None) (->babcde) := REF_73(None)"];
+37->38;
+38[label="Node Type: EXPRESSION 38
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_158(uint256) := i(uint256)
+i(uint256) = i + 1"];
+38->36;
+39[label="Node Type: RETURN 39
+
+EXPRESSION:
+string(babcde)
+
+IRs:
+TMP_159 = CONVERT babcde to string
+RETURN TMP_159"];
+}
+// Function: 39954.sol-usingOraclize-uint2str(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+i == 0
+
+IRs:
+TMP_177(bool) = i == 0
+CONDITION TMP_177"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+j = i
+
+IRs:
+j(uint256) := i(uint256)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+"];
+5->6;
+6[label="Node Type: BEGIN_LOOP 6
+"];
+6->7;
+7[label="Node Type: IF_LOOP 7
+
+EXPRESSION:
+j != 0
+
+IRs:
+TMP_178(bool) = j != 0
+CONDITION TMP_178"];
+7->8[label="True"];
+7->10[label="False"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+len ++
+
+IRs:
+TMP_179(uint256) := len(uint256)
+len(uint256) = len + 1"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+j /= 10
+
+IRs:
+j(uint256) = j / 10"];
+9->7;
+10[label="Node Type: END_LOOP 10
+"];
+10->11;
+11[label="Node Type: NEW VARIABLE 11
+
+EXPRESSION:
+bstr = new bytes(len)
+
+IRs:
+TMP_181 = new bytes(len)
+bstr(bytes) := TMP_181(bytes)"];
+11->12;
+12[label="Node Type: NEW VARIABLE 12
+
+EXPRESSION:
+k = len - 1
+
+IRs:
+TMP_182(uint256) = len - 1
+k(uint256) := TMP_182(uint256)"];
+12->13;
+13[label="Node Type: BEGIN_LOOP 13
+"];
+13->14;
+14[label="Node Type: IF_LOOP 14
+
+EXPRESSION:
+i != 0
+
+IRs:
+TMP_183(bool) = i != 0
+CONDITION TMP_183"];
+14->15[label="True"];
+14->17[label="False"];
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+bstr[k --] = bytes1(48 + i % 10)
+
+IRs:
+TMP_184(uint256) := k(uint256)
+k(uint256) = k - 1
+REF_79(bytes1) -> bstr[TMP_184]
+TMP_185(uint256) = i % 10
+TMP_186(uint256) = 48 + TMP_185
+TMP_187 = CONVERT TMP_186 to bytes1
+REF_79(bytes1) (->bstr) := TMP_187(bytes1)"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+i /= 10
+
+IRs:
+i(uint256) = i / 10"];
+16->14;
+17[label="Node Type: END_LOOP 17
+"];
+17->18;
+18[label="Node Type: RETURN 18
+
+EXPRESSION:
+string(bstr)
+
+IRs:
+TMP_188 = CONVERT bstr to string
+RETURN TMP_188"];
+}
+}

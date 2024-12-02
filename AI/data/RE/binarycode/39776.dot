@@ -1,0 +1,487 @@
+digraph G {
+// Function: 39776.sol-OrangeGov_Main-OrangeGov_Main()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+permissions[msg.sender][all] = true
+
+IRs:
+REF_0(mapping(string => bool)) -> permissions[msg.sender]
+REF_1(bool) -> REF_0[all]
+REF_1(bool) (->permissions) := True(bool)"];
+}
+// Function: 39776.sol-OrangeGov_Main-addContract(string,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->12;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->2;
+2[label="Node Type: INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: END INLINE ASM 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+oldAddr = contractIDs[ID]
+
+IRs:
+REF_16(address) -> contractIDs[ID]
+oldAddr(address) := REF_16(address)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+contractIDs[ID] = addr
+
+IRs:
+REF_17(address) -> contractIDs[ID]
+REF_17(address) (->contractIDs) := addr(address)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+contractIDExists[ID] = true
+
+IRs:
+REF_18(bool) -> contractIDExists[ID]
+REF_18(bool) (->contractIDExists) := True(bool)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+oldAddr.call.gas(msg.gas)(bytes4(sha3()(changeCurrentContract(address))),addr)
+
+IRs:
+TMP_9(bytes32) = SOLIDITY_CALL sha3()(changeCurrentContract(address))
+TMP_10 = CONVERT TMP_9 to bytes4
+TMP_11(bool) = LOW_LEVEL_CALL, dest:oldAddr, function:call, arguments:['TMP_10', 'addr']  gas:msg.gas"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+addr.call.gas(msg.gas)(bytes4(sha3()(tellPreviousContract(address))),oldAddr)
+
+IRs:
+TMP_13(bytes32) = SOLIDITY_CALL sha3()(tellPreviousContract(address))
+TMP_14 = CONVERT TMP_13 to bytes4
+TMP_15(bool) = LOW_LEVEL_CALL, dest:addr, function:call, arguments:['TMP_14', 'oldAddr']  gas:msg.gas"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+removeFromContractIDArray(addr)
+
+IRs:
+INTERNAL_CALL, OrangeGov_Main.removeFromContractIDArray(address)(addr)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+contractArray.length ++
+
+IRs:
+REF_23 -> LENGTH contractArray
+TMP_17(uint256) := REF_23(uint256)
+REF_23(-> contractArray) = REF_23 + 1"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+contractArray[contractArray.length - 1] = addr
+
+IRs:
+REF_24 -> LENGTH contractArray
+TMP_18(uint256) = REF_24 - 1
+REF_25(address) -> contractArray[TMP_18]
+REF_25(address) (->contractArray) := addr(address)"];
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+permissionRequired(addContract,)
+
+IRs:
+MODIFIER_CALL, OrangeGov_Main.permissionRequired(string,string)(addContract,)"];
+12->1;
+}
+// Function: 39776.sol-OrangeGov_Main-getContractByID(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+(contractIDs[ID],contractIDExists[ID])
+
+IRs:
+REF_8(address) -> contractIDs[ID]
+REF_9(bool) -> contractIDExists[ID]
+RETURN REF_8,REF_9"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+(addr,exists)
+
+IRs:
+RETURN addr,exists"];
+}
+// Function: 39776.sol-OrangeGov_Main-getHasPermission(address,string,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+permissions[msg.sender][permissionName] || permissions[msg.sender][all] || userStatuses[msg.sender][userStatusAllowed]
+
+IRs:
+REF_2(mapping(string => bool)) -> permissions[msg.sender]
+REF_3(bool) -> REF_2[permissionName]
+REF_4(mapping(string => bool)) -> permissions[msg.sender]
+REF_5(bool) -> REF_4[all]
+TMP_0(bool) = REF_3 || REF_5
+REF_6(mapping(string => bool)) -> userStatuses[msg.sender]
+REF_7(bool) -> REF_6[userStatusAllowed]
+TMP_1(bool) = TMP_0 || REF_7
+RETURN TMP_1"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+hasPermission
+
+IRs:
+RETURN hasPermission"];
+}
+// Function: 39776.sol-OrangeGov_Main-givePermission(address,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+getHasPermission(msg.sender,permission,)
+
+IRs:
+TMP_41(bool) = INTERNAL_CALL, OrangeGov_Main.getHasPermission(address,string,string)(msg.sender,permission,)
+CONDITION TMP_41"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+permissions[addr][permission] = true
+
+IRs:
+REF_38(mapping(string => bool)) -> permissions[addr]
+REF_39(bool) -> REF_38[permission]
+REF_39(bool) (->permissions) := True(bool)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+permissionRequired(givePermission,)
+
+IRs:
+MODIFIER_CALL, OrangeGov_Main.permissionRequired(string,string)(givePermission,)"];
+4->1;
+}
+// Function: 39776.sol-OrangeGov_Main-permissionRequired(string,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: _ 1
+"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+getHasPermission(msg.sender,permissionName,userStatusAllowed)
+
+IRs:
+TMP_44(bool) = INTERNAL_CALL, OrangeGov_Main.getHasPermission(address,string,string)(msg.sender,permissionName,userStatusAllowed)
+CONDITION TMP_44"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: THROW 3
+"];
+4[label="Node Type: END_IF 4
+"];
+}
+// Function: 39776.sol-OrangeGov_Main-removeContract(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+contractIDExists[ID] = false
+
+IRs:
+REF_26(bool) -> contractIDExists[ID]
+REF_26(bool) (->contractIDExists) := False(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+contractIDs[ID].call.gas(msg.gas)(bytes4(sha3()(changeCurrentContract(address))),currentContract)
+
+IRs:
+REF_27(address) -> contractIDs[ID]
+TMP_21(bytes32) = SOLIDITY_CALL sha3()(changeCurrentContract(address))
+TMP_22 = CONVERT TMP_21 to bytes4
+TMP_23(bool) = LOW_LEVEL_CALL, dest:REF_27, function:call, arguments:['TMP_22', 'currentContract']  gas:msg.gas"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+removeFromContractIDArray(contractIDs[ID])
+
+IRs:
+REF_30(address) -> contractIDs[ID]
+INTERNAL_CALL, OrangeGov_Main.removeFromContractIDArray(address)(REF_30)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+permissionRequired(removeContract,)
+
+IRs:
+MODIFIER_CALL, OrangeGov_Main.permissionRequired(string,string)(removeContract,)"];
+4->1;
+}
+// Function: 39776.sol-OrangeGov_Main-removeFromContractIDArray(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: BEGIN_LOOP 1
+"];
+1->4;
+2[label="Node Type: END_LOOP 2
+"];
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+x = 0
+
+IRs:
+x(uint256) := 0(uint256)"];
+3->1;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+x < contractArray.length - 1
+
+IRs:
+REF_10 -> LENGTH contractArray
+TMP_2(uint256) = REF_10 - 1
+TMP_3(bool) = x < TMP_2
+CONDITION TMP_3"];
+4->5[label="True"];
+4->2[label="False"];
+5[label="Node Type: IF 5
+
+EXPRESSION:
+contractArray[x] == contractToRemove
+
+IRs:
+REF_11(address) -> contractArray[x]
+TMP_4(bool) = REF_11 == contractToRemove
+CONDITION TMP_4"];
+5->6[label="True"];
+5->9[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+contractArray[x] = contractArray[contractArray.length - 1]
+
+IRs:
+REF_12(address) -> contractArray[x]
+REF_13 -> LENGTH contractArray
+TMP_5(uint256) = REF_13 - 1
+REF_14(address) -> contractArray[TMP_5]
+REF_12(address) (->contractArray) := REF_14(address)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+contractArray.length --
+
+IRs:
+REF_15 -> LENGTH contractArray
+TMP_6(uint256) := REF_15(uint256)
+REF_15(-> contractArray) = REF_15 - 1"];
+7->8;
+8[label="Node Type: RETURN 8
+"];
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+x ++
+
+IRs:
+TMP_7(uint256) := x(uint256)
+x(uint256) = x + 1"];
+10->4;
+}
+// Function: 39776.sol-OrangeGov_Main-removePermission(address,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+permissions[addr][permission] = false
+
+IRs:
+REF_40(mapping(string => bool)) -> permissions[addr]
+REF_41(bool) -> REF_40[permission]
+REF_41(bool) (->permissions) := False(bool)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+permissionRequired(removePermission,)
+
+IRs:
+MODIFIER_CALL, OrangeGov_Main.permissionRequired(string,string)(removePermission,)"];
+2->1;
+}
+// Function: 39776.sol-OrangeGov_Main-spendEther(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! addr.send(weiAmt)
+
+IRs:
+TMP_38 = SEND dest:addr value:weiAmt
+TMP_39 = UnaryType.BANG TMP_38 
+CONDITION TMP_39"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+permissionRequired(spendEther,)
+
+IRs:
+MODIFIER_CALL, OrangeGov_Main.permissionRequired(string,string)(spendEther,)"];
+4->1;
+}
+// Function: 39776.sol-OrangeGov_Main-tellPreviousContract(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 39776.sol-OrangeGov_Main-update(bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->12;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->2;
+2[label="Node Type: INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: END INLINE ASM 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+addr.call.gas(msg.gas)(bytes4(sha3()(tellPreviousContract(address))),currentContract)
+
+IRs:
+TMP_27(bytes32) = SOLIDITY_CALL sha3()(tellPreviousContract(address))
+TMP_28 = CONVERT TMP_27 to bytes4
+TMP_29(bool) = LOW_LEVEL_CALL, dest:addr, function:call, arguments:['TMP_28', 'currentContract']  gas:msg.gas"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+currentContract = addr
+
+IRs:
+currentContract(address) := addr(address)"];
+5->8;
+6[label="Node Type: BEGIN_LOOP 6
+"];
+6->9;
+7[label="Node Type: END_LOOP 7
+"];
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+x = 0
+
+IRs:
+x(uint256) := 0(uint256)"];
+8->6;
+9[label="Node Type: IF_LOOP 9
+
+EXPRESSION:
+x < contractArray.length - 1
+
+IRs:
+REF_33 -> LENGTH contractArray
+TMP_30(uint256) = REF_33 - 1
+TMP_31(bool) = x < TMP_30
+CONDITION TMP_31"];
+9->10[label="True"];
+9->7[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+contractArray[x].call.gas(msg.gas)(bytes4(sha3()(changeMain(address))),currentContract)
+
+IRs:
+REF_34(address) -> contractArray[x]
+TMP_33(bytes32) = SOLIDITY_CALL sha3()(changeMain(address))
+TMP_34 = CONVERT TMP_33 to bytes4
+TMP_35(bool) = LOW_LEVEL_CALL, dest:REF_34, function:call, arguments:['TMP_34', 'currentContract']  gas:msg.gas"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+x ++
+
+IRs:
+TMP_36(uint256) := x(uint256)
+x(uint256) = x + 1"];
+11->9;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+permissionRequired(update,)
+
+IRs:
+MODIFIER_CALL, OrangeGov_Main.permissionRequired(string,string)(update,)"];
+12->1;
+}
+}

@@ -1,0 +1,2542 @@
+digraph G {
+// Function: 39127.sol-ABCToken-ABCToken(string,string,uint8,uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+name = _name
+
+IRs:
+name(string) := _name(string)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+symbol = _symbol
+
+IRs:
+symbol(string) := _symbol(string)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+decimals = _decimals
+
+IRs:
+decimals(uint8) := _decimals(uint8)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+totalSupply = _totalSupply
+
+IRs:
+totalSupply(uint256) := _totalSupply(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balances[_initialTokensHolder] = _totalSupply
+
+IRs:
+REF_49(uint256) -> balances[_initialTokensHolder]
+REF_49(uint256) (->balances) := _totalSupply(uint256)"];
+}
+// Function: 39127.sol-ABCToken-__transfer(address,address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_from == _to
+
+IRs:
+TMP_80(bool) = _from == _to
+CONDITION TMP_80"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+_value == 0
+
+IRs:
+TMP_81(bool) = _value == 0
+CONDITION TMP_81"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: THROW 5
+"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: IF 7
+
+EXPRESSION:
+balanceOf(_from) < _value
+
+IRs:
+TMP_82(uint256) = INTERNAL_CALL, ERC223Token.balanceOf(address)(_from)
+TMP_83(bool) = TMP_82 < _value
+CONDITION TMP_83"];
+7->8[label="True"];
+7->9[label="False"];
+8[label="Node Type: THROW 8
+"];
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+balances[_from] = safeSub(balanceOf(_from),_value)
+
+IRs:
+REF_46(uint256) -> balances[_from]
+TMP_84(uint256) = INTERNAL_CALL, ERC223Token.balanceOf(address)(_from)
+TMP_85(uint256) = INTERNAL_CALL, SafeMath.safeSub(uint256,uint256)(TMP_84,_value)
+REF_46(uint256) (->balances) := TMP_85(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+balances[_to] = safeAdd(balanceOf(_to),_value)
+
+IRs:
+REF_47(uint256) -> balances[_to]
+TMP_86(uint256) = INTERNAL_CALL, ERC223Token.balanceOf(address)(_to)
+TMP_87(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(TMP_86,_value)
+REF_47(uint256) (->balances) := TMP_87(uint256)"];
+11->12;
+12[label="Node Type: IF 12
+
+EXPRESSION:
+isContract(_to)
+
+IRs:
+TMP_88(bool) = INTERNAL_CALL, ERC223Token.isContract(address)(_to)
+CONDITION TMP_88"];
+12->13[label="True"];
+12->15[label="False"];
+13[label="Node Type: NEW VARIABLE 13
+
+EXPRESSION:
+receiverContract = ERC223ContractInterface(_to)
+
+IRs:
+TMP_89 = CONVERT _to to ERC223ContractInterface
+receiverContract(ERC223ContractInterface) := TMP_89(ERC223ContractInterface)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+receiverContract.erc223Fallback(_from,_value,_metadata)
+
+IRs:
+HIGH_LEVEL_CALL, dest:receiverContract(ERC223ContractInterface), function:erc223Fallback, arguments:['_from', '_value', '_metadata']  "];
+14->15;
+15[label="Node Type: END_IF 15
+"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+Transfer(_from,_to,_value)
+
+IRs:
+Emit Transfer(_from,_to,_value)"];
+}
+// Function: 39127.sol-ABCToken-allowance(address,address)
+digraph{
+}
+// Function: 39127.sol-ABCToken-approve(address,uint256)
+digraph{
+}
+// Function: 39127.sol-ABCToken-balanceOf(address)
+digraph{
+}
+// Function: 39127.sol-ABCToken-decimals()
+digraph{
+}
+// Function: 39127.sol-ABCToken-isContract(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_addr = _addr
+
+IRs:
+_addr(address) := _addr(address)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: INLINE ASM 3
+"];
+3->4;
+4[label="Node Type: END INLINE ASM 4
+"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+(length > 0)
+
+IRs:
+TMP_92(bool) = length > 0
+RETURN TMP_92"];
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+_isContract
+
+IRs:
+RETURN _isContract"];
+}
+// Function: 39127.sol-ABCToken-name()
+digraph{
+}
+// Function: 39127.sol-ABCToken-safeAdd(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+x > MAX_UINT256 - y
+
+IRs:
+TMP_93(uint256) = MAX_UINT256 - y
+TMP_94(bool) = x > TMP_93
+CONDITION TMP_94"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+x + y
+
+IRs:
+TMP_95(uint256) = x + y
+RETURN TMP_95"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 39127.sol-ABCToken-safeMul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+y == 0
+
+IRs:
+TMP_98(bool) = y == 0
+CONDITION TMP_98"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+x > MAX_UINT256 / y
+
+IRs:
+TMP_99(uint256) = MAX_UINT256 / y
+TMP_100(bool) = x > TMP_99
+CONDITION TMP_100"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: THROW 5
+"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+x * y
+
+IRs:
+TMP_101(uint256) = x * y
+RETURN TMP_101"];
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 39127.sol-ABCToken-safeSub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+x < y
+
+IRs:
+TMP_96(bool) = x < y
+CONDITION TMP_96"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+x - y
+
+IRs:
+TMP_97(uint256) = x - y
+RETURN TMP_97"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 39127.sol-ABCToken-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+MAX_UINT256 = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+
+IRs:
+MAX_UINT256(uint256) := 115792089237316195423570985008687907853269984665640564039457584007913129639935(uint256)"];
+}
+// Function: 39127.sol-ABCToken-symbol()
+digraph{
+}
+// Function: 39127.sol-ABCToken-totalSupply()
+digraph{
+}
+// Function: 39127.sol-ABCToken-transfer(address,uint256)
+digraph{
+}
+// Function: 39127.sol-ABCToken-transfer(address,uint256,bytes)
+digraph{
+}
+// Function: 39127.sol-ABCToken-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 39127.sol-DAS-DAS(uint256,uint256,uint256,uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+dasToken = new DASToken(DA$,DA$,18,1000000000 * (10 ** 18),_congressLeader)
+
+IRs:
+TMP_103(uint256) = 10 ** 18
+TMP_104(uint256) = 1000000000 * TMP_103
+TMP_105(DASToken) = new DASToken(DA$,DA$,18,TMP_104,_congressLeader) 
+dasToken(DASToken) := TMP_105(DASToken)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+abcToken = new ABCToken(Alphabit,ABC,18,210000000 * (10 ** 18),_congressLeader)
+
+IRs:
+TMP_107(uint256) = 10 ** 18
+TMP_108(uint256) = 210000000 * TMP_107
+TMP_109(ABCToken) = new ABCToken(Alphabit,ABC,18,TMP_108,_congressLeader) 
+abcToken(ABCToken) := TMP_109(ABCToken)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+congressMemberThreshold = _congressMemberThreshold
+
+IRs:
+congressMemberThreshold(uint256) := _congressMemberThreshold(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+minimumQuorum = _minimumQuorum
+
+IRs:
+minimumQuorum(uint256) := _minimumQuorum(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+debatingPeriod = _debatingPeriod
+
+IRs:
+debatingPeriod(uint256) := _debatingPeriod(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+marginForMajority = _marginForMajority
+
+IRs:
+marginForMajority(uint256) := _marginForMajority(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+RulesChangedEvent(congressMemberThreshold,minimumQuorum,debatingPeriod,marginForMajority)
+
+IRs:
+Emit RulesChangedEvent(congressMemberThreshold,minimumQuorum,debatingPeriod,marginForMajority)"];
+}
+// Function: 39127.sol-DAS-blockTokens(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+tokensLocks[_voter] + 1 < tokensLocks[_voter]
+
+IRs:
+REF_50(uint32) -> tokensLocks[_voter]
+TMP_112(uint32) = REF_50 + 1
+REF_51(uint32) -> tokensLocks[_voter]
+TMP_113(bool) = TMP_112 < REF_51
+CONDITION TMP_113"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+tokensLocks[_voter] += 1
+
+IRs:
+REF_52(uint32) -> tokensLocks[_voter]
+REF_52(-> tokensLocks) = REF_52 + 1"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+tokensLocks[_voter] == 1
+
+IRs:
+REF_53(uint32) -> tokensLocks[_voter]
+TMP_114(bool) = REF_53 == 1
+CONDITION TMP_114"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+dasToken.blockAccount(_voter)
+
+IRs:
+HIGH_LEVEL_CALL, dest:dasToken(DASToken), function:blockAccount, arguments:['_voter']  "];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+}
+// Function: 39127.sol-DAS-createProposal(address,uint256,string,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->13;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_proposalID = proposals.length
+
+IRs:
+REF_59 -> LENGTH proposals
+_proposalID(uint256) := REF_59(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+proposals.length += 1
+
+IRs:
+REF_60 -> LENGTH proposals
+REF_60(-> proposals) = REF_60 + 1"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+proposalsNumber = _proposalID + 1
+
+IRs:
+TMP_119(uint256) = _proposalID + 1
+proposalsNumber(uint256) := TMP_119(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+proposals[_proposalID].beneficiary = _beneficiary
+
+IRs:
+REF_61(DAS.Proposal) -> proposals[_proposalID]
+REF_62(address) -> REF_61.beneficiary
+REF_62(address) (->proposals) := _beneficiary(address)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+proposals[_proposalID].etherAmount = _etherAmount
+
+IRs:
+REF_63(DAS.Proposal) -> proposals[_proposalID]
+REF_64(uint256) -> REF_63.etherAmount
+REF_64(uint256) (->proposals) := _etherAmount(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+proposals[_proposalID].description = _description
+
+IRs:
+REF_65(DAS.Proposal) -> proposals[_proposalID]
+REF_66(string) -> REF_65.description
+REF_66(string) (->proposals) := _description(string)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+proposals[_proposalID].proposalHash = getProposalHash(_beneficiary,_etherAmount,_transactionBytecode)
+
+IRs:
+REF_67(DAS.Proposal) -> proposals[_proposalID]
+REF_68(bytes32) -> REF_67.proposalHash
+TMP_120(bytes32) = INTERNAL_CALL, DAS.getProposalHash(address,uint256,bytes)(_beneficiary,_etherAmount,_transactionBytecode)
+REF_68(bytes32) (->proposals) := TMP_120(bytes32)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+proposals[_proposalID].state = ProposalState.Proposed
+
+IRs:
+REF_69(DAS.Proposal) -> proposals[_proposalID]
+REF_70(DAS.ProposalState) -> REF_69.state
+REF_71(DAS.ProposalState) -> ProposalState.Proposed
+REF_70(DAS.ProposalState) (->proposals) := REF_71(DAS.ProposalState)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+proposals[_proposalID].votingDeadline = now + debatingPeriod * 1
+
+IRs:
+REF_72(DAS.Proposal) -> proposals[_proposalID]
+REF_73(uint256) -> REF_72.votingDeadline
+TMP_121(uint256) = debatingPeriod * 1
+TMP_122(uint256) = now + TMP_121
+REF_73(uint256) (->proposals) := TMP_122(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+proposals[_proposalID].votesNumber = 0
+
+IRs:
+REF_74(DAS.Proposal) -> proposals[_proposalID]
+REF_75(uint256) -> REF_74.votesNumber
+REF_75(uint256) (->proposals) := 0(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+ProposalAddedEvent(_proposalID,_beneficiary,_etherAmount,_description)
+
+IRs:
+Emit ProposalAddedEvent(_proposalID,_beneficiary,_etherAmount,_description)"];
+11->12;
+12[label="Node Type: RETURN 12
+
+EXPRESSION:
+_proposalID
+
+IRs:
+RETURN _proposalID"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+onlyCongressMembers()
+
+IRs:
+MODIFIER_CALL, DAS.onlyCongressMembers()()"];
+13->1;
+14[label="Node Type: RETURN 14
+
+EXPRESSION:
+_proposalID
+
+IRs:
+RETURN _proposalID"];
+}
+// Function: 39127.sol-DAS-erc223Fallback(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_from = _from
+
+IRs:
+_from(address) := _from(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_value = _value
+
+IRs:
+_value(uint256) := _value(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_data = _data
+
+IRs:
+_data(bytes) := _data(bytes)"];
+}
+// Function: 39127.sol-DAS-executeProposal(uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->10;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+p = proposals[_proposalID]
+
+IRs:
+REF_113(DAS.Proposal) -> proposals[_proposalID]
+p(DAS.Proposal) := REF_113(DAS.Proposal)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+p.state != ProposalState.Passed
+
+IRs:
+REF_114(DAS.ProposalState) -> p.state
+REF_115(DAS.ProposalState) -> ProposalState.Passed
+TMP_148(bool) = REF_114 != REF_115
+CONDITION TMP_148"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: THROW 3
+"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+p.state = ProposalState.Executed
+
+IRs:
+REF_116(DAS.ProposalState) -> p.state
+REF_117(DAS.ProposalState) -> ProposalState.Executed
+REF_116(DAS.ProposalState) (->p) := REF_117(DAS.ProposalState)"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+! p.beneficiary.call.value(p.etherAmount * 1000000000000000000)(_transactionBytecode)
+
+IRs:
+REF_118(address) -> p.beneficiary
+REF_121(uint256) -> p.etherAmount
+TMP_149(uint256) = REF_121 * 1000000000000000000
+TMP_151(bool) = LOW_LEVEL_CALL, dest:REF_118, function:call, arguments:['_transactionBytecode'] value:TMP_149 
+TMP_152 = UnaryType.BANG TMP_151 
+CONDITION TMP_152"];
+6->7[label="True"];
+6->8[label="False"];
+7[label="Node Type: THROW 7
+"];
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+ProposalExecutedEvent(_proposalID)
+
+IRs:
+Emit ProposalExecutedEvent(_proposalID)"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+onlyCongressMembers()
+
+IRs:
+MODIFIER_CALL, DAS.onlyCongressMembers()()"];
+10->1;
+}
+// Function: 39127.sol-DAS-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 39127.sol-DAS-finishProposalVoting(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->34;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+p = proposals[_proposalID]
+
+IRs:
+REF_89(DAS.Proposal) -> proposals[_proposalID]
+p(DAS.Proposal) := REF_89(DAS.Proposal)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+now < p.votingDeadline
+
+IRs:
+REF_90(uint256) -> p.votingDeadline
+TMP_135(bool) = now < REF_90
+CONDITION TMP_135"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: THROW 3
+"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+p.state != ProposalState.Proposed
+
+IRs:
+REF_91(DAS.ProposalState) -> p.state
+REF_92(DAS.ProposalState) -> ProposalState.Proposed
+TMP_136(bool) = REF_91 != REF_92
+CONDITION TMP_136"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: THROW 6
+"];
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+_votesNumber = p.votes.length
+
+IRs:
+REF_93(DAS.Vote[]) -> p.votes
+REF_94 -> LENGTH REF_93
+_votesNumber(uint256) := REF_94(uint256)"];
+8->9;
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+tokensFor = 0
+
+IRs:
+tokensFor(uint256) := 0(uint256)"];
+9->10;
+10[label="Node Type: NEW VARIABLE 10
+
+EXPRESSION:
+tokensAgainst = 0
+
+IRs:
+tokensAgainst(uint256) := 0(uint256)"];
+10->13;
+11[label="Node Type: BEGIN_LOOP 11
+"];
+11->14;
+12[label="Node Type: END_LOOP 12
+"];
+12->21;
+13[label="Node Type: NEW VARIABLE 13
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+13->11;
+14[label="Node Type: IF_LOOP 14
+
+EXPRESSION:
+i < _votesNumber
+
+IRs:
+TMP_137(bool) = i < _votesNumber
+CONDITION TMP_137"];
+14->15[label="True"];
+14->12[label="False"];
+15[label="Node Type: IF 15
+
+EXPRESSION:
+p.votes[i].inSupport
+
+IRs:
+REF_95(DAS.Vote[]) -> p.votes
+REF_96(DAS.Vote) -> REF_95[i]
+REF_97(bool) -> REF_96.inSupport
+CONDITION REF_97"];
+15->16[label="True"];
+15->17[label="False"];
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+tokensFor += p.votes[i].voterTokens
+
+IRs:
+REF_98(DAS.Vote[]) -> p.votes
+REF_99(DAS.Vote) -> REF_98[i]
+REF_100(uint256) -> REF_99.voterTokens
+tokensFor(uint256) = tokensFor + REF_100"];
+16->18;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+tokensAgainst += p.votes[i].voterTokens
+
+IRs:
+REF_101(DAS.Vote[]) -> p.votes
+REF_102(DAS.Vote) -> REF_101[i]
+REF_103(uint256) -> REF_102.voterTokens
+tokensAgainst(uint256) = tokensAgainst + REF_103"];
+17->18;
+18[label="Node Type: END_IF 18
+"];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+unblockTokens(p.votes[i].voter)
+
+IRs:
+REF_104(DAS.Vote[]) -> p.votes
+REF_105(DAS.Vote) -> REF_104[i]
+REF_106(address) -> REF_105.voter
+INTERNAL_CALL, DAS.unblockTokens(address)(REF_106)"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_139(uint256) := i(uint256)
+i(uint256) = i + 1"];
+20->14;
+21[label="Node Type: IF 21
+
+EXPRESSION:
+(tokensFor + tokensAgainst) < minimumQuorum
+
+IRs:
+TMP_140(uint256) = tokensFor + tokensAgainst
+TMP_141(bool) = TMP_140 < minimumQuorum
+CONDITION TMP_141"];
+21->22[label="True"];
+21->25[label="False"];
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+p.state = ProposalState.NoQuorum
+
+IRs:
+REF_107(DAS.ProposalState) -> p.state
+REF_108(DAS.ProposalState) -> ProposalState.NoQuorum
+REF_107(DAS.ProposalState) (->p) := REF_108(DAS.ProposalState)"];
+22->23;
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+ProposalTalliedEvent(_proposalID,false,false)
+
+IRs:
+Emit ProposalTalliedEvent(_proposalID,False,False)"];
+23->24;
+24[label="Node Type: RETURN 24
+"];
+25[label="Node Type: END_IF 25
+"];
+25->26;
+26[label="Node Type: IF 26
+
+EXPRESSION:
+(tokensFor - tokensAgainst) < marginForMajority
+
+IRs:
+TMP_143(uint256) = tokensFor - tokensAgainst
+TMP_144(bool) = TMP_143 < marginForMajority
+CONDITION TMP_144"];
+26->27[label="True"];
+26->30[label="False"];
+27[label="Node Type: EXPRESSION 27
+
+EXPRESSION:
+p.state = ProposalState.Rejected
+
+IRs:
+REF_109(DAS.ProposalState) -> p.state
+REF_110(DAS.ProposalState) -> ProposalState.Rejected
+REF_109(DAS.ProposalState) (->p) := REF_110(DAS.ProposalState)"];
+27->28;
+28[label="Node Type: EXPRESSION 28
+
+EXPRESSION:
+ProposalTalliedEvent(_proposalID,true,false)
+
+IRs:
+Emit ProposalTalliedEvent(_proposalID,True,False)"];
+28->29;
+29[label="Node Type: RETURN 29
+"];
+30[label="Node Type: END_IF 30
+"];
+30->31;
+31[label="Node Type: EXPRESSION 31
+
+EXPRESSION:
+p.state = ProposalState.Passed
+
+IRs:
+REF_111(DAS.ProposalState) -> p.state
+REF_112(DAS.ProposalState) -> ProposalState.Passed
+REF_111(DAS.ProposalState) (->p) := REF_112(DAS.ProposalState)"];
+31->32;
+32[label="Node Type: EXPRESSION 32
+
+EXPRESSION:
+ProposalTalliedEvent(_proposalID,true,true)
+
+IRs:
+Emit ProposalTalliedEvent(_proposalID,True,True)"];
+32->33;
+33[label="Node Type: RETURN 33
+"];
+34[label="Node Type: EXPRESSION 34
+
+EXPRESSION:
+onlyCongressMembers()
+
+IRs:
+MODIFIER_CALL, DAS.onlyCongressMembers()()"];
+34->1;
+}
+// Function: 39127.sol-DAS-getProposalHash(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+sha3()(_beneficiary,_etherAmount,_transactionBytecode)
+
+IRs:
+TMP_111(bytes32) = SOLIDITY_CALL sha3()(_beneficiary,_etherAmount,_transactionBytecode)
+RETURN TMP_111"];
+}
+// Function: 39127.sol-DAS-onlyCongressMembers()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+dasToken.balanceOf(msg.sender) < congressMemberThreshold
+
+IRs:
+TMP_155(uint256) = HIGH_LEVEL_CALL, dest:dasToken(DASToken), function:balanceOf, arguments:['msg.sender']  
+TMP_156(bool) = TMP_155 < congressMemberThreshold
+CONDITION TMP_156"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 39127.sol-DAS-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+name = Decentralized Autonomous State
+
+IRs:
+name(string) := Decentralized Autonomous State(string)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+proposalsNumber = 0
+
+IRs:
+proposalsNumber(uint256) := 0(uint256)"];
+}
+// Function: 39127.sol-DAS-unblockTokens(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+tokensLocks[_voter] <= 0
+
+IRs:
+REF_55(uint32) -> tokensLocks[_voter]
+TMP_116(bool) = REF_55 <= 0
+CONDITION TMP_116"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+tokensLocks[_voter] -= 1
+
+IRs:
+REF_56(uint32) -> tokensLocks[_voter]
+REF_56(-> tokensLocks) = REF_56 - 1"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+tokensLocks[_voter] == 0
+
+IRs:
+REF_57(uint32) -> tokensLocks[_voter]
+TMP_117(bool) = REF_57 == 0
+CONDITION TMP_117"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+dasToken.unblockAccount(_voter)
+
+IRs:
+HIGH_LEVEL_CALL, dest:dasToken(DASToken), function:unblockAccount, arguments:['_voter']  "];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+}
+// Function: 39127.sol-DAS-vote(uint256,bool,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->14;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+p = proposals[_proposalID]
+
+IRs:
+REF_76(DAS.Proposal) -> proposals[_proposalID]
+p(DAS.Proposal) := REF_76(DAS.Proposal)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+p.state != ProposalState.Proposed
+
+IRs:
+REF_77(DAS.ProposalState) -> p.state
+REF_78(DAS.ProposalState) -> ProposalState.Proposed
+TMP_125(bool) = REF_77 != REF_78
+CONDITION TMP_125"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: THROW 3
+"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+p.voted[msg.sender] == true
+
+IRs:
+REF_79(mapping(address => bool)) -> p.voted
+REF_80(bool) -> REF_79[msg.sender]
+TMP_126(bool) = REF_80 == True
+CONDITION TMP_126"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: THROW 6
+"];
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+voterTokens = dasToken.balanceOf(msg.sender)
+
+IRs:
+TMP_127(uint256) = HIGH_LEVEL_CALL, dest:dasToken(DASToken), function:balanceOf, arguments:['msg.sender']  
+voterTokens(uint256) := TMP_127(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+blockTokens(msg.sender)
+
+IRs:
+INTERNAL_CALL, DAS.blockTokens(address)(msg.sender)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+p.voted[msg.sender] = true
+
+IRs:
+REF_82(mapping(address => bool)) -> p.voted
+REF_83(bool) -> REF_82[msg.sender]
+REF_83(bool) (->p) := True(bool)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+p.votes.push(Vote(msg.sender,_inSupport,voterTokens,_justificationText))
+
+IRs:
+REF_84(DAS.Vote[]) -> p.votes
+TMP_129(DAS.Vote) = new Vote(msg.sender,_inSupport,voterTokens,_justificationText)
+REF_86 -> LENGTH REF_84
+TMP_131(uint256) := REF_86(uint256)
+TMP_132(uint256) = TMP_131 + 1
+REF_86(uint256) (->p) := TMP_132(uint256)
+REF_87(DAS.Vote) -> REF_84[TMP_131]
+REF_87(DAS.Vote) (->p) := TMP_129(DAS.Vote)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+p.votesNumber += 1
+
+IRs:
+REF_88(uint256) -> p.votesNumber
+REF_88(-> p) = REF_88 + 1"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+VotedEvent(_proposalID,msg.sender,_inSupport,voterTokens,_justificationText)
+
+IRs:
+Emit VotedEvent(_proposalID,msg.sender,_inSupport,voterTokens,_justificationText)"];
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+onlyCongressMembers()
+
+IRs:
+MODIFIER_CALL, DAS.onlyCongressMembers()()"];
+14->1;
+}
+// Function: 39127.sol-DASToken-DASToken(string,string,uint8,uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+secretaryGeneral = msg.sender
+
+IRs:
+secretaryGeneral(address) := msg.sender(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+name = _name
+
+IRs:
+name(string) := _name(string)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+symbol = _symbol
+
+IRs:
+symbol(string) := _symbol(string)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+decimals = _decimals
+
+IRs:
+decimals(uint8) := _decimals(uint8)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+totalSupply = _totalSupply
+
+IRs:
+totalSupply(uint256) := _totalSupply(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+balances[_initialTokensHolder] = _totalSupply
+
+IRs:
+REF_28(uint256) -> balances[_initialTokensHolder]
+REF_28(uint256) (->balances) := _totalSupply(uint256)"];
+}
+// Function: 39127.sol-DASToken-__transfer(address,address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_from == _to
+
+IRs:
+TMP_45(bool) = _from == _to
+CONDITION TMP_45"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+_value == 0
+
+IRs:
+TMP_46(bool) = _value == 0
+CONDITION TMP_46"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: THROW 5
+"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: IF 7
+
+EXPRESSION:
+balanceOf(_from) < _value
+
+IRs:
+TMP_47(uint256) = INTERNAL_CALL, ERC223Token.balanceOf(address)(_from)
+TMP_48(bool) = TMP_47 < _value
+CONDITION TMP_48"];
+7->8[label="True"];
+7->9[label="False"];
+8[label="Node Type: THROW 8
+"];
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+balances[_from] = safeSub(balanceOf(_from),_value)
+
+IRs:
+REF_25(uint256) -> balances[_from]
+TMP_49(uint256) = INTERNAL_CALL, ERC223Token.balanceOf(address)(_from)
+TMP_50(uint256) = INTERNAL_CALL, SafeMath.safeSub(uint256,uint256)(TMP_49,_value)
+REF_25(uint256) (->balances) := TMP_50(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+balances[_to] = safeAdd(balanceOf(_to),_value)
+
+IRs:
+REF_26(uint256) -> balances[_to]
+TMP_51(uint256) = INTERNAL_CALL, ERC223Token.balanceOf(address)(_to)
+TMP_52(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(TMP_51,_value)
+REF_26(uint256) (->balances) := TMP_52(uint256)"];
+11->12;
+12[label="Node Type: IF 12
+
+EXPRESSION:
+isContract(_to)
+
+IRs:
+TMP_53(bool) = INTERNAL_CALL, ERC223Token.isContract(address)(_to)
+CONDITION TMP_53"];
+12->13[label="True"];
+12->15[label="False"];
+13[label="Node Type: NEW VARIABLE 13
+
+EXPRESSION:
+receiverContract = ERC223ContractInterface(_to)
+
+IRs:
+TMP_54 = CONVERT _to to ERC223ContractInterface
+receiverContract(ERC223ContractInterface) := TMP_54(ERC223ContractInterface)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+receiverContract.erc223Fallback(_from,_value,_metadata)
+
+IRs:
+HIGH_LEVEL_CALL, dest:receiverContract(ERC223ContractInterface), function:erc223Fallback, arguments:['_from', '_value', '_metadata']  "];
+14->15;
+15[label="Node Type: END_IF 15
+"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+Transfer(_from,_to,_value)
+
+IRs:
+Emit Transfer(_from,_to,_value)"];
+}
+// Function: 39127.sol-DASToken-allowance(address,address)
+digraph{
+}
+// Function: 39127.sol-DASToken-approve(address,uint256)
+digraph{
+}
+// Function: 39127.sol-DASToken-balanceOf(address)
+digraph{
+}
+// Function: 39127.sol-DASToken-blockAccount(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+blockedAccounts[_account] = true
+
+IRs:
+REF_29(bool) -> blockedAccounts[_account]
+REF_29(bool) (->blockedAccounts) := True(bool)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlySecretaryGeneral()
+
+IRs:
+MODIFIER_CALL, DASToken.onlySecretaryGeneral()()"];
+2->1;
+}
+// Function: 39127.sol-DASToken-decimals()
+digraph{
+}
+// Function: 39127.sol-DASToken-isAccountBlocked(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+blockedAccounts[_account]
+
+IRs:
+REF_31(bool) -> blockedAccounts[_account]
+RETURN REF_31"];
+}
+// Function: 39127.sol-DASToken-isContract(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_addr = _addr
+
+IRs:
+_addr(address) := _addr(address)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: INLINE ASM 3
+"];
+3->4;
+4[label="Node Type: END INLINE ASM 4
+"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+(length > 0)
+
+IRs:
+TMP_57(bool) = length > 0
+RETURN TMP_57"];
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+_isContract
+
+IRs:
+RETURN _isContract"];
+}
+// Function: 39127.sol-DASToken-name()
+digraph{
+}
+// Function: 39127.sol-DASToken-onlySecretaryGeneral()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != secretaryGeneral
+
+IRs:
+TMP_72(bool) = msg.sender != secretaryGeneral
+CONDITION TMP_72"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 39127.sol-DASToken-safeAdd(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+x > MAX_UINT256 - y
+
+IRs:
+TMP_58(uint256) = MAX_UINT256 - y
+TMP_59(bool) = x > TMP_58
+CONDITION TMP_59"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+x + y
+
+IRs:
+TMP_60(uint256) = x + y
+RETURN TMP_60"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 39127.sol-DASToken-safeMul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+y == 0
+
+IRs:
+TMP_63(bool) = y == 0
+CONDITION TMP_63"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+x > MAX_UINT256 / y
+
+IRs:
+TMP_64(uint256) = MAX_UINT256 / y
+TMP_65(bool) = x > TMP_64
+CONDITION TMP_65"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: THROW 5
+"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+x * y
+
+IRs:
+TMP_66(uint256) = x * y
+RETURN TMP_66"];
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 39127.sol-DASToken-safeSub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+x < y
+
+IRs:
+TMP_61(bool) = x < y
+CONDITION TMP_61"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+x - y
+
+IRs:
+TMP_62(uint256) = x - y
+RETURN TMP_62"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 39127.sol-DASToken-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+MAX_UINT256 = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+
+IRs:
+MAX_UINT256(uint256) := 115792089237316195423570985008687907853269984665640564039457584007913129639935(uint256)"];
+}
+// Function: 39127.sol-DASToken-symbol()
+digraph{
+}
+// Function: 39127.sol-DASToken-totalSupply()
+digraph{
+}
+// Function: 39127.sol-DASToken-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+blockedAccounts[msg.sender]
+
+IRs:
+REF_32(bool) -> blockedAccounts[msg.sender]
+CONDITION REF_32"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+super.transfer(_to,_value)
+
+IRs:
+TMP_69(bool) = INTERNAL_CALL, ERC223Token.transfer(address,uint256)(_to,_value)
+RETURN TMP_69"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+_success
+
+IRs:
+RETURN _success"];
+}
+// Function: 39127.sol-DASToken-transfer(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+blockedAccounts[msg.sender]
+
+IRs:
+REF_33(bool) -> blockedAccounts[msg.sender]
+CONDITION REF_33"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+super.transfer(_to,_value,_metadata)
+
+IRs:
+TMP_70(bool) = INTERNAL_CALL, ERC223Token.transfer(address,uint256,bytes)(_to,_value,_metadata)
+RETURN TMP_70"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+_success
+
+IRs:
+RETURN _success"];
+}
+// Function: 39127.sol-DASToken-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+blockedAccounts[_from]
+
+IRs:
+REF_34(bool) -> blockedAccounts[_from]
+CONDITION REF_34"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+super.transferFrom(_from,_to,_value)
+
+IRs:
+TMP_71(bool) = INTERNAL_CALL, ERC223Token.transferFrom(address,address,uint256)(_from,_to,_value)
+RETURN TMP_71"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+_success
+
+IRs:
+RETURN _success"];
+}
+// Function: 39127.sol-DASToken-unblockAccount(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+blockedAccounts[_account] = false
+
+IRs:
+REF_30(bool) -> blockedAccounts[_account]
+REF_30(bool) (->blockedAccounts) := False(bool)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlySecretaryGeneral()
+
+IRs:
+MODIFIER_CALL, DASToken.onlySecretaryGeneral()()"];
+2->1;
+}
+// Function: 39127.sol-ERC223ContractInterface-erc223Fallback(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_from = _from
+
+IRs:
+_from(address) := _from(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_value = _value
+
+IRs:
+_value(uint256) := _value(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_data = _data
+
+IRs:
+_data(bytes) := _data(bytes)"];
+3->4;
+4[label="Node Type: THROW 4
+"];
+}
+// Function: 39127.sol-ERC223Token-__transfer(address,address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_from == _to
+
+IRs:
+TMP_25(bool) = _from == _to
+CONDITION TMP_25"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+_value == 0
+
+IRs:
+TMP_26(bool) = _value == 0
+CONDITION TMP_26"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: THROW 5
+"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: IF 7
+
+EXPRESSION:
+balanceOf(_from) < _value
+
+IRs:
+TMP_27(uint256) = INTERNAL_CALL, ERC223Token.balanceOf(address)(_from)
+TMP_28(bool) = TMP_27 < _value
+CONDITION TMP_28"];
+7->8[label="True"];
+7->9[label="False"];
+8[label="Node Type: THROW 8
+"];
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+balances[_from] = safeSub(balanceOf(_from),_value)
+
+IRs:
+REF_11(uint256) -> balances[_from]
+TMP_29(uint256) = INTERNAL_CALL, ERC223Token.balanceOf(address)(_from)
+TMP_30(uint256) = INTERNAL_CALL, SafeMath.safeSub(uint256,uint256)(TMP_29,_value)
+REF_11(uint256) (->balances) := TMP_30(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+balances[_to] = safeAdd(balanceOf(_to),_value)
+
+IRs:
+REF_12(uint256) -> balances[_to]
+TMP_31(uint256) = INTERNAL_CALL, ERC223Token.balanceOf(address)(_to)
+TMP_32(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(TMP_31,_value)
+REF_12(uint256) (->balances) := TMP_32(uint256)"];
+11->12;
+12[label="Node Type: IF 12
+
+EXPRESSION:
+isContract(_to)
+
+IRs:
+TMP_33(bool) = INTERNAL_CALL, ERC223Token.isContract(address)(_to)
+CONDITION TMP_33"];
+12->13[label="True"];
+12->15[label="False"];
+13[label="Node Type: NEW VARIABLE 13
+
+EXPRESSION:
+receiverContract = ERC223ContractInterface(_to)
+
+IRs:
+TMP_34 = CONVERT _to to ERC223ContractInterface
+receiverContract(ERC223ContractInterface) := TMP_34(ERC223ContractInterface)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+receiverContract.erc223Fallback(_from,_value,_metadata)
+
+IRs:
+HIGH_LEVEL_CALL, dest:receiverContract(ERC223ContractInterface), function:erc223Fallback, arguments:['_from', '_value', '_metadata']  "];
+14->15;
+15[label="Node Type: END_IF 15
+"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+Transfer(_from,_to,_value)
+
+IRs:
+Emit Transfer(_from,_to,_value)"];
+}
+// Function: 39127.sol-ERC223Token-allowance(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+allowances[_owner][_spender]
+
+IRs:
+REF_3(mapping(address => uint256)) -> allowances[_owner]
+REF_4(uint256) -> REF_3[_spender]
+RETURN REF_4"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+_remaining
+
+IRs:
+RETURN _remaining"];
+}
+// Function: 39127.sol-ERC223Token-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowances[msg.sender][_spender] = _value
+
+IRs:
+REF_1(mapping(address => uint256)) -> allowances[msg.sender]
+REF_2(uint256) -> REF_1[_spender]
+REF_2(uint256) (->allowances) := _value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,_value)
+
+IRs:
+Emit Approval(msg.sender,_spender,_value)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+_success
+
+IRs:
+RETURN _success"];
+}
+// Function: 39127.sol-ERC223Token-balanceOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+balances[_owner]
+
+IRs:
+REF_0(uint256) -> balances[_owner]
+RETURN REF_0"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+_balance
+
+IRs:
+RETURN _balance"];
+}
+// Function: 39127.sol-ERC223Token-decimals()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+decimals
+
+IRs:
+RETURN decimals"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+_decimals
+
+IRs:
+RETURN _decimals"];
+}
+// Function: 39127.sol-ERC223Token-isContract(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_addr = _addr
+
+IRs:
+_addr(address) := _addr(address)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: INLINE ASM 3
+"];
+3->4;
+4[label="Node Type: END INLINE ASM 4
+"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+(length > 0)
+
+IRs:
+TMP_37(bool) = length > 0
+RETURN TMP_37"];
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+_isContract
+
+IRs:
+RETURN _isContract"];
+}
+// Function: 39127.sol-ERC223Token-name()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+name
+
+IRs:
+RETURN name"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+_name
+
+IRs:
+RETURN _name"];
+}
+// Function: 39127.sol-ERC223Token-safeAdd(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+x > MAX_UINT256 - y
+
+IRs:
+TMP_9(uint256) = MAX_UINT256 - y
+TMP_10(bool) = x > TMP_9
+CONDITION TMP_10"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+x + y
+
+IRs:
+TMP_11(uint256) = x + y
+RETURN TMP_11"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 39127.sol-ERC223Token-safeMul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+y == 0
+
+IRs:
+TMP_14(bool) = y == 0
+CONDITION TMP_14"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+x > MAX_UINT256 / y
+
+IRs:
+TMP_15(uint256) = MAX_UINT256 / y
+TMP_16(bool) = x > TMP_15
+CONDITION TMP_16"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: THROW 5
+"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+x * y
+
+IRs:
+TMP_17(uint256) = x * y
+RETURN TMP_17"];
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 39127.sol-ERC223Token-safeSub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+x < y
+
+IRs:
+TMP_12(bool) = x < y
+CONDITION TMP_12"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+x - y
+
+IRs:
+TMP_13(uint256) = x - y
+RETURN TMP_13"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 39127.sol-ERC223Token-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+MAX_UINT256 = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+
+IRs:
+MAX_UINT256(uint256) := 115792089237316195423570985008687907853269984665640564039457584007913129639935(uint256)"];
+}
+// Function: 39127.sol-ERC223Token-symbol()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+symbol
+
+IRs:
+RETURN symbol"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+_symbol
+
+IRs:
+RETURN _symbol"];
+}
+// Function: 39127.sol-ERC223Token-totalSupply()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+totalSupply
+
+IRs:
+RETURN totalSupply"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+_supply
+
+IRs:
+RETURN _supply"];
+}
+// Function: 39127.sol-ERC223Token-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+__transfer(msg.sender,_to,_value,emptyMetadata)
+
+IRs:
+INTERNAL_CALL, ERC223Token.__transfer(address,address,uint256,bytes)(msg.sender,_to,_value,emptyMetadata)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+_success
+
+IRs:
+RETURN _success"];
+}
+// Function: 39127.sol-ERC223Token-transfer(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+__transfer(msg.sender,_to,_value,_metadata)
+
+IRs:
+INTERNAL_CALL, ERC223Token.__transfer(address,address,uint256,bytes)(msg.sender,_to,_value,_metadata)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Transfer(msg.sender,_to,_value,_metadata)
+
+IRs:
+Emit Transfer(msg.sender,_to,_value,_metadata)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+_success
+
+IRs:
+RETURN _success"];
+}
+// Function: 39127.sol-ERC223Token-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+allowances[_from][msg.sender] < _value
+
+IRs:
+REF_5(mapping(address => uint256)) -> allowances[_from]
+REF_6(uint256) -> REF_5[msg.sender]
+TMP_22(bool) = REF_6 < _value
+CONDITION TMP_22"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+allowances[_from][msg.sender] = safeSub(allowances[_from][msg.sender],_value)
+
+IRs:
+REF_7(mapping(address => uint256)) -> allowances[_from]
+REF_8(uint256) -> REF_7[msg.sender]
+REF_9(mapping(address => uint256)) -> allowances[_from]
+REF_10(uint256) -> REF_9[msg.sender]
+TMP_23(uint256) = INTERNAL_CALL, SafeMath.safeSub(uint256,uint256)(REF_10,_value)
+REF_8(uint256) (->allowances) := TMP_23(uint256)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+__transfer(_from,_to,_value,emptyMetadata)
+
+IRs:
+INTERNAL_CALL, ERC223Token.__transfer(address,address,uint256,bytes)(_from,_to,_value,emptyMetadata)"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+_success
+
+IRs:
+RETURN _success"];
+}
+// Function: 39127.sol-ERC223TokenInterface-allowance(address,address)
+digraph{
+}
+// Function: 39127.sol-ERC223TokenInterface-approve(address,uint256)
+digraph{
+}
+// Function: 39127.sol-ERC223TokenInterface-balanceOf(address)
+digraph{
+}
+// Function: 39127.sol-ERC223TokenInterface-decimals()
+digraph{
+}
+// Function: 39127.sol-ERC223TokenInterface-name()
+digraph{
+}
+// Function: 39127.sol-ERC223TokenInterface-symbol()
+digraph{
+}
+// Function: 39127.sol-ERC223TokenInterface-totalSupply()
+digraph{
+}
+// Function: 39127.sol-ERC223TokenInterface-transfer(address,uint256)
+digraph{
+}
+// Function: 39127.sol-ERC223TokenInterface-transfer(address,uint256,bytes)
+digraph{
+}
+// Function: 39127.sol-ERC223TokenInterface-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 39127.sol-SafeMath-safeAdd(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+x > MAX_UINT256 - y
+
+IRs:
+TMP_0(uint256) = MAX_UINT256 - y
+TMP_1(bool) = x > TMP_0
+CONDITION TMP_1"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+x + y
+
+IRs:
+TMP_2(uint256) = x + y
+RETURN TMP_2"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 39127.sol-SafeMath-safeMul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+y == 0
+
+IRs:
+TMP_5(bool) = y == 0
+CONDITION TMP_5"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+x > MAX_UINT256 / y
+
+IRs:
+TMP_6(uint256) = MAX_UINT256 / y
+TMP_7(bool) = x > TMP_6
+CONDITION TMP_7"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: THROW 5
+"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+x * y
+
+IRs:
+TMP_8(uint256) = x * y
+RETURN TMP_8"];
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 39127.sol-SafeMath-safeSub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+x < y
+
+IRs:
+TMP_3(bool) = x < y
+CONDITION TMP_3"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+x - y
+
+IRs:
+TMP_4(uint256) = x - y
+RETURN TMP_4"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+}
+// Function: 39127.sol-SafeMath-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+MAX_UINT256 = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+
+IRs:
+MAX_UINT256(uint256) := 115792089237316195423570985008687907853269984665640564039457584007913129639935(uint256)"];
+}
+}

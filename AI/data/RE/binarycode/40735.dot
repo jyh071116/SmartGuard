@@ -1,0 +1,81 @@
+digraph G {
+// Function: 40735.sol-Owner-GetFirstWithdrawalBonus(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+claimedBonus[recipient] == false
+
+IRs:
+REF_4(bool) -> claimedBonus[recipient]
+TMP_3(bool) = REF_4 == False
+CONDITION TMP_3"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+rewardsForA[recipient] += 100
+
+IRs:
+REF_5(uint256) -> rewardsForA[recipient]
+REF_5(-> rewardsForA) = REF_5 + 100"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+WithdrawReward(recipient)
+
+IRs:
+INTERNAL_CALL, Owner.WithdrawReward(address)(recipient)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+claimedBonus[recipient] = true
+
+IRs:
+REF_6(bool) -> claimedBonus[recipient]
+REF_6(bool) (->claimedBonus) := True(bool)"];
+}
+// Function: 40735.sol-Owner-WithdrawReward(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+amountToWithdraw = rewardsForA[recipient]
+
+IRs:
+REF_0(uint256) -> rewardsForA[recipient]
+amountToWithdraw(uint256) := REF_0(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+rewardsForA[recipient] = 0
+
+IRs:
+REF_1(uint256) -> rewardsForA[recipient]
+REF_1(uint256) (->rewardsForA) := 0(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(recipient.call.value(amountToWithdraw)())
+
+IRs:
+TMP_1(bool) = LOW_LEVEL_CALL, dest:recipient, function:call, arguments:[] value:amountToWithdraw 
+TMP_2(None) = SOLIDITY_CALL require(bool)(TMP_1)"];
+}
+}

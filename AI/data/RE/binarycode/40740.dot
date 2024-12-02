@@ -1,0 +1,61 @@
+digraph G {
+// Function: 40740.sol-Reentrance-addToBalance()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+userBalance[msg.sender] += msg.value
+
+IRs:
+REF_1(uint256) -> userBalance[msg.sender]
+REF_1(-> userBalance) = REF_1 + msg.value"];
+}
+// Function: 40740.sol-Reentrance-getBalance(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+userBalance[u]
+
+IRs:
+REF_0(uint256) -> userBalance[u]
+RETURN REF_0"];
+}
+// Function: 40740.sol-Reentrance-withdrawBalance()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! (msg.sender.call.value(userBalance[msg.sender])())
+
+IRs:
+REF_4(uint256) -> userBalance[msg.sender]
+TMP_1(bool) = LOW_LEVEL_CALL, dest:msg.sender, function:call, arguments:[] value:REF_4 
+TMP_2 = UnaryType.BANG TMP_1 
+CONDITION TMP_2"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+userBalance[msg.sender] = 0
+
+IRs:
+REF_5(uint256) -> userBalance[msg.sender]
+REF_5(uint256) (->userBalance) := 0(uint256)"];
+}
+}

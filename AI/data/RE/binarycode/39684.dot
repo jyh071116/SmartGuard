@@ -1,0 +1,548 @@
+digraph G {
+// Function: 39684.sol-EtherprisesLLC-EtherprisesLLC()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+generalManager = msg.sender
+
+IRs:
+generalManager(address) := msg.sender(address)"];
+}
+// Function: 39684.sol-EtherprisesLLC-addAmendment(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+prose.push(newAmendment)
+
+IRs:
+REF_4 -> LENGTH prose
+TMP_4(uint256) := REF_4(uint256)
+TMP_5(uint256) = TMP_4 + 1
+REF_4(uint256) (->prose) := TMP_5(uint256)
+REF_5(string) -> prose[TMP_4]
+REF_5(string) (->prose) := newAmendment(string)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+AmendmentAdded(newAmendment)
+
+IRs:
+Emit AmendmentAdded(newAmendment)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+ifGeneralManager()
+
+IRs:
+MODIFIER_CALL, EtherprisesLLC.ifGeneralManager()()"];
+3->1;
+}
+// Function: 39684.sol-EtherprisesLLC-addr(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+seriesByName[_name]
+
+IRs:
+REF_18(address) -> seriesByName[_name]
+RETURN REF_18"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+o_address
+
+IRs:
+RETURN o_address"];
+}
+// Function: 39684.sol-EtherprisesLLC-createSeries(bytes,uint256,string,string,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+seriesId = series.length
+
+IRs:
+REF_7 -> LENGTH series
+seriesId(uint256) := REF_7(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+(latestAddress,latestName) = SeriesFactory(seriesFactory).createSeries.value(msg.value)(seriesId,name,shares,industry,symbol,msg.sender,extraContract)
+
+IRs:
+TMP_15 = CONVERT seriesFactory to SeriesFactory
+TUPLE_0(address,bytes32) = HIGH_LEVEL_CALL, dest:TMP_15(SeriesFactory), function:createSeries, arguments:['seriesId', 'name', 'shares', 'industry', 'symbol', 'msg.sender', 'extraContract'] value:msg.value 
+latestAddress(address)= UNPACK TUPLE_0 index: 0 
+latestName(bytes32)= UNPACK TUPLE_0 index: 1 "];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+latestAddress == 0
+
+IRs:
+TMP_17(bool) = latestAddress == 0
+CONDITION TMP_17"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: THROW 6
+"];
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: IF 8
+
+EXPRESSION:
+latestName > 0
+
+IRs:
+TMP_18(bool) = latestName > 0
+CONDITION TMP_18"];
+8->9[label="True"];
+8->13[label="False"];
+9[label="Node Type: IF 9
+
+EXPRESSION:
+seriesByName[latestName] == 0
+
+IRs:
+REF_10(address) -> seriesByName[latestName]
+TMP_19(bool) = REF_10 == 0
+CONDITION TMP_19"];
+9->10[label="True"];
+9->11[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+seriesByName[latestName] = latestAddress
+
+IRs:
+REF_11(address) -> seriesByName[latestName]
+REF_11(address) (->seriesByName) := latestAddress(address)"];
+10->12;
+11[label="Node Type: THROW 11
+"];
+12[label="Node Type: END_IF 12
+"];
+12->13;
+13[label="Node Type: END_IF 13
+"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+series.push(latestAddress)
+
+IRs:
+REF_13 -> LENGTH series
+TMP_21(uint256) := REF_13(uint256)
+TMP_22(uint256) = TMP_21 + 1
+REF_13(uint256) (->series) := TMP_22(uint256)
+REF_14(address) -> series[TMP_21]
+REF_14(address) (->series) := latestAddress(address)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+expiresAt[latestAddress] = now + 220752000
+
+IRs:
+REF_15(uint256) -> expiresAt[latestAddress]
+TMP_23(uint256) = now + 220752000
+REF_15(uint256) (->expiresAt) := TMP_23(uint256)"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+latestSeriesForUser[msg.sender] = latestAddress
+
+IRs:
+REF_16(address) -> latestSeriesForUser[msg.sender]
+REF_16(address) (->latestSeriesForUser) := latestAddress(address)"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+seriesByAddress[latestAddress] = latestName
+
+IRs:
+REF_17(bytes32) -> seriesByAddress[latestAddress]
+REF_17(bytes32) (->seriesByAddress) := latestName(bytes32)"];
+17->18;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+SeriesCreated(latestAddress,seriesId)
+
+IRs:
+Emit SeriesCreated(latestAddress,seriesId)"];
+18->19;
+19[label="Node Type: RETURN 19
+
+EXPRESSION:
+(latestAddress,seriesId)
+
+IRs:
+RETURN latestAddress,seriesId"];
+20[label="Node Type: RETURN 20
+
+EXPRESSION:
+(seriesAddress,seriesId)
+
+IRs:
+RETURN seriesAddress,seriesId"];
+}
+// Function: 39684.sol-EtherprisesLLC-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.data.length > 0
+
+IRs:
+REF_20 -> LENGTH msg.data
+TMP_25(bool) = REF_20 > 0
+CONDITION TMP_25"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+createSeries(msg.data,0,,,0x0)
+
+IRs:
+TUPLE_1(address,uint256) = INTERNAL_CALL, EtherprisesLLC.createSeries(bytes,uint256,string,string,address)(msg.data,0,,,0)"];
+2->9;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+latestSeriesForUser[msg.sender] != 0
+
+IRs:
+REF_21(address) -> latestSeriesForUser[msg.sender]
+TMP_26(bool) = REF_21 != 0
+CONDITION TMP_26"];
+3->4[label="True"];
+3->7[label="False"];
+4[label="Node Type: IF 4
+
+EXPRESSION:
+latestSeriesForUser[msg.sender].call.value(msg.value)()
+
+IRs:
+REF_22(address) -> latestSeriesForUser[msg.sender]
+TMP_28(bool) = LOW_LEVEL_CALL, dest:REF_22, function:call, arguments:[] value:msg.value 
+CONDITION TMP_28"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+DepositMade(latestSeriesForUser[msg.sender],msg.value)
+
+IRs:
+REF_25(address) -> latestSeriesForUser[msg.sender]
+Emit DepositMade(REF_25,msg.value)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+6->8;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+createSeries(,0,,,0x0)
+
+IRs:
+TUPLE_2(address,uint256) = INTERNAL_CALL, EtherprisesLLC.createSeries(bytes,uint256,string,string,address)(,0,,,0)"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: END_IF 9
+"];
+}
+// Function: 39684.sol-EtherprisesLLC-ifGeneralManager()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != generalManager
+
+IRs:
+TMP_30(bool) = msg.sender != generalManager
+CONDITION TMP_30"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 39684.sol-EtherprisesLLC-ifSeries()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+expiresAt[msg.sender] == 0
+
+IRs:
+REF_26(uint256) -> expiresAt[msg.sender]
+TMP_31(bool) = REF_26 == 0
+CONDITION TMP_31"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 39684.sol-EtherprisesLLC-isExpired(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+expiresAt[addr] > now
+
+IRs:
+REF_2(uint256) -> expiresAt[addr]
+TMP_2(bool) = REF_2 > now
+CONDITION TMP_2"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 39684.sol-EtherprisesLLC-name(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+seriesByAddress[_owner]
+
+IRs:
+REF_19(bytes32) -> seriesByAddress[_owner]
+RETURN REF_19"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+o_name
+
+IRs:
+RETURN o_name"];
+}
+// Function: 39684.sol-EtherprisesLLC-payFee()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->7;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.value != 1000000000000000000
+
+IRs:
+TMP_8(bool) = msg.value != 1000000000000000000
+CONDITION TMP_8"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+expiresAt[msg.sender] += 220752000
+
+IRs:
+REF_6(uint256) -> expiresAt[msg.sender]
+REF_6(-> expiresAt) = REF_6 + 220752000"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+FeePaid(msg.sender)
+
+IRs:
+Emit FeePaid(msg.sender)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+ifSeries()
+
+IRs:
+MODIFIER_CALL, EtherprisesLLC.ifSeries()()"];
+7->1;
+}
+// Function: 39684.sol-EtherprisesLLC-setFactory(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+seriesFactory = newFactory
+
+IRs:
+seriesFactory(address) := newFactory(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+FactorySet(newFactory)
+
+IRs:
+Emit FactorySet(newFactory)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+ifGeneralManager()
+
+IRs:
+MODIFIER_CALL, EtherprisesLLC.ifGeneralManager()()"];
+3->1;
+}
+// Function: 39684.sol-EtherprisesLLC-setManager(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+generalManager = newManger
+
+IRs:
+generalManager(address) := newManger(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+ManagerSet(newManger)
+
+IRs:
+Emit ManagerSet(newManger)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+ifGeneralManager()
+
+IRs:
+MODIFIER_CALL, EtherprisesLLC.ifGeneralManager()()"];
+3->1;
+}
+// Function: 39684.sol-EtherprisesLLC-withdraw()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+generalManager.send(this.balance)
+
+IRs:
+REF_1(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_0 = SEND dest:generalManager value:REF_1"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+ifGeneralManager()
+
+IRs:
+MODIFIER_CALL, EtherprisesLLC.ifGeneralManager()()"];
+2->1;
+}
+// Function: 39684.sol-SeriesFactory-createSeries(uint256,bytes,uint256,string,string,address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+(newSeries,_newName)
+
+IRs:
+RETURN newSeries,_newName"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+(addr,newName)
+
+IRs:
+RETURN addr,newName"];
+}
+}

@@ -1,0 +1,839 @@
+digraph G {
+// Function: 38751.sol-Association-Association(token,uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+changeVotingRules(sharesAddress,minimumSharesToPassAVote,minutesForDebate)
+
+IRs:
+INTERNAL_CALL, Association.changeVotingRules(token,uint256,uint256)(sharesAddress,minimumSharesToPassAVote,minutesForDebate)"];
+}
+// Function: 38751.sol-Association-changeVotingRules(token,uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->8;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+sharesTokenAddress = token(sharesAddress)
+
+IRs:
+TMP_14 = CONVERT sharesAddress to token
+sharesTokenAddress(token) := TMP_14(token)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+minimumSharesToPassAVote == 0
+
+IRs:
+TMP_15(bool) = minimumSharesToPassAVote == 0
+CONDITION TMP_15"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+minimumSharesToPassAVote = 1
+
+IRs:
+minimumSharesToPassAVote(uint256) := 1(uint256)"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+minimumQuorum = minimumSharesToPassAVote
+
+IRs:
+minimumQuorum(uint256) := minimumSharesToPassAVote(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+debatingPeriodInMinutes = minutesForDebate
+
+IRs:
+debatingPeriodInMinutes(uint256) := minutesForDebate(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+ChangeOfRules(minimumQuorum,debatingPeriodInMinutes,sharesTokenAddress)
+
+IRs:
+Emit ChangeOfRules(minimumQuorum,debatingPeriodInMinutes,sharesTokenAddress)"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+8->1;
+}
+// Function: 38751.sol-Association-checkProposalCode(uint256,address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+p = proposals[proposalNumber]
+
+IRs:
+REF_12(Association.Proposal) -> proposals[proposalNumber]
+p(Association.Proposal) := REF_12(Association.Proposal)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+p.proposalHash == sha3()(beneficiary,etherAmount,transactionBytecode)
+
+IRs:
+REF_13(bytes32) -> p.proposalHash
+TMP_25(bytes32) = SOLIDITY_CALL sha3()(beneficiary,etherAmount,transactionBytecode)
+TMP_26(bool) = REF_13 == TMP_25
+RETURN TMP_26"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+codeChecksOut
+
+IRs:
+RETURN codeChecksOut"];
+}
+// Function: 38751.sol-Association-executeProposal(uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+p = proposals[proposalNumber]
+
+IRs:
+REF_24(Association.Proposal) -> proposals[proposalNumber]
+p(Association.Proposal) := REF_24(Association.Proposal)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+now < p.votingDeadline || p.executed || p.proposalHash != sha3()(p.recipient,p.amount,transactionBytecode)
+
+IRs:
+REF_25(uint256) -> p.votingDeadline
+TMP_33(bool) = now < REF_25
+REF_26(bool) -> p.executed
+TMP_34(bool) = TMP_33 || REF_26
+REF_27(bytes32) -> p.proposalHash
+REF_28(address) -> p.recipient
+REF_29(uint256) -> p.amount
+TMP_35(bytes32) = SOLIDITY_CALL sha3()(REF_28,REF_29,transactionBytecode)
+TMP_36(bool) = REF_27 != TMP_35
+TMP_37(bool) = TMP_34 || TMP_36
+CONDITION TMP_37"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: THROW 3
+"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+quorum = 0
+
+IRs:
+quorum(uint256) := 0(uint256)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+yea = 0
+
+IRs:
+yea(uint256) := 0(uint256)"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+nay = 0
+
+IRs:
+nay(uint256) := 0(uint256)"];
+7->10;
+8[label="Node Type: BEGIN_LOOP 8
+"];
+8->11;
+9[label="Node Type: END_LOOP 9
+"];
+9->20;
+10[label="Node Type: NEW VARIABLE 10
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+10->8;
+11[label="Node Type: IF_LOOP 11
+
+EXPRESSION:
+i < p.votes.length
+
+IRs:
+REF_30(Association.Vote[]) -> p.votes
+REF_31 -> LENGTH REF_30
+TMP_38(bool) = i < REF_31
+CONDITION TMP_38"];
+11->12[label="True"];
+11->9[label="False"];
+12[label="Node Type: NEW VARIABLE 12
+
+EXPRESSION:
+v = p.votes[i]
+
+IRs:
+REF_32(Association.Vote[]) -> p.votes
+REF_33(Association.Vote) -> REF_32[i]
+v(Association.Vote) := REF_33(Association.Vote)"];
+12->13;
+13[label="Node Type: NEW VARIABLE 13
+
+EXPRESSION:
+voteWeight = sharesTokenAddress.balanceOf(v.voter)
+
+IRs:
+REF_35(address) -> v.voter
+TMP_39(uint256) = HIGH_LEVEL_CALL, dest:sharesTokenAddress(token), function:balanceOf, arguments:['REF_35']  
+voteWeight(uint256) := TMP_39(uint256)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+quorum += voteWeight
+
+IRs:
+quorum(uint256) = quorum + voteWeight"];
+14->15;
+15[label="Node Type: IF 15
+
+EXPRESSION:
+v.inSupport
+
+IRs:
+REF_36(bool) -> v.inSupport
+CONDITION REF_36"];
+15->16[label="True"];
+15->17[label="False"];
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+yea += voteWeight
+
+IRs:
+yea(uint256) = yea + voteWeight"];
+16->18;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+nay += voteWeight
+
+IRs:
+nay(uint256) = nay + voteWeight"];
+17->18;
+18[label="Node Type: END_IF 18
+"];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+++ i
+
+IRs:
+i(uint256) = i + 1"];
+19->11;
+20[label="Node Type: IF 20
+
+EXPRESSION:
+quorum <= minimumQuorum
+
+IRs:
+TMP_40(bool) = quorum <= minimumQuorum
+CONDITION TMP_40"];
+20->21[label="True"];
+20->22[label="False"];
+21[label="Node Type: THROW 21
+"];
+22[label="Node Type: IF 22
+
+EXPRESSION:
+yea > nay
+
+IRs:
+TMP_41(bool) = yea > nay
+CONDITION TMP_41"];
+22->23[label="True"];
+22->28[label="False"];
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+p.executed = true
+
+IRs:
+REF_37(bool) -> p.executed
+REF_37(bool) (->p) := True(bool)"];
+23->24;
+24[label="Node Type: IF 24
+
+EXPRESSION:
+! p.recipient.call.value(p.amount * 1000000000000000000)(transactionBytecode)
+
+IRs:
+REF_38(address) -> p.recipient
+REF_41(uint256) -> p.amount
+TMP_42(uint256) = REF_41 * 1000000000000000000
+TMP_44(bool) = LOW_LEVEL_CALL, dest:REF_38, function:call, arguments:['transactionBytecode'] value:TMP_42 
+TMP_45 = UnaryType.BANG TMP_44 
+CONDITION TMP_45"];
+24->25[label="True"];
+24->26[label="False"];
+25[label="Node Type: THROW 25
+"];
+26[label="Node Type: END_IF 26
+"];
+26->27;
+27[label="Node Type: EXPRESSION 27
+
+EXPRESSION:
+p.proposalPassed = true
+
+IRs:
+REF_42(bool) -> p.proposalPassed
+REF_42(bool) (->p) := True(bool)"];
+27->29;
+28[label="Node Type: EXPRESSION 28
+
+EXPRESSION:
+p.proposalPassed = false
+
+IRs:
+REF_43(bool) -> p.proposalPassed
+REF_43(bool) (->p) := False(bool)"];
+28->29;
+29[label="Node Type: END_IF 29
+"];
+29->30;
+30[label="Node Type: END_IF 30
+"];
+30->31;
+31[label="Node Type: EXPRESSION 31
+
+EXPRESSION:
+ProposalTallied(proposalNumber,yea - nay,quorum,p.proposalPassed)
+
+IRs:
+TMP_46(uint256) = yea - nay
+REF_44(bool) -> p.proposalPassed
+Emit ProposalTallied(proposalNumber,TMP_46,quorum,REF_44)"];
+}
+// Function: 38751.sol-Association-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+receivedEther(msg.sender,msg.value)
+
+IRs:
+Emit receivedEther(msg.sender,msg.value)"];
+}
+// Function: 38751.sol-Association-newProposal(address,uint256,string,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->14;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+proposalID = proposals.length ++
+
+IRs:
+REF_2 -> LENGTH proposals
+TMP_18(uint256) := REF_2(uint256)
+REF_2(-> proposals) = REF_2 + 1
+proposalID(uint256) := TMP_18(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+p = proposals[proposalID]
+
+IRs:
+REF_3(Association.Proposal) -> proposals[proposalID]
+p(Association.Proposal) := REF_3(Association.Proposal)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+p.recipient = beneficiary
+
+IRs:
+REF_4(address) -> p.recipient
+REF_4(address) (->p) := beneficiary(address)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+p.amount = etherAmount
+
+IRs:
+REF_5(uint256) -> p.amount
+REF_5(uint256) (->p) := etherAmount(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+p.description = JobDescription
+
+IRs:
+REF_6(string) -> p.description
+REF_6(string) (->p) := JobDescription(string)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+p.proposalHash = sha3()(beneficiary,etherAmount,transactionBytecode)
+
+IRs:
+REF_7(bytes32) -> p.proposalHash
+TMP_19(bytes32) = SOLIDITY_CALL sha3()(beneficiary,etherAmount,transactionBytecode)
+REF_7(bytes32) (->p) := TMP_19(bytes32)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+p.votingDeadline = now + debatingPeriodInMinutes * 60
+
+IRs:
+REF_8(uint256) -> p.votingDeadline
+TMP_20(uint256) = debatingPeriodInMinutes * 60
+TMP_21(uint256) = now + TMP_20
+REF_8(uint256) (->p) := TMP_21(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+p.executed = false
+
+IRs:
+REF_9(bool) -> p.executed
+REF_9(bool) (->p) := False(bool)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+p.proposalPassed = false
+
+IRs:
+REF_10(bool) -> p.proposalPassed
+REF_10(bool) (->p) := False(bool)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+p.numberOfVotes = 0
+
+IRs:
+REF_11(uint256) -> p.numberOfVotes
+REF_11(uint256) (->p) := 0(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+ProposalAdded(proposalID,beneficiary,etherAmount,JobDescription)
+
+IRs:
+Emit ProposalAdded(proposalID,beneficiary,etherAmount,JobDescription)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+numProposals = proposalID + 1
+
+IRs:
+TMP_23(uint256) = proposalID + 1
+numProposals(uint256) := TMP_23(uint256)"];
+12->13;
+13[label="Node Type: RETURN 13
+
+EXPRESSION:
+proposalID
+
+IRs:
+RETURN proposalID"];
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+onlyShareholders()
+
+IRs:
+MODIFIER_CALL, Association.onlyShareholders()()"];
+14->1;
+15[label="Node Type: RETURN 15
+
+EXPRESSION:
+proposalID
+
+IRs:
+RETURN proposalID"];
+}
+// Function: 38751.sol-Association-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != owner
+
+IRs:
+TMP_48(bool) = msg.sender != owner
+CONDITION TMP_48"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 38751.sol-Association-onlyShareholders()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+sharesTokenAddress.balanceOf(msg.sender) == 0
+
+IRs:
+TMP_49(uint256) = HIGH_LEVEL_CALL, dest:sharesTokenAddress(token), function:balanceOf, arguments:['msg.sender']  
+TMP_50(bool) = TMP_49 == 0
+CONDITION TMP_50"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 38751.sol-Association-owned()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 38751.sol-Association-receiveApproval(address,uint256,address,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+t = Token(_token)
+
+IRs:
+TMP_7 = CONVERT _token to Token
+t(Token) := TMP_7(Token)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+! t.transferFrom(_from,this,_value)
+
+IRs:
+TMP_8(bool) = HIGH_LEVEL_CALL, dest:t(Token), function:transferFrom, arguments:['_from', 'this', '_value']  
+TMP_9 = UnaryType.BANG TMP_8 
+CONDITION TMP_9"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: THROW 3
+"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+receivedTokens(_from,_value,_token,_extraData)
+
+IRs:
+Emit receivedTokens(_from,_value,_token,_extraData)"];
+}
+// Function: 38751.sol-Association-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+2->1;
+}
+// Function: 38751.sol-Association-vote(uint256,bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->11;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+p = proposals[proposalNumber]
+
+IRs:
+REF_14(Association.Proposal) -> proposals[proposalNumber]
+p(Association.Proposal) := REF_14(Association.Proposal)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+p.voted[msg.sender] == true
+
+IRs:
+REF_15(mapping(address => bool)) -> p.voted
+REF_16(bool) -> REF_15[msg.sender]
+TMP_27(bool) = REF_16 == True
+CONDITION TMP_27"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: THROW 3
+"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+voteID = p.votes.length ++
+
+IRs:
+REF_17(Association.Vote[]) -> p.votes
+REF_18 -> LENGTH REF_17
+TMP_28(uint256) := REF_18(uint256)
+REF_18(-> p) = REF_18 + 1
+voteID(uint256) := TMP_28(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+p.votes[voteID] = Vote(supportsProposal,msg.sender)
+
+IRs:
+REF_19(Association.Vote[]) -> p.votes
+REF_20(Association.Vote) -> REF_19[voteID]
+TMP_29(Association.Vote) = new Vote(supportsProposal,msg.sender)
+REF_20(Association.Vote) (->p) := TMP_29(Association.Vote)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+p.voted[msg.sender] = true
+
+IRs:
+REF_21(mapping(address => bool)) -> p.voted
+REF_22(bool) -> REF_21[msg.sender]
+REF_22(bool) (->p) := True(bool)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+p.numberOfVotes = voteID + 1
+
+IRs:
+REF_23(uint256) -> p.numberOfVotes
+TMP_30(uint256) = voteID + 1
+REF_23(uint256) (->p) := TMP_30(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+Voted(proposalNumber,supportsProposal,msg.sender)
+
+IRs:
+Emit Voted(proposalNumber,supportsProposal,msg.sender)"];
+9->10;
+10[label="Node Type: RETURN 10
+
+EXPRESSION:
+voteID
+
+IRs:
+RETURN voteID"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+onlyShareholders()
+
+IRs:
+MODIFIER_CALL, Association.onlyShareholders()()"];
+11->1;
+12[label="Node Type: RETURN 12
+
+EXPRESSION:
+voteID
+
+IRs:
+RETURN voteID"];
+}
+// Function: 38751.sol-Token-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 38751.sol-owned-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != owner
+
+IRs:
+TMP_1(bool) = msg.sender != owner
+CONDITION TMP_1"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 38751.sol-owned-owned()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 38751.sol-owned-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+2->1;
+}
+// Function: 38751.sol-tokenRecipient-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+receivedEther(msg.sender,msg.value)
+
+IRs:
+Emit receivedEther(msg.sender,msg.value)"];
+}
+// Function: 38751.sol-tokenRecipient-receiveApproval(address,uint256,address,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+t = Token(_token)
+
+IRs:
+TMP_2 = CONVERT _token to Token
+t(Token) := TMP_2(Token)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+! t.transferFrom(_from,this,_value)
+
+IRs:
+TMP_3(bool) = HIGH_LEVEL_CALL, dest:t(Token), function:transferFrom, arguments:['_from', 'this', '_value']  
+TMP_4 = UnaryType.BANG TMP_3 
+CONDITION TMP_4"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: THROW 3
+"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+receivedTokens(_from,_value,_token,_extraData)
+
+IRs:
+Emit receivedTokens(_from,_value,_token,_extraData)"];
+}
+}

@@ -1,0 +1,195 @@
+digraph G {
+// Function: 2919.sol-Audit-addAudit(bytes32,uint256,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+auditor = msg.sender
+
+IRs:
+auditor(address) := msg.sender(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(auditedContracts[auditor][_codeHash].insertedBlock == 0)
+
+IRs:
+REF_6(mapping(bytes32 => Audit.Proof)) -> auditedContracts[auditor]
+REF_7(Audit.Proof) -> REF_6[_codeHash]
+REF_8(uint256) -> REF_7.insertedBlock
+TMP_3(bool) = REF_8 == 0
+TMP_4(None) = SOLIDITY_CALL require(bool)(TMP_3)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+auditedContracts[auditor][_codeHash] = Proof({level:_level,auditedBy:auditor,insertedBlock:block.number,ipfsHash:_ipfsHash})
+
+IRs:
+REF_9(mapping(bytes32 => Audit.Proof)) -> auditedContracts[auditor]
+REF_10(Audit.Proof) -> REF_9[_codeHash]
+TMP_5(Audit.Proof) = new Proof(_level,block.number,_ipfsHash,auditor)
+REF_10(Audit.Proof) (->auditedContracts) := TMP_5(Audit.Proof)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+auditorContracts[auditor].push(_codeHash)
+
+IRs:
+REF_11(bytes32[]) -> auditorContracts[auditor]
+REF_13 -> LENGTH REF_11
+TMP_7(uint256) := REF_13(uint256)
+TMP_8(uint256) = TMP_7 + 1
+REF_13(uint256) (->auditorContracts) := TMP_8(uint256)
+REF_14(bytes32) -> REF_11[TMP_7]
+REF_14(bytes32) (->auditorContracts) := _codeHash(bytes32)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+NewAudit(auditor,_codeHash)
+
+IRs:
+Emit NewAudit(auditor,_codeHash)"];
+}
+// Function: 2919.sol-Audit-addEvidence(bytes32,uint256,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+auditor = msg.sender
+
+IRs:
+auditor(address) := msg.sender(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(auditedContracts[auditor][_codeHash].insertedBlock != 0)
+
+IRs:
+REF_15(mapping(bytes32 => Audit.Proof)) -> auditedContracts[auditor]
+REF_16(Audit.Proof) -> REF_15[_codeHash]
+REF_17(uint256) -> REF_16.insertedBlock
+TMP_10(bool) = REF_17 != 0
+TMP_11(None) = SOLIDITY_CALL require(bool)(TMP_10)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+auditedContracts[auditor][_codeHash].level != _newLevel
+
+IRs:
+REF_18(mapping(bytes32 => Audit.Proof)) -> auditedContracts[auditor]
+REF_19(Audit.Proof) -> REF_18[_codeHash]
+REF_20(uint256) -> REF_19.level
+TMP_12(bool) = REF_20 != _newLevel
+CONDITION TMP_12"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+auditedContracts[auditor][_codeHash].level = _newLevel
+
+IRs:
+REF_21(mapping(bytes32 => Audit.Proof)) -> auditedContracts[auditor]
+REF_22(Audit.Proof) -> REF_21[_codeHash]
+REF_23(uint256) -> REF_22.level
+REF_23(uint256) (->auditedContracts) := _newLevel(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+AttachedEvidence(auditor,_codeHash,_ipfsHash)
+
+IRs:
+Emit AttachedEvidence(auditor,_codeHash,_ipfsHash)"];
+}
+// Function: 2919.sol-Audit-codeAt(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: INLINE ASM 1
+"];
+1->2;
+2[label="Node Type: END INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+code
+
+IRs:
+RETURN code"];
+}
+// Function: 2919.sol-Audit-getCodeHash(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+keccak256()(codeAt(_contractAddr))
+
+IRs:
+TMP_1(bytes) = INTERNAL_CALL, Audit.codeAt(address)(_contractAddr)
+TMP_2(bytes32) = SOLIDITY_CALL keccak256()(TMP_1)
+RETURN TMP_2"];
+}
+// Function: 2919.sol-Audit-isVerifiedAddress(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+codeHash = getCodeHash(_contractAddr)
+
+IRs:
+TMP_0(bytes32) = INTERNAL_CALL, Audit.getCodeHash(address)(_contractAddr)
+codeHash(bytes32) := TMP_0(bytes32)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+auditedContracts[_auditorAddr][codeHash].level
+
+IRs:
+REF_0(mapping(bytes32 => Audit.Proof)) -> auditedContracts[_auditorAddr]
+REF_1(Audit.Proof) -> REF_0[codeHash]
+REF_2(uint256) -> REF_1.level
+RETURN REF_2"];
+}
+// Function: 2919.sol-Audit-isVerifiedCode(address,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+auditedContracts[_auditorAddr][_codeHash].level
+
+IRs:
+REF_3(mapping(bytes32 => Audit.Proof)) -> auditedContracts[_auditorAddr]
+REF_4(Audit.Proof) -> REF_3[_codeHash]
+REF_5(uint256) -> REF_4.level
+RETURN REF_5"];
+}
+}

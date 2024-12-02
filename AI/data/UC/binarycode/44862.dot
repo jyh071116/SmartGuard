@@ -1,0 +1,122 @@
+digraph G {
+// Function: 44862.sol-ReentranceExploit-ReentranceExploit()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 44862.sol-ReentranceExploit-deposit(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+vulnerable_contract = _vulnerable_contract
+
+IRs:
+vulnerable_contract(address) := _vulnerable_contract(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(vulnerable_contract.call.value(msg.value)(bytes4(sha3()(addToBalance()))))
+
+IRs:
+TMP_1(bytes32) = SOLIDITY_CALL sha3()(addToBalance())
+TMP_2 = CONVERT TMP_1 to bytes4
+TMP_3(bool) = LOW_LEVEL_CALL, dest:vulnerable_contract, function:call, arguments:['TMP_2'] value:msg.value 
+TMP_4(None) = SOLIDITY_CALL require(bool)(TMP_3)"];
+}
+// Function: 44862.sol-ReentranceExploit-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+attackModeIsOn
+
+IRs:
+CONDITION attackModeIsOn"];
+1->2[label="True"];
+1->4[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+attackModeIsOn = false
+
+IRs:
+attackModeIsOn(bool) := False(bool)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(vulnerable_contract.call(bytes4(sha3()(withdrawBalance()))))
+
+IRs:
+TMP_9(bytes32) = SOLIDITY_CALL sha3()(withdrawBalance())
+TMP_10 = CONVERT TMP_9 to bytes4
+TMP_11(bool) = LOW_LEVEL_CALL, dest:vulnerable_contract, function:call, arguments:['TMP_10']  
+TMP_12(None) = SOLIDITY_CALL require(bool)(TMP_11)"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+}
+// Function: 44862.sol-ReentranceExploit-get_money()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+suicide(address)(owner)
+
+IRs:
+TMP_13(None) = SOLIDITY_CALL suicide(address)(owner)"];
+}
+// Function: 44862.sol-ReentranceExploit-launch_attack()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+attackModeIsOn = true
+
+IRs:
+attackModeIsOn(bool) := True(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(vulnerable_contract.call(bytes4(sha3()(withdrawBalance()))))
+
+IRs:
+TMP_5(bytes32) = SOLIDITY_CALL sha3()(withdrawBalance())
+TMP_6 = CONVERT TMP_5 to bytes4
+TMP_7(bool) = LOW_LEVEL_CALL, dest:vulnerable_contract, function:call, arguments:['TMP_6']  
+TMP_8(None) = SOLIDITY_CALL require(bool)(TMP_7)"];
+}
+// Function: 44862.sol-ReentranceExploit-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+attackModeIsOn = false
+
+IRs:
+attackModeIsOn(bool) := False(bool)"];
+}
+}

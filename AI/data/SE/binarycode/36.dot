@@ -1,0 +1,749 @@
+digraph G {
+// Function: 36.sol-AirDropForERC223-Ownable()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 36.sol-AirDropForERC223-constructor(uint256,uint256,uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_startTime >= now && _endTime >= _startTime && _airDropAmount > 0 && _tokenAddress != address(0))
+
+IRs:
+TMP_24(bool) = _startTime >= now
+TMP_25(bool) = _endTime >= _startTime
+TMP_26(bool) = TMP_24 && TMP_25
+TMP_27(bool) = _airDropAmount > 0
+TMP_28(bool) = TMP_26 && TMP_27
+TMP_29 = CONVERT 0 to address
+TMP_30(bool) = _tokenAddress != TMP_29
+TMP_31(bool) = TMP_28 && TMP_30
+TMP_32(None) = SOLIDITY_CALL require(bool)(TMP_31)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+startTime = _startTime
+
+IRs:
+startTime(uint256) := _startTime(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+endTime = _endTime
+
+IRs:
+endTime(uint256) := _endTime(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+erc20 = ERC223Interface(_tokenAddress)
+
+IRs:
+TMP_33 = CONVERT _tokenAddress to ERC223Interface
+erc20(ERC223Interface) := TMP_33(ERC223Interface)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+tokenDecimals = erc20.decimals()
+
+IRs:
+TMP_34(uint8) = HIGH_LEVEL_CALL, dest:erc20(ERC223Interface), function:decimals, arguments:[]  
+tokenDecimals(uint256) := TMP_34(uint8)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+airDropAmount = _airDropAmount.mul(10 ** tokenDecimals)
+
+IRs:
+TMP_35(uint256) = 10 ** tokenDecimals
+TMP_36(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['_airDropAmount', 'TMP_35'] 
+airDropAmount(uint256) := TMP_36(uint256)"];
+}
+// Function: 36.sol-AirDropForERC223-getRemainingToken()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+erc20.balanceOf(this)
+
+IRs:
+TMP_90(uint256) = HIGH_LEVEL_CALL, dest:erc20(ERC223Interface), function:balanceOf, arguments:['this']  
+RETURN TMP_90"];
+}
+// Function: 36.sol-AirDropForERC223-getTotalAirDroppedAmount()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+airDropAmount.mul(arrayAirDropReceivers.length)
+
+IRs:
+REF_14 -> LENGTH arrayAirDropReceivers
+TMP_91(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['airDropAmount', 'REF_14'] 
+RETURN TMP_91"];
+}
+// Function: 36.sol-AirDropForERC223-getTotalNumberOfAddressesReceivedAirDrop()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+arrayAirDropReceivers.length
+
+IRs:
+REF_11 -> LENGTH arrayAirDropReceivers
+RETURN REF_11"];
+}
+// Function: 36.sol-AirDropForERC223-isValidAirDropForAll()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+validNotStop = ! stop
+
+IRs:
+TMP_37 = UnaryType.BANG stop 
+validNotStop(bool) := TMP_37(bool)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+validAmount = getRemainingToken() >= airDropAmount
+
+IRs:
+TMP_38(uint256) = INTERNAL_CALL, AirDropForERC223.getRemainingToken()()
+TMP_39(bool) = TMP_38 >= airDropAmount
+validAmount(bool) := TMP_39(bool)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+validPeriod = now >= startTime && now <= endTime
+
+IRs:
+TMP_40(bool) = now >= startTime
+TMP_41(bool) = now <= endTime
+TMP_42(bool) = TMP_40 && TMP_41
+validPeriod(bool) := TMP_42(bool)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+validNotStop && validAmount && validPeriod
+
+IRs:
+TMP_43(bool) = validNotStop && validAmount
+TMP_44(bool) = TMP_43 && validPeriod
+RETURN TMP_44"];
+}
+// Function: 36.sol-AirDropForERC223-isValidAirDropForIndividual()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+validNotStop = ! stop
+
+IRs:
+TMP_45 = UnaryType.BANG stop 
+validNotStop(bool) := TMP_45(bool)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+validAmount = getRemainingToken() >= airDropAmount
+
+IRs:
+TMP_46(uint256) = INTERNAL_CALL, AirDropForERC223.getRemainingToken()()
+TMP_47(bool) = TMP_46 >= airDropAmount
+validAmount(bool) := TMP_47(bool)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+validPeriod = now >= startTime && now <= endTime
+
+IRs:
+TMP_48(bool) = now >= startTime
+TMP_49(bool) = now <= endTime
+TMP_50(bool) = TMP_48 && TMP_49
+validPeriod(bool) := TMP_50(bool)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+validReceiveAirDropForIndividual = ! invalidAirDrop[msg.sender]
+
+IRs:
+REF_2(bool) -> invalidAirDrop[msg.sender]
+TMP_51 = UnaryType.BANG REF_2 
+validReceiveAirDropForIndividual(bool) := TMP_51(bool)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+validNotStop && validAmount && validPeriod && validReceiveAirDropForIndividual
+
+IRs:
+TMP_52(bool) = validNotStop && validAmount
+TMP_53(bool) = TMP_52 && validPeriod
+TMP_54(bool) = TMP_53 && validReceiveAirDropForIndividual
+RETURN TMP_54"];
+}
+// Function: 36.sol-AirDropForERC223-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_92(bool) = msg.sender == owner
+TMP_93(None) = SOLIDITY_CALL require(bool)(TMP_92)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 36.sol-AirDropForERC223-receiveAirDrop()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(isValidAirDropForIndividual())
+
+IRs:
+TMP_55(bool) = INTERNAL_CALL, AirDropForERC223.isValidAirDropForIndividual()()
+TMP_56(None) = SOLIDITY_CALL require(bool)(TMP_55)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+invalidAirDrop[msg.sender] = true
+
+IRs:
+REF_3(bool) -> invalidAirDrop[msg.sender]
+REF_3(bool) (->invalidAirDrop) := True(bool)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+arrayAirDropReceivers.push(msg.sender)
+
+IRs:
+REF_5 -> LENGTH arrayAirDropReceivers
+TMP_58(uint256) := REF_5(uint256)
+TMP_59(uint256) = TMP_58 + 1
+REF_5(uint256) (->arrayAirDropReceivers) := TMP_59(uint256)
+REF_6(address) -> arrayAirDropReceivers[TMP_58]
+REF_6(address) (->arrayAirDropReceivers) := msg.sender(address)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+erc20.transfer(msg.sender,airDropAmount)
+
+IRs:
+HIGH_LEVEL_CALL, dest:erc20(ERC223Interface), function:transfer, arguments:['msg.sender', 'airDropAmount']  "];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+LogAirDrop(msg.sender,airDropAmount)
+
+IRs:
+Emit LogAirDrop(msg.sender,airDropAmount)"];
+}
+// Function: 36.sol-AirDropForERC223-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+stop = false
+
+IRs:
+stop(bool) := False(bool)"];
+}
+// Function: 36.sol-AirDropForERC223-toggle()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+stop = ! stop
+
+IRs:
+TMP_62 = UnaryType.BANG stop 
+stop(bool) := TMP_62(bool)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+stop
+
+IRs:
+CONDITION stop"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+LogStop()
+
+IRs:
+Emit LogStop()"];
+3->5;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+LogStart()
+
+IRs:
+Emit LogStart()"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+6->1;
+}
+// Function: 36.sol-AirDropForERC223-tokenFallback(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 36.sol-AirDropForERC223-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newOwner != address(0))
+
+IRs:
+TMP_19 = CONVERT 0 to address
+TMP_20(bool) = newOwner != TMP_19
+TMP_21(None) = SOLIDITY_CALL require(bool)(TMP_20)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->1;
+}
+// Function: 36.sol-AirDropForERC223-updateInfo(uint256,uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->8;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(stop || now > endTime)
+
+IRs:
+TMP_76(bool) = now > endTime
+TMP_77(bool) = stop || TMP_76
+TMP_78(None) = SOLIDITY_CALL require(bool)(TMP_77)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_startTime >= now && _endTime >= _startTime && _airDropAmount > 0)
+
+IRs:
+TMP_79(bool) = _startTime >= now
+TMP_80(bool) = _endTime >= _startTime
+TMP_81(bool) = TMP_79 && TMP_80
+TMP_82(bool) = _airDropAmount > 0
+TMP_83(bool) = TMP_81 && TMP_82
+TMP_84(None) = SOLIDITY_CALL require(bool)(TMP_83)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+startTime = _startTime
+
+IRs:
+startTime(uint256) := _startTime(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+endTime = _endTime
+
+IRs:
+endTime(uint256) := _endTime(uint256)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+tokenDecimals = erc20.decimals()
+
+IRs:
+TMP_85(uint8) = HIGH_LEVEL_CALL, dest:erc20(ERC223Interface), function:decimals, arguments:[]  
+tokenDecimals(uint256) := TMP_85(uint8)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+airDropAmount = _airDropAmount.mul(10 ** tokenDecimals)
+
+IRs:
+TMP_86(uint256) = 10 ** tokenDecimals
+TMP_87(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['_airDropAmount', 'TMP_86'] 
+airDropAmount(uint256) := TMP_87(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+LogInfoUpdate(startTime,endTime,airDropAmount)
+
+IRs:
+Emit LogInfoUpdate(startTime,endTime,airDropAmount)"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+8->1;
+}
+// Function: 36.sol-AirDropForERC223-withdraw(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(stop || now > endTime)
+
+IRs:
+TMP_66(bool) = now > endTime
+TMP_67(bool) = stop || TMP_66
+TMP_68(None) = SOLIDITY_CALL require(bool)(TMP_67)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_address != address(0))
+
+IRs:
+TMP_69 = CONVERT 0 to address
+TMP_70(bool) = _address != TMP_69
+TMP_71(None) = SOLIDITY_CALL require(bool)(TMP_70)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+tokenBalanceOfContract = getRemainingToken()
+
+IRs:
+TMP_72(uint256) = INTERNAL_CALL, AirDropForERC223.getRemainingToken()()
+tokenBalanceOfContract(uint256) := TMP_72(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+erc20.transfer(_address,tokenBalanceOfContract)
+
+IRs:
+HIGH_LEVEL_CALL, dest:erc20(ERC223Interface), function:transfer, arguments:['_address', 'tokenBalanceOfContract']  "];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+LogWithdrawal(_address,tokenBalanceOfContract)
+
+IRs:
+Emit LogWithdrawal(_address,tokenBalanceOfContract)"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+6->1;
+}
+// Function: 36.sol-ERC223Interface-balanceOf(address)
+digraph{
+}
+// Function: 36.sol-ERC223Interface-transfer(address,uint256)
+digraph{
+}
+// Function: 36.sol-ERC223Interface-transfer(address,uint256,bytes)
+digraph{
+}
+// Function: 36.sol-ERC223ReceivingContract-tokenFallback(address,uint256,bytes)
+digraph{
+}
+// Function: 36.sol-Ownable-Ownable()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 36.sol-Ownable-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_5(bool) = msg.sender == owner
+TMP_6(None) = SOLIDITY_CALL require(bool)(TMP_5)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 36.sol-Ownable-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newOwner != address(0))
+
+IRs:
+TMP_0 = CONVERT 0 to address
+TMP_1(bool) = newOwner != TMP_0
+TMP_2(None) = SOLIDITY_CALL require(bool)(TMP_1)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->1;
+}
+// Function: 36.sol-SafeMath-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_16(uint256) = a + b
+c(uint256) := TMP_16(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(c >= a)
+
+IRs:
+TMP_17(bool) = c >= a
+TMP_18(None) = SOLIDITY_CALL assert(bool)(TMP_17)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 36.sol-SafeMath-div(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+a / b
+
+IRs:
+TMP_12(uint256) = a / b
+RETURN TMP_12"];
+}
+// Function: 36.sol-SafeMath-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+a == 0
+
+IRs:
+TMP_7(bool) = a == 0
+CONDITION TMP_7"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_8(uint256) = a * b
+c(uint256) := TMP_8(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+assert(bool)(c / a == b)
+
+IRs:
+TMP_9(uint256) = c / a
+TMP_10(bool) = TMP_9 == b
+TMP_11(None) = SOLIDITY_CALL assert(bool)(TMP_10)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 36.sol-SafeMath-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(b <= a)
+
+IRs:
+TMP_13(bool) = b <= a
+TMP_14(None) = SOLIDITY_CALL assert(bool)(TMP_13)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_15(uint256) = a - b
+RETURN TMP_15"];
+}
+}

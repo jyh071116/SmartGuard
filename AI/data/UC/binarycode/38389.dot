@@ -1,0 +1,559 @@
+digraph G {
+// Function: 38389.sol-DistrictBuyer-activate_kill_switch(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != developer && sha3()(password) != password_hash
+
+IRs:
+TMP_0(bool) = msg.sender != developer
+TMP_1(bytes32) = SOLIDITY_CALL sha3()(password)
+TMP_2(bool) = TMP_1 != password_hash
+TMP_3(bool) = TMP_0 && TMP_2
+CONDITION TMP_3"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+claimed_bounty = bounty
+
+IRs:
+claimed_bounty(uint256) := bounty(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+bounty = 0
+
+IRs:
+bounty(uint256) := 0(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+kill_switch = true
+
+IRs:
+kill_switch(bool) := True(bool)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+msg.sender.transfer(claimed_bounty)
+
+IRs:
+Transfer dest:msg.sender value:claimed_bounty"];
+}
+// Function: 38389.sol-DistrictBuyer-add_to_bounty()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != developer
+
+IRs:
+TMP_23(bool) = msg.sender != developer
+CONDITION TMP_23"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+kill_switch
+
+IRs:
+CONDITION kill_switch"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: THROW 5
+"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: IF 7
+
+EXPRESSION:
+bought_tokens
+
+IRs:
+CONDITION bought_tokens"];
+7->8[label="True"];
+7->9[label="False"];
+8[label="Node Type: THROW 8
+"];
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+bounty += msg.value
+
+IRs:
+bounty(uint256) = bounty + msg.value"];
+}
+// Function: 38389.sol-DistrictBuyer-auto_withdraw(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! bought_tokens || now < time_bought + 3600
+
+IRs:
+TMP_18 = UnaryType.BANG bought_tokens 
+TMP_19(uint256) = time_bought + 3600
+TMP_20(bool) = now < TMP_19
+TMP_21(bool) = TMP_18 || TMP_20
+CONDITION TMP_21"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+withdraw(user,true)
+
+IRs:
+INTERNAL_CALL, DistrictBuyer.withdraw(address,bool)(user,True)"];
+}
+// Function: 38389.sol-DistrictBuyer-claim_bounty()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+bought_tokens
+
+IRs:
+CONDITION bought_tokens"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+now < earliest_buy_time
+
+IRs:
+TMP_24(bool) = now < earliest_buy_time
+CONDITION TMP_24"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: RETURN 5
+"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: IF 7
+
+EXPRESSION:
+kill_switch
+
+IRs:
+CONDITION kill_switch"];
+7->8[label="True"];
+7->9[label="False"];
+8[label="Node Type: RETURN 8
+"];
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+bought_tokens = true
+
+IRs:
+bought_tokens(bool) := True(bool)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+time_bought = now
+
+IRs:
+time_bought(uint256) := now(uint256)"];
+11->12;
+12[label="Node Type: NEW VARIABLE 12
+
+EXPRESSION:
+claimed_bounty = bounty
+
+IRs:
+claimed_bounty(uint256) := bounty(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+bounty = 0
+
+IRs:
+bounty(uint256) := 0(uint256)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+contract_eth_value = this.balance - claimed_bounty
+
+IRs:
+REF_10(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_25([<slither.core.solidity_types.elementary_type.ElementaryType object at 0x7f3703e88130>]) = REF_10 - claimed_bounty
+contract_eth_value(uint256) := TMP_25([<slither.core.solidity_types.elementary_type.ElementaryType object at 0x7f3703e88130>])"];
+14->15;
+15[label="Node Type: IF 15
+
+EXPRESSION:
+! sale.call.value(contract_eth_value)()
+
+IRs:
+TMP_27(bool) = LOW_LEVEL_CALL, dest:sale, function:call, arguments:[] value:contract_eth_value 
+TMP_28 = UnaryType.BANG TMP_27 
+CONDITION TMP_28"];
+15->16[label="True"];
+15->17[label="False"];
+16[label="Node Type: THROW 16
+"];
+17[label="Node Type: END_IF 17
+"];
+17->18;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+msg.sender.transfer(claimed_bounty)
+
+IRs:
+Transfer dest:msg.sender value:claimed_bounty"];
+}
+// Function: 38389.sol-DistrictBuyer-default_helper()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.value <= 1000000000000000
+
+IRs:
+TMP_30(bool) = msg.value <= 1000000000000000
+CONDITION TMP_30"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+withdraw(msg.sender,false)
+
+IRs:
+INTERNAL_CALL, DistrictBuyer.withdraw(address,bool)(msg.sender,False)"];
+2->10;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+kill_switch
+
+IRs:
+CONDITION kill_switch"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: THROW 4
+"];
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+bought_tokens
+
+IRs:
+CONDITION bought_tokens"];
+6->7[label="True"];
+6->8[label="False"];
+7[label="Node Type: THROW 7
+"];
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+balances[msg.sender] += msg.value
+
+IRs:
+REF_14(uint256) -> balances[msg.sender]
+REF_14(-> balances) = REF_14 + msg.value"];
+9->10;
+10[label="Node Type: END_IF 10
+"];
+}
+// Function: 38389.sol-DistrictBuyer-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender == address(sale)
+
+IRs:
+TMP_32 = CONVERT sale to address
+TMP_33(bool) = msg.sender == TMP_32
+CONDITION TMP_33"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+default_helper()
+
+IRs:
+INTERNAL_CALL, DistrictBuyer.default_helper()()"];
+}
+// Function: 38389.sol-DistrictBuyer-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+password_hash = 0x1b266c9bad3a46ed40bf43471d89b83712ed06c2250887c457f5f21f17b2eb97
+
+IRs:
+password_hash(bytes32) := 12280336685849958129507483730474531371837204598870480974335290981002981338007(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+earliest_buy_time = 1500390000
+
+IRs:
+earliest_buy_time(uint256) := 1500390000(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+developer = 0x000Fb8369677b3065dE5821a86Bc9551d5e5EAb9
+
+IRs:
+developer(address) := 350558413842930712833660074828852490534251193(address)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+sale = 0xF8094e15c897518B5Ac5287d7070cA5850eFc6ff
+
+IRs:
+sale(address) := 1416037220041962650155646091853087406734214940415(address)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+token = ERC20(0x0AbdAce70D3790235af448C88547603b945604ea)
+
+IRs:
+TMP_35 = CONVERT 61319810486736168255830877082116988995882058986 to ERC20
+token(ERC20) := TMP_35(ERC20)"];
+}
+// Function: 38389.sol-DistrictBuyer-withdraw(address,bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! bought_tokens
+
+IRs:
+TMP_5 = UnaryType.BANG bought_tokens 
+CONDITION TMP_5"];
+1->2[label="True"];
+1->5[label="False"];
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+eth_to_withdraw = balances[user]
+
+IRs:
+REF_1(uint256) -> balances[user]
+eth_to_withdraw(uint256) := REF_1(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balances[user] = 0
+
+IRs:
+REF_2(uint256) -> balances[user]
+REF_2(uint256) (->balances) := 0(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+user.transfer(eth_to_withdraw)
+
+IRs:
+Transfer dest:user value:eth_to_withdraw"];
+4->22;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+contract_token_balance = token.balanceOf(address(this))
+
+IRs:
+TMP_7 = CONVERT this to address
+TMP_8(uint256) = HIGH_LEVEL_CALL, dest:token(ERC20), function:balanceOf, arguments:['TMP_7']  
+contract_token_balance(uint256) := TMP_8(uint256)"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+contract_token_balance == 0
+
+IRs:
+TMP_9(bool) = contract_token_balance == 0
+CONDITION TMP_9"];
+6->7[label="True"];
+6->8[label="False"];
+7[label="Node Type: THROW 7
+"];
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+tokens_to_withdraw = (balances[user] * contract_token_balance) / contract_eth_value
+
+IRs:
+REF_5(uint256) -> balances[user]
+TMP_10(uint256) = REF_5 * contract_token_balance
+TMP_11(uint256) = TMP_10 / contract_eth_value
+tokens_to_withdraw(uint256) := TMP_11(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+contract_eth_value -= balances[user]
+
+IRs:
+REF_6(uint256) -> balances[user]
+contract_eth_value(uint256) = contract_eth_value - REF_6"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+balances[user] = 0
+
+IRs:
+REF_7(uint256) -> balances[user]
+REF_7(uint256) (->balances) := 0(uint256)"];
+11->12;
+12[label="Node Type: NEW VARIABLE 12
+
+EXPRESSION:
+fee = 0
+
+IRs:
+fee(uint256) := 0(uint256)"];
+12->13;
+13[label="Node Type: IF 13
+
+EXPRESSION:
+has_fee
+
+IRs:
+CONDITION has_fee"];
+13->14[label="True"];
+13->18[label="False"];
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+fee = tokens_to_withdraw / 100
+
+IRs:
+TMP_12(uint256) = tokens_to_withdraw / 100
+fee(uint256) := TMP_12(uint256)"];
+14->15;
+15[label="Node Type: IF 15
+
+EXPRESSION:
+! token.transfer(developer,fee)
+
+IRs:
+TMP_13(bool) = HIGH_LEVEL_CALL, dest:token(ERC20), function:transfer, arguments:['developer', 'fee']  
+TMP_14 = UnaryType.BANG TMP_13 
+CONDITION TMP_14"];
+15->16[label="True"];
+15->17[label="False"];
+16[label="Node Type: THROW 16
+"];
+17[label="Node Type: END_IF 17
+"];
+17->18;
+18[label="Node Type: END_IF 18
+"];
+18->19;
+19[label="Node Type: IF 19
+
+EXPRESSION:
+! token.transfer(user,tokens_to_withdraw - fee)
+
+IRs:
+TMP_15(uint256) = tokens_to_withdraw - fee
+TMP_16(bool) = HIGH_LEVEL_CALL, dest:token(ERC20), function:transfer, arguments:['user', 'TMP_15']  
+TMP_17 = UnaryType.BANG TMP_16 
+CONDITION TMP_17"];
+19->20[label="True"];
+19->21[label="False"];
+20[label="Node Type: THROW 20
+"];
+21[label="Node Type: END_IF 21
+"];
+21->22;
+22[label="Node Type: END_IF 22
+"];
+}
+// Function: 38389.sol-ERC20-balanceOf(address)
+digraph{
+}
+// Function: 38389.sol-ERC20-transfer(address,uint256)
+digraph{
+}
+}

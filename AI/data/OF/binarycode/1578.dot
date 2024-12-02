@@ -1,0 +1,309 @@
+digraph G {
+// Function: 1578.sol-LhsToken-LhsToken(uint256,string,uint8,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+totalSupply = _initialAmount * 10 ** uint256(_decimalUnits)
+
+IRs:
+TMP_0 = CONVERT _decimalUnits to uint256
+TMP_1(uint256) = 10 ** TMP_0
+TMP_2(uint256) = _initialAmount * TMP_1
+totalSupply(uint256) := TMP_2(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balances[msg.sender] = totalSupply
+
+IRs:
+REF_0(uint256) -> balances[msg.sender]
+REF_0(uint256) (->balances) := totalSupply(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+name = _tokenName
+
+IRs:
+name(string) := _tokenName(string)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+decimals = _decimalUnits
+
+IRs:
+decimals(uint8) := _decimalUnits(uint8)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+symbol = _tokenSymbol
+
+IRs:
+symbol(string) := _tokenSymbol(string)"];
+}
+// Function: 1578.sol-LhsToken-_transferFunc(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_to != 0x0)
+
+IRs:
+TMP_3(bool) = _to != 0
+TMP_4(None) = SOLIDITY_CALL require(bool)(TMP_3)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(balances[_from] >= _value)
+
+IRs:
+REF_1(uint256) -> balances[_from]
+TMP_5(bool) = REF_1 >= _value
+TMP_6(None) = SOLIDITY_CALL require(bool)(TMP_5)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(balances[_to] + _value > balances[_to])
+
+IRs:
+REF_2(uint256) -> balances[_to]
+TMP_7(uint256) = REF_2 + _value
+REF_3(uint256) -> balances[_to]
+TMP_8(bool) = TMP_7 > REF_3
+TMP_9(None) = SOLIDITY_CALL require(bool)(TMP_8)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+previousBalances = balances[_from] + balances[_to]
+
+IRs:
+REF_4(uint256) -> balances[_from]
+REF_5(uint256) -> balances[_to]
+TMP_10(uint256) = REF_4 + REF_5
+previousBalances(uint256) := TMP_10(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balances[_from] -= _value
+
+IRs:
+REF_6(uint256) -> balances[_from]
+REF_6(-> balances) = REF_6 - _value"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+balances[_to] += _value
+
+IRs:
+REF_7(uint256) -> balances[_to]
+REF_7(-> balances) = REF_7 + _value"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+Transfer(_from,_to,_value)
+
+IRs:
+Emit Transfer(_from,_to,_value)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+assert(bool)(balances[_from] + balances[_to] == previousBalances)
+
+IRs:
+REF_8(uint256) -> balances[_from]
+REF_9(uint256) -> balances[_to]
+TMP_12(uint256) = REF_8 + REF_9
+TMP_13(bool) = TMP_12 == previousBalances
+TMP_14(None) = SOLIDITY_CALL assert(bool)(TMP_13)"];
+}
+// Function: 1578.sol-LhsToken-allowance(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+allowed[_owner][_spender]
+
+IRs:
+REF_17(mapping(address => uint256)) -> allowed[_owner]
+REF_18(uint256) -> REF_17[_spender]
+RETURN REF_18"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+remaining
+
+IRs:
+RETURN remaining"];
+}
+// Function: 1578.sol-LhsToken-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowed[msg.sender][_spender] = _value
+
+IRs:
+REF_15(mapping(address => uint256)) -> allowed[msg.sender]
+REF_16(uint256) -> REF_15[_spender]
+REF_16(uint256) (->allowed) := _value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,_value)
+
+IRs:
+Emit Approval(msg.sender,_spender,_value)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 1578.sol-LhsToken-balanceOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+balances[_owner]
+
+IRs:
+REF_14(uint256) -> balances[_owner]
+RETURN REF_14"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+balance
+
+IRs:
+RETURN balance"];
+}
+// Function: 1578.sol-LhsToken-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transferFunc(msg.sender,_to,_value)
+
+IRs:
+INTERNAL_CALL, LhsToken._transferFunc(address,address,uint256)(msg.sender,_to,_value)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 1578.sol-LhsToken-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_value <= allowed[_from][msg.sender])
+
+IRs:
+REF_10(mapping(address => uint256)) -> allowed[_from]
+REF_11(uint256) -> REF_10[msg.sender]
+TMP_16(bool) = _value <= REF_11
+TMP_17(None) = SOLIDITY_CALL require(bool)(TMP_16)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+allowed[_from][msg.sender] -= _value
+
+IRs:
+REF_12(mapping(address => uint256)) -> allowed[_from]
+REF_13(uint256) -> REF_12[msg.sender]
+REF_13(-> allowed) = REF_13 - _value"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_transferFunc(_from,_to,_value)
+
+IRs:
+INTERNAL_CALL, LhsToken._transferFunc(address,address,uint256)(_from,_to,_value)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 1578.sol-Token-allowance(address,address)
+digraph{
+}
+// Function: 1578.sol-Token-approve(address,uint256)
+digraph{
+}
+// Function: 1578.sol-Token-balanceOf(address)
+digraph{
+}
+// Function: 1578.sol-Token-transfer(address,uint256)
+digraph{
+}
+// Function: 1578.sol-Token-transferFrom(address,address,uint256)
+digraph{
+}
+}

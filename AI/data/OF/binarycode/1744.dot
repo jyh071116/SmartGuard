@@ -1,0 +1,966 @@
+digraph G {
+// Function: 1744.sol-KYRIOSToken-KYRIOSToken()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+balanceOf[msg.sender] = totalSupply - totalAirDrop
+
+IRs:
+REF_0(uint256) -> balanceOf[msg.sender]
+TMP_12(uint256) = totalSupply - totalAirDrop
+REF_0(uint256) (->balanceOf) := TMP_12(uint256)"];
+}
+// Function: 1744.sol-KYRIOSToken-_transfer(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_to != 0x0)
+
+IRs:
+TMP_45(bool) = _to != 0
+TMP_46(None) = SOLIDITY_CALL require(bool)(TMP_45)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(balanceOf[_from] >= _value)
+
+IRs:
+REF_14(uint256) -> balanceOf[_from]
+TMP_47(bool) = REF_14 >= _value
+TMP_48(None) = SOLIDITY_CALL require(bool)(TMP_47)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(balanceOf[_to] + _value > balanceOf[_to])
+
+IRs:
+REF_15(uint256) -> balanceOf[_to]
+TMP_49(uint256) = REF_15 + _value
+REF_16(uint256) -> balanceOf[_to]
+TMP_50(bool) = TMP_49 > REF_16
+TMP_51(None) = SOLIDITY_CALL require(bool)(TMP_50)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+previousBalances = balanceOf[_from] + balanceOf[_to]
+
+IRs:
+REF_17(uint256) -> balanceOf[_from]
+REF_18(uint256) -> balanceOf[_to]
+TMP_52(uint256) = REF_17 + REF_18
+previousBalances(uint256) := TMP_52(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balanceOf[_from] -= _value
+
+IRs:
+REF_19(uint256) -> balanceOf[_from]
+REF_19(-> balanceOf) = REF_19 - _value"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+balanceOf[_to] += _value
+
+IRs:
+REF_20(uint256) -> balanceOf[_to]
+REF_20(-> balanceOf) = REF_20 + _value"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+Transfer(_from,_to,_value)
+
+IRs:
+Emit Transfer(_from,_to,_value)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+assert(bool)(balanceOf[_from] + balanceOf[_to] == previousBalances)
+
+IRs:
+REF_21(uint256) -> balanceOf[_from]
+REF_22(uint256) -> balanceOf[_to]
+TMP_54(uint256) = REF_21 + REF_22
+TMP_55(bool) = TMP_54 == previousBalances
+TMP_56(None) = SOLIDITY_CALL assert(bool)(TMP_55)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+getInspireTokens(_from,_to,_value)
+
+IRs:
+INTERNAL_CALL, KYRIOSToken.getInspireTokens(address,address,uint256)(_from,_to,_value)"];
+}
+// Function: 1744.sol-KYRIOSToken-airDrop(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->8;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+totalAirDrop = totalAirDrop.sub(_amount)
+
+IRs:
+TMP_13(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['totalAirDrop', '_amount'] 
+totalAirDrop(uint256) := TMP_13(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balanceOf[_to] = balanceOf[_to].add(_amount)
+
+IRs:
+REF_2(uint256) -> balanceOf[_to]
+REF_3(uint256) -> balanceOf[_to]
+TMP_14(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_3', '_amount'] 
+REF_2(uint256) (->balanceOf) := TMP_14(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+Transfer(address(0),_to,_amount)
+
+IRs:
+TMP_15 = CONVERT 0 to address
+Emit Transfer(TMP_15,_to,_amount)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: IF 5
+
+EXPRESSION:
+totalAirDrop <= _amount
+
+IRs:
+TMP_17(bool) = totalAirDrop <= _amount
+CONDITION TMP_17"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+airdropFinished = true
+
+IRs:
+airdropFinished(bool) := True(bool)"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+canAirDrop()
+
+IRs:
+MODIFIER_CALL, KYRIOSToken.canAirDrop()()"];
+8->1;
+}
+// Function: 1744.sol-KYRIOSToken-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowance[msg.sender][_spender] = _value
+
+IRs:
+REF_27(mapping(address => uint256)) -> allowance[msg.sender]
+REF_28(uint256) -> REF_27[_spender]
+REF_28(uint256) (->allowance) := _value(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 1744.sol-KYRIOSToken-approveAndCall(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+spender = tokenRecipient(_spender)
+
+IRs:
+TMP_62 = CONVERT _spender to tokenRecipient
+spender(tokenRecipient) := TMP_62(tokenRecipient)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+approve(_spender,_value)
+
+IRs:
+TMP_63(bool) = INTERNAL_CALL, KYRIOSToken.approve(address,uint256)(_spender,_value)
+CONDITION TMP_63"];
+2->3[label="True"];
+2->5[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+spender.receiveApproval(msg.sender,_value,this,_extraData)
+
+IRs:
+HIGH_LEVEL_CALL, dest:spender(tokenRecipient), function:receiveApproval, arguments:['msg.sender', '_value', 'this', '_extraData']  "];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 1744.sol-KYRIOSToken-burn(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(balanceOf[msg.sender] >= _value)
+
+IRs:
+REF_30(uint256) -> balanceOf[msg.sender]
+TMP_65(bool) = REF_30 >= _value
+TMP_66(None) = SOLIDITY_CALL require(bool)(TMP_65)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balanceOf[msg.sender] -= _value
+
+IRs:
+REF_31(uint256) -> balanceOf[msg.sender]
+REF_31(-> balanceOf) = REF_31 - _value"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+totalSupply -= _value
+
+IRs:
+totalSupply(uint256) = totalSupply - _value"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Burn(msg.sender,_value)
+
+IRs:
+Emit Burn(msg.sender,_value)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 1744.sol-KYRIOSToken-burnFrom(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(balanceOf[_from] >= _value)
+
+IRs:
+REF_32(uint256) -> balanceOf[_from]
+TMP_68(bool) = REF_32 >= _value
+TMP_69(None) = SOLIDITY_CALL require(bool)(TMP_68)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_value <= allowance[_from][msg.sender])
+
+IRs:
+REF_33(mapping(address => uint256)) -> allowance[_from]
+REF_34(uint256) -> REF_33[msg.sender]
+TMP_70(bool) = _value <= REF_34
+TMP_71(None) = SOLIDITY_CALL require(bool)(TMP_70)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balanceOf[_from] -= _value
+
+IRs:
+REF_35(uint256) -> balanceOf[_from]
+REF_35(-> balanceOf) = REF_35 - _value"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+allowance[_from][msg.sender] -= _value
+
+IRs:
+REF_36(mapping(address => uint256)) -> allowance[_from]
+REF_37(uint256) -> REF_36[msg.sender]
+REF_37(-> allowance) = REF_37 - _value"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+totalSupply -= _value
+
+IRs:
+totalSupply(uint256) = totalSupply - _value"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+Burn(_from,_value)
+
+IRs:
+Emit Burn(_from,_value)"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 1744.sol-KYRIOSToken-canAirDrop()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! airdropFinished)
+
+IRs:
+TMP_75 = UnaryType.BANG airdropFinished 
+TMP_76(None) = SOLIDITY_CALL require(bool)(TMP_75)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1744.sol-KYRIOSToken-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+getAirDropTokens()
+
+IRs:
+INTERNAL_CALL, KYRIOSToken.getAirDropTokens()()"];
+}
+// Function: 1744.sol-KYRIOSToken-getAirDropTokens()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->12;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(eachAirDropAmount <= totalAirDrop)
+
+IRs:
+TMP_25(bool) = eachAirDropAmount <= totalAirDrop
+TMP_26(None) = SOLIDITY_CALL require(bool)(TMP_25)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+investor = msg.sender
+
+IRs:
+investor(address) := msg.sender(address)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+toGive = eachAirDropAmount
+
+IRs:
+toGive(uint256) := eachAirDropAmount(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+airDrop(investor,toGive)
+
+IRs:
+TMP_27(bool) = INTERNAL_CALL, KYRIOSToken.airDrop(address,uint256)(investor,toGive)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+toGive > 0
+
+IRs:
+TMP_28(bool) = toGive > 0
+CONDITION TMP_28"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+airDropBlacklist[investor] = true
+
+IRs:
+REF_9(bool) -> airDropBlacklist[investor]
+REF_9(bool) (->airDropBlacklist) := True(bool)"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: IF 8
+
+EXPRESSION:
+totalAirDrop == 0
+
+IRs:
+TMP_29(bool) = totalAirDrop == 0
+CONDITION TMP_29"];
+8->9[label="True"];
+8->10[label="False"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+airdropFinished = true
+
+IRs:
+airdropFinished(bool) := True(bool)"];
+9->10;
+10[label="Node Type: END_IF 10
+"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+eachAirDropAmount = eachAirDropAmount.sub(10000000000000000)
+
+IRs:
+TMP_30(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['eachAirDropAmount', '10000000000000000'] 
+eachAirDropAmount(uint256) := TMP_30(uint256)"];
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+canAirDrop()
+
+IRs:
+MODIFIER_CALL, KYRIOSToken.canAirDrop()()"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+onlyWhitelist()
+
+IRs:
+MODIFIER_CALL, KYRIOSToken.onlyWhitelist()()"];
+13->1;
+}
+// Function: 1744.sol-KYRIOSToken-getInspireTokens(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+toGive = eachAirDropAmount * 50 / 100
+
+IRs:
+TMP_33(uint256) = eachAirDropAmount * 50
+TMP_34(uint256) = TMP_33 / 100
+toGive(uint256) := TMP_34(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+toGive > totalAirDrop
+
+IRs:
+TMP_35(bool) = toGive > totalAirDrop
+CONDITION TMP_35"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+toGive = totalAirDrop
+
+IRs:
+toGive(uint256) := totalAirDrop(uint256)"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+_amount > 0 && transferBlacklist[_from] == false
+
+IRs:
+TMP_36(bool) = _amount > 0
+REF_11(bool) -> transferBlacklist[_from]
+TMP_37(bool) = REF_11 == False
+TMP_38(bool) = TMP_36 && TMP_37
+CONDITION TMP_38"];
+5->6[label="True"];
+5->8[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+transferBlacklist[_from] = true
+
+IRs:
+REF_12(bool) -> transferBlacklist[_from]
+REF_12(bool) (->transferBlacklist) := True(bool)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+inspire(_from,toGive)
+
+IRs:
+TMP_39(bool) = INTERNAL_CALL, KYRIOSToken.inspire(address,uint256)(_from,toGive)"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: IF 9
+
+EXPRESSION:
+_amount > 0 && transferBlacklist[_to] == false
+
+IRs:
+TMP_40(bool) = _amount > 0
+REF_13(bool) -> transferBlacklist[_to]
+TMP_41(bool) = REF_13 == False
+TMP_42(bool) = TMP_40 && TMP_41
+CONDITION TMP_42"];
+9->10[label="True"];
+9->11[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+inspire(_to,toGive)
+
+IRs:
+TMP_43(bool) = INTERNAL_CALL, KYRIOSToken.inspire(address,uint256)(_to,toGive)"];
+10->11;
+11[label="Node Type: END_IF 11
+"];
+}
+// Function: 1744.sol-KYRIOSToken-inspire(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! airdropFinished
+
+IRs:
+TMP_19 = UnaryType.BANG airdropFinished 
+CONDITION TMP_19"];
+1->2[label="True"];
+1->9[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+totalAirDrop = totalAirDrop.sub(_amount)
+
+IRs:
+TMP_20(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['totalAirDrop', '_amount'] 
+totalAirDrop(uint256) := TMP_20(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balanceOf[_to] = balanceOf[_to].add(_amount)
+
+IRs:
+REF_6(uint256) -> balanceOf[_to]
+REF_7(uint256) -> balanceOf[_to]
+TMP_21(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_7', '_amount'] 
+REF_6(uint256) (->balanceOf) := TMP_21(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Transfer(address(0),_to,_amount)
+
+IRs:
+TMP_22 = CONVERT 0 to address
+Emit Transfer(TMP_22,_to,_amount)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+6[label="Node Type: IF 6
+
+EXPRESSION:
+totalAirDrop <= _amount
+
+IRs:
+TMP_24(bool) = totalAirDrop <= _amount
+CONDITION TMP_24"];
+6->7[label="True"];
+6->8[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+airdropFinished = true
+
+IRs:
+airdropFinished(bool) := True(bool)"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: END_IF 9
+"];
+}
+// Function: 1744.sol-KYRIOSToken-onlyWhitelist()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(airDropBlacklist[msg.sender] == false)
+
+IRs:
+REF_38(bool) -> airDropBlacklist[msg.sender]
+TMP_77(bool) = REF_38 == False
+TMP_78(None) = SOLIDITY_CALL require(bool)(TMP_77)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1744.sol-KYRIOSToken-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+name = KYRIOS Token
+
+IRs:
+name(string) := KYRIOS Token(string)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+symbol = KRS
+
+IRs:
+symbol(string) := KRS(string)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+decimals = 18
+
+IRs:
+decimals(uint8) := 18(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+totalSupply = 2000000000000000000000000000
+
+IRs:
+totalSupply(uint256) := 2000000000000000000000000000(uint256)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+totalAirDrop = totalSupply * 10 / 100
+
+IRs:
+TMP_73(uint256) = totalSupply * 10
+TMP_74(uint256) = TMP_73 / 100
+totalAirDrop(uint256) := TMP_74(uint256)"];
+4->5;
+5[label="Node Type: OTHER_ENTRYPOINT 5
+
+EXPRESSION:
+eachAirDropAmount = 25000000000000000000000
+
+IRs:
+eachAirDropAmount(uint256) := 25000000000000000000000(uint256)"];
+5->6;
+6[label="Node Type: OTHER_ENTRYPOINT 6
+
+EXPRESSION:
+airdropFinished = false
+
+IRs:
+airdropFinished(bool) := False(bool)"];
+}
+// Function: 1744.sol-KYRIOSToken-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transfer(msg.sender,_to,_value)
+
+IRs:
+INTERNAL_CALL, KYRIOSToken._transfer(address,address,uint256)(msg.sender,_to,_value)"];
+}
+// Function: 1744.sol-KYRIOSToken-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_value <= allowance[_from][msg.sender])
+
+IRs:
+REF_23(mapping(address => uint256)) -> allowance[_from]
+REF_24(uint256) -> REF_23[msg.sender]
+TMP_59(bool) = _value <= REF_24
+TMP_60(None) = SOLIDITY_CALL require(bool)(TMP_59)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+allowance[_from][msg.sender] -= _value
+
+IRs:
+REF_25(mapping(address => uint256)) -> allowance[_from]
+REF_26(uint256) -> REF_25[msg.sender]
+REF_26(-> allowance) = REF_26 - _value"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_transfer(_from,_to,_value)
+
+IRs:
+INTERNAL_CALL, KYRIOSToken._transfer(address,address,uint256)(_from,_to,_value)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 1744.sol-SafeMath-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_9(uint256) = a + b
+c(uint256) := TMP_9(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(c >= a)
+
+IRs:
+TMP_10(bool) = c >= a
+TMP_11(None) = SOLIDITY_CALL require(bool)(TMP_10)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 1744.sol-SafeMath-div(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a / b
+
+IRs:
+TMP_5(uint256) = a / b
+c(uint256) := TMP_5(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 1744.sol-SafeMath-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+a == 0
+
+IRs:
+TMP_0(bool) = a == 0
+CONDITION TMP_0"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_1(uint256) = a * b
+c(uint256) := TMP_1(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool)(c / a == b)
+
+IRs:
+TMP_2(uint256) = c / a
+TMP_3(bool) = TMP_2 == b
+TMP_4(None) = SOLIDITY_CALL require(bool)(TMP_3)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 1744.sol-SafeMath-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(b <= a)
+
+IRs:
+TMP_6(bool) = b <= a
+TMP_7(None) = SOLIDITY_CALL require(bool)(TMP_6)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_8(uint256) = a - b
+RETURN TMP_8"];
+}
+// Function: 1744.sol-tokenRecipient-receiveApproval(address,uint256,address,bytes)
+digraph{
+}
+}

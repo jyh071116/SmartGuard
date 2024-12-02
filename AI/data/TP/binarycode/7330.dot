@@ -1,0 +1,736 @@
+digraph G {
+// Function: 7330.sol-ERC20Basic-balanceOf(address)
+digraph{
+}
+// Function: 7330.sol-ERC20Basic-totalSupply()
+digraph{
+}
+// Function: 7330.sol-ERC20Basic-transfer(address,uint256)
+digraph{
+}
+// Function: 7330.sol-KcashVesting-KcashVesting(ERC20Basic,address,address,address,uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_start > 0)
+
+IRs:
+TMP_14(bool) = _start > 0
+TMP_15(None) = SOLIDITY_CALL require(bool)(TMP_14)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_lockTime > 0)
+
+IRs:
+TMP_16(bool) = _lockTime > 0
+TMP_17(None) = SOLIDITY_CALL require(bool)(TMP_16)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(_start.add(_lockTime) > 0)
+
+IRs:
+TMP_18(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['_start', '_lockTime'] 
+TMP_19(bool) = TMP_18 > 0
+TMP_20(None) = SOLIDITY_CALL require(bool)(TMP_19)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool)(_teamWallet != address(0))
+
+IRs:
+TMP_21 = CONVERT 0 to address
+TMP_22(bool) = _teamWallet != TMP_21
+TMP_23(None) = SOLIDITY_CALL require(bool)(TMP_22)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool)(_earlyWallet != address(0))
+
+IRs:
+TMP_24 = CONVERT 0 to address
+TMP_25(bool) = _earlyWallet != TMP_24
+TMP_26(None) = SOLIDITY_CALL require(bool)(TMP_25)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+require(bool)(_institutionWallet != address(0))
+
+IRs:
+TMP_27 = CONVERT 0 to address
+TMP_28(bool) = _institutionWallet != TMP_27
+TMP_29(None) = SOLIDITY_CALL require(bool)(TMP_28)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+token = _token
+
+IRs:
+token(ERC20Basic) := _token(ERC20Basic)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+teamWallet = _teamWallet
+
+IRs:
+teamWallet(address) := _teamWallet(address)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+earlyWallet = _earlyWallet
+
+IRs:
+earlyWallet(address) := _earlyWallet(address)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+institutionWallet = _institutionWallet
+
+IRs:
+institutionWallet(address) := _institutionWallet(address)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+start = _start
+
+IRs:
+start(uint256) := _start(uint256)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+lockStartTime = start.add(_lockTime)
+
+IRs:
+TMP_30(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['start', '_lockTime'] 
+lockStartTime(uint256) := TMP_30(uint256)"];
+}
+// Function: 7330.sol-KcashVesting-Ownable()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 7330.sol-KcashVesting-allocateToken()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->13;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(block.timestamp > lockStartTime)
+
+IRs:
+TMP_31(bool) = block.timestamp > lockStartTime
+TMP_32(None) = SOLIDITY_CALL require(bool)(TMP_31)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(allocations[teamWallet] == 0)
+
+IRs:
+REF_2(uint256) -> allocations[teamWallet]
+TMP_33(bool) = REF_2 == 0
+TMP_34(None) = SOLIDITY_CALL require(bool)(TMP_33)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(token.balanceOf(address(this)) >= totalAllocation)
+
+IRs:
+TMP_35 = CONVERT this to address
+TMP_36(uint256) = HIGH_LEVEL_CALL, dest:token(ERC20Basic), function:balanceOf, arguments:['TMP_35']  
+TMP_37(bool) = TMP_36 >= totalAllocation
+TMP_38(None) = SOLIDITY_CALL require(bool)(TMP_37)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+allocations[teamWallet] = teamAllocation
+
+IRs:
+REF_4(uint256) -> allocations[teamWallet]
+REF_4(uint256) (->allocations) := teamAllocation(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+allocations[earlyWallet] = earlyAllocation
+
+IRs:
+REF_5(uint256) -> allocations[earlyWallet]
+REF_5(uint256) (->allocations) := earlyAllocation(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+allocations[institutionWallet] = institutionAllocation
+
+IRs:
+REF_6(uint256) -> allocations[institutionWallet]
+REF_6(uint256) (->allocations) := institutionAllocation(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+stageSettings[teamWallet] = teamStageSetting
+
+IRs:
+REF_7(uint256) -> stageSettings[teamWallet]
+REF_7(uint256) (->stageSettings) := teamStageSetting(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+stageSettings[earlyWallet] = earlyStageSetting
+
+IRs:
+REF_8(uint256) -> stageSettings[earlyWallet]
+REF_8(uint256) (->stageSettings) := earlyStageSetting(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+stageSettings[institutionWallet] = institutionStageSetting
+
+IRs:
+REF_9(uint256) -> stageSettings[institutionWallet]
+REF_9(uint256) (->stageSettings) := institutionStageSetting(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+timeLockDurations[teamWallet] = teamTimeLock
+
+IRs:
+REF_10(uint256) -> timeLockDurations[teamWallet]
+REF_10(uint256) (->timeLockDurations) := teamTimeLock(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+timeLockDurations[earlyWallet] = earlyTimeLock
+
+IRs:
+REF_11(uint256) -> timeLockDurations[earlyWallet]
+REF_11(uint256) (->timeLockDurations) := earlyTimeLock(uint256)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+timeLockDurations[institutionWallet] = institutionTimeLock
+
+IRs:
+REF_12(uint256) -> timeLockDurations[institutionWallet]
+REF_12(uint256) (->timeLockDurations) := institutionTimeLock(uint256)"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+13->1;
+}
+// Function: 7330.sol-KcashVesting-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_76(bool) = msg.sender == owner
+TMP_77(None) = SOLIDITY_CALL require(bool)(TMP_76)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 7330.sol-KcashVesting-onlyReserveWallets()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(allocations[msg.sender] > 0)
+
+IRs:
+REF_30(uint256) -> allocations[msg.sender]
+TMP_78(bool) = REF_30 > 0
+TMP_79(None) = SOLIDITY_CALL require(bool)(TMP_78)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 7330.sol-KcashVesting-releaseToken()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->7;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+totalUnlocked = unlockAmount()
+
+IRs:
+TMP_40(uint256) = INTERNAL_CALL, KcashVesting.unlockAmount()()
+totalUnlocked(uint256) := TMP_40(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(totalUnlocked <= allocations[msg.sender])
+
+IRs:
+REF_13(uint256) -> allocations[msg.sender]
+TMP_41(bool) = totalUnlocked <= REF_13
+TMP_42(None) = SOLIDITY_CALL require(bool)(TMP_41)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(releasedAmounts[msg.sender] < totalUnlocked)
+
+IRs:
+REF_14(uint256) -> releasedAmounts[msg.sender]
+TMP_43(bool) = REF_14 < totalUnlocked
+TMP_44(None) = SOLIDITY_CALL require(bool)(TMP_43)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+payment = totalUnlocked.sub(releasedAmounts[msg.sender])
+
+IRs:
+REF_16(uint256) -> releasedAmounts[msg.sender]
+TMP_45(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['totalUnlocked', 'REF_16'] 
+payment(uint256) := TMP_45(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+releasedAmounts[msg.sender] = totalUnlocked
+
+IRs:
+REF_17(uint256) -> releasedAmounts[msg.sender]
+REF_17(uint256) (->releasedAmounts) := totalUnlocked(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+require(bool)(token.transfer(msg.sender,payment))
+
+IRs:
+TMP_46(bool) = HIGH_LEVEL_CALL, dest:token(ERC20Basic), function:transfer, arguments:['msg.sender', 'payment']  
+TMP_47(None) = SOLIDITY_CALL require(bool)(TMP_46)"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+onlyReserveWallets()
+
+IRs:
+MODIFIER_CALL, KcashVesting.onlyReserveWallets()()"];
+7->1;
+}
+// Function: 7330.sol-KcashVesting-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+teamTimeLock = 86400000
+
+IRs:
+teamTimeLock(uint256) := 86400000(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+earlyTimeLock = 5 * 2592000
+
+IRs:
+TMP_58(uint256) = 5 * 2592000
+earlyTimeLock(uint256) := TMP_58(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+institutionTimeLock = 50 * 2592000
+
+IRs:
+TMP_59(uint256) = 50 * 2592000
+institutionTimeLock(uint256) := TMP_59(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+teamAllocation = 15 * (10 ** 7) * (10 ** 18)
+
+IRs:
+TMP_60(uint256) = 10 ** 7
+TMP_61(uint256) = 15 * TMP_60
+TMP_62(uint256) = 10 ** 18
+TMP_63(uint256) = TMP_61 * TMP_62
+teamAllocation(uint256) := TMP_63(uint256)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+earlyAllocation = 5 * (10 ** 7) * (10 ** 18)
+
+IRs:
+TMP_64(uint256) = 10 ** 7
+TMP_65(uint256) = 5 * TMP_64
+TMP_66(uint256) = 10 ** 18
+TMP_67(uint256) = TMP_65 * TMP_66
+earlyAllocation(uint256) := TMP_67(uint256)"];
+4->5;
+5[label="Node Type: OTHER_ENTRYPOINT 5
+
+EXPRESSION:
+institutionAllocation = 15 * (10 ** 7) * (10 ** 18)
+
+IRs:
+TMP_68(uint256) = 10 ** 7
+TMP_69(uint256) = 15 * TMP_68
+TMP_70(uint256) = 10 ** 18
+TMP_71(uint256) = TMP_69 * TMP_70
+institutionAllocation(uint256) := TMP_71(uint256)"];
+5->6;
+6[label="Node Type: OTHER_ENTRYPOINT 6
+
+EXPRESSION:
+totalAllocation = 35 * (10 ** 7) * (10 ** 18)
+
+IRs:
+TMP_72(uint256) = 10 ** 7
+TMP_73(uint256) = 35 * TMP_72
+TMP_74(uint256) = 10 ** 18
+TMP_75(uint256) = TMP_73 * TMP_74
+totalAllocation(uint256) := TMP_75(uint256)"];
+6->7;
+7[label="Node Type: OTHER_ENTRYPOINT 7
+
+EXPRESSION:
+teamStageSetting = 34
+
+IRs:
+teamStageSetting(uint256) := 34(uint256)"];
+7->8;
+8[label="Node Type: OTHER_ENTRYPOINT 8
+
+EXPRESSION:
+earlyStageSetting = 5
+
+IRs:
+earlyStageSetting(uint256) := 5(uint256)"];
+8->9;
+9[label="Node Type: OTHER_ENTRYPOINT 9
+
+EXPRESSION:
+institutionStageSetting = 50
+
+IRs:
+institutionStageSetting(uint256) := 50(uint256)"];
+}
+// Function: 7330.sol-KcashVesting-unlockAmount()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+stage = vestStage()
+
+IRs:
+TMP_49(uint256) = INTERNAL_CALL, KcashVesting.vestStage()()
+stage(uint256) := TMP_49(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+totalUnlocked = stage.mul(allocations[msg.sender]).div(stageSettings[msg.sender])
+
+IRs:
+REF_20(uint256) -> allocations[msg.sender]
+TMP_50(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['stage', 'REF_20'] 
+REF_22(uint256) -> stageSettings[msg.sender]
+TMP_51(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['TMP_50', 'REF_22'] 
+totalUnlocked(uint256) := TMP_51(uint256)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+totalUnlocked
+
+IRs:
+RETURN totalUnlocked"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyReserveWallets()
+
+IRs:
+MODIFIER_CALL, KcashVesting.onlyReserveWallets()()"];
+4->1;
+}
+// Function: 7330.sol-KcashVesting-vestStage()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->7;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+vestingMonths = timeLockDurations[msg.sender].div(stageSettings[msg.sender])
+
+IRs:
+REF_23(uint256) -> timeLockDurations[msg.sender]
+REF_25(uint256) -> stageSettings[msg.sender]
+TMP_53(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['REF_23', 'REF_25'] 
+vestingMonths(uint256) := TMP_53(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+stage = (block.timestamp.sub(lockStartTime)).div(vestingMonths)
+
+IRs:
+TMP_54(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['block.timestamp', 'lockStartTime'] 
+TMP_55(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['TMP_54', 'vestingMonths'] 
+stage(uint256) := TMP_55(uint256)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+stage > stageSettings[msg.sender]
+
+IRs:
+REF_28(uint256) -> stageSettings[msg.sender]
+TMP_56(bool) = stage > REF_28
+CONDITION TMP_56"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+stage = stageSettings[msg.sender]
+
+IRs:
+REF_29(uint256) -> stageSettings[msg.sender]
+stage(uint256) := REF_29(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+stage
+
+IRs:
+RETURN stage"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+onlyReserveWallets()
+
+IRs:
+MODIFIER_CALL, KcashVesting.onlyReserveWallets()()"];
+7->1;
+}
+// Function: 7330.sol-Ownable-Ownable()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 7330.sol-Ownable-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_0(bool) = msg.sender == owner
+TMP_1(None) = SOLIDITY_CALL require(bool)(TMP_0)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 7330.sol-SafeMath-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_11(uint256) = a + b
+c(uint256) := TMP_11(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(c >= a)
+
+IRs:
+TMP_12(bool) = c >= a
+TMP_13(None) = SOLIDITY_CALL assert(bool)(TMP_12)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 7330.sol-SafeMath-div(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+a / b
+
+IRs:
+TMP_7(uint256) = a / b
+RETURN TMP_7"];
+}
+// Function: 7330.sol-SafeMath-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+a == 0
+
+IRs:
+TMP_2(bool) = a == 0
+CONDITION TMP_2"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_3(uint256) = a * b
+c(uint256) := TMP_3(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+assert(bool)(c / a == b)
+
+IRs:
+TMP_4(uint256) = c / a
+TMP_5(bool) = TMP_4 == b
+TMP_6(None) = SOLIDITY_CALL assert(bool)(TMP_5)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 7330.sol-SafeMath-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(b <= a)
+
+IRs:
+TMP_8(bool) = b <= a
+TMP_9(None) = SOLIDITY_CALL assert(bool)(TMP_8)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_10(uint256) = a - b
+RETURN TMP_10"];
+}
+}

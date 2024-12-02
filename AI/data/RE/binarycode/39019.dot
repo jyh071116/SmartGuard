@@ -1,0 +1,509 @@
+digraph G {
+// Function: 39019.sol-ERC20-balanceOf(address)
+digraph{
+}
+// Function: 39019.sol-ERC20-transfer(address,uint256)
+digraph{
+}
+// Function: 39019.sol-TokenPool-ClaimReward()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != tokenCreator
+
+IRs:
+TMP_24(bool) = msg.sender != tokenCreator
+CONDITION TMP_24"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+amount = amountRaised * (100 - rewardPercentage) / 100
+
+IRs:
+TMP_25(uint256) = 100 - rewardPercentage
+TMP_26(uint256) = amountRaised * TMP_25
+TMP_27(uint256) = TMP_26 / 100
+amount(uint256) := TMP_27(uint256)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+reward = amountRaised - amount
+
+IRs:
+TMP_28(uint256) = amountRaised - amount
+reward(uint256) := TMP_28(uint256)"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+msg.sender.send(reward)
+
+IRs:
+TMP_29 = SEND dest:msg.sender value:reward
+CONDITION TMP_29"];
+6->7[label="True"];
+6->8[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+tokenCreator = 0
+
+IRs:
+tokenCreator(address) := 0(uint256)"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+}
+// Function: 39019.sol-TokenPool-ClaimTokens()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+tokensCreated == 0
+
+IRs:
+TMP_18(bool) = tokensCreated == 0
+CONDITION TMP_18"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+amount = funders[msg.sender]
+
+IRs:
+REF_9(uint256) -> funders[msg.sender]
+amount(uint256) := REF_9(uint256)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+amount == 0
+
+IRs:
+TMP_19(bool) = amount == 0
+CONDITION TMP_19"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: RETURN 6
+"];
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+tokens = tokensCreated * amount / amountRaised
+
+IRs:
+TMP_20(uint256) = tokensCreated * amount
+TMP_21(uint256) = TMP_20 / amountRaised
+tokens(uint256) := TMP_21(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+funders[msg.sender] = 0
+
+IRs:
+REF_10(uint256) -> funders[msg.sender]
+REF_10(uint256) (->funders) := 0(uint256)"];
+9->10;
+10[label="Node Type: IF 10
+
+EXPRESSION:
+! tokenContract.transfer(msg.sender,tokens)
+
+IRs:
+TMP_22(bool) = HIGH_LEVEL_CALL, dest:tokenContract(ERC20), function:transfer, arguments:['msg.sender', 'tokens']  
+TMP_23 = UnaryType.BANG TMP_22 
+CONDITION TMP_23"];
+10->11[label="True"];
+10->12[label="False"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+funders[msg.sender] = amount
+
+IRs:
+REF_12(uint256) -> funders[msg.sender]
+REF_12(uint256) (->funders) := amount(uint256)"];
+11->12;
+12[label="Node Type: END_IF 12
+"];
+}
+// Function: 39019.sol-TokenPool-CreateTokens()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+tokensCreated > 0
+
+IRs:
+TMP_10(bool) = tokensCreated > 0
+CONDITION TMP_10"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+amount = amountRaised * (100 - rewardPercentage) / 100
+
+IRs:
+TMP_11(uint256) = 100 - rewardPercentage
+TMP_12(uint256) = amountRaised * TMP_11
+TMP_13(uint256) = TMP_12 / 100
+amount(uint256) := TMP_13(uint256)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+! tokenCreateContract.call.value(amount)(tokenCreateFunctionHash)
+
+IRs:
+TMP_15(bool) = LOW_LEVEL_CALL, dest:tokenCreateContract, function:call, arguments:['tokenCreateFunctionHash'] value:amount 
+TMP_16 = UnaryType.BANG TMP_15 
+CONDITION TMP_16"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: THROW 6
+"];
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+tokensCreated = tokenContract.balanceOf(this)
+
+IRs:
+TMP_17(uint256) = HIGH_LEVEL_CALL, dest:tokenContract(ERC20), function:balanceOf, arguments:['this']  
+tokensCreated(uint256) := TMP_17(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+tokenCreator = msg.sender
+
+IRs:
+tokenCreator(address) := msg.sender(address)"];
+}
+// Function: 39019.sol-TokenPool-Fund()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+tokensCreated > 0
+
+IRs:
+TMP_3(bool) = tokensCreated > 0
+CONDITION TMP_3"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+amount = msg.value
+
+IRs:
+amount(uint256) := msg.value(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+amountRaised += amount
+
+IRs:
+amountRaised(uint256) = amountRaised + amount"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+amountRaised > fundingLimit
+
+IRs:
+TMP_4(bool) = amountRaised > fundingLimit
+CONDITION TMP_4"];
+6->7[label="True"];
+6->8[label="False"];
+7[label="Node Type: THROW 7
+"];
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+funders[msg.sender] += amount
+
+IRs:
+REF_1(uint256) -> funders[msg.sender]
+REF_1(-> funders) = REF_1 + amount"];
+}
+// Function: 39019.sol-TokenPool-TokenPool(TokenPoolList,string,uint256,uint256,ERC20,address,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+list.add(this)
+
+IRs:
+HIGH_LEVEL_CALL, dest:list(TokenPoolList), function:add, arguments:['this']  "];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+name = _name
+
+IRs:
+name(string) := _name(string)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+fundingLimit = _fundingLimit
+
+IRs:
+fundingLimit(uint256) := _fundingLimit(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+rewardPercentage = _rewardPercentage
+
+IRs:
+rewardPercentage(uint256) := _rewardPercentage(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+tokenContract = _tokenContract
+
+IRs:
+tokenContract(ERC20) := _tokenContract(ERC20)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+tokenCreateContract = _tokenCreateContract
+
+IRs:
+tokenCreateContract(address) := _tokenCreateContract(address)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+tokenCreateFunction = _tokenCreateFunction
+
+IRs:
+tokenCreateFunction(string) := _tokenCreateFunction(string)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+tokenCreateFunctionHash = bytes4(sha3()(tokenCreateFunction))
+
+IRs:
+TMP_1(bytes32) = SOLIDITY_CALL sha3()(tokenCreateFunction)
+TMP_2 = CONVERT TMP_1 to bytes4
+tokenCreateFunctionHash(bytes4) := TMP_2(bytes4)"];
+}
+// Function: 39019.sol-TokenPool-Withdraw()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+tokensCreated > 0
+
+IRs:
+TMP_6(bool) = tokensCreated > 0
+CONDITION TMP_6"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+amount = funders[msg.sender]
+
+IRs:
+REF_2(uint256) -> funders[msg.sender]
+amount(uint256) := REF_2(uint256)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+amount == 0
+
+IRs:
+TMP_7(bool) = amount == 0
+CONDITION TMP_7"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: RETURN 6
+"];
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+funders[msg.sender] -= amount
+
+IRs:
+REF_3(uint256) -> funders[msg.sender]
+REF_3(-> funders) = REF_3 - amount"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+amountRaised -= amount
+
+IRs:
+amountRaised(uint256) = amountRaised - amount"];
+9->10;
+10[label="Node Type: IF 10
+
+EXPRESSION:
+! msg.sender.send(amount)
+
+IRs:
+TMP_8 = SEND dest:msg.sender value:amount
+TMP_9 = UnaryType.BANG TMP_8 
+CONDITION TMP_9"];
+10->11[label="True"];
+10->13[label="False"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+funders[msg.sender] += amount
+
+IRs:
+REF_5(uint256) -> funders[msg.sender]
+REF_5(-> funders) = REF_5 + amount"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+amountRaised += amount
+
+IRs:
+amountRaised(uint256) = amountRaised + amount"];
+12->13;
+13[label="Node Type: END_IF 13
+"];
+}
+// Function: 39019.sol-TokenPool-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+Fund()
+
+IRs:
+INTERNAL_CALL, TokenPool.Fund()()"];
+}
+// Function: 39019.sol-TokenPoolList-add(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+list.push(x)
+
+IRs:
+REF_15 -> LENGTH list
+TMP_31(uint256) := REF_15(uint256)
+TMP_32(uint256) = TMP_31 + 1
+REF_15(uint256) (->list) := TMP_32(uint256)
+REF_16(address) -> list[TMP_31]
+REF_16(address) (->list) := x(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Added(x)
+
+IRs:
+Emit Added(x)"];
+}
+// Function: 39019.sol-TokenPoolList-getAddress(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+list[index]
+
+IRs:
+REF_18(address) -> list[index]
+RETURN REF_18"];
+}
+// Function: 39019.sol-TokenPoolList-getCount()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+list.length
+
+IRs:
+REF_17 -> LENGTH list
+RETURN REF_17"];
+}
+}

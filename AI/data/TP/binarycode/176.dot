@@ -1,0 +1,1381 @@
+digraph G {
+// Function: 176.sol-ERC20-allowance(address,address)
+digraph{
+}
+// Function: 176.sol-ERC20-approve(address,uint256)
+digraph{
+}
+// Function: 176.sol-ERC20-balanceOf(address)
+digraph{
+}
+// Function: 176.sol-ERC20-totalSupply()
+digraph{
+}
+// Function: 176.sol-ERC20-transfer(address,uint256)
+digraph{
+}
+// Function: 176.sol-ERC20-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 176.sol-IcoRocketFuel-_enableRefunds(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+crowdsales[_token].state = States.Refunding
+
+IRs:
+REF_63(IcoRocketFuel.Crowdsale) -> crowdsales[_token]
+REF_64(IcoRocketFuel.States) -> REF_63.state
+REF_65(IcoRocketFuel.States) -> States.Refunding
+REF_64(IcoRocketFuel.States) (->crowdsales) := REF_65(IcoRocketFuel.States)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+RefundsEnabled(msg.sender,_token)
+
+IRs:
+Emit RefundsEnabled(msg.sender,_token)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+nonZeroAddress(_token)
+
+IRs:
+MODIFIER_CALL, IcoRocketFuel.nonZeroAddress(address)(_token)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+inState(_token,States.Active)
+
+IRs:
+REF_66(IcoRocketFuel.States) -> States.Active
+MODIFIER_CALL, IcoRocketFuel.inState(address,IcoRocketFuel.States)(_token,REF_66)"];
+4->1;
+}
+// Function: 176.sol-IcoRocketFuel-_goalReached(ERC20)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+(crowdsales[_token].raised >= crowdsales[_token].goal) && (_token.balanceOf(address(this)) >= crowdsales[_token].raised.mul(crowdsales[_token].rate))
+
+IRs:
+REF_25(IcoRocketFuel.Crowdsale) -> crowdsales[_token]
+REF_26(uint256) -> REF_25.raised
+REF_27(IcoRocketFuel.Crowdsale) -> crowdsales[_token]
+REF_28(uint256) -> REF_27.goal
+TMP_66(bool) = REF_26 >= REF_28
+TMP_67 = CONVERT this to address
+TMP_68(uint256) = HIGH_LEVEL_CALL, dest:_token(ERC20), function:balanceOf, arguments:['TMP_67']  
+REF_30(IcoRocketFuel.Crowdsale) -> crowdsales[_token]
+REF_31(uint256) -> REF_30.raised
+REF_33(IcoRocketFuel.Crowdsale) -> crowdsales[_token]
+REF_34(uint256) -> REF_33.rate
+TMP_69(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['REF_31', 'REF_34'] 
+TMP_70(bool) = TMP_68 >= TMP_69
+TMP_71(bool) = TMP_66 && TMP_70
+RETURN TMP_71"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+nonZeroAddress(_token)
+
+IRs:
+MODIFIER_CALL, IcoRocketFuel.nonZeroAddress(address)(_token)"];
+2->1;
+}
+// Function: 176.sol-IcoRocketFuel-_payCommission(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+_commission = crowdsales[_token].raised.mul(uint256(crowdsales[_token].commission)).div(100)
+
+IRs:
+REF_44(IcoRocketFuel.Crowdsale) -> crowdsales[_token]
+REF_45(uint256) -> REF_44.raised
+REF_47(IcoRocketFuel.Crowdsale) -> crowdsales[_token]
+REF_48(uint8) -> REF_47.commission
+TMP_82 = CONVERT REF_48 to uint256
+TMP_83(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['REF_45', 'TMP_82'] 
+TMP_84(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['TMP_83', '100'] 
+_commission(uint256) := TMP_84(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+crowdsales[_token].raised = crowdsales[_token].raised.sub(_commission)
+
+IRs:
+REF_50(IcoRocketFuel.Crowdsale) -> crowdsales[_token]
+REF_51(uint256) -> REF_50.raised
+REF_52(IcoRocketFuel.Crowdsale) -> crowdsales[_token]
+REF_53(uint256) -> REF_52.raised
+TMP_85(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_53', '_commission'] 
+REF_51(uint256) (->crowdsales) := TMP_85(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+CommissionPaid(msg.sender,_token,commissionWallet,_commission)
+
+IRs:
+Emit CommissionPaid(msg.sender,_token,commissionWallet,_commission)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+commissionWallet.transfer(_commission)
+
+IRs:
+Transfer dest:commissionWallet value:_commission"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+nonZeroAddress(_token)
+
+IRs:
+MODIFIER_CALL, IcoRocketFuel.nonZeroAddress(address)(_token)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+inState(_token,States.Closed)
+
+IRs:
+REF_56(IcoRocketFuel.States) -> States.Closed
+MODIFIER_CALL, IcoRocketFuel.inState(address,IcoRocketFuel.States)(_token,REF_56)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+onlyCrowdsaleOwner(_token)
+
+IRs:
+MODIFIER_CALL, IcoRocketFuel.onlyCrowdsaleOwner(address)(_token)"];
+7->1;
+}
+// Function: 176.sol-IcoRocketFuel-_refundCrowdsaleTokens(ERC20,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->7;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+crowdsales[_token].raised = 0
+
+IRs:
+REF_57(IcoRocketFuel.Crowdsale) -> crowdsales[_token]
+REF_58(uint256) -> REF_57.raised
+REF_58(uint256) (->crowdsales) := 0(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+_value = _token.balanceOf(address(this))
+
+IRs:
+TMP_91 = CONVERT this to address
+TMP_92(uint256) = HIGH_LEVEL_CALL, dest:_token(ERC20), function:balanceOf, arguments:['TMP_91']  
+_value(uint256) := TMP_92(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+CrowdsaleTokensRefunded(_token,_beneficiary,_value)
+
+IRs:
+Emit CrowdsaleTokensRefunded(_token,_beneficiary,_value)"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+_value > 0
+
+IRs:
+TMP_94(bool) = _value > 0
+CONDITION TMP_94"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+_token.transfer(_beneficiary,_token.balanceOf(address(this)))
+
+IRs:
+TMP_95 = CONVERT this to address
+TMP_96(uint256) = HIGH_LEVEL_CALL, dest:_token(ERC20), function:balanceOf, arguments:['TMP_95']  
+TMP_97(bool) = HIGH_LEVEL_CALL, dest:_token(ERC20), function:transfer, arguments:['_beneficiary', 'TMP_96']  "];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+nonZeroAddress(_token)
+
+IRs:
+MODIFIER_CALL, IcoRocketFuel.nonZeroAddress(address)(_token)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+inState(_token,States.Refunding)
+
+IRs:
+REF_62(IcoRocketFuel.States) -> States.Refunding
+MODIFIER_CALL, IcoRocketFuel.inState(address,IcoRocketFuel.States)(_token,REF_62)"];
+8->1;
+}
+// Function: 176.sol-IcoRocketFuel-_refundSurplusTokens(ERC20,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->7;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+_balance = _token.balanceOf(address(this))
+
+IRs:
+TMP_73 = CONVERT this to address
+TMP_74(uint256) = HIGH_LEVEL_CALL, dest:_token(ERC20), function:balanceOf, arguments:['TMP_73']  
+_balance(uint256) := TMP_74(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+_surplus = _balance.sub(crowdsales[_token].raised.mul(crowdsales[_token].rate))
+
+IRs:
+REF_37(IcoRocketFuel.Crowdsale) -> crowdsales[_token]
+REF_38(uint256) -> REF_37.raised
+REF_40(IcoRocketFuel.Crowdsale) -> crowdsales[_token]
+REF_41(uint256) -> REF_40.rate
+TMP_75(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['REF_38', 'REF_41'] 
+TMP_76(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['_balance', 'TMP_75'] 
+_surplus(uint256) := TMP_76(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+SurplusTokensRefunded(_token,_beneficiary,_surplus)
+
+IRs:
+Emit SurplusTokensRefunded(_token,_beneficiary,_surplus)"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+_surplus > 0
+
+IRs:
+TMP_78(bool) = _surplus > 0
+CONDITION TMP_78"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+_token.transfer(_beneficiary,_surplus)
+
+IRs:
+TMP_79(bool) = HIGH_LEVEL_CALL, dest:_token(ERC20), function:transfer, arguments:['_beneficiary', '_surplus']  "];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+nonZeroAddress(_token)
+
+IRs:
+MODIFIER_CALL, IcoRocketFuel.nonZeroAddress(address)(_token)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+inState(_token,States.Closed)
+
+IRs:
+REF_43(IcoRocketFuel.States) -> States.Closed
+MODIFIER_CALL, IcoRocketFuel.inState(address,IcoRocketFuel.States)(_token,REF_43)"];
+8->1;
+}
+// Function: 176.sol-IcoRocketFuel-_transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_newOwner != address(0))
+
+IRs:
+TMP_33 = CONVERT 0 to address
+TMP_34(bool) = _newOwner != TMP_33
+TMP_35(None) = SOLIDITY_CALL require(bool)(TMP_34)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,_newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,_newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = _newOwner
+
+IRs:
+owner(address) := _newOwner(address)"];
+}
+// Function: 176.sol-IcoRocketFuel-buyToken(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->7;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(msg.value >= crowdsales[_token].minInvest,Failed to buy token due to less than minimum investment.)
+
+IRs:
+REF_5(IcoRocketFuel.Crowdsale) -> crowdsales[_token]
+REF_6(uint256) -> REF_5.minInvest
+TMP_54(bool) = msg.value >= REF_6
+TMP_55(None) = SOLIDITY_CALL require(bool,string)(TMP_54,Failed to buy token due to less than minimum investment.)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(crowdsales[_token].raised.add(msg.value) <= (crowdsales[_token].cap),Failed to buy token due to exceed cap.)
+
+IRs:
+REF_7(IcoRocketFuel.Crowdsale) -> crowdsales[_token]
+REF_8(uint256) -> REF_7.raised
+TMP_56(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_8', 'msg.value'] 
+REF_10(IcoRocketFuel.Crowdsale) -> crowdsales[_token]
+REF_11(uint256) -> REF_10.cap
+TMP_57(bool) = TMP_56 <= REF_11
+TMP_58(None) = SOLIDITY_CALL require(bool,string)(TMP_57,Failed to buy token due to exceed cap.)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool,string)(block.timestamp < crowdsales[_token].closingTime,Failed to buy token due to crowdsale is closed.)
+
+IRs:
+REF_12(IcoRocketFuel.Crowdsale) -> crowdsales[_token]
+REF_13(uint256) -> REF_12.closingTime
+TMP_59(bool) = block.timestamp < REF_13
+TMP_60(None) = SOLIDITY_CALL require(bool,string)(TMP_59,Failed to buy token due to crowdsale is closed.)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+deposits[msg.sender][_token] = (deposits[msg.sender][_token].add(msg.value))
+
+IRs:
+REF_14(mapping(address => uint256)) -> deposits[msg.sender]
+REF_15(uint256) -> REF_14[_token]
+REF_16(mapping(address => uint256)) -> deposits[msg.sender]
+REF_17(uint256) -> REF_16[_token]
+TMP_61(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_17', 'msg.value'] 
+REF_15(uint256) (->deposits) := TMP_61(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+crowdsales[_token].raised = crowdsales[_token].raised.add(msg.value)
+
+IRs:
+REF_19(IcoRocketFuel.Crowdsale) -> crowdsales[_token]
+REF_20(uint256) -> REF_19.raised
+REF_21(IcoRocketFuel.Crowdsale) -> crowdsales[_token]
+REF_22(uint256) -> REF_21.raised
+TMP_62(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_22', 'msg.value'] 
+REF_20(uint256) (->crowdsales) := TMP_62(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+TokenBought(msg.sender,_token,msg.value)
+
+IRs:
+Emit TokenBought(msg.sender,_token,msg.value)"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+inState(_token,States.Active)
+
+IRs:
+REF_24(IcoRocketFuel.States) -> States.Active
+MODIFIER_CALL, IcoRocketFuel.inState(address,IcoRocketFuel.States)(_token,REF_24)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+nonZeroAddress(_token)
+
+IRs:
+MODIFIER_CALL, IcoRocketFuel.nonZeroAddress(address)(_token)"];
+8->1;
+}
+// Function: 176.sol-IcoRocketFuel-claimRaisedWei(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(crowdsales[_token].raised > 0,Failed to claim raised Wei due to raised Wei is 0.)
+
+IRs:
+REF_82(IcoRocketFuel.Crowdsale) -> crowdsales[_token]
+REF_83(uint256) -> REF_82.raised
+TMP_125(bool) = REF_83 > 0
+TMP_126(None) = SOLIDITY_CALL require(bool,string)(TMP_125,Failed to claim raised Wei due to raised Wei is 0.)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+_raisedWei = crowdsales[_token].raised
+
+IRs:
+REF_84(IcoRocketFuel.Crowdsale) -> crowdsales[_token]
+REF_85(uint256) -> REF_84.raised
+_raisedWei(uint256) := REF_85(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+crowdsales[_token].raised = 0
+
+IRs:
+REF_86(IcoRocketFuel.Crowdsale) -> crowdsales[_token]
+REF_87(uint256) -> REF_86.raised
+REF_87(uint256) (->crowdsales) := 0(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+RaisedWeiClaimed(msg.sender,_token,_raisedWei)
+
+IRs:
+Emit RaisedWeiClaimed(msg.sender,_token,_raisedWei)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+_beneficiary.transfer(_raisedWei)
+
+IRs:
+Transfer dest:_beneficiary value:_raisedWei"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+nonZeroAddress(_token)
+
+IRs:
+MODIFIER_CALL, IcoRocketFuel.nonZeroAddress(address)(_token)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+nonZeroAddress(_beneficiary)
+
+IRs:
+MODIFIER_CALL, IcoRocketFuel.nonZeroAddress(address)(_beneficiary)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+inState(_token,States.Closed)
+
+IRs:
+REF_89(IcoRocketFuel.States) -> States.Closed
+MODIFIER_CALL, IcoRocketFuel.inState(address,IcoRocketFuel.States)(_token,REF_89)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+onlyCrowdsaleOwner(_token)
+
+IRs:
+MODIFIER_CALL, IcoRocketFuel.onlyCrowdsaleOwner(address)(_token)"];
+9->1;
+}
+// Function: 176.sol-IcoRocketFuel-claimRefund(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(deposits[msg.sender][_token] > 0,Failed to claim refund due to deposit is 0.)
+
+IRs:
+REF_101(mapping(address => uint256)) -> deposits[msg.sender]
+REF_102(uint256) -> REF_101[_token]
+TMP_141(bool) = REF_102 > 0
+TMP_142(None) = SOLIDITY_CALL require(bool,string)(TMP_141,Failed to claim refund due to deposit is 0.)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+_value = deposits[msg.sender][_token]
+
+IRs:
+REF_103(mapping(address => uint256)) -> deposits[msg.sender]
+REF_104(uint256) -> REF_103[_token]
+_value(uint256) := REF_104(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+deposits[msg.sender][_token] = 0
+
+IRs:
+REF_105(mapping(address => uint256)) -> deposits[msg.sender]
+REF_106(uint256) -> REF_105[_token]
+REF_106(uint256) (->deposits) := 0(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+WeiRefunded(msg.sender,_token,_value)
+
+IRs:
+Emit WeiRefunded(msg.sender,_token,_value)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+msg.sender.transfer(_value)
+
+IRs:
+Transfer dest:msg.sender value:_value"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+nonZeroAddress(_token)
+
+IRs:
+MODIFIER_CALL, IcoRocketFuel.nonZeroAddress(address)(_token)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+inState(_token,States.Refunding)
+
+IRs:
+REF_108(IcoRocketFuel.States) -> States.Refunding
+MODIFIER_CALL, IcoRocketFuel.inState(address,IcoRocketFuel.States)(_token,REF_108)"];
+7->1;
+}
+// Function: 176.sol-IcoRocketFuel-claimToken(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(deposits[msg.sender][_token] > 0,Failed to claim token due to deposit is 0.)
+
+IRs:
+REF_90(mapping(address => uint256)) -> deposits[msg.sender]
+REF_91(uint256) -> REF_90[_token]
+TMP_133(bool) = REF_91 > 0
+TMP_134(None) = SOLIDITY_CALL require(bool,string)(TMP_133,Failed to claim token due to deposit is 0.)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+_value = (deposits[msg.sender][_token].mul(crowdsales[_token].rate))
+
+IRs:
+REF_92(mapping(address => uint256)) -> deposits[msg.sender]
+REF_93(uint256) -> REF_92[_token]
+REF_95(IcoRocketFuel.Crowdsale) -> crowdsales[_token]
+REF_96(uint256) -> REF_95.rate
+TMP_135(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['REF_93', 'REF_96'] 
+_value(uint256) := TMP_135(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+deposits[msg.sender][_token] = 0
+
+IRs:
+REF_97(mapping(address => uint256)) -> deposits[msg.sender]
+REF_98(uint256) -> REF_97[_token]
+REF_98(uint256) (->deposits) := 0(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+TokenClaimed(msg.sender,_token,_value)
+
+IRs:
+Emit TokenClaimed(msg.sender,_token,_value)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+ERC20(_token).transfer(msg.sender,_value)
+
+IRs:
+TMP_137 = CONVERT _token to ERC20
+TMP_138(bool) = HIGH_LEVEL_CALL, dest:TMP_137(ERC20), function:transfer, arguments:['msg.sender', '_value']  "];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+nonZeroAddress(_token)
+
+IRs:
+MODIFIER_CALL, IcoRocketFuel.nonZeroAddress(address)(_token)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+inState(_token,States.Closed)
+
+IRs:
+REF_100(IcoRocketFuel.States) -> States.Closed
+MODIFIER_CALL, IcoRocketFuel.inState(address,IcoRocketFuel.States)(_token,REF_100)"];
+7->1;
+}
+// Function: 176.sol-IcoRocketFuel-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 176.sol-IcoRocketFuel-createCrowdsale(address,address,uint256,uint256,uint256,uint256,uint256,bool,uint8)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->8;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(crowdsales[_token].owner == address(0),Failed to create crowdsale due to the crowdsale is existed.)
+
+IRs:
+REF_0(IcoRocketFuel.Crowdsale) -> crowdsales[_token]
+REF_1(address) -> REF_0.owner
+TMP_40 = CONVERT 0 to address
+TMP_41(bool) = REF_1 == TMP_40
+TMP_42(None) = SOLIDITY_CALL require(bool,string)(TMP_41,Failed to create crowdsale due to the crowdsale is existed.)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(_goal <= _cap,Failed to create crowdsale due to goal is larger than cap.)
+
+IRs:
+TMP_43(bool) = _goal <= _cap
+TMP_44(None) = SOLIDITY_CALL require(bool,string)(TMP_43,Failed to create crowdsale due to goal is larger than cap.)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool,string)(_minInvest > 0,Failed to create crowdsale due to minimum investment is 0.)
+
+IRs:
+TMP_45(bool) = _minInvest > 0
+TMP_46(None) = SOLIDITY_CALL require(bool,string)(TMP_45,Failed to create crowdsale due to minimum investment is 0.)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool,string)(_commission <= 100,Failed to create crowdsale due to commission is larger than 100.)
+
+IRs:
+TMP_47(bool) = _commission <= 100
+TMP_48(None) = SOLIDITY_CALL require(bool,string)(TMP_47,Failed to create crowdsale due to commission is larger than 100.)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+_cap.mul(_rate)
+
+IRs:
+TMP_49(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['_cap', '_rate'] "];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+crowdsales[_token] = Crowdsale({owner:msg.sender,refundWallet:_refundWallet,cap:_cap,goal:_goal,raised:0,rate:_rate,minInvest:_minInvest,closingTime:_closingTime,earlyClosure:_earlyClosure,state:States.Active,commission:_commission})
+
+IRs:
+REF_3(IcoRocketFuel.Crowdsale) -> crowdsales[_token]
+REF_4(IcoRocketFuel.States) -> States.Active
+TMP_50(IcoRocketFuel.Crowdsale) = new Crowdsale(msg.sender,_refundWallet,_cap,_goal,0,_rate,_minInvest,_closingTime,_earlyClosure,_commission,REF_4)
+REF_3(IcoRocketFuel.Crowdsale) (->crowdsales) := TMP_50(IcoRocketFuel.Crowdsale)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+CrowdsaleCreated(msg.sender,_token,_refundWallet,_cap,_goal,_rate,_closingTime,_earlyClosure,_commission)
+
+IRs:
+Emit CrowdsaleCreated(msg.sender,_token,_refundWallet,_cap,_goal,_rate,_closingTime,_earlyClosure,_commission)"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+nonZeroAddress(_token)
+
+IRs:
+MODIFIER_CALL, IcoRocketFuel.nonZeroAddress(address)(_token)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+nonZeroAddress(_refundWallet)
+
+IRs:
+MODIFIER_CALL, IcoRocketFuel.nonZeroAddress(address)(_refundWallet)"];
+9->1;
+}
+// Function: 176.sol-IcoRocketFuel-finalize(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->10;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(crowdsales[_token].earlyClosure || (block.timestamp >= crowdsales[_token].closingTime),Failed to finalize due to crowdsale is opening.)
+
+IRs:
+REF_67(IcoRocketFuel.Crowdsale) -> crowdsales[_token]
+REF_68(bool) -> REF_67.earlyClosure
+REF_69(IcoRocketFuel.Crowdsale) -> crowdsales[_token]
+REF_70(uint256) -> REF_69.closingTime
+TMP_103(bool) = block.timestamp >= REF_70
+TMP_104(bool) = REF_68 || TMP_103
+TMP_105(None) = SOLIDITY_CALL require(bool,string)(TMP_104,Failed to finalize due to crowdsale is opening.)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+_goalReached(ERC20(_token))
+
+IRs:
+TMP_106 = CONVERT _token to ERC20
+TMP_107(bool) = INTERNAL_CALL, IcoRocketFuel._goalReached(ERC20)(TMP_106)
+CONDITION TMP_107"];
+2->3[label="True"];
+2->7[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+crowdsales[_token].state = States.Closed
+
+IRs:
+REF_71(IcoRocketFuel.Crowdsale) -> crowdsales[_token]
+REF_72(IcoRocketFuel.States) -> REF_71.state
+REF_73(IcoRocketFuel.States) -> States.Closed
+REF_72(IcoRocketFuel.States) (->crowdsales) := REF_73(IcoRocketFuel.States)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+CrowdsaleClosed(msg.sender,_token)
+
+IRs:
+Emit CrowdsaleClosed(msg.sender,_token)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+_refundSurplusTokens(ERC20(_token),crowdsales[_token].refundWallet)
+
+IRs:
+TMP_109 = CONVERT _token to ERC20
+REF_74(IcoRocketFuel.Crowdsale) -> crowdsales[_token]
+REF_75(address) -> REF_74.refundWallet
+INTERNAL_CALL, IcoRocketFuel._refundSurplusTokens(ERC20,address)(TMP_109,REF_75)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+_payCommission(_token)
+
+IRs:
+INTERNAL_CALL, IcoRocketFuel._payCommission(address)(_token)"];
+6->9;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+_enableRefunds(_token)
+
+IRs:
+INTERNAL_CALL, IcoRocketFuel._enableRefunds(address)(_token)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+_refundCrowdsaleTokens(ERC20(_token),crowdsales[_token].refundWallet)
+
+IRs:
+TMP_113 = CONVERT _token to ERC20
+REF_76(IcoRocketFuel.Crowdsale) -> crowdsales[_token]
+REF_77(address) -> REF_76.refundWallet
+INTERNAL_CALL, IcoRocketFuel._refundCrowdsaleTokens(ERC20,address)(TMP_113,REF_77)"];
+8->9;
+9[label="Node Type: END_IF 9
+"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+nonZeroAddress(_token)
+
+IRs:
+MODIFIER_CALL, IcoRocketFuel.nonZeroAddress(address)(_token)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+inState(_token,States.Active)
+
+IRs:
+REF_78(IcoRocketFuel.States) -> States.Active
+MODIFIER_CALL, IcoRocketFuel.inState(address,IcoRocketFuel.States)(_token,REF_78)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+onlyCrowdsaleOwner(_token)
+
+IRs:
+MODIFIER_CALL, IcoRocketFuel.onlyCrowdsaleOwner(address)(_token)"];
+12->1;
+}
+// Function: 176.sol-IcoRocketFuel-inState(address,IcoRocketFuel.States)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(crowdsales[_token].state == _state,Failed to call function due to crowdsale is not in right state.)
+
+IRs:
+REF_111(IcoRocketFuel.Crowdsale) -> crowdsales[_token]
+REF_112(IcoRocketFuel.States) -> REF_111.state
+TMP_151(bool) = REF_112 == _state
+TMP_152(None) = SOLIDITY_CALL require(bool,string)(TMP_151,Failed to call function due to crowdsale is not in right state.)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 176.sol-IcoRocketFuel-nonZeroAddress(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(_token != address(0),Failed to call function due to address is 0x0.)
+
+IRs:
+TMP_153 = CONVERT 0 to address
+TMP_154(bool) = _token != TMP_153
+TMP_155(None) = SOLIDITY_CALL require(bool,string)(TMP_154,Failed to call function due to address is 0x0.)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 176.sol-IcoRocketFuel-onlyCrowdsaleOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(msg.sender == crowdsales[_token].owner,Failed to call function due to permission denied.)
+
+IRs:
+REF_109(IcoRocketFuel.Crowdsale) -> crowdsales[_token]
+REF_110(address) -> REF_109.owner
+TMP_149(bool) = msg.sender == REF_110
+TMP_150(None) = SOLIDITY_CALL require(bool,string)(TMP_149,Failed to call function due to permission denied.)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 176.sol-IcoRocketFuel-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_147(bool) = msg.sender == owner
+TMP_148(None) = SOLIDITY_CALL require(bool)(TMP_147)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 176.sol-IcoRocketFuel-pauseCrowdsale(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+CrowdsalePaused(msg.sender,_token)
+
+IRs:
+Emit CrowdsalePaused(msg.sender,_token)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_enableRefunds(_token)
+
+IRs:
+INTERNAL_CALL, IcoRocketFuel._enableRefunds(address)(_token)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_refundCrowdsaleTokens(ERC20(_token),crowdsales[_token].refundWallet)
+
+IRs:
+TMP_120 = CONVERT _token to ERC20
+REF_79(IcoRocketFuel.Crowdsale) -> crowdsales[_token]
+REF_80(address) -> REF_79.refundWallet
+INTERNAL_CALL, IcoRocketFuel._refundCrowdsaleTokens(ERC20,address)(TMP_120,REF_80)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+nonZeroAddress(_token)
+
+IRs:
+MODIFIER_CALL, IcoRocketFuel.nonZeroAddress(address)(_token)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+inState(_token,States.Active)
+
+IRs:
+REF_81(IcoRocketFuel.States) -> States.Active
+MODIFIER_CALL, IcoRocketFuel.inState(address,IcoRocketFuel.States)(_token,REF_81)"];
+6->1;
+}
+// Function: 176.sol-IcoRocketFuel-renounceOwnership()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+OwnershipRenounced(owner)
+
+IRs:
+Emit OwnershipRenounced(owner)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = address(0)
+
+IRs:
+TMP_29 = CONVERT 0 to address
+owner(address) := TMP_29(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 176.sol-IcoRocketFuel-setCommissionWallet(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+CommissionWalletUpdated(commissionWallet,_newWallet)
+
+IRs:
+Emit CommissionWalletUpdated(commissionWallet,_newWallet)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+commissionWallet = _newWallet
+
+IRs:
+commissionWallet(address) := _newWallet(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+nonZeroAddress(_newWallet)
+
+IRs:
+MODIFIER_CALL, IcoRocketFuel.nonZeroAddress(address)(_newWallet)"];
+4->1;
+}
+// Function: 176.sol-IcoRocketFuel-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transferOwnership(_newOwner)
+
+IRs:
+INTERNAL_CALL, Ownable._transferOwnership(address)(_newOwner)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 176.sol-Ownable-_transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_newOwner != address(0))
+
+IRs:
+TMP_22 = CONVERT 0 to address
+TMP_23(bool) = _newOwner != TMP_22
+TMP_24(None) = SOLIDITY_CALL require(bool)(TMP_23)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,_newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,_newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = _newOwner
+
+IRs:
+owner(address) := _newOwner(address)"];
+}
+// Function: 176.sol-Ownable-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 176.sol-Ownable-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_26(bool) = msg.sender == owner
+TMP_27(None) = SOLIDITY_CALL require(bool)(TMP_26)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 176.sol-Ownable-renounceOwnership()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+OwnershipRenounced(owner)
+
+IRs:
+Emit OwnershipRenounced(owner)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = address(0)
+
+IRs:
+TMP_18 = CONVERT 0 to address
+owner(address) := TMP_18(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 176.sol-Ownable-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transferOwnership(_newOwner)
+
+IRs:
+INTERNAL_CALL, Ownable._transferOwnership(address)(_newOwner)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 176.sol-SafeMath-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = _a + _b
+
+IRs:
+TMP_11(uint256) = _a + _b
+c(uint256) := TMP_11(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(c >= _a)
+
+IRs:
+TMP_12(bool) = c >= _a
+TMP_13(None) = SOLIDITY_CALL require(bool)(TMP_12)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 176.sol-SafeMath-div(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_b > 0)
+
+IRs:
+TMP_5(bool) = _b > 0
+TMP_6(None) = SOLIDITY_CALL require(bool)(TMP_5)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+c = _a / _b
+
+IRs:
+TMP_7(uint256) = _a / _b
+c(uint256) := TMP_7(uint256)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 176.sol-SafeMath-mod(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(b != 0)
+
+IRs:
+TMP_14(bool) = b != 0
+TMP_15(None) = SOLIDITY_CALL require(bool)(TMP_14)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a % b
+
+IRs:
+TMP_16(uint256) = a % b
+RETURN TMP_16"];
+}
+// Function: 176.sol-SafeMath-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_a == 0
+
+IRs:
+TMP_0(bool) = _a == 0
+CONDITION TMP_0"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+c = _a * _b
+
+IRs:
+TMP_1(uint256) = _a * _b
+c(uint256) := TMP_1(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool)(c / _a == _b)
+
+IRs:
+TMP_2(uint256) = c / _a
+TMP_3(bool) = TMP_2 == _b
+TMP_4(None) = SOLIDITY_CALL require(bool)(TMP_3)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 176.sol-SafeMath-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_b <= _a)
+
+IRs:
+TMP_8(bool) = _b <= _a
+TMP_9(None) = SOLIDITY_CALL require(bool)(TMP_8)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+c = _a - _b
+
+IRs:
+TMP_10(uint256) = _a - _b
+c(uint256) := TMP_10(uint256)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+}

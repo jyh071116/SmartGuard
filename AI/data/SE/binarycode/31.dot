@@ -1,0 +1,668 @@
+digraph G {
+// Function: 31.sol-Crowdsale-Crowdsale()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+offChainTokens = 0
+
+IRs:
+offChainTokens(uint256) := 0(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+amountRaised = 0
+
+IRs:
+amountRaised(uint256) := 0(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+tokenBalance = 30000000
+
+IRs:
+tokenBalance(uint256) := 30000000(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+minimumSpend = 0.01 * 1000000000000000000
+
+IRs:
+TMP_17(uint256) = 0 * 1000000000000000000
+minimumSpend(uint256) := TMP_17(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+beneficiary = 0x0677f6a5383b10dc4ac253b4d56d8f69df76f548
+
+IRs:
+beneficiary(address) := 36929219147241391525258227582894326545072452936(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+start_time = now
+
+IRs:
+start_time(uint256) := now(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+tokenReward = token(0xfACfB7aaD014f30f06E67cBeE8d3308C69aeD37a)
+
+IRs:
+TMP_18 = CONVERT 1431879946634971807609783859358207627022232900474 to token
+tokenReward(token) := TMP_18(token)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+master = 0x69F8C1604f27475AF9f872E07c2E6a56b485DAcf
+
+IRs:
+master(address) := 604991461189243757224746077525852260209111980751(address)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+paused = false
+
+IRs:
+paused(bool) := False(bool)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+price = 953584813430000
+
+IRs:
+price(uint256) := 953584813430000(uint256)"];
+}
+// Function: 31.sol-Crowdsale-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->13;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+amount = msg.value
+
+IRs:
+amount(uint256) := msg.value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+amountRaised += amount
+
+IRs:
+amountRaised(uint256) = amountRaised + amount"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+tokenBalance = SafeMath.sub(tokenBalance,SafeMath.div(amount,price))
+
+IRs:
+TMP_19(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['amount', 'price'] 
+TMP_20(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['tokenBalance', 'TMP_19'] 
+tokenBalance(uint256) := TMP_20(uint256)"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+tokenBalance < offChainTokens
+
+IRs:
+TMP_21(bool) = tokenBalance < offChainTokens
+CONDITION TMP_21"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_22(None) = SOLIDITY_CALL revert()()"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: IF 7
+
+EXPRESSION:
+amount < minimumSpend
+
+IRs:
+TMP_23(bool) = amount < minimumSpend
+CONDITION TMP_23"];
+7->8[label="True"];
+7->9[label="False"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_24(None) = SOLIDITY_CALL revert()()"];
+8->9;
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+tokenReward.transfer(msg.sender,SafeMath.div(amount * 1000000000000000000,price))
+
+IRs:
+TMP_25(uint256) = amount * 1000000000000000000
+TMP_26(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['TMP_25', 'price'] 
+HIGH_LEVEL_CALL, dest:tokenReward(token), function:transfer, arguments:['msg.sender', 'TMP_26']  "];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+FundTransfer(msg.sender,amount,true)
+
+IRs:
+Emit FundTransfer(msg.sender,amount,True)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+balanceOf[msg.sender] += amount
+
+IRs:
+REF_4(uint256) -> balanceOf[msg.sender]
+REF_4(-> balanceOf) = REF_4 + amount"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+notPaused()
+
+IRs:
+MODIFIER_CALL, Crowdsale.notPaused()()"];
+13->1;
+}
+// Function: 31.sol-Crowdsale-isMaster()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender == master
+
+IRs:
+TMP_44(bool) = msg.sender == master
+CONDITION TMP_44"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: _ 2
+"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 31.sol-Crowdsale-isPaused()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+paused == true
+
+IRs:
+TMP_42(bool) = paused == True
+CONDITION TMP_42"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: _ 2
+"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 31.sol-Crowdsale-notPaused()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+paused == false
+
+IRs:
+TMP_43(bool) = paused == False
+CONDITION TMP_43"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: _ 2
+"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 31.sol-Crowdsale-pause()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+paused = true
+
+IRs:
+paused(bool) := True(bool)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+notPaused()
+
+IRs:
+MODIFIER_CALL, Crowdsale.notPaused()()"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+isMaster()
+
+IRs:
+MODIFIER_CALL, Crowdsale.isMaster()()"];
+3->1;
+}
+// Function: 31.sol-Crowdsale-safeWithdrawal()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+beneficiary.send(amountRaised)
+
+IRs:
+TMP_30 = SEND dest:beneficiary value:amountRaised
+CONDITION TMP_30"];
+1->2[label="True"];
+1->5[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+FundTransfer(beneficiary,amountRaised,false)
+
+IRs:
+Emit FundTransfer(beneficiary,amountRaised,False)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+tokenReward.transfer(beneficiary,tokenReward.balanceOf(this))
+
+IRs:
+TMP_32(uint256) = HIGH_LEVEL_CALL, dest:tokenReward(token), function:balanceOf, arguments:['this']  
+HIGH_LEVEL_CALL, dest:tokenReward(token), function:transfer, arguments:['beneficiary', 'TMP_32']  "];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+tokenBalance = 0
+
+IRs:
+tokenBalance(uint256) := 0(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+isMaster()
+
+IRs:
+MODIFIER_CALL, Crowdsale.isMaster()()"];
+6->1;
+}
+// Function: 31.sol-Crowdsale-unPause()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+paused = false
+
+IRs:
+paused(bool) := False(bool)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+isPaused()
+
+IRs:
+MODIFIER_CALL, Crowdsale.isPaused()()"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+isMaster()
+
+IRs:
+MODIFIER_CALL, Crowdsale.isMaster()()"];
+3->1;
+}
+// Function: 31.sol-Crowdsale-updateMinSpend(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+minimumSpend = _minimumSpend
+
+IRs:
+minimumSpend(uint256) := _minimumSpend(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+isMaster()
+
+IRs:
+MODIFIER_CALL, Crowdsale.isMaster()()"];
+2->1;
+}
+// Function: 31.sol-Crowdsale-updateOffChainTokens(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+offChainTokens = _offChainTokens
+
+IRs:
+offChainTokens(uint256) := _offChainTokens(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+isMaster()
+
+IRs:
+MODIFIER_CALL, Crowdsale.isMaster()()"];
+2->1;
+}
+// Function: 31.sol-Crowdsale-updatePrice(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+price = _price
+
+IRs:
+price(uint256) := _price(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+isMaster()
+
+IRs:
+MODIFIER_CALL, Crowdsale.isMaster()()"];
+2->1;
+}
+// Function: 31.sol-SafeMath-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_10(uint256) = a + b
+c(uint256) := TMP_10(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(c >= a)
+
+IRs:
+TMP_11(bool) = c >= a
+TMP_12(None) = SOLIDITY_CALL assert(bool)(TMP_11)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 31.sol-SafeMath-div(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a / b
+
+IRs:
+TMP_6(uint256) = a / b
+c(uint256) := TMP_6(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 31.sol-SafeMath-max256(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+a >= b
+
+IRs:
+TMP_15(bool) = a >= b
+CONDITION TMP_15"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+a
+
+IRs:
+RETURN a"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+b
+
+IRs:
+RETURN b"];
+}
+// Function: 31.sol-SafeMath-max64(uint64,uint64)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+a >= b
+
+IRs:
+TMP_13(bool) = a >= b
+CONDITION TMP_13"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+a
+
+IRs:
+RETURN a"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+b
+
+IRs:
+RETURN b"];
+}
+// Function: 31.sol-SafeMath-min256(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+a < b
+
+IRs:
+TMP_16(bool) = a < b
+CONDITION TMP_16"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+a
+
+IRs:
+RETURN a"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+b
+
+IRs:
+RETURN b"];
+}
+// Function: 31.sol-SafeMath-min64(uint64,uint64)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+a < b
+
+IRs:
+TMP_14(bool) = a < b
+CONDITION TMP_14"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+a
+
+IRs:
+RETURN a"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+b
+
+IRs:
+RETURN b"];
+}
+// Function: 31.sol-SafeMath-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_0(uint256) = a * b
+c(uint256) := TMP_0(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(a == 0 || c / a == b)
+
+IRs:
+TMP_1(bool) = a == 0
+TMP_2(uint256) = c / a
+TMP_3(bool) = TMP_2 == b
+TMP_4(bool) = TMP_1 || TMP_3
+TMP_5(None) = SOLIDITY_CALL assert(bool)(TMP_4)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 31.sol-SafeMath-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(b <= a)
+
+IRs:
+TMP_7(bool) = b <= a
+TMP_8(None) = SOLIDITY_CALL assert(bool)(TMP_7)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_9(uint256) = a - b
+RETURN TMP_9"];
+}
+// Function: 31.sol-token-balanceOf(address)
+digraph{
+}
+// Function: 31.sol-token-transfer(address,uint256)
+digraph{
+}
+}

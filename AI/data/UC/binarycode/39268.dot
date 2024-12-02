@@ -1,0 +1,934 @@
+digraph G {
+// Function: 39268.sol-TownCrier-TownCrier()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+requestCnt = 1
+
+IRs:
+requestCnt(uint64) := 1(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+requests[0].requester = msg.sender
+
+IRs:
+REF_0(TownCrier.Request) -> requests[0]
+REF_1(address) -> REF_0.requester
+REF_1(address) (->requests) := msg.sender(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+killswitch = false
+
+IRs:
+killswitch(bool) := False(bool)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+unrespondedCnt = 0
+
+IRs:
+unrespondedCnt(uint64) := 0(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+externalCallFlag = false
+
+IRs:
+externalCallFlag(bool) := False(bool)"];
+}
+// Function: 39268.sol-TownCrier-cancel(uint64)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+externalCallFlag
+
+IRs:
+CONDITION externalCallFlag"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+killswitch
+
+IRs:
+CONDITION killswitch"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+fee = requests[requestId].fee
+
+IRs:
+REF_56(TownCrier.Request) -> requests[requestId]
+REF_57(uint256) -> REF_56.fee
+fee(uint256) := REF_57(uint256)"];
+7->8;
+8[label="Node Type: IF 8
+
+EXPRESSION:
+requests[requestId].requester == msg.sender && fee >= CANCELLATION_FEE
+
+IRs:
+REF_58(TownCrier.Request) -> requests[requestId]
+REF_59(address) -> REF_58.requester
+TMP_58(bool) = REF_59 == msg.sender
+TMP_59(bool) = fee >= CANCELLATION_FEE
+TMP_60(bool) = TMP_58 && TMP_59
+CONDITION TMP_60"];
+8->9[label="True"];
+8->17[label="False"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+requests[requestId].fee = CANCELLED_FEE_FLAG
+
+IRs:
+REF_60(TownCrier.Request) -> requests[requestId]
+REF_61(uint256) -> REF_60.fee
+REF_61(uint256) (->requests) := CANCELLED_FEE_FLAG(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+externalCallFlag = true
+
+IRs:
+externalCallFlag(bool) := True(bool)"];
+10->11;
+11[label="Node Type: IF 11
+
+EXPRESSION:
+! msg.sender.call.value(fee - CANCELLATION_FEE)()
+
+IRs:
+TMP_61(uint256) = fee - CANCELLATION_FEE
+TMP_63(bool) = LOW_LEVEL_CALL, dest:msg.sender, function:call, arguments:[] value:TMP_61 
+TMP_64 = UnaryType.BANG TMP_63 
+CONDITION TMP_64"];
+11->12[label="True"];
+11->13[label="False"];
+12[label="Node Type: THROW 12
+"];
+13[label="Node Type: END_IF 13
+"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+externalCallFlag = false
+
+IRs:
+externalCallFlag(bool) := False(bool)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+Cancel(requestId,msg.sender,requests[requestId].requester,requests[requestId].fee,1)
+
+IRs:
+REF_64(TownCrier.Request) -> requests[requestId]
+REF_65(address) -> REF_64.requester
+REF_66(TownCrier.Request) -> requests[requestId]
+REF_67(uint256) -> REF_66.fee
+Emit Cancel(requestId,msg.sender,REF_65,REF_67,1)"];
+15->16;
+16[label="Node Type: RETURN 16
+
+EXPRESSION:
+SUCCESS_FLAG
+
+IRs:
+RETURN SUCCESS_FLAG"];
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+Cancel(requestId,msg.sender,requests[requestId].requester,fee,- 1)
+
+IRs:
+REF_68(TownCrier.Request) -> requests[requestId]
+REF_69(address) -> REF_68.requester
+TMP_66(uint256) = 0 - 1
+Emit Cancel(requestId,msg.sender,REF_69,fee,TMP_66)"];
+17->18;
+18[label="Node Type: RETURN 18
+
+EXPRESSION:
+FAIL_FLAG
+
+IRs:
+RETURN FAIL_FLAG"];
+}
+// Function: 39268.sol-TownCrier-deliver(uint64,bytes32,uint64,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != SGX_ADDRESS || requestId <= 0 || requests[requestId].requester == 0 || requests[requestId].fee == DELIVERED_FEE_FLAG
+
+IRs:
+TMP_33(bool) = msg.sender != SGX_ADDRESS
+TMP_34(bool) = requestId <= 0
+TMP_35(bool) = TMP_33 || TMP_34
+REF_31(TownCrier.Request) -> requests[requestId]
+REF_32(address) -> REF_31.requester
+TMP_36(bool) = REF_32 == 0
+TMP_37(bool) = TMP_35 || TMP_36
+REF_33(TownCrier.Request) -> requests[requestId]
+REF_34(uint256) -> REF_33.fee
+TMP_38(bool) = REF_34 == DELIVERED_FEE_FLAG
+TMP_39(bool) = TMP_37 || TMP_38
+CONDITION TMP_39"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+fee = requests[requestId].fee
+
+IRs:
+REF_35(TownCrier.Request) -> requests[requestId]
+REF_36(uint256) -> REF_35.fee
+fee(uint256) := REF_36(uint256)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+requests[requestId].paramsHash != paramsHash
+
+IRs:
+REF_37(TownCrier.Request) -> requests[requestId]
+REF_38(bytes32) -> REF_37.paramsHash
+TMP_40(bool) = REF_38 != paramsHash
+CONDITION TMP_40"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: RETURN 6
+"];
+7[label="Node Type: IF 7
+
+EXPRESSION:
+fee == CANCELLED_FEE_FLAG
+
+IRs:
+TMP_41(bool) = fee == CANCELLED_FEE_FLAG
+CONDITION TMP_41"];
+7->8[label="True"];
+7->12[label="False"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+SGX_ADDRESS.send(CANCELLATION_FEE)
+
+IRs:
+TMP_42 = SEND dest:SGX_ADDRESS value:CANCELLATION_FEE"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+requests[requestId].fee = DELIVERED_FEE_FLAG
+
+IRs:
+REF_40(TownCrier.Request) -> requests[requestId]
+REF_41(uint256) -> REF_40.fee
+REF_41(uint256) (->requests) := DELIVERED_FEE_FLAG(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+unrespondedCnt --
+
+IRs:
+TMP_43(uint64) := unrespondedCnt(uint64)
+unrespondedCnt(uint64) = unrespondedCnt - 1"];
+10->11;
+11[label="Node Type: RETURN 11
+"];
+12[label="Node Type: END_IF 12
+"];
+12->13;
+13[label="Node Type: END_IF 13
+"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+requests[requestId].fee = DELIVERED_FEE_FLAG
+
+IRs:
+REF_42(TownCrier.Request) -> requests[requestId]
+REF_43(uint256) -> REF_42.fee
+REF_43(uint256) (->requests) := DELIVERED_FEE_FLAG(uint256)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+unrespondedCnt --
+
+IRs:
+TMP_44(uint64) := unrespondedCnt(uint64)
+unrespondedCnt(uint64) = unrespondedCnt - 1"];
+15->16;
+16[label="Node Type: IF 16
+
+EXPRESSION:
+error < 2
+
+IRs:
+TMP_45(bool) = error < 2
+CONDITION TMP_45"];
+16->17[label="True"];
+16->18[label="False"];
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+SGX_ADDRESS.send(fee)
+
+IRs:
+TMP_46 = SEND dest:SGX_ADDRESS value:fee"];
+17->21;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+externalCallFlag = true
+
+IRs:
+externalCallFlag(bool) := True(bool)"];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+requests[requestId].requester.call.gas(2300).value(fee)()
+
+IRs:
+REF_45(TownCrier.Request) -> requests[requestId]
+REF_46(address) -> REF_45.requester
+TMP_49(bool) = LOW_LEVEL_CALL, dest:REF_46, function:call, arguments:[] value:fee gas:2300"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+externalCallFlag = false
+
+IRs:
+externalCallFlag(bool) := False(bool)"];
+20->21;
+21[label="Node Type: END_IF 21
+"];
+21->22;
+22[label="Node Type: NEW VARIABLE 22
+
+EXPRESSION:
+callbackGas = (fee - MIN_FEE) / tx.gasprice
+
+IRs:
+TMP_50(uint256) = fee - MIN_FEE
+TMP_51(uint256) = TMP_50 / tx.gasprice
+callbackGas(uint256) := TMP_51(uint256)"];
+22->23;
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+DeliverInfo(requestId,fee,tx.gasprice,msg.gas,callbackGas,paramsHash,error,respData)
+
+IRs:
+Emit DeliverInfo(requestId,fee,tx.gasprice,msg.gas,callbackGas,paramsHash,error,respData)"];
+23->24;
+24[label="Node Type: IF 24
+
+EXPRESSION:
+callbackGas > msg.gas - 5000
+
+IRs:
+TMP_53(uint256) = msg.gas - 5000
+TMP_54(bool) = callbackGas > TMP_53
+CONDITION TMP_54"];
+24->25[label="True"];
+24->26[label="False"];
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+callbackGas = msg.gas - 5000
+
+IRs:
+TMP_55(uint256) = msg.gas - 5000
+callbackGas(uint256) := TMP_55(uint256)"];
+25->26;
+26[label="Node Type: END_IF 26
+"];
+26->27;
+27[label="Node Type: EXPRESSION 27
+
+EXPRESSION:
+externalCallFlag = true
+
+IRs:
+externalCallFlag(bool) := True(bool)"];
+27->28;
+28[label="Node Type: EXPRESSION 28
+
+EXPRESSION:
+requests[requestId].callbackAddr.call.gas(callbackGas)(requests[requestId].callbackFID,requestId,error,respData)
+
+IRs:
+REF_50(TownCrier.Request) -> requests[requestId]
+REF_51(address) -> REF_50.callbackAddr
+REF_54(TownCrier.Request) -> requests[requestId]
+REF_55(bytes4) -> REF_54.callbackFID
+TMP_57(bool) = LOW_LEVEL_CALL, dest:REF_51, function:call, arguments:['REF_55', 'requestId', 'error', 'respData']  gas:callbackGas"];
+28->29;
+29[label="Node Type: EXPRESSION 29
+
+EXPRESSION:
+externalCallFlag = false
+
+IRs:
+externalCallFlag(bool) := False(bool)"];
+}
+// Function: 39268.sol-TownCrier-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 39268.sol-TownCrier-request(uint8,address,bytes4,uint256,bytes32[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+externalCallFlag
+
+IRs:
+CONDITION externalCallFlag"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+killswitch
+
+IRs:
+CONDITION killswitch"];
+4->5[label="True"];
+4->11[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+externalCallFlag = true
+
+IRs:
+externalCallFlag(bool) := True(bool)"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+! msg.sender.call.value(msg.value)()
+
+IRs:
+TMP_23(bool) = LOW_LEVEL_CALL, dest:msg.sender, function:call, arguments:[] value:msg.value 
+TMP_24 = UnaryType.BANG TMP_23 
+CONDITION TMP_24"];
+6->7[label="True"];
+6->8[label="False"];
+7[label="Node Type: THROW 7
+"];
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+externalCallFlag = false
+
+IRs:
+externalCallFlag(bool) := False(bool)"];
+9->10;
+10[label="Node Type: RETURN 10
+
+EXPRESSION:
+newVersion
+
+IRs:
+RETURN newVersion"];
+11[label="Node Type: END_IF 11
+"];
+11->12;
+12[label="Node Type: IF 12
+
+EXPRESSION:
+msg.value < MIN_FEE
+
+IRs:
+TMP_25(bool) = msg.value < MIN_FEE
+CONDITION TMP_25"];
+12->13[label="True"];
+12->19[label="False"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+externalCallFlag = true
+
+IRs:
+externalCallFlag(bool) := True(bool)"];
+13->14;
+14[label="Node Type: IF 14
+
+EXPRESSION:
+! msg.sender.call.value(msg.value)()
+
+IRs:
+TMP_27(bool) = LOW_LEVEL_CALL, dest:msg.sender, function:call, arguments:[] value:msg.value 
+TMP_28 = UnaryType.BANG TMP_27 
+CONDITION TMP_28"];
+14->15[label="True"];
+14->16[label="False"];
+15[label="Node Type: THROW 15
+"];
+16[label="Node Type: END_IF 16
+"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+externalCallFlag = false
+
+IRs:
+externalCallFlag(bool) := False(bool)"];
+17->18;
+18[label="Node Type: RETURN 18
+
+EXPRESSION:
+FAIL_FLAG
+
+IRs:
+RETURN FAIL_FLAG"];
+19[label="Node Type: NEW VARIABLE 19
+
+EXPRESSION:
+requestId = requestCnt
+
+IRs:
+requestId(uint64) := requestCnt(uint64)"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+requestCnt ++
+
+IRs:
+TMP_29(uint64) := requestCnt(uint64)
+requestCnt(uint64) = requestCnt + 1"];
+20->21;
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+unrespondedCnt ++
+
+IRs:
+TMP_30(uint64) := unrespondedCnt(uint64)
+unrespondedCnt(uint64) = unrespondedCnt + 1"];
+21->22;
+22[label="Node Type: NEW VARIABLE 22
+
+EXPRESSION:
+paramsHash = sha3()(requestType,requestData)
+
+IRs:
+TMP_31(bytes32) = SOLIDITY_CALL sha3()(requestType,requestData)
+paramsHash(bytes32) := TMP_31(bytes32)"];
+22->23;
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+requests[requestId].requester = msg.sender
+
+IRs:
+REF_21(TownCrier.Request) -> requests[requestId]
+REF_22(address) -> REF_21.requester
+REF_22(address) (->requests) := msg.sender(address)"];
+23->24;
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+requests[requestId].fee = msg.value
+
+IRs:
+REF_23(TownCrier.Request) -> requests[requestId]
+REF_24(uint256) -> REF_23.fee
+REF_24(uint256) (->requests) := msg.value(uint256)"];
+24->25;
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+requests[requestId].callbackAddr = callbackAddr
+
+IRs:
+REF_25(TownCrier.Request) -> requests[requestId]
+REF_26(address) -> REF_25.callbackAddr
+REF_26(address) (->requests) := callbackAddr(address)"];
+25->26;
+26[label="Node Type: EXPRESSION 26
+
+EXPRESSION:
+requests[requestId].callbackFID = callbackFID
+
+IRs:
+REF_27(TownCrier.Request) -> requests[requestId]
+REF_28(bytes4) -> REF_27.callbackFID
+REF_28(bytes4) (->requests) := callbackFID(bytes4)"];
+26->27;
+27[label="Node Type: EXPRESSION 27
+
+EXPRESSION:
+requests[requestId].paramsHash = paramsHash
+
+IRs:
+REF_29(TownCrier.Request) -> requests[requestId]
+REF_30(bytes32) -> REF_29.paramsHash
+REF_30(bytes32) (->requests) := paramsHash(bytes32)"];
+27->28;
+28[label="Node Type: EXPRESSION 28
+
+EXPRESSION:
+RequestInfo(requestId,requestType,msg.sender,msg.value,callbackAddr,paramsHash,timestamp,requestData)
+
+IRs:
+Emit RequestInfo(requestId,requestType,msg.sender,msg.value,callbackAddr,paramsHash,timestamp,requestData)"];
+28->29;
+29[label="Node Type: RETURN 29
+
+EXPRESSION:
+requestId
+
+IRs:
+RETURN requestId"];
+}
+// Function: 39268.sol-TownCrier-reset(uint256,uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender == requests[0].requester && unrespondedCnt == 0
+
+IRs:
+REF_4(TownCrier.Request) -> requests[0]
+REF_5(address) -> REF_4.requester
+TMP_6(bool) = msg.sender == REF_5
+TMP_7(bool) = unrespondedCnt == 0
+TMP_8(bool) = TMP_6 && TMP_7
+CONDITION TMP_8"];
+1->2[label="True"];
+1->6[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+GAS_PRICE = price
+
+IRs:
+GAS_PRICE(uint256) := price(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+MIN_FEE = price * minGas
+
+IRs:
+TMP_9(uint256) = price * minGas
+MIN_FEE(uint256) := TMP_9(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+CANCELLATION_FEE = price * cancellationGas
+
+IRs:
+TMP_10(uint256) = price * cancellationGas
+CANCELLATION_FEE(uint256) := TMP_10(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Reset(GAS_PRICE,MIN_FEE,CANCELLATION_FEE)
+
+IRs:
+Emit Reset(GAS_PRICE,MIN_FEE,CANCELLATION_FEE)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+}
+// Function: 39268.sol-TownCrier-restart()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender == requests[0].requester && newVersion == 0
+
+IRs:
+REF_8(TownCrier.Request) -> requests[0]
+REF_9(address) -> REF_8.requester
+TMP_13(bool) = msg.sender == REF_9
+TMP_14(bool) = newVersion == 0
+TMP_15(bool) = TMP_13 && TMP_14
+CONDITION TMP_15"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+killswitch = false
+
+IRs:
+killswitch(bool) := False(bool)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 39268.sol-TownCrier-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+SGX_ADDRESS = 0x18513702cCd928F2A3eb63d900aDf03c9cc81593
+
+IRs:
+SGX_ADDRESS(address) := 138826930989434179790257333360775229525134415251(address)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+GAS_PRICE = 5 * 10 ** 10
+
+IRs:
+TMP_68(uint256) = 10 ** 10
+TMP_69(uint256) = 5 * TMP_68
+GAS_PRICE(uint256) := TMP_69(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+MIN_FEE = 30000 * GAS_PRICE
+
+IRs:
+TMP_70(uint256) = 30000 * GAS_PRICE
+MIN_FEE(uint256) := TMP_70(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+CANCELLATION_FEE = 25000 * GAS_PRICE
+
+IRs:
+TMP_71(uint256) = 25000 * GAS_PRICE
+CANCELLATION_FEE(uint256) := TMP_71(uint256)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+CANCELLED_FEE_FLAG = 1
+
+IRs:
+CANCELLED_FEE_FLAG(uint256) := 1(uint256)"];
+4->5;
+5[label="Node Type: OTHER_ENTRYPOINT 5
+
+EXPRESSION:
+DELIVERED_FEE_FLAG = 0
+
+IRs:
+DELIVERED_FEE_FLAG(uint256) := 0(uint256)"];
+5->6;
+6[label="Node Type: OTHER_ENTRYPOINT 6
+
+EXPRESSION:
+FAIL_FLAG = - 2 ** 250
+
+IRs:
+TMP_72(uint256) = 0 - 2
+TMP_73(uint256) = TMP_72 ** 250
+FAIL_FLAG(int256) := TMP_73(uint256)"];
+6->7;
+7[label="Node Type: OTHER_ENTRYPOINT 7
+
+EXPRESSION:
+SUCCESS_FLAG = 1
+
+IRs:
+SUCCESS_FLAG(int256) := 1(int256)"];
+7->8;
+8[label="Node Type: OTHER_ENTRYPOINT 8
+
+EXPRESSION:
+newVersion = 0
+
+IRs:
+newVersion(int256) := 0(int256)"];
+}
+// Function: 39268.sol-TownCrier-suspend()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender == requests[0].requester
+
+IRs:
+REF_6(TownCrier.Request) -> requests[0]
+REF_7(address) -> REF_6.requester
+TMP_12(bool) = msg.sender == REF_7
+CONDITION TMP_12"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+killswitch = true
+
+IRs:
+killswitch(bool) := True(bool)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 39268.sol-TownCrier-upgrade(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender == requests[0].requester && unrespondedCnt == 0
+
+IRs:
+REF_2(TownCrier.Request) -> requests[0]
+REF_3(address) -> REF_2.requester
+TMP_0(bool) = msg.sender == REF_3
+TMP_1(bool) = unrespondedCnt == 0
+TMP_2(bool) = TMP_0 && TMP_1
+CONDITION TMP_2"];
+1->2[label="True"];
+1->5[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+newVersion = - int256(newAddr)
+
+IRs:
+TMP_3 = CONVERT newAddr to int256
+TMP_4(int256) = 0 - TMP_3
+newVersion(int256) := TMP_4(int256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+killswitch = true
+
+IRs:
+killswitch(bool) := True(bool)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Upgrade(newAddr)
+
+IRs:
+Emit Upgrade(newAddr)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+}
+// Function: 39268.sol-TownCrier-withdraw()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender == requests[0].requester && unrespondedCnt == 0
+
+IRs:
+REF_10(TownCrier.Request) -> requests[0]
+REF_11(address) -> REF_10.requester
+TMP_16(bool) = msg.sender == REF_11
+TMP_17(bool) = unrespondedCnt == 0
+TMP_18(bool) = TMP_16 && TMP_17
+CONDITION TMP_18"];
+1->2[label="True"];
+1->5[label="False"];
+2[label="Node Type: IF 2
+
+EXPRESSION:
+! requests[0].requester.call.value(this.balance)()
+
+IRs:
+REF_12(TownCrier.Request) -> requests[0]
+REF_13(address) -> REF_12.requester
+REF_16(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_20(bool) = LOW_LEVEL_CALL, dest:REF_13, function:call, arguments:[] value:REF_16 
+TMP_21 = UnaryType.BANG TMP_20 
+CONDITION TMP_21"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: THROW 3
+"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+}
+}

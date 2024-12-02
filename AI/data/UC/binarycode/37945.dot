@@ -1,0 +1,2705 @@
+digraph G {
+// Function: 37945.sol-CrowdSale-CrowdSale()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+tokenFactory = SphereTokenFactory(0xf961eb0acf690bd8f92c5f9c486f3b30848d87aa)
+
+IRs:
+TMP_281 = CONVERT 1423722349285106771440656279025133933098292840362 to SphereTokenFactory
+tokenFactory(SphereTokenFactory) := TMP_281(SphereTokenFactory)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+decimals = 4
+
+IRs:
+decimals(uint256) := 4(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+setPricing()
+
+IRs:
+INTERNAL_CALL, PricingMechanism.setPricing()()"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+hardCapAmount = 75000000000000000000000
+
+IRs:
+hardCapAmount(uint256) := 75000000000000000000000(uint256)"];
+}
+// Function: 37945.sol-CrowdSale-Owned()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 37945.sol-CrowdSale-acceptOwnership()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender == newOwner
+
+IRs:
+TMP_280(bool) = msg.sender == newOwner
+CONDITION TMP_280"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 37945.sol-CrowdSale-afterFinalizeSet()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! finalizeSet
+
+IRs:
+TMP_323 = UnaryType.BANG finalizeSet 
+CONDITION TMP_323"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 37945.sol-CrowdSale-allocateTokensInternally(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+numTiers == 0
+
+IRs:
+TMP_237(bool) = numTiers == 0
+CONDITION TMP_237"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+numTokens = 0
+
+IRs:
+numTokens(uint256) := 0(uint256)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+tierIndex = 0
+
+IRs:
+tierIndex(uint8) := 0(uint256)"];
+5->8;
+6[label="Node Type: BEGIN_LOOP 6
+"];
+6->9;
+7[label="Node Type: END_LOOP 7
+"];
+7->21;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint8) := 0(uint256)"];
+8->6;
+9[label="Node Type: IF_LOOP 9
+
+EXPRESSION:
+i < numTiers
+
+IRs:
+TMP_238(bool) = i < numTiers
+CONDITION TMP_238"];
+9->10[label="True"];
+9->7[label="False"];
+10[label="Node Type: IF 10
+
+EXPRESSION:
+priceList[i].ethersDepositedInTier < priceList[i].maxEthersInTier
+
+IRs:
+REF_70(PricingMechanism.PriceTier) -> priceList[i]
+REF_71(uint256) -> REF_70.ethersDepositedInTier
+REF_72(PricingMechanism.PriceTier) -> priceList[i]
+REF_73(uint256) -> REF_72.maxEthersInTier
+TMP_239(bool) = REF_71 < REF_73
+CONDITION TMP_239"];
+10->11[label="True"];
+10->19[label="False"];
+11[label="Node Type: NEW VARIABLE 11
+
+EXPRESSION:
+ethersToDepositInTier = min256(priceList[i].maxEthersInTier - priceList[i].ethersDepositedInTier,value)
+
+IRs:
+REF_74(PricingMechanism.PriceTier) -> priceList[i]
+REF_75(uint256) -> REF_74.maxEthersInTier
+REF_76(PricingMechanism.PriceTier) -> priceList[i]
+REF_77(uint256) -> REF_76.ethersDepositedInTier
+TMP_240(uint256) = REF_75 - REF_77
+TMP_241(uint256) = INTERNAL_CALL, SafeMath.min256(uint256,uint256)(TMP_240,value)
+ethersToDepositInTier(uint256) := TMP_241(uint256)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+numTokens = safeAdd(numTokens,ethersToDepositInTier / priceList[i].costPerToken)
+
+IRs:
+REF_78(PricingMechanism.PriceTier) -> priceList[i]
+REF_79(uint256) -> REF_78.costPerToken
+TMP_242(uint256) = ethersToDepositInTier / REF_79
+TMP_243(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(numTokens,TMP_242)
+numTokens(uint256) := TMP_243(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+priceList[i].ethersDepositedInTier = safeAdd(ethersToDepositInTier,priceList[i].ethersDepositedInTier)
+
+IRs:
+REF_80(PricingMechanism.PriceTier) -> priceList[i]
+REF_81(uint256) -> REF_80.ethersDepositedInTier
+REF_82(PricingMechanism.PriceTier) -> priceList[i]
+REF_83(uint256) -> REF_82.ethersDepositedInTier
+TMP_244(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(ethersToDepositInTier,REF_83)
+REF_81(uint256) (->priceList) := TMP_244(uint256)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+totalDepositedEthers = safeAdd(ethersToDepositInTier,totalDepositedEthers)
+
+IRs:
+TMP_245(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(ethersToDepositInTier,totalDepositedEthers)
+totalDepositedEthers(uint256) := TMP_245(uint256)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+value = safeSub(value,ethersToDepositInTier)
+
+IRs:
+TMP_246(uint256) = INTERNAL_CALL, SafeMath.safeSub(uint256,uint256)(value,ethersToDepositInTier)
+value(uint256) := TMP_246(uint256)"];
+15->16;
+16[label="Node Type: IF 16
+
+EXPRESSION:
+priceList[i].ethersDepositedInTier > 0
+
+IRs:
+REF_84(PricingMechanism.PriceTier) -> priceList[i]
+REF_85(uint256) -> REF_84.ethersDepositedInTier
+TMP_247(bool) = REF_85 > 0
+CONDITION TMP_247"];
+16->17[label="True"];
+16->18[label="False"];
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+tierIndex = i
+
+IRs:
+tierIndex(uint8) := i(uint8)"];
+17->18;
+18[label="Node Type: END_IF 18
+"];
+18->19;
+19[label="Node Type: END_IF 19
+"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_248(uint8) := i(uint8)
+i(uint8) = i + 1"];
+20->9;
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+currentTierIndex = tierIndex
+
+IRs:
+currentTierIndex(uint256) := tierIndex(uint8)"];
+21->22;
+22[label="Node Type: RETURN 22
+
+EXPRESSION:
+numTokens
+
+IRs:
+RETURN numTokens"];
+23[label="Node Type: RETURN 23
+
+EXPRESSION:
+numTokens
+
+IRs:
+RETURN numTokens"];
+}
+// Function: 37945.sol-CrowdSale-assert(bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! assertion
+
+IRs:
+TMP_275 = UnaryType.BANG assertion 
+CONDITION TMP_275"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 37945.sol-CrowdSale-changeOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+newOwner = _newOwner
+
+IRs:
+newOwner(address) := _newOwner(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Owned.onlyOwner()()"];
+2->1;
+}
+// Function: 37945.sol-CrowdSale-emergencyCease()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+isFinalized = true
+
+IRs:
+isFinalized(bool) := True(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+isStarted = false
+
+IRs:
+isStarted(bool) := False(bool)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+multiSig.call.gas(150000).value(this.balance)()
+
+IRs:
+REF_98(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_313(bool) = LOW_LEVEL_CALL, dest:multiSig, function:call, arguments:[] value:REF_98 gas:150000"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyStarted()
+
+IRs:
+MODIFIER_CALL, CrowdSale.onlyStarted()()"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+onlyInEmergency()
+
+IRs:
+MODIFIER_CALL, Haltable.onlyInEmergency()()"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Owned.onlyOwner()()"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+afterFinalizeSet()
+
+IRs:
+MODIFIER_CALL, CrowdSale.afterFinalizeSet()()"];
+7->1;
+}
+// Function: 37945.sol-CrowdSale-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->14;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+totalDepositedEthers >= hardCapAmount
+
+IRs:
+TMP_285(bool) = totalDepositedEthers >= hardCapAmount
+CONDITION TMP_285"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+contribution = msg.value
+
+IRs:
+contribution(uint256) := msg.value(uint256)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+safeAdd(totalDepositedEthers,msg.value) > hardCapAmount
+
+IRs:
+TMP_286(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(totalDepositedEthers,msg.value)
+TMP_287(bool) = TMP_286 > hardCapAmount
+CONDITION TMP_287"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+contribution = safeSub(hardCapAmount,totalDepositedEthers)
+
+IRs:
+TMP_288(uint256) = INTERNAL_CALL, SafeMath.safeSub(uint256,uint256)(hardCapAmount,totalDepositedEthers)
+contribution(uint256) := TMP_288(uint256)"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+excess = safeSub(msg.value,contribution)
+
+IRs:
+TMP_289(uint256) = INTERNAL_CALL, SafeMath.safeSub(uint256,uint256)(msg.value,contribution)
+excess(uint256) := TMP_289(uint256)"];
+8->9;
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+numTokensToAllocate = allocateTokensInternally(contribution)
+
+IRs:
+TMP_290(uint256) = INTERNAL_CALL, PricingMechanism.allocateTokensInternally(uint256)(contribution)
+numTokensToAllocate(uint256) := TMP_290(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+tokenFactory.mint(msg.sender,numTokensToAllocate)
+
+IRs:
+HIGH_LEVEL_CALL, dest:tokenFactory(SphereTokenFactory), function:mint, arguments:['msg.sender', 'numTokensToAllocate']  "];
+10->11;
+11[label="Node Type: IF 11
+
+EXPRESSION:
+excess > 0
+
+IRs:
+TMP_292(bool) = excess > 0
+CONDITION TMP_292"];
+11->12[label="True"];
+11->13[label="False"];
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+msg.sender.send(excess)
+
+IRs:
+TMP_293 = SEND dest:msg.sender value:excess"];
+12->13;
+13[label="Node Type: END_IF 13
+"];
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+stopInEmergency()
+
+IRs:
+MODIFIER_CALL, Haltable.stopInEmergency()()"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+onlyStarted()
+
+IRs:
+MODIFIER_CALL, CrowdSale.onlyStarted()()"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+notFinalized()
+
+IRs:
+MODIFIER_CALL, CrowdSale.notFinalized()()"];
+16->1;
+}
+// Function: 37945.sol-CrowdSale-finalize()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+hardCapAmount == totalDepositedEthers || (now - startTime) > duration
+
+IRs:
+TMP_297(bool) = hardCapAmount == totalDepositedEthers
+TMP_298(uint256) = now - startTime
+TMP_299(bool) = TMP_298 > duration
+TMP_300(bool) = TMP_297 || TMP_299
+CONDITION TMP_300"];
+1->2[label="True"];
+1->5[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+dao.call.gas(150000).value(totalDepositedEthers * 3 / 10)()
+
+IRs:
+TMP_302(uint256) = totalDepositedEthers * 3
+TMP_303(uint256) = TMP_302 / 10
+TMP_305(bool) = LOW_LEVEL_CALL, dest:dao, function:call, arguments:[] value:TMP_303 gas:150000"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+multiSig.call.gas(150000).value(this.balance)()
+
+IRs:
+REF_94(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_308(bool) = LOW_LEVEL_CALL, dest:multiSig, function:call, arguments:[] value:REF_94 gas:150000"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+isFinalized = true
+
+IRs:
+isFinalized(bool) := True(bool)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Owned.onlyOwner()()"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+afterFinalizeSet()
+
+IRs:
+MODIFIER_CALL, CrowdSale.afterFinalizeSet()()"];
+7->1;
+}
+// Function: 37945.sol-CrowdSale-halt()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+halted = true
+
+IRs:
+halted(bool) := True(bool)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Owned.onlyOwner()()"];
+2->1;
+}
+// Function: 37945.sol-CrowdSale-max256(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+a >= b
+
+IRs:
+TMP_273(bool) = a >= b
+CONDITION TMP_273"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+a
+
+IRs:
+RETURN a"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+b
+
+IRs:
+RETURN b"];
+}
+// Function: 37945.sol-CrowdSale-max64(uint64,uint64)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+a >= b
+
+IRs:
+TMP_271(bool) = a >= b
+CONDITION TMP_271"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+a
+
+IRs:
+RETURN a"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+b
+
+IRs:
+RETURN b"];
+}
+// Function: 37945.sol-CrowdSale-min256(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+a < b
+
+IRs:
+TMP_274(bool) = a < b
+CONDITION TMP_274"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+a
+
+IRs:
+RETURN a"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+b
+
+IRs:
+RETURN b"];
+}
+// Function: 37945.sol-CrowdSale-min64(uint64,uint64)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+a < b
+
+IRs:
+TMP_272(bool) = a < b
+CONDITION TMP_272"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+a
+
+IRs:
+RETURN a"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+b
+
+IRs:
+RETURN b"];
+}
+// Function: 37945.sol-CrowdSale-notFinalized()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+isFinalized
+
+IRs:
+CONDITION isFinalized"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 37945.sol-CrowdSale-onlyDAO()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != dao
+
+IRs:
+TMP_318(bool) = msg.sender != dao
+CONDITION TMP_318"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 37945.sol-CrowdSale-onlyInEmergency()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! halted
+
+IRs:
+TMP_319 = UnaryType.BANG halted 
+CONDITION TMP_319"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 37945.sol-CrowdSale-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_320(bool) = msg.sender == owner
+TMP_321(None) = SOLIDITY_CALL require(bool)(TMP_320)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 37945.sol-CrowdSale-onlyStarted()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! isStarted
+
+IRs:
+TMP_322 = UnaryType.BANG isStarted 
+CONDITION TMP_322"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 37945.sol-CrowdSale-safeAdd(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_266(uint256) = a + b
+c(uint256) := TMP_266(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(c >= a && c >= b)
+
+IRs:
+TMP_267(bool) = c >= a
+TMP_268(bool) = c >= b
+TMP_269(bool) = TMP_267 && TMP_268
+INTERNAL_CALL, SafeMath.assert(bool)(TMP_269)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 37945.sol-CrowdSale-safeDiv(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(b > 0)
+
+IRs:
+TMP_255(bool) = b > 0
+INTERNAL_CALL, SafeMath.assert(bool)(TMP_255)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+c = a / b
+
+IRs:
+TMP_257(uint256) = a / b
+c(uint256) := TMP_257(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+assert(a == b * c + a % b)
+
+IRs:
+TMP_258(uint256) = b * c
+TMP_259(uint256) = a % b
+TMP_260(uint256) = TMP_258 + TMP_259
+TMP_261(bool) = a == TMP_260
+INTERNAL_CALL, SafeMath.assert(bool)(TMP_261)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 37945.sol-CrowdSale-safeMul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_249(uint256) = a * b
+c(uint256) := TMP_249(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(a == 0 || c / a == b)
+
+IRs:
+TMP_250(bool) = a == 0
+TMP_251(uint256) = c / a
+TMP_252(bool) = TMP_251 == b
+TMP_253(bool) = TMP_250 || TMP_252
+INTERNAL_CALL, SafeMath.assert(bool)(TMP_253)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 37945.sol-CrowdSale-safeSub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(b <= a)
+
+IRs:
+TMP_263(bool) = b <= a
+INTERNAL_CALL, SafeMath.assert(bool)(TMP_263)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_265(uint256) = a - b
+RETURN TMP_265"];
+}
+// Function: 37945.sol-CrowdSale-setDAOAndMultiSig(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+dao = _dao
+
+IRs:
+dao(address) := _dao(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+multiSig = _multiSig
+
+IRs:
+multiSig(address) := _multiSig(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+finalizeSet = true
+
+IRs:
+finalizeSet(bool) := True(bool)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Owned.onlyOwner()()"];
+4->1;
+}
+// Function: 37945.sol-CrowdSale-setPricing()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->12;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+factor = 10 ** decimals
+
+IRs:
+TMP_162(uint256) = 10 ** decimals
+factor(uint256) := TMP_162(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+priceList.push(PriceTier(uint256(safeDiv(1000000000000000000,100 * factor)),0,5000000000000000000000))
+
+IRs:
+TMP_163(uint256) = 100 * factor
+TMP_164(uint256) = INTERNAL_CALL, SafeMath.safeDiv(uint256,uint256)(1000000000000000000,TMP_163)
+TMP_165 = CONVERT TMP_164 to uint256
+TMP_166(PricingMechanism.PriceTier) = new PriceTier(TMP_165,0,5000000000000000000000)
+REF_44 -> LENGTH priceList
+TMP_168(uint256) := REF_44(uint256)
+TMP_169(uint256) = TMP_168 + 1
+REF_44(uint256) (->priceList) := TMP_169(uint256)
+REF_45(PricingMechanism.PriceTier) -> priceList[TMP_168]
+REF_45(PricingMechanism.PriceTier) (->priceList) := TMP_166(PricingMechanism.PriceTier)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+priceList.push(PriceTier(uint256((1000000000000000000 - (10 * factor)) / (90 * factor)),0,5000000000000000000000))
+
+IRs:
+TMP_170(uint256) = 10 * factor
+TMP_171(uint256) = 1000000000000000000 - TMP_170
+TMP_172(uint256) = 90 * factor
+TMP_173(uint256) = TMP_171 / TMP_172
+TMP_174 = CONVERT TMP_173 to uint256
+TMP_175(PricingMechanism.PriceTier) = new PriceTier(TMP_174,0,5000000000000000000000)
+REF_47 -> LENGTH priceList
+TMP_177(uint256) := REF_47(uint256)
+TMP_178(uint256) = TMP_177 + 1
+REF_47(uint256) (->priceList) := TMP_178(uint256)
+REF_48(PricingMechanism.PriceTier) -> priceList[TMP_177]
+REF_48(PricingMechanism.PriceTier) (->priceList) := TMP_175(PricingMechanism.PriceTier)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+priceList.push(PriceTier(uint256(1000000000000000000 / (80 * factor)),0,5000000000000000000000))
+
+IRs:
+TMP_179(uint256) = 80 * factor
+TMP_180(uint256) = 1000000000000000000 / TMP_179
+TMP_181 = CONVERT TMP_180 to uint256
+TMP_182(PricingMechanism.PriceTier) = new PriceTier(TMP_181,0,5000000000000000000000)
+REF_50 -> LENGTH priceList
+TMP_184(uint256) := REF_50(uint256)
+TMP_185(uint256) = TMP_184 + 1
+REF_50(uint256) (->priceList) := TMP_185(uint256)
+REF_51(PricingMechanism.PriceTier) -> priceList[TMP_184]
+REF_51(PricingMechanism.PriceTier) (->priceList) := TMP_182(PricingMechanism.PriceTier)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+priceList.push(PriceTier(uint256((1000000000000000000 - (50 * factor)) / (70 * factor)),0,5000000000000000000000))
+
+IRs:
+TMP_186(uint256) = 50 * factor
+TMP_187(uint256) = 1000000000000000000 - TMP_186
+TMP_188(uint256) = 70 * factor
+TMP_189(uint256) = TMP_187 / TMP_188
+TMP_190 = CONVERT TMP_189 to uint256
+TMP_191(PricingMechanism.PriceTier) = new PriceTier(TMP_190,0,5000000000000000000000)
+REF_53 -> LENGTH priceList
+TMP_193(uint256) := REF_53(uint256)
+TMP_194(uint256) = TMP_193 + 1
+REF_53(uint256) (->priceList) := TMP_194(uint256)
+REF_54(PricingMechanism.PriceTier) -> priceList[TMP_193]
+REF_54(PricingMechanism.PriceTier) (->priceList) := TMP_191(PricingMechanism.PriceTier)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+priceList.push(PriceTier(uint256((1000000000000000000 - (40 * factor)) / (60 * factor)),0,5000000000000000000000))
+
+IRs:
+TMP_195(uint256) = 40 * factor
+TMP_196(uint256) = 1000000000000000000 - TMP_195
+TMP_197(uint256) = 60 * factor
+TMP_198(uint256) = TMP_196 / TMP_197
+TMP_199 = CONVERT TMP_198 to uint256
+TMP_200(PricingMechanism.PriceTier) = new PriceTier(TMP_199,0,5000000000000000000000)
+REF_56 -> LENGTH priceList
+TMP_202(uint256) := REF_56(uint256)
+TMP_203(uint256) = TMP_202 + 1
+REF_56(uint256) (->priceList) := TMP_203(uint256)
+REF_57(PricingMechanism.PriceTier) -> priceList[TMP_202]
+REF_57(PricingMechanism.PriceTier) (->priceList) := TMP_200(PricingMechanism.PriceTier)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+priceList.push(PriceTier(uint256(1000000000000000000 / (50 * factor)),0,5000000000000000000000))
+
+IRs:
+TMP_204(uint256) = 50 * factor
+TMP_205(uint256) = 1000000000000000000 / TMP_204
+TMP_206 = CONVERT TMP_205 to uint256
+TMP_207(PricingMechanism.PriceTier) = new PriceTier(TMP_206,0,5000000000000000000000)
+REF_59 -> LENGTH priceList
+TMP_209(uint256) := REF_59(uint256)
+TMP_210(uint256) = TMP_209 + 1
+REF_59(uint256) (->priceList) := TMP_210(uint256)
+REF_60(PricingMechanism.PriceTier) -> priceList[TMP_209]
+REF_60(PricingMechanism.PriceTier) (->priceList) := TMP_207(PricingMechanism.PriceTier)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+priceList.push(PriceTier(uint256(1000000000000000000 / (40 * factor)),0,5000000000000000000000))
+
+IRs:
+TMP_211(uint256) = 40 * factor
+TMP_212(uint256) = 1000000000000000000 / TMP_211
+TMP_213 = CONVERT TMP_212 to uint256
+TMP_214(PricingMechanism.PriceTier) = new PriceTier(TMP_213,0,5000000000000000000000)
+REF_62 -> LENGTH priceList
+TMP_216(uint256) := REF_62(uint256)
+TMP_217(uint256) = TMP_216 + 1
+REF_62(uint256) (->priceList) := TMP_217(uint256)
+REF_63(PricingMechanism.PriceTier) -> priceList[TMP_216]
+REF_63(PricingMechanism.PriceTier) (->priceList) := TMP_214(PricingMechanism.PriceTier)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+priceList.push(PriceTier(uint256((1000000000000000000 - (10 * factor)) / (30 * factor)),0,5000000000000000000000))
+
+IRs:
+TMP_218(uint256) = 10 * factor
+TMP_219(uint256) = 1000000000000000000 - TMP_218
+TMP_220(uint256) = 30 * factor
+TMP_221(uint256) = TMP_219 / TMP_220
+TMP_222 = CONVERT TMP_221 to uint256
+TMP_223(PricingMechanism.PriceTier) = new PriceTier(TMP_222,0,5000000000000000000000)
+REF_65 -> LENGTH priceList
+TMP_225(uint256) := REF_65(uint256)
+TMP_226(uint256) = TMP_225 + 1
+REF_65(uint256) (->priceList) := TMP_226(uint256)
+REF_66(PricingMechanism.PriceTier) -> priceList[TMP_225]
+REF_66(PricingMechanism.PriceTier) (->priceList) := TMP_223(PricingMechanism.PriceTier)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+priceList.push(PriceTier(uint256((1000000000000000000 - (10 * factor)) / (15 * factor)),0,30000000000000000000000))
+
+IRs:
+TMP_227(uint256) = 10 * factor
+TMP_228(uint256) = 1000000000000000000 - TMP_227
+TMP_229(uint256) = 15 * factor
+TMP_230(uint256) = TMP_228 / TMP_229
+TMP_231 = CONVERT TMP_230 to uint256
+TMP_232(PricingMechanism.PriceTier) = new PriceTier(TMP_231,0,30000000000000000000000)
+REF_68 -> LENGTH priceList
+TMP_234(uint256) := REF_68(uint256)
+TMP_235(uint256) = TMP_234 + 1
+REF_68(uint256) (->priceList) := TMP_235(uint256)
+REF_69(PricingMechanism.PriceTier) -> priceList[TMP_234]
+REF_69(PricingMechanism.PriceTier) (->priceList) := TMP_232(PricingMechanism.PriceTier)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+numTiers = 9
+
+IRs:
+numTiers(uint8) := 9(uint256)"];
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Owned.onlyOwner()()"];
+12->1;
+}
+// Function: 37945.sol-CrowdSale-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+isStarted = false
+
+IRs:
+isStarted(bool) := False(bool)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+isFinalized = false
+
+IRs:
+isFinalized(bool) := False(bool)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+duration = 2592000
+
+IRs:
+duration(uint256) := 2592000(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+finalizeSet = false
+
+IRs:
+finalizeSet(bool) := False(bool)"];
+}
+// Function: 37945.sol-CrowdSale-startCrowdsale()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+isStarted
+
+IRs:
+CONDITION isStarted"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+isStarted = true
+
+IRs:
+isStarted(bool) := True(bool)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+startTime = now
+
+IRs:
+startTime(uint256) := now(uint256)"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Owned.onlyOwner()()"];
+6->1;
+}
+// Function: 37945.sol-CrowdSale-stopInEmergency()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+halted
+
+IRs:
+CONDITION halted"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 37945.sol-CrowdSale-unhalt()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+halted = false
+
+IRs:
+halted(bool) := False(bool)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Owned.onlyOwner()()"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyInEmergency()
+
+IRs:
+MODIFIER_CALL, Haltable.onlyInEmergency()()"];
+3->1;
+}
+// Function: 37945.sol-DAOController-onlyDAO()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != dao
+
+IRs:
+TMP_161(bool) = msg.sender != dao
+CONDITION TMP_161"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 37945.sol-Haltable-Owned()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 37945.sol-Haltable-acceptOwnership()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender == newOwner
+
+IRs:
+TMP_32(bool) = msg.sender == newOwner
+CONDITION TMP_32"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 37945.sol-Haltable-changeOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+newOwner = _newOwner
+
+IRs:
+newOwner(address) := _newOwner(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Owned.onlyOwner()()"];
+2->1;
+}
+// Function: 37945.sol-Haltable-halt()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+halted = true
+
+IRs:
+halted(bool) := True(bool)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Owned.onlyOwner()()"];
+2->1;
+}
+// Function: 37945.sol-Haltable-onlyInEmergency()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! halted
+
+IRs:
+TMP_38 = UnaryType.BANG halted 
+CONDITION TMP_38"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 37945.sol-Haltable-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_36(bool) = msg.sender == owner
+TMP_37(None) = SOLIDITY_CALL require(bool)(TMP_36)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 37945.sol-Haltable-stopInEmergency()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+halted
+
+IRs:
+CONDITION halted"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 37945.sol-Haltable-unhalt()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+halted = false
+
+IRs:
+halted(bool) := False(bool)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Owned.onlyOwner()()"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyInEmergency()
+
+IRs:
+MODIFIER_CALL, Haltable.onlyInEmergency()()"];
+3->1;
+}
+// Function: 37945.sol-Owned-Owned()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 37945.sol-Owned-acceptOwnership()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender == newOwner
+
+IRs:
+TMP_28(bool) = msg.sender == newOwner
+CONDITION TMP_28"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 37945.sol-Owned-changeOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+newOwner = _newOwner
+
+IRs:
+newOwner(address) := _newOwner(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Owned.onlyOwner()()"];
+2->1;
+}
+// Function: 37945.sol-Owned-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_29(bool) = msg.sender == owner
+TMP_30(None) = SOLIDITY_CALL require(bool)(TMP_29)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 37945.sol-PricingMechanism-Owned()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 37945.sol-PricingMechanism-acceptOwnership()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender == newOwner
+
+IRs:
+TMP_70(bool) = msg.sender == newOwner
+CONDITION TMP_70"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 37945.sol-PricingMechanism-allocateTokensInternally(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+numTiers == 0
+
+IRs:
+TMP_146(bool) = numTiers == 0
+CONDITION TMP_146"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+numTokens = 0
+
+IRs:
+numTokens(uint256) := 0(uint256)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+tierIndex = 0
+
+IRs:
+tierIndex(uint8) := 0(uint256)"];
+5->8;
+6[label="Node Type: BEGIN_LOOP 6
+"];
+6->9;
+7[label="Node Type: END_LOOP 7
+"];
+7->21;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint8) := 0(uint256)"];
+8->6;
+9[label="Node Type: IF_LOOP 9
+
+EXPRESSION:
+i < numTiers
+
+IRs:
+TMP_147(bool) = i < numTiers
+CONDITION TMP_147"];
+9->10[label="True"];
+9->7[label="False"];
+10[label="Node Type: IF 10
+
+EXPRESSION:
+priceList[i].ethersDepositedInTier < priceList[i].maxEthersInTier
+
+IRs:
+REF_27(PricingMechanism.PriceTier) -> priceList[i]
+REF_28(uint256) -> REF_27.ethersDepositedInTier
+REF_29(PricingMechanism.PriceTier) -> priceList[i]
+REF_30(uint256) -> REF_29.maxEthersInTier
+TMP_148(bool) = REF_28 < REF_30
+CONDITION TMP_148"];
+10->11[label="True"];
+10->19[label="False"];
+11[label="Node Type: NEW VARIABLE 11
+
+EXPRESSION:
+ethersToDepositInTier = min256(priceList[i].maxEthersInTier - priceList[i].ethersDepositedInTier,value)
+
+IRs:
+REF_31(PricingMechanism.PriceTier) -> priceList[i]
+REF_32(uint256) -> REF_31.maxEthersInTier
+REF_33(PricingMechanism.PriceTier) -> priceList[i]
+REF_34(uint256) -> REF_33.ethersDepositedInTier
+TMP_149(uint256) = REF_32 - REF_34
+TMP_150(uint256) = INTERNAL_CALL, SafeMath.min256(uint256,uint256)(TMP_149,value)
+ethersToDepositInTier(uint256) := TMP_150(uint256)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+numTokens = safeAdd(numTokens,ethersToDepositInTier / priceList[i].costPerToken)
+
+IRs:
+REF_35(PricingMechanism.PriceTier) -> priceList[i]
+REF_36(uint256) -> REF_35.costPerToken
+TMP_151(uint256) = ethersToDepositInTier / REF_36
+TMP_152(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(numTokens,TMP_151)
+numTokens(uint256) := TMP_152(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+priceList[i].ethersDepositedInTier = safeAdd(ethersToDepositInTier,priceList[i].ethersDepositedInTier)
+
+IRs:
+REF_37(PricingMechanism.PriceTier) -> priceList[i]
+REF_38(uint256) -> REF_37.ethersDepositedInTier
+REF_39(PricingMechanism.PriceTier) -> priceList[i]
+REF_40(uint256) -> REF_39.ethersDepositedInTier
+TMP_153(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(ethersToDepositInTier,REF_40)
+REF_38(uint256) (->priceList) := TMP_153(uint256)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+totalDepositedEthers = safeAdd(ethersToDepositInTier,totalDepositedEthers)
+
+IRs:
+TMP_154(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(ethersToDepositInTier,totalDepositedEthers)
+totalDepositedEthers(uint256) := TMP_154(uint256)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+value = safeSub(value,ethersToDepositInTier)
+
+IRs:
+TMP_155(uint256) = INTERNAL_CALL, SafeMath.safeSub(uint256,uint256)(value,ethersToDepositInTier)
+value(uint256) := TMP_155(uint256)"];
+15->16;
+16[label="Node Type: IF 16
+
+EXPRESSION:
+priceList[i].ethersDepositedInTier > 0
+
+IRs:
+REF_41(PricingMechanism.PriceTier) -> priceList[i]
+REF_42(uint256) -> REF_41.ethersDepositedInTier
+TMP_156(bool) = REF_42 > 0
+CONDITION TMP_156"];
+16->17[label="True"];
+16->18[label="False"];
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+tierIndex = i
+
+IRs:
+tierIndex(uint8) := i(uint8)"];
+17->18;
+18[label="Node Type: END_IF 18
+"];
+18->19;
+19[label="Node Type: END_IF 19
+"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_157(uint8) := i(uint8)
+i(uint8) = i + 1"];
+20->9;
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+currentTierIndex = tierIndex
+
+IRs:
+currentTierIndex(uint256) := tierIndex(uint8)"];
+21->22;
+22[label="Node Type: RETURN 22
+
+EXPRESSION:
+numTokens
+
+IRs:
+RETURN numTokens"];
+23[label="Node Type: RETURN 23
+
+EXPRESSION:
+numTokens
+
+IRs:
+RETURN numTokens"];
+}
+// Function: 37945.sol-PricingMechanism-assert(bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! assertion
+
+IRs:
+TMP_65 = UnaryType.BANG assertion 
+CONDITION TMP_65"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 37945.sol-PricingMechanism-changeOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+newOwner = _newOwner
+
+IRs:
+newOwner(address) := _newOwner(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Owned.onlyOwner()()"];
+2->1;
+}
+// Function: 37945.sol-PricingMechanism-halt()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+halted = true
+
+IRs:
+halted(bool) := True(bool)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Owned.onlyOwner()()"];
+2->1;
+}
+// Function: 37945.sol-PricingMechanism-max256(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+a >= b
+
+IRs:
+TMP_63(bool) = a >= b
+CONDITION TMP_63"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+a
+
+IRs:
+RETURN a"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+b
+
+IRs:
+RETURN b"];
+}
+// Function: 37945.sol-PricingMechanism-max64(uint64,uint64)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+a >= b
+
+IRs:
+TMP_61(bool) = a >= b
+CONDITION TMP_61"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+a
+
+IRs:
+RETURN a"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+b
+
+IRs:
+RETURN b"];
+}
+// Function: 37945.sol-PricingMechanism-min256(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+a < b
+
+IRs:
+TMP_64(bool) = a < b
+CONDITION TMP_64"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+a
+
+IRs:
+RETURN a"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+b
+
+IRs:
+RETURN b"];
+}
+// Function: 37945.sol-PricingMechanism-min64(uint64,uint64)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+a < b
+
+IRs:
+TMP_62(bool) = a < b
+CONDITION TMP_62"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+a
+
+IRs:
+RETURN a"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+b
+
+IRs:
+RETURN b"];
+}
+// Function: 37945.sol-PricingMechanism-onlyInEmergency()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! halted
+
+IRs:
+TMP_158 = UnaryType.BANG halted 
+CONDITION TMP_158"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 37945.sol-PricingMechanism-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_159(bool) = msg.sender == owner
+TMP_160(None) = SOLIDITY_CALL require(bool)(TMP_159)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 37945.sol-PricingMechanism-safeAdd(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_56(uint256) = a + b
+c(uint256) := TMP_56(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(c >= a && c >= b)
+
+IRs:
+TMP_57(bool) = c >= a
+TMP_58(bool) = c >= b
+TMP_59(bool) = TMP_57 && TMP_58
+INTERNAL_CALL, SafeMath.assert(bool)(TMP_59)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 37945.sol-PricingMechanism-safeDiv(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(b > 0)
+
+IRs:
+TMP_45(bool) = b > 0
+INTERNAL_CALL, SafeMath.assert(bool)(TMP_45)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+c = a / b
+
+IRs:
+TMP_47(uint256) = a / b
+c(uint256) := TMP_47(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+assert(a == b * c + a % b)
+
+IRs:
+TMP_48(uint256) = b * c
+TMP_49(uint256) = a % b
+TMP_50(uint256) = TMP_48 + TMP_49
+TMP_51(bool) = a == TMP_50
+INTERNAL_CALL, SafeMath.assert(bool)(TMP_51)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 37945.sol-PricingMechanism-safeMul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_39(uint256) = a * b
+c(uint256) := TMP_39(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(a == 0 || c / a == b)
+
+IRs:
+TMP_40(bool) = a == 0
+TMP_41(uint256) = c / a
+TMP_42(bool) = TMP_41 == b
+TMP_43(bool) = TMP_40 || TMP_42
+INTERNAL_CALL, SafeMath.assert(bool)(TMP_43)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 37945.sol-PricingMechanism-safeSub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(b <= a)
+
+IRs:
+TMP_53(bool) = b <= a
+INTERNAL_CALL, SafeMath.assert(bool)(TMP_53)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_55(uint256) = a - b
+RETURN TMP_55"];
+}
+// Function: 37945.sol-PricingMechanism-setPricing()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->12;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+factor = 10 ** decimals
+
+IRs:
+TMP_71(uint256) = 10 ** decimals
+factor(uint256) := TMP_71(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+priceList.push(PriceTier(uint256(safeDiv(1000000000000000000,100 * factor)),0,5000000000000000000000))
+
+IRs:
+TMP_72(uint256) = 100 * factor
+TMP_73(uint256) = INTERNAL_CALL, SafeMath.safeDiv(uint256,uint256)(1000000000000000000,TMP_72)
+TMP_74 = CONVERT TMP_73 to uint256
+TMP_75(PricingMechanism.PriceTier) = new PriceTier(TMP_74,0,5000000000000000000000)
+REF_1 -> LENGTH priceList
+TMP_77(uint256) := REF_1(uint256)
+TMP_78(uint256) = TMP_77 + 1
+REF_1(uint256) (->priceList) := TMP_78(uint256)
+REF_2(PricingMechanism.PriceTier) -> priceList[TMP_77]
+REF_2(PricingMechanism.PriceTier) (->priceList) := TMP_75(PricingMechanism.PriceTier)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+priceList.push(PriceTier(uint256((1000000000000000000 - (10 * factor)) / (90 * factor)),0,5000000000000000000000))
+
+IRs:
+TMP_79(uint256) = 10 * factor
+TMP_80(uint256) = 1000000000000000000 - TMP_79
+TMP_81(uint256) = 90 * factor
+TMP_82(uint256) = TMP_80 / TMP_81
+TMP_83 = CONVERT TMP_82 to uint256
+TMP_84(PricingMechanism.PriceTier) = new PriceTier(TMP_83,0,5000000000000000000000)
+REF_4 -> LENGTH priceList
+TMP_86(uint256) := REF_4(uint256)
+TMP_87(uint256) = TMP_86 + 1
+REF_4(uint256) (->priceList) := TMP_87(uint256)
+REF_5(PricingMechanism.PriceTier) -> priceList[TMP_86]
+REF_5(PricingMechanism.PriceTier) (->priceList) := TMP_84(PricingMechanism.PriceTier)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+priceList.push(PriceTier(uint256(1000000000000000000 / (80 * factor)),0,5000000000000000000000))
+
+IRs:
+TMP_88(uint256) = 80 * factor
+TMP_89(uint256) = 1000000000000000000 / TMP_88
+TMP_90 = CONVERT TMP_89 to uint256
+TMP_91(PricingMechanism.PriceTier) = new PriceTier(TMP_90,0,5000000000000000000000)
+REF_7 -> LENGTH priceList
+TMP_93(uint256) := REF_7(uint256)
+TMP_94(uint256) = TMP_93 + 1
+REF_7(uint256) (->priceList) := TMP_94(uint256)
+REF_8(PricingMechanism.PriceTier) -> priceList[TMP_93]
+REF_8(PricingMechanism.PriceTier) (->priceList) := TMP_91(PricingMechanism.PriceTier)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+priceList.push(PriceTier(uint256((1000000000000000000 - (50 * factor)) / (70 * factor)),0,5000000000000000000000))
+
+IRs:
+TMP_95(uint256) = 50 * factor
+TMP_96(uint256) = 1000000000000000000 - TMP_95
+TMP_97(uint256) = 70 * factor
+TMP_98(uint256) = TMP_96 / TMP_97
+TMP_99 = CONVERT TMP_98 to uint256
+TMP_100(PricingMechanism.PriceTier) = new PriceTier(TMP_99,0,5000000000000000000000)
+REF_10 -> LENGTH priceList
+TMP_102(uint256) := REF_10(uint256)
+TMP_103(uint256) = TMP_102 + 1
+REF_10(uint256) (->priceList) := TMP_103(uint256)
+REF_11(PricingMechanism.PriceTier) -> priceList[TMP_102]
+REF_11(PricingMechanism.PriceTier) (->priceList) := TMP_100(PricingMechanism.PriceTier)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+priceList.push(PriceTier(uint256((1000000000000000000 - (40 * factor)) / (60 * factor)),0,5000000000000000000000))
+
+IRs:
+TMP_104(uint256) = 40 * factor
+TMP_105(uint256) = 1000000000000000000 - TMP_104
+TMP_106(uint256) = 60 * factor
+TMP_107(uint256) = TMP_105 / TMP_106
+TMP_108 = CONVERT TMP_107 to uint256
+TMP_109(PricingMechanism.PriceTier) = new PriceTier(TMP_108,0,5000000000000000000000)
+REF_13 -> LENGTH priceList
+TMP_111(uint256) := REF_13(uint256)
+TMP_112(uint256) = TMP_111 + 1
+REF_13(uint256) (->priceList) := TMP_112(uint256)
+REF_14(PricingMechanism.PriceTier) -> priceList[TMP_111]
+REF_14(PricingMechanism.PriceTier) (->priceList) := TMP_109(PricingMechanism.PriceTier)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+priceList.push(PriceTier(uint256(1000000000000000000 / (50 * factor)),0,5000000000000000000000))
+
+IRs:
+TMP_113(uint256) = 50 * factor
+TMP_114(uint256) = 1000000000000000000 / TMP_113
+TMP_115 = CONVERT TMP_114 to uint256
+TMP_116(PricingMechanism.PriceTier) = new PriceTier(TMP_115,0,5000000000000000000000)
+REF_16 -> LENGTH priceList
+TMP_118(uint256) := REF_16(uint256)
+TMP_119(uint256) = TMP_118 + 1
+REF_16(uint256) (->priceList) := TMP_119(uint256)
+REF_17(PricingMechanism.PriceTier) -> priceList[TMP_118]
+REF_17(PricingMechanism.PriceTier) (->priceList) := TMP_116(PricingMechanism.PriceTier)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+priceList.push(PriceTier(uint256(1000000000000000000 / (40 * factor)),0,5000000000000000000000))
+
+IRs:
+TMP_120(uint256) = 40 * factor
+TMP_121(uint256) = 1000000000000000000 / TMP_120
+TMP_122 = CONVERT TMP_121 to uint256
+TMP_123(PricingMechanism.PriceTier) = new PriceTier(TMP_122,0,5000000000000000000000)
+REF_19 -> LENGTH priceList
+TMP_125(uint256) := REF_19(uint256)
+TMP_126(uint256) = TMP_125 + 1
+REF_19(uint256) (->priceList) := TMP_126(uint256)
+REF_20(PricingMechanism.PriceTier) -> priceList[TMP_125]
+REF_20(PricingMechanism.PriceTier) (->priceList) := TMP_123(PricingMechanism.PriceTier)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+priceList.push(PriceTier(uint256((1000000000000000000 - (10 * factor)) / (30 * factor)),0,5000000000000000000000))
+
+IRs:
+TMP_127(uint256) = 10 * factor
+TMP_128(uint256) = 1000000000000000000 - TMP_127
+TMP_129(uint256) = 30 * factor
+TMP_130(uint256) = TMP_128 / TMP_129
+TMP_131 = CONVERT TMP_130 to uint256
+TMP_132(PricingMechanism.PriceTier) = new PriceTier(TMP_131,0,5000000000000000000000)
+REF_22 -> LENGTH priceList
+TMP_134(uint256) := REF_22(uint256)
+TMP_135(uint256) = TMP_134 + 1
+REF_22(uint256) (->priceList) := TMP_135(uint256)
+REF_23(PricingMechanism.PriceTier) -> priceList[TMP_134]
+REF_23(PricingMechanism.PriceTier) (->priceList) := TMP_132(PricingMechanism.PriceTier)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+priceList.push(PriceTier(uint256((1000000000000000000 - (10 * factor)) / (15 * factor)),0,30000000000000000000000))
+
+IRs:
+TMP_136(uint256) = 10 * factor
+TMP_137(uint256) = 1000000000000000000 - TMP_136
+TMP_138(uint256) = 15 * factor
+TMP_139(uint256) = TMP_137 / TMP_138
+TMP_140 = CONVERT TMP_139 to uint256
+TMP_141(PricingMechanism.PriceTier) = new PriceTier(TMP_140,0,30000000000000000000000)
+REF_25 -> LENGTH priceList
+TMP_143(uint256) := REF_25(uint256)
+TMP_144(uint256) = TMP_143 + 1
+REF_25(uint256) (->priceList) := TMP_144(uint256)
+REF_26(PricingMechanism.PriceTier) -> priceList[TMP_143]
+REF_26(PricingMechanism.PriceTier) (->priceList) := TMP_141(PricingMechanism.PriceTier)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+numTiers = 9
+
+IRs:
+numTiers(uint8) := 9(uint256)"];
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Owned.onlyOwner()()"];
+12->1;
+}
+// Function: 37945.sol-PricingMechanism-stopInEmergency()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+halted
+
+IRs:
+CONDITION halted"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 37945.sol-PricingMechanism-unhalt()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+halted = false
+
+IRs:
+halted(bool) := False(bool)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Owned.onlyOwner()()"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyInEmergency()
+
+IRs:
+MODIFIER_CALL, Haltable.onlyInEmergency()()"];
+3->1;
+}
+// Function: 37945.sol-SafeMath-assert(bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! assertion
+
+IRs:
+TMP_26 = UnaryType.BANG assertion 
+CONDITION TMP_26"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 37945.sol-SafeMath-max256(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+a >= b
+
+IRs:
+TMP_24(bool) = a >= b
+CONDITION TMP_24"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+a
+
+IRs:
+RETURN a"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+b
+
+IRs:
+RETURN b"];
+}
+// Function: 37945.sol-SafeMath-max64(uint64,uint64)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+a >= b
+
+IRs:
+TMP_22(bool) = a >= b
+CONDITION TMP_22"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+a
+
+IRs:
+RETURN a"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+b
+
+IRs:
+RETURN b"];
+}
+// Function: 37945.sol-SafeMath-min256(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+a < b
+
+IRs:
+TMP_25(bool) = a < b
+CONDITION TMP_25"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+a
+
+IRs:
+RETURN a"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+b
+
+IRs:
+RETURN b"];
+}
+// Function: 37945.sol-SafeMath-min64(uint64,uint64)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+a < b
+
+IRs:
+TMP_23(bool) = a < b
+CONDITION TMP_23"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+a
+
+IRs:
+RETURN a"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+b
+
+IRs:
+RETURN b"];
+}
+// Function: 37945.sol-SafeMath-safeAdd(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_17(uint256) = a + b
+c(uint256) := TMP_17(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(c >= a && c >= b)
+
+IRs:
+TMP_18(bool) = c >= a
+TMP_19(bool) = c >= b
+TMP_20(bool) = TMP_18 && TMP_19
+INTERNAL_CALL, SafeMath.assert(bool)(TMP_20)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 37945.sol-SafeMath-safeDiv(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(b > 0)
+
+IRs:
+TMP_6(bool) = b > 0
+INTERNAL_CALL, SafeMath.assert(bool)(TMP_6)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+c = a / b
+
+IRs:
+TMP_8(uint256) = a / b
+c(uint256) := TMP_8(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+assert(a == b * c + a % b)
+
+IRs:
+TMP_9(uint256) = b * c
+TMP_10(uint256) = a % b
+TMP_11(uint256) = TMP_9 + TMP_10
+TMP_12(bool) = a == TMP_11
+INTERNAL_CALL, SafeMath.assert(bool)(TMP_12)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 37945.sol-SafeMath-safeMul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_0(uint256) = a * b
+c(uint256) := TMP_0(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(a == 0 || c / a == b)
+
+IRs:
+TMP_1(bool) = a == 0
+TMP_2(uint256) = c / a
+TMP_3(bool) = TMP_2 == b
+TMP_4(bool) = TMP_1 || TMP_3
+INTERNAL_CALL, SafeMath.assert(bool)(TMP_4)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 37945.sol-SafeMath-safeSub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(b <= a)
+
+IRs:
+TMP_14(bool) = b <= a
+INTERNAL_CALL, SafeMath.assert(bool)(TMP_14)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_16(uint256) = a - b
+RETURN TMP_16"];
+}
+// Function: 37945.sol-SphereTokenFactory-mint(address,uint256)
+digraph{
+}
+}

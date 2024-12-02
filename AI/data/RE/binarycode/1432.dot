@@ -1,0 +1,658 @@
+digraph G {
+// Function: 1432.sol-ERC20-allowance(address,address)
+digraph{
+}
+// Function: 1432.sol-ERC20-approve(address,uint256)
+digraph{
+}
+// Function: 1432.sol-ERC20-balanceOf(address)
+digraph{
+}
+// Function: 1432.sol-ERC20-transfer(address,uint256)
+digraph{
+}
+// Function: 1432.sol-ERC20-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 1432.sol-ERC20Basic-balanceOf(address)
+digraph{
+}
+// Function: 1432.sol-ERC20Basic-transfer(address,uint256)
+digraph{
+}
+// Function: 1432.sol-STOCoin-STOCoin()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balances[msg.sender] = totalSupply
+
+IRs:
+REF_0(uint256) -> balances[msg.sender]
+REF_0(uint256) (->balances) := totalSupply(uint256)"];
+}
+// Function: 1432.sol-STOCoin-allowance(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+allowed[_owner][_spender]
+
+IRs:
+REF_25(mapping(address => uint256)) -> allowed[_owner]
+REF_26(uint256) -> REF_25[_spender]
+RETURN REF_26"];
+}
+// Function: 1432.sol-STOCoin-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowed[msg.sender][_spender] = _value
+
+IRs:
+REF_23(mapping(address => uint256)) -> allowed[msg.sender]
+REF_24(uint256) -> REF_23[_spender]
+REF_24(uint256) (->allowed) := _value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,_value)
+
+IRs:
+Emit Approval(msg.sender,_spender,_value)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 1432.sol-STOCoin-approveAndCall(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowed[msg.sender][_spender] = _value
+
+IRs:
+REF_34(mapping(address => uint256)) -> allowed[msg.sender]
+REF_35(uint256) -> REF_34[_spender]
+REF_35(uint256) (->allowed) := _value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,_value)
+
+IRs:
+Emit Approval(msg.sender,_spender,_value)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(_spender.call(bytes4(bytes32(keccak256()(receiveApproval(address,uint256,address,bytes)))),msg.sender,_value,this,_extraData))
+
+IRs:
+TMP_49(bytes32) = SOLIDITY_CALL keccak256()(receiveApproval(address,uint256,address,bytes))
+TMP_50 = CONVERT TMP_49 to bytes32
+TMP_51 = CONVERT TMP_50 to bytes4
+TMP_52(bool) = LOW_LEVEL_CALL, dest:_spender, function:call, arguments:['TMP_51', 'msg.sender', '_value', 'this', '_extraData']  
+TMP_53(None) = SOLIDITY_CALL require(bool)(TMP_52)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 1432.sol-STOCoin-balanceOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+balances[_owner]
+
+IRs:
+REF_1(uint256) -> balances[_owner]
+RETURN REF_1"];
+}
+// Function: 1432.sol-STOCoin-burn(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_value <= balances[msg.sender])
+
+IRs:
+REF_29(uint256) -> balances[msg.sender]
+TMP_42(bool) = _value <= REF_29
+TMP_43(None) = SOLIDITY_CALL require(bool)(TMP_42)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+burner = msg.sender
+
+IRs:
+burner(address) := msg.sender(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balances[burner] = balances[burner].sub(_value)
+
+IRs:
+REF_30(uint256) -> balances[burner]
+REF_31(uint256) -> balances[burner]
+TMP_44(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_31', '_value'] 
+REF_30(uint256) (->balances) := TMP_44(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+totalSupply = totalSupply.sub(_value)
+
+IRs:
+TMP_45(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['totalSupply', '_value'] 
+totalSupply(uint256) := TMP_45(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Burn(burner,_value)
+
+IRs:
+Emit Burn(burner,_value)"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, STOCoin.onlyOwner()()"];
+6->1;
+}
+// Function: 1432.sol-STOCoin-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_54(bool) = msg.sender == owner
+TMP_55(None) = SOLIDITY_CALL require(bool)(TMP_54)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1432.sol-STOCoin-onlyPayloadSize(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(msg.data.length >= size + 4)
+
+IRs:
+REF_37 -> LENGTH msg.data
+TMP_56(uint256) = size + 4
+TMP_57(bool) = REF_37 >= TMP_56
+TMP_58(None) = SOLIDITY_CALL assert(bool)(TMP_57)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1432.sol-STOCoin-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+name = Singapore Taix organization
+
+IRs:
+name(string) := Singapore Taix organization(string)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+symbol = STO
+
+IRs:
+symbol(string) := STO(string)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+decimals = 8
+
+IRs:
+decimals(uint256) := 8(uint256)"];
+}
+// Function: 1432.sol-STOCoin-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+totalSupply = 100000000e8
+
+IRs:
+totalSupply(uint256) := 10000000000000000(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 1432.sol-STOCoin-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->7;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_to != address(0))
+
+IRs:
+TMP_16 = CONVERT 0 to address
+TMP_17(bool) = _to != TMP_16
+TMP_18(None) = SOLIDITY_CALL require(bool)(TMP_17)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_amount <= balances[msg.sender])
+
+IRs:
+REF_2(uint256) -> balances[msg.sender]
+TMP_19(bool) = _amount <= REF_2
+TMP_20(None) = SOLIDITY_CALL require(bool)(TMP_19)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balances[msg.sender] = balances[msg.sender].sub(_amount)
+
+IRs:
+REF_3(uint256) -> balances[msg.sender]
+REF_4(uint256) -> balances[msg.sender]
+TMP_21(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_4', '_amount'] 
+REF_3(uint256) (->balances) := TMP_21(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+balances[_to] = balances[_to].add(_amount)
+
+IRs:
+REF_6(uint256) -> balances[_to]
+REF_7(uint256) -> balances[_to]
+TMP_22(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_7', '_amount'] 
+REF_6(uint256) (->balances) := TMP_22(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Transfer(msg.sender,_to,_amount)
+
+IRs:
+Emit Transfer(msg.sender,_to,_amount)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+onlyPayloadSize(2 * 32)
+
+IRs:
+TMP_24(uint256) = 2 * 32
+MODIFIER_CALL, STOCoin.onlyPayloadSize(uint256)(TMP_24)"];
+7->1;
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 1432.sol-STOCoin-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->9;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_to != address(0))
+
+IRs:
+TMP_26 = CONVERT 0 to address
+TMP_27(bool) = _to != TMP_26
+TMP_28(None) = SOLIDITY_CALL require(bool)(TMP_27)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_amount <= balances[_from])
+
+IRs:
+REF_9(uint256) -> balances[_from]
+TMP_29(bool) = _amount <= REF_9
+TMP_30(None) = SOLIDITY_CALL require(bool)(TMP_29)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(_amount <= allowed[_from][msg.sender])
+
+IRs:
+REF_10(mapping(address => uint256)) -> allowed[_from]
+REF_11(uint256) -> REF_10[msg.sender]
+TMP_31(bool) = _amount <= REF_11
+TMP_32(None) = SOLIDITY_CALL require(bool)(TMP_31)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+balances[_from] = balances[_from].sub(_amount)
+
+IRs:
+REF_12(uint256) -> balances[_from]
+REF_13(uint256) -> balances[_from]
+TMP_33(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_13', '_amount'] 
+REF_12(uint256) (->balances) := TMP_33(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+allowed[_from][msg.sender] = allowed[_from][msg.sender].sub(_amount)
+
+IRs:
+REF_15(mapping(address => uint256)) -> allowed[_from]
+REF_16(uint256) -> REF_15[msg.sender]
+REF_17(mapping(address => uint256)) -> allowed[_from]
+REF_18(uint256) -> REF_17[msg.sender]
+TMP_34(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_18', '_amount'] 
+REF_16(uint256) (->allowed) := TMP_34(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+balances[_to] = balances[_to].add(_amount)
+
+IRs:
+REF_20(uint256) -> balances[_to]
+REF_21(uint256) -> balances[_to]
+TMP_35(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_21', '_amount'] 
+REF_20(uint256) (->balances) := TMP_35(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+Transfer(_from,_to,_amount)
+
+IRs:
+Emit Transfer(_from,_to,_amount)"];
+7->8;
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+onlyPayloadSize(3 * 32)
+
+IRs:
+TMP_37(uint256) = 3 * 32
+MODIFIER_CALL, STOCoin.onlyPayloadSize(uint256)(TMP_37)"];
+9->1;
+10[label="Node Type: RETURN 10
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 1432.sol-STOCoin-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+newOwner != address(0)
+
+IRs:
+TMP_13 = CONVERT 0 to address
+TMP_14(bool) = newOwner != TMP_13
+CONDITION TMP_14"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, STOCoin.onlyOwner()()"];
+4->1;
+}
+// Function: 1432.sol-STOCoin-withdraw()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+etherBalance = this.balance
+
+IRs:
+REF_27(uint256) = SOLIDITY_CALL balance(address)(this)
+etherBalance(uint256) := REF_27([<slither.core.solidity_types.elementary_type.ElementaryType object at 0x7fa532c1b550>])"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner.transfer(etherBalance)
+
+IRs:
+Transfer dest:owner value:etherBalance"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, STOCoin.onlyOwner()()"];
+3->1;
+}
+// Function: 1432.sol-SafeMath-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_10(uint256) = a + b
+c(uint256) := TMP_10(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(c >= a)
+
+IRs:
+TMP_11(bool) = c >= a
+TMP_12(None) = SOLIDITY_CALL assert(bool)(TMP_11)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 1432.sol-SafeMath-div(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a / b
+
+IRs:
+TMP_6(uint256) = a / b
+c(uint256) := TMP_6(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 1432.sol-SafeMath-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_0(uint256) = a * b
+c(uint256) := TMP_0(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(a == 0 || c / a == b)
+
+IRs:
+TMP_1(bool) = a == 0
+TMP_2(uint256) = c / a
+TMP_3(bool) = TMP_2 == b
+TMP_4(bool) = TMP_1 || TMP_3
+TMP_5(None) = SOLIDITY_CALL assert(bool)(TMP_4)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 1432.sol-SafeMath-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(b <= a)
+
+IRs:
+TMP_7(bool) = b <= a
+TMP_8(None) = SOLIDITY_CALL assert(bool)(TMP_7)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_9(uint256) = a - b
+RETURN TMP_9"];
+}
+}

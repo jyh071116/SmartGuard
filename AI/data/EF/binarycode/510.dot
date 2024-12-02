@@ -1,0 +1,1686 @@
+digraph G {
+// Function: 510.sol-AbstractStorage-createInstance(address,bytes32,address,bytes32,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(_sender != 0 && _app_name != 0 && _provider != 0 && _registry_id != 0 && _calldata.length >= 4,invalid input)
+
+IRs:
+TMP_19(bool) = _sender != 0
+TMP_20(bool) = _app_name != 0
+TMP_21(bool) = TMP_19 && TMP_20
+TMP_22(bool) = _provider != 0
+TMP_23(bool) = TMP_21 && TMP_22
+TMP_24(bool) = _registry_id != 0
+TMP_25(bool) = TMP_23 && TMP_24
+REF_0 -> LENGTH _calldata
+TMP_26(bool) = REF_0 >= 4
+TMP_27(bool) = TMP_25 && TMP_26
+TMP_28(None) = SOLIDITY_CALL require(bool,string)(TMP_27,invalid input)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+new_exec_id = keccak256()(++ nonce)
+
+IRs:
+nonce(uint256) = nonce + 1
+TMP_29(bytes32) = SOLIDITY_CALL keccak256()(nonce)
+new_exec_id(bytes32) := TMP_29(bytes32)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+assert(bool)(getIndex(new_exec_id) == address(0))
+
+IRs:
+TMP_30(address) = INTERNAL_CALL, AbstractStorage.getIndex(bytes32)(new_exec_id)
+TMP_31 = CONVERT 0 to address
+TMP_32(bool) = TMP_30 == TMP_31
+TMP_33(None) = SOLIDITY_CALL assert(bool)(TMP_32)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+(index,version) = setImplementation(new_exec_id,_app_name,_provider,_registry_id)
+
+IRs:
+TUPLE_0(address,bytes32) = INTERNAL_CALL, AbstractStorage.setImplementation(bytes32,bytes32,address,bytes32)(new_exec_id,_app_name,_provider,_registry_id)
+index(address)= UNPACK TUPLE_0 index: 0 
+version(bytes32)= UNPACK TUPLE_0 index: 1 "];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+setContext(new_exec_id,_sender)
+
+IRs:
+INTERNAL_CALL, AbstractStorage.setContext(bytes32,address)(new_exec_id,_sender)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+require(bool,string)(address(index).delegatecall(_calldata) == false,Unsafe execution)
+
+IRs:
+TMP_35 = CONVERT index to address
+TMP_36(bool) = LOW_LEVEL_CALL, dest:TMP_35, function:delegatecall, arguments:['_calldata']  
+TMP_37(bool) = TMP_36 == False
+TMP_38(None) = SOLIDITY_CALL require(bool,string)(TMP_37,Unsafe execution)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+executeAppReturn(new_exec_id)
+
+IRs:
+TUPLE_1(uint256,uint256,uint256) = INTERNAL_CALL, AbstractStorage.executeAppReturn(bytes32)(new_exec_id)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+ApplicationInitialized(new_exec_id,index,msg.sender)
+
+IRs:
+Emit ApplicationInitialized(new_exec_id,index,msg.sender)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+assert(bool)(new_exec_id != bytes32(0))
+
+IRs:
+TMP_40 = CONVERT 0 to bytes32
+TMP_41(bool) = new_exec_id != TMP_40
+TMP_42(None) = SOLIDITY_CALL assert(bool)(TMP_41)"];
+10->11;
+11[label="Node Type: IF 11
+
+EXPRESSION:
+address(this).balance > 0
+
+IRs:
+TMP_43 = CONVERT this to address
+TMP_44(uint256) = SOLIDITY_CALL balance(address)(TMP_43)
+TMP_45(bool) = TMP_44 > 0
+CONDITION TMP_45"];
+11->12[label="True"];
+11->13[label="False"];
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+address(msg.sender).transfer(address(this).balance)
+
+IRs:
+TMP_46 = CONVERT msg.sender to address
+TMP_47 = CONVERT this to address
+TMP_48(uint256) = SOLIDITY_CALL balance(address)(TMP_47)
+Transfer dest:TMP_46 value:TMP_48"];
+12->13;
+13[label="Node Type: END_IF 13
+"];
+13->14;
+14[label="Node Type: RETURN 14
+
+EXPRESSION:
+(new_exec_id,version)
+
+IRs:
+RETURN new_exec_id,version"];
+}
+// Function: 510.sol-AbstractStorage-createRegistry(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+new_exec_id = keccak256()(++ nonce)
+
+IRs:
+nonce(uint256) = nonce + 1
+TMP_0(bytes32) = SOLIDITY_CALL keccak256()(nonce)
+new_exec_id(bytes32) := TMP_0(bytes32)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+put(new_exec_id,keccak256()(msg.sender,EXEC_PERMISSIONS),bytes32(1))
+
+IRs:
+TMP_1(bytes32) = SOLIDITY_CALL keccak256()(msg.sender,EXEC_PERMISSIONS)
+TMP_2 = CONVERT 1 to bytes32
+INTERNAL_CALL, AbstractStorage.put(bytes32,bytes32,bytes32)(new_exec_id,TMP_1,TMP_2)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+put(new_exec_id,APP_IDX_ADDR,bytes32(_registry_idx))
+
+IRs:
+TMP_4 = CONVERT _registry_idx to bytes32
+INTERNAL_CALL, AbstractStorage.put(bytes32,bytes32,bytes32)(new_exec_id,APP_IDX_ADDR,TMP_4)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+put(new_exec_id,keccak256()(REG_APP,implementation),bytes32(_implementation))
+
+IRs:
+TMP_6(bytes32) = SOLIDITY_CALL keccak256()(REG_APP,implementation)
+TMP_7 = CONVERT _implementation to bytes32
+INTERNAL_CALL, AbstractStorage.put(bytes32,bytes32,bytes32)(new_exec_id,TMP_6,TMP_7)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+put(new_exec_id,keccak256()(REG_APP_VER,implementation),bytes32(_implementation))
+
+IRs:
+TMP_9(bytes32) = SOLIDITY_CALL keccak256()(REG_APP_VER,implementation)
+TMP_10 = CONVERT _implementation to bytes32
+INTERNAL_CALL, AbstractStorage.put(bytes32,bytes32,bytes32)(new_exec_id,TMP_9,TMP_10)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+put(new_exec_id,keccak256()(UPDATE_INST_SEL,implementation),bytes32(_implementation))
+
+IRs:
+TMP_12(bytes32) = SOLIDITY_CALL keccak256()(UPDATE_INST_SEL,implementation)
+TMP_13 = CONVERT _implementation to bytes32
+INTERNAL_CALL, AbstractStorage.put(bytes32,bytes32,bytes32)(new_exec_id,TMP_12,TMP_13)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+put(new_exec_id,keccak256()(UPDATE_EXEC_SEL,implementation),bytes32(_implementation))
+
+IRs:
+TMP_15(bytes32) = SOLIDITY_CALL keccak256()(UPDATE_EXEC_SEL,implementation)
+TMP_16 = CONVERT _implementation to bytes32
+INTERNAL_CALL, AbstractStorage.put(bytes32,bytes32,bytes32)(new_exec_id,TMP_15,TMP_16)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+ApplicationInitialized(new_exec_id,_registry_idx,msg.sender)
+
+IRs:
+Emit ApplicationInitialized(new_exec_id,_registry_idx,msg.sender)"];
+8->9;
+9[label="Node Type: RETURN 9
+
+EXPRESSION:
+new_exec_id
+
+IRs:
+RETURN new_exec_id"];
+}
+// Function: 510.sol-AbstractStorage-doEmit(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(getAction(_ptr) == EMITS)
+
+IRs:
+TMP_190(bytes4) = INTERNAL_CALL, AbstractStorage.getAction(uint256)(_ptr)
+TMP_191(bool) = TMP_190 == EMITS
+TMP_192(None) = SOLIDITY_CALL assert(bool)(TMP_191)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_ptr += 4
+
+IRs:
+_ptr(uint256) = _ptr + 4"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+num_events = getLength(_ptr)
+
+IRs:
+TMP_193(uint256) = INTERNAL_CALL, AbstractStorage.getLength(uint256)(_ptr)
+num_events(uint256) := TMP_193(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+_ptr += 32
+
+IRs:
+_ptr(uint256) = _ptr + 32"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+"];
+6->7;
+7[label="Node Type: BEGIN_LOOP 7
+"];
+7->8;
+8[label="Node Type: IF_LOOP 8
+
+EXPRESSION:
+_ptr <= _ptr_bound && n_emitted < num_events
+
+IRs:
+TMP_194(bool) = _ptr <= _ptr_bound
+TMP_195(bool) = n_emitted < num_events
+TMP_196(bool) = TMP_194 && TMP_195
+CONDITION TMP_196"];
+8->9[label="True"];
+8->16[label="False"];
+9[label="Node Type: INLINE ASM 9
+"];
+9->10;
+10[label="Node Type: END INLINE ASM 10
+"];
+10->11;
+11[label="Node Type: NEW VARIABLE 11
+
+EXPRESSION:
+log_size = 32 + (32 * (1 + topics.length)) + data.length
+
+IRs:
+REF_21 -> LENGTH topics
+TMP_197(uint256) = 1 + REF_21
+TMP_198(uint256) = 32 * TMP_197
+TMP_199(uint256) = 32 + TMP_198
+REF_22 -> LENGTH data
+TMP_200(uint256) = TMP_199 + REF_22
+log_size(uint256) := TMP_200(uint256)"];
+11->12;
+12[label="Node Type: INLINE ASM 12
+"];
+12->13;
+13[label="Node Type: END INLINE ASM 13
+"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+n_emitted ++
+
+IRs:
+TMP_201(uint256) := n_emitted(uint256)
+n_emitted(uint256) = n_emitted + 1"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+_ptr += log_size
+
+IRs:
+_ptr(uint256) = _ptr + log_size"];
+15->8;
+16[label="Node Type: END_LOOP 16
+"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+ptr = _ptr
+
+IRs:
+ptr(uint256) := _ptr(uint256)"];
+17->18;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+require(bool)(n_emitted == num_events)
+
+IRs:
+TMP_202(bool) = n_emitted == num_events
+TMP_203(None) = SOLIDITY_CALL require(bool)(TMP_202)"];
+18->19;
+19[label="Node Type: RETURN 19
+
+EXPRESSION:
+(ptr,n_emitted)
+
+IRs:
+RETURN ptr,n_emitted"];
+}
+// Function: 510.sol-AbstractStorage-doPay(bytes32,uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.value > 0)
+
+IRs:
+TMP_155(bool) = msg.value > 0
+TMP_156(None) = SOLIDITY_CALL require(bool)(TMP_155)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(getAction(_ptr) == PAYS)
+
+IRs:
+TMP_157(bytes4) = INTERNAL_CALL, AbstractStorage.getAction(uint256)(_ptr)
+TMP_158(bool) = TMP_157 == PAYS
+TMP_159(None) = SOLIDITY_CALL assert(bool)(TMP_158)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_ptr += 4
+
+IRs:
+_ptr(uint256) = _ptr + 4"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+num_destinations = getLength(_ptr)
+
+IRs:
+TMP_160(uint256) = INTERNAL_CALL, AbstractStorage.getLength(uint256)(_ptr)
+num_destinations(uint256) := TMP_160(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+_ptr += 32
+
+IRs:
+_ptr(uint256) = _ptr + 32"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+"];
+7->8;
+8[label="Node Type: BEGIN_LOOP 8
+"];
+8->9;
+9[label="Node Type: IF_LOOP 9
+
+EXPRESSION:
+_ptr <= _ptr_bound && n_paid < num_destinations
+
+IRs:
+TMP_161(bool) = _ptr <= _ptr_bound
+TMP_162(bool) = n_paid < num_destinations
+TMP_163(bool) = TMP_161 && TMP_162
+CONDITION TMP_163"];
+9->10[label="True"];
+9->19[label="False"];
+10[label="Node Type: INLINE ASM 10
+"];
+10->11;
+11[label="Node Type: END INLINE ASM 11
+"];
+11->12;
+12[label="Node Type: IF 12
+
+EXPRESSION:
+pay_to == address(0) || pay_to == address(this)
+
+IRs:
+TMP_164 = CONVERT 0 to address
+TMP_165(bool) = pay_to == TMP_164
+TMP_166 = CONVERT this to address
+TMP_167(bool) = pay_to == TMP_166
+TMP_168(bool) = TMP_165 || TMP_167
+CONDITION TMP_168"];
+12->13[label="True"];
+12->14[label="False"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+revert(string)(PAYS: invalid destination)
+
+IRs:
+TMP_169(None) = SOLIDITY_CALL revert(string)(PAYS: invalid destination)"];
+13->14;
+14[label="Node Type: END_IF 14
+"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+address(pay_to).transfer(amt)
+
+IRs:
+TMP_170 = CONVERT pay_to to address
+Transfer dest:TMP_170 value:amt"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+n_paid ++
+
+IRs:
+TMP_172(uint256) := n_paid(uint256)
+n_paid(uint256) = n_paid + 1"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+_ptr += 64
+
+IRs:
+_ptr(uint256) = _ptr + 64"];
+17->18;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+DeliveredPayment(_exec_id,pay_to,amt)
+
+IRs:
+Emit DeliveredPayment(_exec_id,pay_to,amt)"];
+18->9;
+19[label="Node Type: END_LOOP 19
+"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+ptr = _ptr
+
+IRs:
+ptr(uint256) := _ptr(uint256)"];
+20->21;
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+assert(bool)(n_paid == num_destinations)
+
+IRs:
+TMP_174(bool) = n_paid == num_destinations
+TMP_175(None) = SOLIDITY_CALL assert(bool)(TMP_174)"];
+21->22;
+22[label="Node Type: RETURN 22
+
+EXPRESSION:
+(ptr,n_paid)
+
+IRs:
+RETURN ptr,n_paid"];
+}
+// Function: 510.sol-AbstractStorage-doStore(uint256,uint256,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(getAction(_ptr) == STORES && _exec_id != bytes32(0))
+
+IRs:
+TMP_176(bytes4) = INTERNAL_CALL, AbstractStorage.getAction(uint256)(_ptr)
+TMP_177(bool) = TMP_176 == STORES
+TMP_178 = CONVERT 0 to bytes32
+TMP_179(bool) = _exec_id != TMP_178
+TMP_180(bool) = TMP_177 && TMP_179
+TMP_181(None) = SOLIDITY_CALL assert(bool)(TMP_180)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_ptr += 4
+
+IRs:
+_ptr(uint256) = _ptr + 4"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+num_locations = getLength(_ptr)
+
+IRs:
+TMP_182(uint256) = INTERNAL_CALL, AbstractStorage.getLength(uint256)(_ptr)
+num_locations(uint256) := TMP_182(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+_ptr += 32
+
+IRs:
+_ptr(uint256) = _ptr + 32"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+"];
+6->7;
+7[label="Node Type: BEGIN_LOOP 7
+"];
+7->8;
+8[label="Node Type: IF_LOOP 8
+
+EXPRESSION:
+_ptr <= _ptr_bound && n_stored < num_locations
+
+IRs:
+TMP_183(bool) = _ptr <= _ptr_bound
+TMP_184(bool) = n_stored < num_locations
+TMP_185(bool) = TMP_183 && TMP_184
+CONDITION TMP_185"];
+8->9[label="True"];
+8->14[label="False"];
+9[label="Node Type: INLINE ASM 9
+"];
+9->10;
+10[label="Node Type: END INLINE ASM 10
+"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+store(_exec_id,location,value)
+
+IRs:
+INTERNAL_CALL, AbstractStorage.store(bytes32,bytes32,bytes32)(_exec_id,location,value)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+n_stored ++
+
+IRs:
+TMP_187(uint256) := n_stored(uint256)
+n_stored(uint256) = n_stored + 1"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+_ptr += 64
+
+IRs:
+_ptr(uint256) = _ptr + 64"];
+13->8;
+14[label="Node Type: END_LOOP 14
+"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+ptr = _ptr
+
+IRs:
+ptr(uint256) := _ptr(uint256)"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+require(bool)(n_stored == num_locations)
+
+IRs:
+TMP_188(bool) = n_stored == num_locations
+TMP_189(None) = SOLIDITY_CALL require(bool)(TMP_188)"];
+16->17;
+17[label="Node Type: RETURN 17
+
+EXPRESSION:
+(ptr,n_stored)
+
+IRs:
+RETURN ptr,n_stored"];
+}
+// Function: 510.sol-AbstractStorage-doThrow(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(getAction(_ptr) == THROWS)
+
+IRs:
+TMP_152(bytes4) = INTERNAL_CALL, AbstractStorage.getAction(uint256)(_ptr)
+TMP_153(bool) = TMP_152 == THROWS
+TMP_154(None) = SOLIDITY_CALL assert(bool)(TMP_153)"];
+1->2;
+2[label="Node Type: INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: END INLINE ASM 3
+"];
+}
+// Function: 510.sol-AbstractStorage-exec(address,bytes32,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_calldata.length >= 4 && _sender != address(0) && _exec_id != bytes32(0))
+
+IRs:
+REF_3 -> LENGTH _calldata
+TMP_50(bool) = REF_3 >= 4
+TMP_51 = CONVERT 0 to address
+TMP_52(bool) = _sender != TMP_51
+TMP_53(bool) = TMP_50 && TMP_52
+TMP_54 = CONVERT 0 to bytes32
+TMP_55(bool) = _exec_id != TMP_54
+TMP_56(bool) = TMP_53 && TMP_55
+TMP_57(None) = SOLIDITY_CALL require(bool)(TMP_56)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+target = getTarget(_exec_id,getSelector(_calldata))
+
+IRs:
+TMP_58(bytes4) = INTERNAL_CALL, AbstractStorage.getSelector(bytes)(_calldata)
+TMP_59(address) = INTERNAL_CALL, AbstractStorage.getTarget(bytes32,bytes4)(_exec_id,TMP_58)
+target(address) := TMP_59(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool,string)(target != address(0),Uninitialized application)
+
+IRs:
+TMP_60 = CONVERT 0 to address
+TMP_61(bool) = target != TMP_60
+TMP_62(None) = SOLIDITY_CALL require(bool,string)(TMP_61,Uninitialized application)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+setContext(_exec_id,_sender)
+
+IRs:
+INTERNAL_CALL, AbstractStorage.setContext(bytes32,address)(_exec_id,_sender)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool,string)(address(target).delegatecall(_calldata) == false,Unsafe execution)
+
+IRs:
+TMP_64 = CONVERT target to address
+TMP_65(bool) = LOW_LEVEL_CALL, dest:TMP_64, function:delegatecall, arguments:['_calldata']  
+TMP_66(bool) = TMP_65 == False
+TMP_67(None) = SOLIDITY_CALL require(bool,string)(TMP_66,Unsafe execution)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+(n_emitted,n_paid,n_stored) = executeAppReturn(_exec_id)
+
+IRs:
+TUPLE_2(uint256,uint256,uint256) = INTERNAL_CALL, AbstractStorage.executeAppReturn(bytes32)(_exec_id)
+n_emitted(uint256)= UNPACK TUPLE_2 index: 0 
+n_paid(uint256)= UNPACK TUPLE_2 index: 1 
+n_stored(uint256)= UNPACK TUPLE_2 index: 2 "];
+6->7;
+7[label="Node Type: IF 7
+
+EXPRESSION:
+n_emitted == 0 && n_paid == 0 && n_stored == 0
+
+IRs:
+TMP_68(bool) = n_emitted == 0
+TMP_69(bool) = n_paid == 0
+TMP_70(bool) = TMP_68 && TMP_69
+TMP_71(bool) = n_stored == 0
+TMP_72(bool) = TMP_70 && TMP_71
+CONDITION TMP_72"];
+7->8[label="True"];
+7->9[label="False"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+revert(string)(No state change occured)
+
+IRs:
+TMP_73(None) = SOLIDITY_CALL revert(string)(No state change occured)"];
+8->9;
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+ApplicationExecution(_exec_id,target)
+
+IRs:
+Emit ApplicationExecution(_exec_id,target)"];
+10->11;
+11[label="Node Type: IF 11
+
+EXPRESSION:
+address(this).balance > 0
+
+IRs:
+TMP_75 = CONVERT this to address
+TMP_76(uint256) = SOLIDITY_CALL balance(address)(TMP_75)
+TMP_77(bool) = TMP_76 > 0
+CONDITION TMP_77"];
+11->12[label="True"];
+11->13[label="False"];
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+address(msg.sender).transfer(address(this).balance)
+
+IRs:
+TMP_78 = CONVERT msg.sender to address
+TMP_79 = CONVERT this to address
+TMP_80(uint256) = SOLIDITY_CALL balance(address)(TMP_79)
+Transfer dest:TMP_78 value:TMP_80"];
+12->13;
+13[label="Node Type: END_IF 13
+"];
+13->14;
+14[label="Node Type: RETURN 14
+
+EXPRESSION:
+(n_emitted,n_paid,n_stored)
+
+IRs:
+RETURN n_emitted,n_paid,n_stored"];
+}
+// Function: 510.sol-AbstractStorage-executeAppReturn(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+(ptr_bound,_ptr) = getReturnedData()
+
+IRs:
+TUPLE_3(uint256,uint256) = INTERNAL_CALL, AbstractStorage.getReturnedData()()
+ptr_bound(uint256)= UNPACK TUPLE_3 index: 0 
+_ptr(uint256)= UNPACK TUPLE_3 index: 1 "];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+getAction(_ptr) == THROWS
+
+IRs:
+TMP_82(bytes4) = INTERNAL_CALL, AbstractStorage.getAction(uint256)(_ptr)
+TMP_83(bool) = TMP_82 == THROWS
+CONDITION TMP_83"];
+4->5[label="True"];
+4->7[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+doThrow(_ptr)
+
+IRs:
+INTERNAL_CALL, AbstractStorage.doThrow(uint256)(_ptr)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+assert(bool)(false)
+
+IRs:
+TMP_85(None) = SOLIDITY_CALL assert(bool)(False)"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+require(bool,string)(ptr_bound >= _ptr + 64,Malformed returndata - invalid size)
+
+IRs:
+TMP_86(uint256) = _ptr + 64
+TMP_87(bool) = ptr_bound >= TMP_86
+TMP_88(None) = SOLIDITY_CALL require(bool,string)(TMP_87,Malformed returndata - invalid size)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+_ptr += 64
+
+IRs:
+_ptr(uint256) = _ptr + 64"];
+9->10;
+10[label="Node Type: NEW VARIABLE 10
+"];
+10->11;
+11[label="Node Type: BEGIN_LOOP 11
+"];
+11->12;
+12[label="Node Type: IF_LOOP 12
+
+EXPRESSION:
+_ptr <= ptr_bound && (action = getAction(_ptr)) != 0x0
+
+IRs:
+TMP_89(bool) = _ptr <= ptr_bound
+TMP_90(bytes4) = INTERNAL_CALL, AbstractStorage.getAction(uint256)(_ptr)
+action(bytes4) := TMP_90(bytes4)
+TMP_91(bool) = action != 0
+TMP_92(bool) = TMP_89 && TMP_91
+CONDITION TMP_92"];
+12->13[label="True"];
+12->29[label="False"];
+13[label="Node Type: IF 13
+
+EXPRESSION:
+action == EMITS
+
+IRs:
+TMP_93(bool) = action == EMITS
+CONDITION TMP_93"];
+13->14[label="True"];
+13->17[label="False"];
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+require(bool,string)(n_emitted == 0,Duplicate action: EMITS)
+
+IRs:
+TMP_94(bool) = n_emitted == 0
+TMP_95(None) = SOLIDITY_CALL require(bool,string)(TMP_94,Duplicate action: EMITS)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+(_ptr,n_emitted) = doEmit(_ptr,ptr_bound)
+
+IRs:
+TUPLE_4(uint256,uint256) = INTERNAL_CALL, AbstractStorage.doEmit(uint256,uint256)(_ptr,ptr_bound)
+_ptr(uint256)= UNPACK TUPLE_4 index: 0 
+n_emitted(uint256)= UNPACK TUPLE_4 index: 1 "];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+require(bool,string)(n_emitted != 0,Unfulfilled action: EMITS)
+
+IRs:
+TMP_96(bool) = n_emitted != 0
+TMP_97(None) = SOLIDITY_CALL require(bool,string)(TMP_96,Unfulfilled action: EMITS)"];
+16->28;
+17[label="Node Type: IF 17
+
+EXPRESSION:
+action == STORES
+
+IRs:
+TMP_98(bool) = action == STORES
+CONDITION TMP_98"];
+17->18[label="True"];
+17->21[label="False"];
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+require(bool,string)(n_stored == 0,Duplicate action: STORES)
+
+IRs:
+TMP_99(bool) = n_stored == 0
+TMP_100(None) = SOLIDITY_CALL require(bool,string)(TMP_99,Duplicate action: STORES)"];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+(_ptr,n_stored) = doStore(_ptr,ptr_bound,_exec_id)
+
+IRs:
+TUPLE_5(uint256,uint256) = INTERNAL_CALL, AbstractStorage.doStore(uint256,uint256,bytes32)(_ptr,ptr_bound,_exec_id)
+_ptr(uint256)= UNPACK TUPLE_5 index: 0 
+n_stored(uint256)= UNPACK TUPLE_5 index: 1 "];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+require(bool,string)(n_stored != 0,Unfulfilled action: STORES)
+
+IRs:
+TMP_101(bool) = n_stored != 0
+TMP_102(None) = SOLIDITY_CALL require(bool,string)(TMP_101,Unfulfilled action: STORES)"];
+20->27;
+21[label="Node Type: IF 21
+
+EXPRESSION:
+action == PAYS
+
+IRs:
+TMP_103(bool) = action == PAYS
+CONDITION TMP_103"];
+21->22[label="True"];
+21->25[label="False"];
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+require(bool,string)(n_paid == 0,Duplicate action: PAYS)
+
+IRs:
+TMP_104(bool) = n_paid == 0
+TMP_105(None) = SOLIDITY_CALL require(bool,string)(TMP_104,Duplicate action: PAYS)"];
+22->23;
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+(_ptr,n_paid) = doPay(_exec_id,_ptr,ptr_bound)
+
+IRs:
+TUPLE_6(uint256,uint256) = INTERNAL_CALL, AbstractStorage.doPay(bytes32,uint256,uint256)(_exec_id,_ptr,ptr_bound)
+_ptr(uint256)= UNPACK TUPLE_6 index: 0 
+n_paid(uint256)= UNPACK TUPLE_6 index: 1 "];
+23->24;
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+require(bool,string)(n_paid != 0,Unfulfilled action: PAYS)
+
+IRs:
+TMP_106(bool) = n_paid != 0
+TMP_107(None) = SOLIDITY_CALL require(bool,string)(TMP_106,Unfulfilled action: PAYS)"];
+24->26;
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+revert(string)(Malformed returndata - unknown action)
+
+IRs:
+TMP_108(None) = SOLIDITY_CALL revert(string)(Malformed returndata - unknown action)"];
+25->26;
+26[label="Node Type: END_IF 26
+"];
+26->27;
+27[label="Node Type: END_IF 27
+"];
+27->28;
+28[label="Node Type: END_IF 28
+"];
+28->12;
+29[label="Node Type: END_LOOP 29
+"];
+29->30;
+30[label="Node Type: EXPRESSION 30
+
+EXPRESSION:
+assert(bool)(n_emitted != 0 || n_paid != 0 || n_stored != 0)
+
+IRs:
+TMP_109(bool) = n_emitted != 0
+TMP_110(bool) = n_paid != 0
+TMP_111(bool) = TMP_109 || TMP_110
+TMP_112(bool) = n_stored != 0
+TMP_113(bool) = TMP_111 || TMP_112
+TMP_114(None) = SOLIDITY_CALL assert(bool)(TMP_113)"];
+30->31;
+31[label="Node Type: RETURN 31
+
+EXPRESSION:
+(n_emitted,n_paid,n_stored)
+
+IRs:
+RETURN n_emitted,n_paid,n_stored"];
+}
+// Function: 510.sol-AbstractStorage-getAction(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: INLINE ASM 1
+"];
+1->2;
+2[label="Node Type: END INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+action
+
+IRs:
+RETURN action"];
+}
+// Function: 510.sol-AbstractStorage-getIndex(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+seed = APP_IDX_ADDR
+
+IRs:
+seed(bytes32) := APP_IDX_ADDR(bytes32)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: INLINE ASM 3
+"];
+3->4;
+4[label="Node Type: END INLINE ASM 4
+"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+getter(_exec_id,seed)
+
+IRs:
+TMP_148(address) = INTERNAL_DYNAMIC_CALL getter(_exec_id,seed)  
+RETURN TMP_148"];
+}
+// Function: 510.sol-AbstractStorage-getLength(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: INLINE ASM 1
+"];
+1->2;
+2[label="Node Type: END INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+length
+
+IRs:
+RETURN length"];
+}
+// Function: 510.sol-AbstractStorage-getReturnedData()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: INLINE ASM 1
+"];
+1->2;
+2[label="Node Type: END INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+(ptr_bounds,_returndata_ptr)
+
+IRs:
+RETURN ptr_bounds,_returndata_ptr"];
+}
+// Function: 510.sol-AbstractStorage-getSelector(bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: INLINE ASM 1
+"];
+1->2;
+2[label="Node Type: END INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+sel
+
+IRs:
+RETURN sel"];
+}
+// Function: 510.sol-AbstractStorage-getTarget(bytes32,bytes4)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+seed = keccak256()(_selector,implementation)
+
+IRs:
+TMP_149(bytes32) = SOLIDITY_CALL keccak256()(_selector,implementation)
+seed(bytes32) := TMP_149(bytes32)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: INLINE ASM 3
+"];
+3->4;
+4[label="Node Type: END INLINE ASM 4
+"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+getter(_exec_id,seed)
+
+IRs:
+TMP_150(address) = INTERNAL_DYNAMIC_CALL getter(_exec_id,seed)  
+RETURN TMP_150"];
+}
+// Function: 510.sol-AbstractStorage-put(bytes32,bytes32,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->2;
+2[label="Node Type: INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: END INLINE ASM 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+puts(_exec_id,_seed,_val)
+
+IRs:
+INTERNAL_DYNAMIC_CALL puts(_exec_id,_seed,_val)  "];
+}
+// Function: 510.sol-AbstractStorage-putMap(AbstractStorage.Map,bytes32,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_map.inner[_seed] = _val
+
+IRs:
+REF_18(mapping(bytes32 => bytes32)) -> _map.inner
+REF_19(bytes32) -> REF_18[_seed]
+REF_19(bytes32) (->_map) := _val(bytes32)"];
+}
+// Function: 510.sol-AbstractStorage-read(bytes32,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_location = keccak256()(_location,_exec_id)
+
+IRs:
+TMP_211(bytes32) = SOLIDITY_CALL keccak256()(_location,_exec_id)
+_location(bytes32) := TMP_211(bytes32)"];
+1->2;
+2[label="Node Type: INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: END INLINE ASM 3
+"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+data_read
+
+IRs:
+RETURN data_read"];
+}
+// Function: 510.sol-AbstractStorage-readMap(AbstractStorage.Map,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+_map.inner[_seed]
+
+IRs:
+REF_16(mapping(bytes32 => bytes32)) -> _map.inner
+REF_17(bytes32) -> REF_16[_seed]
+RETURN REF_17"];
+}
+// Function: 510.sol-AbstractStorage-readMulti(bytes32,bytes32[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+data_read = new bytes32[](_locations.length)
+
+IRs:
+REF_23 -> LENGTH _locations
+TMP_213(bytes32[])  = new bytes32[](REF_23)
+data_read(bytes32[]) = ['TMP_213(bytes32[])']"];
+1->4;
+2[label="Node Type: BEGIN_LOOP 2
+"];
+2->5;
+3[label="Node Type: END_LOOP 3
+"];
+3->8;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+4->2;
+5[label="Node Type: IF_LOOP 5
+
+EXPRESSION:
+i < _locations.length
+
+IRs:
+REF_24 -> LENGTH _locations
+TMP_214(bool) = i < REF_24
+CONDITION TMP_214"];
+5->6[label="True"];
+5->3[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+data_read[i] = read(_exec_id,_locations[i])
+
+IRs:
+REF_25(bytes32) -> data_read[i]
+REF_26(bytes32) -> _locations[i]
+TMP_215(bytes32) = INTERNAL_CALL, AbstractStorage.read(bytes32,bytes32)(_exec_id,REF_26)
+REF_25(bytes32) (->data_read) := TMP_215(bytes32)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_216(uint256) := i(uint256)
+i(uint256) = i + 1"];
+7->5;
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+data_read
+
+IRs:
+RETURN data_read"];
+}
+// Function: 510.sol-AbstractStorage-setContext(bytes32,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(_exec_id != bytes32(0) && _sender != address(0))
+
+IRs:
+TMP_204 = CONVERT 0 to bytes32
+TMP_205(bool) = _exec_id != TMP_204
+TMP_206 = CONVERT 0 to address
+TMP_207(bool) = _sender != TMP_206
+TMP_208(bool) = TMP_205 && TMP_207
+TMP_209(None) = SOLIDITY_CALL assert(bool)(TMP_208)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+exec_id = _exec_id
+
+IRs:
+exec_id(bytes32) := _exec_id(bytes32)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+sender = _sender
+
+IRs:
+sender(address) := _sender(address)"];
+}
+// Function: 510.sol-AbstractStorage-setImplementation(bytes32,bytes32,address,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+index = getIndex(_registry_id)
+
+IRs:
+TMP_115(address) = INTERNAL_CALL, AbstractStorage.getIndex(bytes32)(_registry_id)
+index(address) := TMP_115(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(index != address(0) && index != address(this),Registry application not found)
+
+IRs:
+TMP_116 = CONVERT 0 to address
+TMP_117(bool) = index != TMP_116
+TMP_118 = CONVERT this to address
+TMP_119(bool) = index != TMP_118
+TMP_120(bool) = TMP_117 && TMP_119
+TMP_121(None) = SOLIDITY_CALL require(bool,string)(TMP_120,Registry application not found)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+version = RegistryInterface(index).getLatestVersion(address(this),_registry_id,_provider,_app_name)
+
+IRs:
+TMP_122 = CONVERT index to RegistryInterface
+TMP_123 = CONVERT this to address
+TMP_124(bytes32) = HIGH_LEVEL_CALL, dest:TMP_122(RegistryInterface), function:getLatestVersion, arguments:['TMP_123', '_registry_id', '_provider', '_app_name']  
+version(bytes32) := TMP_124(bytes32)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool,string)(version != bytes32(0),Invalid version name)
+
+IRs:
+TMP_125 = CONVERT 0 to bytes32
+TMP_126(bool) = version != TMP_125
+TMP_127(None) = SOLIDITY_CALL require(bool,string)(TMP_126,Invalid version name)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+(index,selectors,implementations) = RegistryInterface(index).getVersionImplementation(address(this),_registry_id,_provider,_app_name,version)
+
+IRs:
+TMP_128 = CONVERT index to RegistryInterface
+TMP_129 = CONVERT this to address
+TUPLE_7(address,bytes4[],address[]) = HIGH_LEVEL_CALL, dest:TMP_128(RegistryInterface), function:getVersionImplementation, arguments:['TMP_129', '_registry_id', '_provider', '_app_name', 'version']  
+index(address)= UNPACK TUPLE_7 index: 0 
+selectors(bytes4[])= UNPACK TUPLE_7 index: 1 
+implementations(address[])= UNPACK TUPLE_7 index: 2 "];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+require(bool,string)(index != address(0),Invalid index address)
+
+IRs:
+TMP_130 = CONVERT 0 to address
+TMP_131(bool) = index != TMP_130
+TMP_132(None) = SOLIDITY_CALL require(bool,string)(TMP_131,Invalid index address)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+require(bool,string)(selectors.length == implementations.length && selectors.length != 0,Invalid implementation length)
+
+IRs:
+REF_8 -> LENGTH selectors
+REF_9 -> LENGTH implementations
+TMP_133(bool) = REF_8 == REF_9
+REF_10 -> LENGTH selectors
+TMP_134(bool) = REF_10 != 0
+TMP_135(bool) = TMP_133 && TMP_134
+TMP_136(None) = SOLIDITY_CALL require(bool,string)(TMP_135,Invalid implementation length)"];
+9->10;
+10[label="Node Type: NEW VARIABLE 10
+
+EXPRESSION:
+seed = APP_IDX_ADDR
+
+IRs:
+seed(bytes32) := APP_IDX_ADDR(bytes32)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+put(_new_exec_id,seed,bytes32(index))
+
+IRs:
+TMP_137 = CONVERT index to bytes32
+INTERNAL_CALL, AbstractStorage.put(bytes32,bytes32,bytes32)(_new_exec_id,seed,TMP_137)"];
+11->14;
+12[label="Node Type: BEGIN_LOOP 12
+"];
+12->15;
+13[label="Node Type: END_LOOP 13
+"];
+13->20;
+14[label="Node Type: NEW VARIABLE 14
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+14->12;
+15[label="Node Type: IF_LOOP 15
+
+EXPRESSION:
+i < selectors.length
+
+IRs:
+REF_11 -> LENGTH selectors
+TMP_139(bool) = i < REF_11
+CONDITION TMP_139"];
+15->16[label="True"];
+15->13[label="False"];
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+require(bool,string)(selectors[i] != 0 && implementations[i] != 0,invalid input - expected nonzero implementation)
+
+IRs:
+REF_12(bytes4) -> selectors[i]
+TMP_140(bool) = REF_12 != 0
+REF_13(address) -> implementations[i]
+TMP_141(bool) = REF_13 != 0
+TMP_142(bool) = TMP_140 && TMP_141
+TMP_143(None) = SOLIDITY_CALL require(bool,string)(TMP_142,invalid input - expected nonzero implementation)"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+seed = keccak256()(selectors[i],implementation)
+
+IRs:
+REF_14(bytes4) -> selectors[i]
+TMP_144(bytes32) = SOLIDITY_CALL keccak256()(REF_14,implementation)
+seed(bytes32) := TMP_144(bytes32)"];
+17->18;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+put(_new_exec_id,seed,bytes32(implementations[i]))
+
+IRs:
+REF_15(address) -> implementations[i]
+TMP_145 = CONVERT REF_15 to bytes32
+INTERNAL_CALL, AbstractStorage.put(bytes32,bytes32,bytes32)(_new_exec_id,seed,TMP_145)"];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_147(uint256) := i(uint256)
+i(uint256) = i + 1"];
+19->15;
+20[label="Node Type: RETURN 20
+
+EXPRESSION:
+(index,version)
+
+IRs:
+RETURN index,version"];
+21[label="Node Type: RETURN 21
+
+EXPRESSION:
+(index,version)
+
+IRs:
+RETURN index,version"];
+}
+// Function: 510.sol-AbstractStorage-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+EXEC_PERMISSIONS = keccak256()(script_exec_permissions)
+
+IRs:
+TMP_217(bytes32) = SOLIDITY_CALL keccak256()(script_exec_permissions)
+EXEC_PERMISSIONS(bytes32) := TMP_217(bytes32)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+APP_IDX_ADDR = keccak256()(index)
+
+IRs:
+TMP_218(bytes32) = SOLIDITY_CALL keccak256()(index)
+APP_IDX_ADDR(bytes32) := TMP_218(bytes32)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+EMITS = bytes4(keccak256()(Emit((bytes32[],bytes)[])))
+
+IRs:
+TMP_219(bytes32) = SOLIDITY_CALL keccak256()(Emit((bytes32[],bytes)[]))
+TMP_220 = CONVERT TMP_219 to bytes4
+EMITS(bytes4) := TMP_220(bytes4)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+STORES = bytes4(keccak256()(Store(bytes32[])))
+
+IRs:
+TMP_221(bytes32) = SOLIDITY_CALL keccak256()(Store(bytes32[]))
+TMP_222 = CONVERT TMP_221 to bytes4
+STORES(bytes4) := TMP_222(bytes4)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+PAYS = bytes4(keccak256()(Pay(bytes32[])))
+
+IRs:
+TMP_223(bytes32) = SOLIDITY_CALL keccak256()(Pay(bytes32[]))
+TMP_224 = CONVERT TMP_223 to bytes4
+PAYS(bytes4) := TMP_224(bytes4)"];
+4->5;
+5[label="Node Type: OTHER_ENTRYPOINT 5
+
+EXPRESSION:
+THROWS = bytes4(keccak256()(Error(string)))
+
+IRs:
+TMP_225(bytes32) = SOLIDITY_CALL keccak256()(Error(string))
+TMP_226 = CONVERT TMP_225 to bytes4
+THROWS(bytes4) := TMP_226(bytes4)"];
+5->6;
+6[label="Node Type: OTHER_ENTRYPOINT 6
+
+EXPRESSION:
+REG_APP = bytes4(keccak256()(registerApp(bytes32,address,bytes4[],address[])))
+
+IRs:
+TMP_227(bytes32) = SOLIDITY_CALL keccak256()(registerApp(bytes32,address,bytes4[],address[]))
+TMP_228 = CONVERT TMP_227 to bytes4
+REG_APP(bytes4) := TMP_228(bytes4)"];
+6->7;
+7[label="Node Type: OTHER_ENTRYPOINT 7
+
+EXPRESSION:
+REG_APP_VER = bytes4(keccak256()(registerAppVersion(bytes32,bytes32,address,bytes4[],address[])))
+
+IRs:
+TMP_229(bytes32) = SOLIDITY_CALL keccak256()(registerAppVersion(bytes32,bytes32,address,bytes4[],address[]))
+TMP_230 = CONVERT TMP_229 to bytes4
+REG_APP_VER(bytes4) := TMP_230(bytes4)"];
+7->8;
+8[label="Node Type: OTHER_ENTRYPOINT 8
+
+EXPRESSION:
+UPDATE_EXEC_SEL = bytes4(keccak256()(updateExec(address)))
+
+IRs:
+TMP_231(bytes32) = SOLIDITY_CALL keccak256()(updateExec(address))
+TMP_232 = CONVERT TMP_231 to bytes4
+UPDATE_EXEC_SEL(bytes4) := TMP_232(bytes4)"];
+8->9;
+9[label="Node Type: OTHER_ENTRYPOINT 9
+
+EXPRESSION:
+UPDATE_INST_SEL = bytes4(keccak256()(updateInstance(bytes32,bytes32,bytes32)))
+
+IRs:
+TMP_233(bytes32) = SOLIDITY_CALL keccak256()(updateInstance(bytes32,bytes32,bytes32))
+TMP_234 = CONVERT TMP_233 to bytes4
+UPDATE_INST_SEL(bytes4) := TMP_234(bytes4)"];
+}
+// Function: 510.sol-AbstractStorage-store(bytes32,bytes32,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_location = keccak256()(_location,_exec_id)
+
+IRs:
+TMP_210(bytes32) = SOLIDITY_CALL keccak256()(_location,_exec_id)
+_location(bytes32) := TMP_210(bytes32)"];
+1->2;
+2[label="Node Type: INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: END INLINE ASM 3
+"];
+}
+// Function: 510.sol-RegistryInterface-getLatestVersion(address,bytes32,address,bytes32)
+digraph{
+}
+// Function: 510.sol-RegistryInterface-getVersionImplementation(address,bytes32,address,bytes32,bytes32)
+digraph{
+}
+}

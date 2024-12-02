@@ -1,0 +1,1829 @@
+digraph G {
+// Function: 38787.sol-EscrowGoods-EscrowGoods(address,uint256,uint256,uint256,uint16,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+seller = msg.sender
+
+IRs:
+seller(address) := msg.sender(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+arbiter = _arbiter
+
+IRs:
+arbiter(address) := _arbiter(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+freezePeriod = _freezePeriod
+
+IRs:
+freezePeriod(uint256) := _freezePeriod(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+feePromille = _feePromille
+
+IRs:
+feePromille(uint256) := _feePromille(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+rewardPromille = _rewardPromille
+
+IRs:
+rewardPromille(uint256) := _rewardPromille(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+status = Available
+
+IRs:
+status(uint16) := Available(uint16)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+count = _count
+
+IRs:
+count(uint16) := _count(uint16)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+price = _price
+
+IRs:
+price(uint256) := _price(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+availableCount = count
+
+IRs:
+availableCount(uint16) := count(uint16)"];
+}
+// Function: 38787.sol-EscrowGoods-accept(uint256,string,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->13;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+info = escrows[_lockId]
+
+IRs:
+REF_64(EscrowGoods.EscrowInfo) -> escrows[_lockId]
+info(EscrowGoods.EscrowInfo) := REF_64(EscrowGoods.EscrowInfo)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+info.count > availableCount
+
+IRs:
+REF_65(uint16) -> info.count
+TMP_103(bool) = REF_65 > availableCount
+CONDITION TMP_103"];
+2->3[label="True"];
+2->5[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+logDebug(info.count > availableCount)
+
+IRs:
+INTERNAL_CALL, EscrowGoods.logDebug(string)(info.count > availableCount)"];
+3->4;
+4[label="Node Type: RETURN 4
+"];
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+info.count > pendingCount
+
+IRs:
+REF_66(uint16) -> info.count
+TMP_105(bool) = REF_66 > pendingCount
+CONDITION TMP_105"];
+6->7[label="True"];
+6->9[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+logDebug(info.count > pendingCount)
+
+IRs:
+INTERNAL_CALL, EscrowGoods.logDebug(string)(info.count > pendingCount)"];
+7->8;
+8[label="Node Type: RETURN 8
+"];
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+pendingCount -= info.count
+
+IRs:
+REF_67(uint16) -> info.count
+pendingCount(uint16) = pendingCount - REF_67"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+availableCount -= info.count
+
+IRs:
+REF_68(uint16) -> info.count
+availableCount(uint16) = availableCount - REF_68"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+logEvent(_lockId,_dataInfo,_version,Accept,msg.sender,info.count,info.lockedFunds)
+
+IRs:
+REF_69(uint16) -> info.count
+REF_70(uint256) -> info.lockedFunds
+INTERNAL_CALL, EscrowGoods.logEvent(uint256,string,uint256,uint16,address,uint256,uint256)(_lockId,_dataInfo,_version,Accept,msg.sender,REF_69,REF_70)"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, EscrowGoods.onlyOwner()()"];
+13->1;
+}
+// Function: 38787.sol-EscrowGoods-addDescription(string,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+logEvent(0,_dataInfo,_version,Description,msg.sender,0,0)
+
+IRs:
+INTERNAL_CALL, EscrowGoods.logEvent(uint256,string,uint256,uint16,address,uint256,uint256)(0,_dataInfo,_version,Description,msg.sender,0,0)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, EscrowGoods.onlyOwner()()"];
+2->1;
+}
+// Function: 38787.sol-EscrowGoods-arbYes(uint256,address,uint256,string,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->36;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+info = escrows[_lockId]
+
+IRs:
+REF_24(EscrowGoods.EscrowInfo) -> escrows[_lockId]
+info(EscrowGoods.EscrowInfo) := REF_24(EscrowGoods.EscrowInfo)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+info.lockedFunds == 0
+
+IRs:
+REF_25(uint256) -> info.lockedFunds
+TMP_41(bool) = REF_25 == 0
+CONDITION TMP_41"];
+2->3[label="True"];
+2->5[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+logDebug(info.lockedFunds == 0)
+
+IRs:
+INTERNAL_CALL, EscrowGoods.logDebug(string)(info.lockedFunds == 0)"];
+3->4;
+4[label="Node Type: RETURN 4
+"];
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+info.frozenFunds == 0
+
+IRs:
+REF_26(uint256) -> info.frozenFunds
+TMP_43(bool) = REF_26 == 0
+CONDITION TMP_43"];
+6->7[label="True"];
+6->9[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+logDebug(info.frozenFunds == 0)
+
+IRs:
+INTERNAL_CALL, EscrowGoods.logDebug(string)(info.frozenFunds == 0)"];
+7->8;
+8[label="Node Type: RETURN 8
+"];
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: IF 10
+
+EXPRESSION:
+_who != seller && _who != info.buyer
+
+IRs:
+TMP_45(bool) = _who != seller
+REF_27(address) -> info.buyer
+TMP_46(bool) = _who != REF_27
+TMP_47(bool) = TMP_45 && TMP_46
+CONDITION TMP_47"];
+10->11[label="True"];
+10->13[label="False"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+logDebug(_who != seller && _who != info.buyer)
+
+IRs:
+INTERNAL_CALL, EscrowGoods.logDebug(string)(_who != seller && _who != info.buyer)"];
+11->12;
+12[label="Node Type: RETURN 12
+"];
+13[label="Node Type: END_IF 13
+"];
+13->14;
+14[label="Node Type: IF 14
+
+EXPRESSION:
+! info.buyerNo || ! info.sellerNo
+
+IRs:
+REF_28(bool) -> info.buyerNo
+TMP_49 = UnaryType.BANG REF_28 
+REF_29(bool) -> info.sellerNo
+TMP_50 = UnaryType.BANG REF_29 
+TMP_51(bool) = TMP_49 || TMP_50
+CONDITION TMP_51"];
+14->15[label="True"];
+14->17[label="False"];
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+logDebug(!info.buyerNo || !info.sellerNo)
+
+IRs:
+INTERNAL_CALL, EscrowGoods.logDebug(string)(!info.buyerNo || !info.sellerNo)"];
+15->16;
+16[label="Node Type: RETURN 16
+"];
+17[label="Node Type: END_IF 17
+"];
+17->18;
+18[label="Node Type: IF 18
+
+EXPRESSION:
+_payment > info.lockedFunds
+
+IRs:
+REF_30(uint256) -> info.lockedFunds
+TMP_53(bool) = _payment > REF_30
+CONDITION TMP_53"];
+18->19[label="True"];
+18->21[label="False"];
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+logDebug(_payment > info.lockedFunds)
+
+IRs:
+INTERNAL_CALL, EscrowGoods.logDebug(string)(_payment > info.lockedFunds)"];
+19->20;
+20[label="Node Type: RETURN 20
+"];
+21[label="Node Type: END_IF 21
+"];
+21->22;
+22[label="Node Type: IF 22
+
+EXPRESSION:
+_payment > this.balance
+
+IRs:
+REF_31(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_55(bool) = _payment > REF_31
+CONDITION TMP_55"];
+22->23[label="True"];
+22->25[label="False"];
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+logDebug(_payment > this.balance)
+
+IRs:
+INTERNAL_CALL, EscrowGoods.logDebug(string)(_payment > this.balance)"];
+23->24;
+24[label="Node Type: RETURN 24
+"];
+25[label="Node Type: END_IF 25
+"];
+25->26;
+26[label="Node Type: NEW VARIABLE 26
+
+EXPRESSION:
+reward = (info.lockedFunds * rewardPromille) / 1000
+
+IRs:
+REF_32(uint256) -> info.lockedFunds
+TMP_57(uint256) = REF_32 * rewardPromille
+TMP_58(uint256) = TMP_57 / 1000
+reward(uint256) := TMP_58(uint256)"];
+26->27;
+27[label="Node Type: IF 27
+
+EXPRESSION:
+reward > (info.lockedFunds - _payment)
+
+IRs:
+REF_33(uint256) -> info.lockedFunds
+TMP_59(uint256) = REF_33 - _payment
+TMP_60(bool) = reward > TMP_59
+CONDITION TMP_60"];
+27->28[label="True"];
+27->30[label="False"];
+28[label="Node Type: EXPRESSION 28
+
+EXPRESSION:
+logDebug(reward > (info.lockedFunds - _payment))
+
+IRs:
+INTERNAL_CALL, EscrowGoods.logDebug(string)(reward > (info.lockedFunds - _payment))"];
+28->29;
+29[label="Node Type: RETURN 29
+"];
+30[label="Node Type: END_IF 30
+"];
+30->31;
+31[label="Node Type: EXPRESSION 31
+
+EXPRESSION:
+safeSend(_who,_payment)
+
+IRs:
+INTERNAL_CALL, EscrowGoods.safeSend(address,uint256)(_who,_payment)"];
+31->32;
+32[label="Node Type: EXPRESSION 32
+
+EXPRESSION:
+info.lockedFunds -= _payment
+
+IRs:
+REF_34(uint256) -> info.lockedFunds
+REF_34(-> info) = REF_34 - _payment"];
+32->33;
+33[label="Node Type: EXPRESSION 33
+
+EXPRESSION:
+feeFunds += info.lockedFunds
+
+IRs:
+REF_35(uint256) -> info.lockedFunds
+feeFunds(uint256) = feeFunds + REF_35"];
+33->34;
+34[label="Node Type: EXPRESSION 34
+
+EXPRESSION:
+info.lockedFunds = 0
+
+IRs:
+REF_36(uint256) -> info.lockedFunds
+REF_36(uint256) (->info) := 0(uint256)"];
+34->35;
+35[label="Node Type: EXPRESSION 35
+
+EXPRESSION:
+logEvent(_lockId,_dataInfo,_version,Resolved,msg.sender,info.count,_payment)
+
+IRs:
+REF_37(uint16) -> info.count
+INTERNAL_CALL, EscrowGoods.logEvent(uint256,string,uint256,uint16,address,uint256,uint256)(_lockId,_dataInfo,_version,Resolved,msg.sender,REF_37,_payment)"];
+36[label="Node Type: EXPRESSION 36
+
+EXPRESSION:
+onlyArbiter()
+
+IRs:
+MODIFIER_CALL, EscrowGoods.onlyArbiter()()"];
+36->1;
+}
+// Function: 38787.sol-EscrowGoods-buy(uint256,string,uint256,uint16)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+status != Available
+
+IRs:
+TMP_88(bool) = status != Available
+CONDITION TMP_88"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+msg.value < (price * _count)
+
+IRs:
+TMP_89(uint256) = price * _count
+TMP_90(bool) = msg.value < TMP_89
+CONDITION TMP_90"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: THROW 5
+"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: IF 7
+
+EXPRESSION:
+_count > availableCount
+
+IRs:
+TMP_91(bool) = _count > availableCount
+CONDITION TMP_91"];
+7->8[label="True"];
+7->9[label="False"];
+8[label="Node Type: THROW 8
+"];
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: IF 10
+
+EXPRESSION:
+_count == 0
+
+IRs:
+TMP_92(bool) = _count == 0
+CONDITION TMP_92"];
+10->11[label="True"];
+10->12[label="False"];
+11[label="Node Type: THROW 11
+"];
+12[label="Node Type: END_IF 12
+"];
+12->13;
+13[label="Node Type: IF 13
+
+EXPRESSION:
+feePromille > 1000
+
+IRs:
+TMP_93(bool) = feePromille > 1000
+CONDITION TMP_93"];
+13->14[label="True"];
+13->15[label="False"];
+14[label="Node Type: THROW 14
+"];
+15[label="Node Type: END_IF 15
+"];
+15->16;
+16[label="Node Type: IF 16
+
+EXPRESSION:
+rewardPromille > 1000
+
+IRs:
+TMP_94(bool) = rewardPromille > 1000
+CONDITION TMP_94"];
+16->17[label="True"];
+16->18[label="False"];
+17[label="Node Type: THROW 17
+"];
+18[label="Node Type: END_IF 18
+"];
+18->19;
+19[label="Node Type: IF 19
+
+EXPRESSION:
+(feePromille + rewardPromille) > 1000
+
+IRs:
+TMP_95(uint256) = feePromille + rewardPromille
+TMP_96(bool) = TMP_95 > 1000
+CONDITION TMP_96"];
+19->20[label="True"];
+19->21[label="False"];
+20[label="Node Type: THROW 20
+"];
+21[label="Node Type: END_IF 21
+"];
+21->22;
+22[label="Node Type: NEW VARIABLE 22
+
+EXPRESSION:
+info = escrows[_lockId]
+
+IRs:
+REF_55(EscrowGoods.EscrowInfo) -> escrows[_lockId]
+info(EscrowGoods.EscrowInfo) := REF_55(EscrowGoods.EscrowInfo)"];
+22->23;
+23[label="Node Type: IF 23
+
+EXPRESSION:
+info.lockedFunds > 0
+
+IRs:
+REF_56(uint256) -> info.lockedFunds
+TMP_97(bool) = REF_56 > 0
+CONDITION TMP_97"];
+23->24[label="True"];
+23->25[label="False"];
+24[label="Node Type: THROW 24
+"];
+25[label="Node Type: END_IF 25
+"];
+25->26;
+26[label="Node Type: NEW VARIABLE 26
+
+EXPRESSION:
+fee = (msg.value * feePromille) / 1000
+
+IRs:
+TMP_98(uint256) = msg.value * feePromille
+TMP_99(uint256) = TMP_98 / 1000
+fee(uint256) := TMP_99(uint256)"];
+26->27;
+27[label="Node Type: IF 27
+
+EXPRESSION:
+fee > msg.value
+
+IRs:
+TMP_100(bool) = fee > msg.value
+CONDITION TMP_100"];
+27->28[label="True"];
+27->29[label="False"];
+28[label="Node Type: THROW 28
+"];
+29[label="Node Type: END_IF 29
+"];
+29->30;
+30[label="Node Type: NEW VARIABLE 30
+
+EXPRESSION:
+funds = (msg.value - fee)
+
+IRs:
+TMP_101(uint256) = msg.value - fee
+funds(uint256) := TMP_101(uint256)"];
+30->31;
+31[label="Node Type: EXPRESSION 31
+
+EXPRESSION:
+feeFunds += fee
+
+IRs:
+feeFunds(uint256) = feeFunds + fee"];
+31->32;
+32[label="Node Type: EXPRESSION 32
+
+EXPRESSION:
+totalEscrows += 1
+
+IRs:
+totalEscrows(uint256) = totalEscrows + 1"];
+32->33;
+33[label="Node Type: EXPRESSION 33
+
+EXPRESSION:
+info.buyer = msg.sender
+
+IRs:
+REF_57(address) -> info.buyer
+REF_57(address) (->info) := msg.sender(address)"];
+33->34;
+34[label="Node Type: EXPRESSION 34
+
+EXPRESSION:
+info.lockedFunds = funds
+
+IRs:
+REF_58(uint256) -> info.lockedFunds
+REF_58(uint256) (->info) := funds(uint256)"];
+34->35;
+35[label="Node Type: EXPRESSION 35
+
+EXPRESSION:
+info.frozenFunds = 0
+
+IRs:
+REF_59(uint256) -> info.frozenFunds
+REF_59(uint256) (->info) := 0(uint256)"];
+35->36;
+36[label="Node Type: EXPRESSION 36
+
+EXPRESSION:
+info.buyerNo = false
+
+IRs:
+REF_60(bool) -> info.buyerNo
+REF_60(bool) (->info) := False(bool)"];
+36->37;
+37[label="Node Type: EXPRESSION 37
+
+EXPRESSION:
+info.sellerNo = false
+
+IRs:
+REF_61(bool) -> info.sellerNo
+REF_61(bool) (->info) := False(bool)"];
+37->38;
+38[label="Node Type: EXPRESSION 38
+
+EXPRESSION:
+info.count = _count
+
+IRs:
+REF_62(uint16) -> info.count
+REF_62(uint16) (->info) := _count(uint16)"];
+38->39;
+39[label="Node Type: EXPRESSION 39
+
+EXPRESSION:
+pendingCount += _count
+
+IRs:
+pendingCount(uint16) = pendingCount + _count"];
+39->40;
+40[label="Node Type: EXPRESSION 40
+
+EXPRESSION:
+buyers[msg.sender] = true
+
+IRs:
+REF_63(bool) -> buyers[msg.sender]
+REF_63(bool) (->buyers) := True(bool)"];
+40->41;
+41[label="Node Type: EXPRESSION 41
+
+EXPRESSION:
+logEvent(_lockId,_dataInfo,_version,Buy,msg.sender,_count,msg.value)
+
+IRs:
+INTERNAL_CALL, EscrowGoods.logEvent(uint256,string,uint256,uint16,address,uint256,uint256)(_lockId,_dataInfo,_version,Buy,msg.sender,_count,msg.value)"];
+}
+// Function: 38787.sol-EscrowGoods-cancel(string,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+status = Canceled
+
+IRs:
+status(uint16) := Canceled(uint16)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+logEvent(0,_dataInfo,_version,Cancel,msg.sender,availableCount,0)
+
+IRs:
+INTERNAL_CALL, EscrowGoods.logEvent(uint256,string,uint256,uint16,address,uint256,uint256)(0,_dataInfo,_version,Cancel,msg.sender,availableCount,0)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, EscrowGoods.onlyOwner()()"];
+3->1;
+}
+// Function: 38787.sol-EscrowGoods-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: THROW 1
+"];
+}
+// Function: 38787.sol-EscrowGoods-getFees()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->7;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+feeFunds > this.balance
+
+IRs:
+REF_38(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_65(bool) = feeFunds > REF_38
+CONDITION TMP_65"];
+1->2[label="True"];
+1->4[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+logDebug(feeFunds > this.balance)
+
+IRs:
+INTERNAL_CALL, EscrowGoods.logDebug(string)(feeFunds > this.balance)"];
+2->3;
+3[label="Node Type: RETURN 3
+"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+safeSend(arbiter,feeFunds)
+
+IRs:
+INTERNAL_CALL, EscrowGoods.safeSend(address,uint256)(arbiter,feeFunds)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+feeFunds = 0
+
+IRs:
+feeFunds(uint256) := 0(uint256)"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+onlyArbiter()
+
+IRs:
+MODIFIER_CALL, EscrowGoods.onlyArbiter()()"];
+7->1;
+}
+// Function: 38787.sol-EscrowGoods-getMoney(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+info = escrows[_lockId]
+
+IRs:
+REF_39(EscrowGoods.EscrowInfo) -> escrows[_lockId]
+info(EscrowGoods.EscrowInfo) := REF_39(EscrowGoods.EscrowInfo)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+info.lockedFunds == 0
+
+IRs:
+REF_40(uint256) -> info.lockedFunds
+TMP_69(bool) = REF_40 == 0
+CONDITION TMP_69"];
+2->3[label="True"];
+2->5[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+logDebug(info.lockedFunds == 0)
+
+IRs:
+INTERNAL_CALL, EscrowGoods.logDebug(string)(info.lockedFunds == 0)"];
+3->4;
+4[label="Node Type: RETURN 4
+"];
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+info.frozenFunds == 0
+
+IRs:
+REF_41(uint256) -> info.frozenFunds
+TMP_71(bool) = REF_41 == 0
+CONDITION TMP_71"];
+6->7[label="True"];
+6->9[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+logDebug(info.frozenFunds == 0)
+
+IRs:
+INTERNAL_CALL, EscrowGoods.logDebug(string)(info.frozenFunds == 0)"];
+7->8;
+8[label="Node Type: RETURN 8
+"];
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: IF 10
+
+EXPRESSION:
+now < (info.frozenTime + freezePeriod)
+
+IRs:
+REF_42(uint64) -> info.frozenTime
+TMP_73(uint64) = REF_42 + freezePeriod
+TMP_74(bool) = now < TMP_73
+CONDITION TMP_74"];
+10->11[label="True"];
+10->13[label="False"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+logDebug(now < (info.frozenTime + freezePeriod))
+
+IRs:
+INTERNAL_CALL, EscrowGoods.logDebug(string)(now < (info.frozenTime + freezePeriod))"];
+11->12;
+12[label="Node Type: RETURN 12
+"];
+13[label="Node Type: END_IF 13
+"];
+13->14;
+14[label="Node Type: NEW VARIABLE 14
+
+EXPRESSION:
+payment = info.lockedFunds
+
+IRs:
+REF_43(uint256) -> info.lockedFunds
+payment(uint256) := REF_43(uint256)"];
+14->15;
+15[label="Node Type: IF 15
+
+EXPRESSION:
+payment > this.balance
+
+IRs:
+REF_44(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_76(bool) = payment > REF_44
+CONDITION TMP_76"];
+15->16[label="True"];
+15->18[label="False"];
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+logDebug(payment > this.balance)
+
+IRs:
+INTERNAL_CALL, EscrowGoods.logDebug(string)(payment > this.balance)"];
+16->17;
+17[label="Node Type: RETURN 17
+"];
+18[label="Node Type: END_IF 18
+"];
+18->19;
+19[label="Node Type: IF 19
+
+EXPRESSION:
+info.buyerNo && info.sellerNo
+
+IRs:
+REF_45(bool) -> info.buyerNo
+REF_46(bool) -> info.sellerNo
+TMP_78(bool) = REF_45 && REF_46
+CONDITION TMP_78"];
+19->20[label="True"];
+19->27[label="False"];
+20[label="Node Type: IF 20
+
+EXPRESSION:
+now < (info.frozenTime + freezePeriod + arbitrationPeriod)
+
+IRs:
+REF_47(uint64) -> info.frozenTime
+TMP_79(uint64) = REF_47 + freezePeriod
+TMP_80(uint64) = TMP_79 + arbitrationPeriod
+TMP_81(bool) = now < TMP_80
+CONDITION TMP_81"];
+20->21[label="True"];
+20->23[label="False"];
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+logDebug(now < (info.frozenTime + freezePeriod + arbitrationPeriod))
+
+IRs:
+INTERNAL_CALL, EscrowGoods.logDebug(string)(now < (info.frozenTime + freezePeriod + arbitrationPeriod))"];
+21->22;
+22[label="Node Type: RETURN 22
+"];
+23[label="Node Type: END_IF 23
+"];
+23->24;
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+safeSend(info.buyer,payment)
+
+IRs:
+REF_48(address) -> info.buyer
+INTERNAL_CALL, EscrowGoods.safeSend(address,uint256)(REF_48,payment)"];
+24->25;
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+info.lockedFunds = 0
+
+IRs:
+REF_49(uint256) -> info.lockedFunds
+REF_49(uint256) (->info) := 0(uint256)"];
+25->26;
+26[label="Node Type: RETURN 26
+"];
+27[label="Node Type: END_IF 27
+"];
+27->28;
+28[label="Node Type: IF 28
+
+EXPRESSION:
+info.buyerNo
+
+IRs:
+REF_50(bool) -> info.buyerNo
+CONDITION REF_50"];
+28->29[label="True"];
+28->32[label="False"];
+29[label="Node Type: EXPRESSION 29
+
+EXPRESSION:
+safeSend(info.buyer,payment)
+
+IRs:
+REF_51(address) -> info.buyer
+INTERNAL_CALL, EscrowGoods.safeSend(address,uint256)(REF_51,payment)"];
+29->30;
+30[label="Node Type: EXPRESSION 30
+
+EXPRESSION:
+info.lockedFunds = 0
+
+IRs:
+REF_52(uint256) -> info.lockedFunds
+REF_52(uint256) (->info) := 0(uint256)"];
+30->31;
+31[label="Node Type: RETURN 31
+"];
+32[label="Node Type: END_IF 32
+"];
+32->33;
+33[label="Node Type: IF 33
+
+EXPRESSION:
+info.sellerNo
+
+IRs:
+REF_53(bool) -> info.sellerNo
+CONDITION REF_53"];
+33->34[label="True"];
+33->37[label="False"];
+34[label="Node Type: EXPRESSION 34
+
+EXPRESSION:
+safeSend(seller,payment)
+
+IRs:
+INTERNAL_CALL, EscrowGoods.safeSend(address,uint256)(seller,payment)"];
+34->35;
+35[label="Node Type: EXPRESSION 35
+
+EXPRESSION:
+info.lockedFunds = 0
+
+IRs:
+REF_54(uint256) -> info.lockedFunds
+REF_54(uint256) (->info) := 0(uint256)"];
+35->36;
+36[label="Node Type: RETURN 36
+"];
+37[label="Node Type: END_IF 37
+"];
+}
+// Function: 38787.sol-EscrowGoods-kill()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->10;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+totalEscrows > 0
+
+IRs:
+TMP_4(bool) = totalEscrows > 0
+CONDITION TMP_4"];
+1->2[label="True"];
+1->4[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+logDebug(totalEscrows > 0)
+
+IRs:
+INTERNAL_CALL, EscrowGoods.logDebug(string)(totalEscrows > 0)"];
+2->3;
+3[label="Node Type: RETURN 3
+"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+feeFunds > 0
+
+IRs:
+TMP_6(bool) = feeFunds > 0
+CONDITION TMP_6"];
+5->6[label="True"];
+5->8[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+logDebug(feeFunds > 0)
+
+IRs:
+INTERNAL_CALL, EscrowGoods.logDebug(string)(feeFunds > 0)"];
+6->7;
+7[label="Node Type: RETURN 7
+"];
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+suicide(address)(msg.sender)
+
+IRs:
+TMP_8(None) = SOLIDITY_CALL suicide(address)(msg.sender)"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, EscrowGoods.onlyOwner()()"];
+10->1;
+}
+// Function: 38787.sol-EscrowGoods-logDebug(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+logsCount ++
+
+IRs:
+TMP_0(uint256) := logsCount(uint256)
+logsCount(uint256) = logsCount + 1"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+LogDebug(message)
+
+IRs:
+Emit LogDebug(message)"];
+}
+// Function: 38787.sol-EscrowGoods-logEvent(uint256,string,uint256,uint16,address,uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+contentCount ++
+
+IRs:
+TMP_2(uint256) := contentCount(uint256)
+contentCount(uint256) = contentCount + 1"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+LogEvent(lockId,dataInfo,version,eventType,sender,count,payment)
+
+IRs:
+Emit LogEvent(lockId,dataInfo,version,eventType,sender,count,payment)"];
+}
+// Function: 38787.sol-EscrowGoods-no(uint256,string,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+info = escrows[_lockId]
+
+IRs:
+REF_12(EscrowGoods.EscrowInfo) -> escrows[_lockId]
+info(EscrowGoods.EscrowInfo) := REF_12(EscrowGoods.EscrowInfo)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+info.lockedFunds == 0
+
+IRs:
+REF_13(uint256) -> info.lockedFunds
+TMP_29(bool) = REF_13 == 0
+CONDITION TMP_29"];
+2->3[label="True"];
+2->5[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+logDebug(info.lockedFunds == 0)
+
+IRs:
+INTERNAL_CALL, EscrowGoods.logDebug(string)(info.lockedFunds == 0)"];
+3->4;
+4[label="Node Type: RETURN 4
+"];
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+msg.sender != info.buyer && msg.sender != seller
+
+IRs:
+REF_14(address) -> info.buyer
+TMP_31(bool) = msg.sender != REF_14
+TMP_32(bool) = msg.sender != seller
+TMP_33(bool) = TMP_31 && TMP_32
+CONDITION TMP_33"];
+6->7[label="True"];
+6->9[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+logDebug(msg.sender != info.buyer && msg.sender != seller)
+
+IRs:
+INTERNAL_CALL, EscrowGoods.logDebug(string)(msg.sender != info.buyer && msg.sender != seller)"];
+7->8;
+8[label="Node Type: RETURN 8
+"];
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: IF 10
+
+EXPRESSION:
+info.frozenFunds == 0
+
+IRs:
+REF_15(uint256) -> info.frozenFunds
+TMP_35(bool) = REF_15 == 0
+CONDITION TMP_35"];
+10->11[label="True"];
+10->13[label="False"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+info.frozenFunds = info.lockedFunds
+
+IRs:
+REF_16(uint256) -> info.frozenFunds
+REF_17(uint256) -> info.lockedFunds
+REF_16(uint256) (->info) := REF_17(uint256)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+info.frozenTime = uint64(now)
+
+IRs:
+REF_18(uint64) -> info.frozenTime
+TMP_36 = CONVERT now to uint64
+REF_18(uint64) (->info) := TMP_36(uint64)"];
+12->13;
+13[label="Node Type: END_IF 13
+"];
+13->14;
+14[label="Node Type: IF 14
+
+EXPRESSION:
+msg.sender == info.buyer
+
+IRs:
+REF_19(address) -> info.buyer
+TMP_37(bool) = msg.sender == REF_19
+CONDITION TMP_37"];
+14->15[label="True"];
+14->16[label="False"];
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+info.buyerNo = true
+
+IRs:
+REF_20(bool) -> info.buyerNo
+REF_20(bool) (->info) := True(bool)"];
+15->21;
+16[label="Node Type: IF 16
+
+EXPRESSION:
+msg.sender == seller
+
+IRs:
+TMP_38(bool) = msg.sender == seller
+CONDITION TMP_38"];
+16->17[label="True"];
+16->18[label="False"];
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+info.sellerNo = true
+
+IRs:
+REF_21(bool) -> info.sellerNo
+REF_21(bool) (->info) := True(bool)"];
+17->20;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+logDebug(unknown msg.sender)
+
+IRs:
+INTERNAL_CALL, EscrowGoods.logDebug(string)(unknown msg.sender)"];
+18->19;
+19[label="Node Type: RETURN 19
+"];
+20[label="Node Type: END_IF 20
+"];
+20->21;
+21[label="Node Type: END_IF 21
+"];
+21->22;
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+logEvent(_lockId,_dataInfo,_version,Freeze,msg.sender,info.count,info.lockedFunds)
+
+IRs:
+REF_22(uint16) -> info.count
+REF_23(uint256) -> info.lockedFunds
+INTERNAL_CALL, EscrowGoods.logEvent(uint256,string,uint256,uint16,address,uint256,uint256)(_lockId,_dataInfo,_version,Freeze,msg.sender,REF_22,REF_23)"];
+}
+// Function: 38787.sol-EscrowGoods-onlyArbiter()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != arbiter
+
+IRs:
+TMP_117(bool) = msg.sender != arbiter
+CONDITION TMP_117"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 38787.sol-EscrowGoods-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != seller
+
+IRs:
+TMP_116(bool) = msg.sender != seller
+CONDITION TMP_116"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 38787.sol-EscrowGoods-reject(uint256,string,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->9;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+info = escrows[_lockId]
+
+IRs:
+REF_71(EscrowGoods.EscrowInfo) -> escrows[_lockId]
+info(EscrowGoods.EscrowInfo) := REF_71(EscrowGoods.EscrowInfo)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+info.count > pendingCount
+
+IRs:
+REF_72(uint16) -> info.count
+TMP_109(bool) = REF_72 > pendingCount
+CONDITION TMP_109"];
+2->3[label="True"];
+2->5[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+logDebug(info.count > pendingCount)
+
+IRs:
+INTERNAL_CALL, EscrowGoods.logDebug(string)(info.count > pendingCount)"];
+3->4;
+4[label="Node Type: RETURN 4
+"];
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+pendingCount -= info.count
+
+IRs:
+REF_73(uint16) -> info.count
+pendingCount(uint16) = pendingCount - REF_73"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+yes(_lockId,_dataInfo,_version)
+
+IRs:
+INTERNAL_CALL, EscrowGoods.yes(uint256,string,uint256)(_lockId,_dataInfo,_version)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+logEvent(_lockId,_dataInfo,_version,Reject,msg.sender,info.count,info.lockedFunds)
+
+IRs:
+REF_74(uint16) -> info.count
+REF_75(uint256) -> info.lockedFunds
+INTERNAL_CALL, EscrowGoods.logEvent(uint256,string,uint256,uint16,address,uint256,uint256)(_lockId,_dataInfo,_version,Reject,msg.sender,REF_74,REF_75)"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, EscrowGoods.onlyOwner()()"];
+9->1;
+}
+// Function: 38787.sol-EscrowGoods-safeSend(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+atomicLock
+
+IRs:
+CONDITION atomicLock"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+atomicLock = true
+
+IRs:
+atomicLock(bool) := True(bool)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+! (addr.call.gas(safeGas).value(value)())
+
+IRs:
+TMP_12(bool) = LOW_LEVEL_CALL, dest:addr, function:call, arguments:[] value:value gas:safeGas
+TMP_13 = UnaryType.BANG TMP_12 
+CONDITION TMP_13"];
+5->6[label="True"];
+5->8[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+atomicLock = false
+
+IRs:
+atomicLock(bool) := False(bool)"];
+6->7;
+7[label="Node Type: THROW 7
+"];
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+atomicLock = false
+
+IRs:
+atomicLock(bool) := False(bool)"];
+}
+// Function: 38787.sol-EscrowGoods-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+None = 0
+
+IRs:
+None(uint16) := 0(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+Available = 1
+
+IRs:
+Available(uint16) := 1(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+Canceled = 2
+
+IRs:
+Canceled(uint16) := 2(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+Buy = 1
+
+IRs:
+Buy(uint16) := 1(uint256)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+Accept = 2
+
+IRs:
+Accept(uint16) := 2(uint256)"];
+4->5;
+5[label="Node Type: OTHER_ENTRYPOINT 5
+
+EXPRESSION:
+Reject = 3
+
+IRs:
+Reject(uint16) := 3(uint256)"];
+5->6;
+6[label="Node Type: OTHER_ENTRYPOINT 6
+
+EXPRESSION:
+Cancel = 4
+
+IRs:
+Cancel(uint16) := 4(uint256)"];
+6->7;
+7[label="Node Type: OTHER_ENTRYPOINT 7
+
+EXPRESSION:
+Description = 10
+
+IRs:
+Description(uint16) := 10(uint256)"];
+7->8;
+8[label="Node Type: OTHER_ENTRYPOINT 8
+
+EXPRESSION:
+Unlock = 11
+
+IRs:
+Unlock(uint16) := 11(uint256)"];
+8->9;
+9[label="Node Type: OTHER_ENTRYPOINT 9
+
+EXPRESSION:
+Freeze = 12
+
+IRs:
+Freeze(uint16) := 12(uint256)"];
+9->10;
+10[label="Node Type: OTHER_ENTRYPOINT 10
+
+EXPRESSION:
+Resolved = 13
+
+IRs:
+Resolved(uint16) := 13(uint256)"];
+10->11;
+11[label="Node Type: OTHER_ENTRYPOINT 11
+
+EXPRESSION:
+arbitrationPeriod = 2592000
+
+IRs:
+arbitrationPeriod(uint256) := 2592000(uint256)"];
+11->12;
+12[label="Node Type: OTHER_ENTRYPOINT 12
+
+EXPRESSION:
+safeGas = 25000
+
+IRs:
+safeGas(uint256) := 25000(uint256)"];
+12->13;
+13[label="Node Type: OTHER_ENTRYPOINT 13
+
+EXPRESSION:
+contentCount = 0
+
+IRs:
+contentCount(uint256) := 0(uint256)"];
+13->14;
+14[label="Node Type: OTHER_ENTRYPOINT 14
+
+EXPRESSION:
+logsCount = 0
+
+IRs:
+logsCount(uint256) := 0(uint256)"];
+}
+// Function: 38787.sol-EscrowGoods-unbuy()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+buyers[msg.sender] = false
+
+IRs:
+REF_76(bool) -> buyers[msg.sender]
+REF_76(bool) (->buyers) := False(bool)"];
+}
+// Function: 38787.sol-EscrowGoods-yes(uint256,string,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+info = escrows[_lockId]
+
+IRs:
+REF_3(EscrowGoods.EscrowInfo) -> escrows[_lockId]
+info(EscrowGoods.EscrowInfo) := REF_3(EscrowGoods.EscrowInfo)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+info.lockedFunds == 0
+
+IRs:
+REF_4(uint256) -> info.lockedFunds
+TMP_14(bool) = REF_4 == 0
+CONDITION TMP_14"];
+2->3[label="True"];
+2->5[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+logDebug(info.lockedFunds == 0)
+
+IRs:
+INTERNAL_CALL, EscrowGoods.logDebug(string)(info.lockedFunds == 0)"];
+3->4;
+4[label="Node Type: RETURN 4
+"];
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+msg.sender != info.buyer && msg.sender != seller
+
+IRs:
+REF_5(address) -> info.buyer
+TMP_16(bool) = msg.sender != REF_5
+TMP_17(bool) = msg.sender != seller
+TMP_18(bool) = TMP_16 && TMP_17
+CONDITION TMP_18"];
+6->7[label="True"];
+6->9[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+logDebug(msg.sender != info.buyer && msg.sender != seller)
+
+IRs:
+INTERNAL_CALL, EscrowGoods.logDebug(string)(msg.sender != info.buyer && msg.sender != seller)"];
+7->8;
+8[label="Node Type: RETURN 8
+"];
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: NEW VARIABLE 10
+
+EXPRESSION:
+payment = info.lockedFunds
+
+IRs:
+REF_6(uint256) -> info.lockedFunds
+payment(uint256) := REF_6(uint256)"];
+10->11;
+11[label="Node Type: IF 11
+
+EXPRESSION:
+payment > this.balance
+
+IRs:
+REF_7(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_20(bool) = payment > REF_7
+CONDITION TMP_20"];
+11->12[label="True"];
+11->14[label="False"];
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+logDebug(payment > this.balance)
+
+IRs:
+INTERNAL_CALL, EscrowGoods.logDebug(string)(payment > this.balance)"];
+12->13;
+13[label="Node Type: RETURN 13
+"];
+14[label="Node Type: END_IF 14
+"];
+14->15;
+15[label="Node Type: IF 15
+
+EXPRESSION:
+msg.sender == info.buyer
+
+IRs:
+REF_8(address) -> info.buyer
+TMP_22(bool) = msg.sender == REF_8
+CONDITION TMP_22"];
+15->16[label="True"];
+15->17[label="False"];
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+safeSend(seller,payment)
+
+IRs:
+INTERNAL_CALL, EscrowGoods.safeSend(address,uint256)(seller,payment)"];
+16->22;
+17[label="Node Type: IF 17
+
+EXPRESSION:
+msg.sender == seller
+
+IRs:
+TMP_24(bool) = msg.sender == seller
+CONDITION TMP_24"];
+17->18[label="True"];
+17->19[label="False"];
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+safeSend(info.buyer,payment)
+
+IRs:
+REF_9(address) -> info.buyer
+INTERNAL_CALL, EscrowGoods.safeSend(address,uint256)(REF_9,payment)"];
+18->21;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+logDebug(unknown msg.sender)
+
+IRs:
+INTERNAL_CALL, EscrowGoods.logDebug(string)(unknown msg.sender)"];
+19->20;
+20[label="Node Type: RETURN 20
+"];
+21[label="Node Type: END_IF 21
+"];
+21->22;
+22[label="Node Type: END_IF 22
+"];
+22->23;
+23[label="Node Type: IF 23
+
+EXPRESSION:
+totalEscrows > 0
+
+IRs:
+TMP_27(bool) = totalEscrows > 0
+CONDITION TMP_27"];
+23->24[label="True"];
+23->25[label="False"];
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+totalEscrows -= 1
+
+IRs:
+totalEscrows(uint256) = totalEscrows - 1"];
+24->25;
+25[label="Node Type: END_IF 25
+"];
+25->26;
+26[label="Node Type: EXPRESSION 26
+
+EXPRESSION:
+info.lockedFunds = 0
+
+IRs:
+REF_10(uint256) -> info.lockedFunds
+REF_10(uint256) (->info) := 0(uint256)"];
+26->27;
+27[label="Node Type: EXPRESSION 27
+
+EXPRESSION:
+logEvent(_lockId,_dataInfo,_version,Unlock,msg.sender,info.count,payment)
+
+IRs:
+REF_11(uint16) -> info.count
+INTERNAL_CALL, EscrowGoods.logEvent(uint256,string,uint256,uint16,address,uint256,uint256)(_lockId,_dataInfo,_version,Unlock,msg.sender,REF_11,payment)"];
+}
+}

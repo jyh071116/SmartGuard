@@ -1,0 +1,1377 @@
+digraph G {
+// Function: 1294.sol-BasicToken-balanceOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+balances[_owner]
+
+IRs:
+REF_7(uint256) -> balances[_owner]
+RETURN REF_7"];
+}
+// Function: 1294.sol-BasicToken-totalSupply()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+totalSupply_
+
+IRs:
+RETURN totalSupply_"];
+}
+// Function: 1294.sol-BasicToken-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_to != address(0))
+
+IRs:
+TMP_12 = CONVERT 0 to address
+TMP_13(bool) = _to != TMP_12
+TMP_14(None) = SOLIDITY_CALL require(bool)(TMP_13)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_value <= balances[msg.sender])
+
+IRs:
+REF_0(uint256) -> balances[msg.sender]
+TMP_15(bool) = _value <= REF_0
+TMP_16(None) = SOLIDITY_CALL require(bool)(TMP_15)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balances[msg.sender] = balances[msg.sender].sub(_value)
+
+IRs:
+REF_1(uint256) -> balances[msg.sender]
+REF_2(uint256) -> balances[msg.sender]
+TMP_17(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_2', '_value'] 
+REF_1(uint256) (->balances) := TMP_17(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+balances[_to] = balances[_to].add(_value)
+
+IRs:
+REF_4(uint256) -> balances[_to]
+REF_5(uint256) -> balances[_to]
+TMP_18(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_5', '_value'] 
+REF_4(uint256) (->balances) := TMP_18(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Transfer(msg.sender,_to,_value)
+
+IRs:
+Emit Transfer(msg.sender,_to,_value)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 1294.sol-ERC20-allowance(address,address)
+digraph{
+}
+// Function: 1294.sol-ERC20-approve(address,uint256)
+digraph{
+}
+// Function: 1294.sol-ERC20-balanceOf(address)
+digraph{
+}
+// Function: 1294.sol-ERC20-totalSupply()
+digraph{
+}
+// Function: 1294.sol-ERC20-transfer(address,uint256)
+digraph{
+}
+// Function: 1294.sol-ERC20-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 1294.sol-ERC20Basic-balanceOf(address)
+digraph{
+}
+// Function: 1294.sol-ERC20Basic-totalSupply()
+digraph{
+}
+// Function: 1294.sol-ERC20Basic-transfer(address,uint256)
+digraph{
+}
+// Function: 1294.sol-MXCToken-allowance(address,address)
+digraph{
+}
+// Function: 1294.sol-MXCToken-approve(address,uint256)
+digraph{
+}
+// Function: 1294.sol-MXCToken-balanceOf(address)
+digraph{
+}
+// Function: 1294.sol-MXCToken-calcVestableToken(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+amount = 0
+
+IRs:
+amount(uint256) := 0(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+vestedMonths = 0
+
+IRs:
+vestedMonths(uint256) := 0(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+curTime = now
+
+IRs:
+curTime(uint256) := now(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+require(bool,string)(timeLocks[_to].amount > 0,Nothing was granted to this address.)
+
+IRs:
+REF_117(MXCToken.TimeLock) -> timeLocks[_to]
+REF_118(uint256) -> REF_117.amount
+TMP_102(bool) = REF_118 > 0
+TMP_103(None) = SOLIDITY_CALL require(bool,string)(TMP_102,Nothing was granted to this address.)"];
+7->8;
+8[label="Node Type: IF 8
+
+EXPRESSION:
+curTime <= timeLocks[_to].cliff
+
+IRs:
+REF_119(MXCToken.TimeLock) -> timeLocks[_to]
+REF_120(uint256) -> REF_119.cliff
+TMP_104(bool) = curTime <= REF_120
+CONDITION TMP_104"];
+8->9[label="True"];
+8->10[label="False"];
+9[label="Node Type: RETURN 9
+
+EXPRESSION:
+(0,0,curTime)
+
+IRs:
+RETURN 0,0,curTime"];
+10[label="Node Type: END_IF 10
+"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+vestedMonths = curTime.sub(timeLocks[_to].start) / MONTH
+
+IRs:
+REF_122(MXCToken.TimeLock) -> timeLocks[_to]
+REF_123(uint256) -> REF_122.start
+TMP_105(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['curTime', 'REF_123'] 
+TMP_106(uint256) = TMP_105 / MONTH
+vestedMonths(uint256) := TMP_106(uint256)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+vestedMonths = vestedMonths.sub(timeLocks[_to].vestedMonths)
+
+IRs:
+REF_125(MXCToken.TimeLock) -> timeLocks[_to]
+REF_126(uint16) -> REF_125.vestedMonths
+TMP_107(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['vestedMonths', 'REF_126'] 
+vestedMonths(uint256) := TMP_107(uint256)"];
+12->13;
+13[label="Node Type: IF 13
+
+EXPRESSION:
+curTime >= timeLocks[_to].vesting
+
+IRs:
+REF_127(MXCToken.TimeLock) -> timeLocks[_to]
+REF_128(uint256) -> REF_127.vesting
+TMP_108(bool) = curTime >= REF_128
+CONDITION TMP_108"];
+13->14[label="True"];
+13->15[label="False"];
+14[label="Node Type: RETURN 14
+
+EXPRESSION:
+(timeLocks[_to].amount.sub(timeLocks[_to].vestedAmount),vestedMonths,curTime)
+
+IRs:
+REF_129(MXCToken.TimeLock) -> timeLocks[_to]
+REF_130(uint256) -> REF_129.amount
+REF_132(MXCToken.TimeLock) -> timeLocks[_to]
+REF_133(uint256) -> REF_132.vestedAmount
+TMP_109(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_130', 'REF_133'] 
+RETURN TMP_109,vestedMonths,curTime"];
+15[label="Node Type: END_IF 15
+"];
+15->16;
+16[label="Node Type: IF 16
+
+EXPRESSION:
+vestedMonths > 0
+
+IRs:
+TMP_110(bool) = vestedMonths > 0
+CONDITION TMP_110"];
+16->17[label="True"];
+16->24[label="False"];
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+vestTotalMonths = timeLocks[_to].vesting.sub(timeLocks[_to].start) / MONTH
+
+IRs:
+REF_134(MXCToken.TimeLock) -> timeLocks[_to]
+REF_135(uint256) -> REF_134.vesting
+REF_137(MXCToken.TimeLock) -> timeLocks[_to]
+REF_138(uint256) -> REF_137.start
+TMP_111(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_135', 'REF_138'] 
+TMP_112(uint256) = TMP_111 / MONTH
+vestTotalMonths(uint256) := TMP_112(uint256)"];
+17->18;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+vestPart = timeLocks[_to].amount.div(vestTotalMonths)
+
+IRs:
+REF_139(MXCToken.TimeLock) -> timeLocks[_to]
+REF_140(uint256) -> REF_139.amount
+TMP_113(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['REF_140', 'vestTotalMonths'] 
+vestPart(uint256) := TMP_113(uint256)"];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+amount = vestedMonths.mul(vestPart)
+
+IRs:
+TMP_114(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['vestedMonths', 'vestPart'] 
+amount(uint256) := TMP_114(uint256)"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+vestedAmount = timeLocks[_to].vestedAmount.add(amount)
+
+IRs:
+REF_143(MXCToken.TimeLock) -> timeLocks[_to]
+REF_144(uint256) -> REF_143.vestedAmount
+TMP_115(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_144', 'amount'] 
+vestedAmount(uint256) := TMP_115(uint256)"];
+20->21;
+21[label="Node Type: IF 21
+
+EXPRESSION:
+vestedAmount > timeLocks[_to].amount
+
+IRs:
+REF_146(MXCToken.TimeLock) -> timeLocks[_to]
+REF_147(uint256) -> REF_146.amount
+TMP_116(bool) = vestedAmount > REF_147
+CONDITION TMP_116"];
+21->22[label="True"];
+21->23[label="False"];
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+amount = timeLocks[_to].amount.sub(timeLocks[_to].vestedAmount)
+
+IRs:
+REF_148(MXCToken.TimeLock) -> timeLocks[_to]
+REF_149(uint256) -> REF_148.amount
+REF_151(MXCToken.TimeLock) -> timeLocks[_to]
+REF_152(uint256) -> REF_151.vestedAmount
+TMP_117(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_149', 'REF_152'] 
+amount(uint256) := TMP_117(uint256)"];
+22->23;
+23[label="Node Type: END_IF 23
+"];
+23->24;
+24[label="Node Type: END_IF 24
+"];
+24->25;
+25[label="Node Type: RETURN 25
+
+EXPRESSION:
+(amount,vestedMonths,curTime)
+
+IRs:
+RETURN amount,vestedMonths,curTime"];
+26[label="Node Type: RETURN 26
+
+EXPRESSION:
+(amount,vestedMonths,curTime)
+
+IRs:
+RETURN amount,vestedMonths,curTime"];
+}
+// Function: 1294.sol-MXCToken-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+totalSupply_ = 2664965800 * (10 ** uint256(decimals))
+
+IRs:
+TMP_70 = CONVERT decimals to uint256
+TMP_71(uint256) = 10 ** TMP_70
+TMP_72(uint256) = 2664965800 * TMP_71
+totalSupply_(uint256) := TMP_72(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balances[msg.sender] = totalSupply_
+
+IRs:
+REF_92(uint256) -> balances[msg.sender]
+REF_92(uint256) (->balances) := totalSupply_(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+Transfer(address(0),msg.sender,totalSupply_)
+
+IRs:
+TMP_73 = CONVERT 0 to address
+Emit Transfer(TMP_73,msg.sender,totalSupply_)"];
+}
+// Function: 1294.sol-MXCToken-decreaseApproval(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+oldValue = allowed[msg.sender][_spender]
+
+IRs:
+REF_75(mapping(address => uint256)) -> allowed[msg.sender]
+REF_76(uint256) -> REF_75[_spender]
+oldValue(uint256) := REF_76(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+_subtractedValue > oldValue
+
+IRs:
+TMP_59(bool) = _subtractedValue > oldValue
+CONDITION TMP_59"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+allowed[msg.sender][_spender] = 0
+
+IRs:
+REF_77(mapping(address => uint256)) -> allowed[msg.sender]
+REF_78(uint256) -> REF_77[_spender]
+REF_78(uint256) (->allowed) := 0(uint256)"];
+3->5;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+allowed[msg.sender][_spender] = oldValue.sub(_subtractedValue)
+
+IRs:
+REF_79(mapping(address => uint256)) -> allowed[msg.sender]
+REF_80(uint256) -> REF_79[_spender]
+TMP_60(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['oldValue', '_subtractedValue'] 
+REF_80(uint256) (->allowed) := TMP_60(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+Approval(msg.sender,_spender,allowed[msg.sender][_spender])
+
+IRs:
+REF_82(mapping(address => uint256)) -> allowed[msg.sender]
+REF_83(uint256) -> REF_82[_spender]
+Emit Approval(msg.sender,_spender,REF_83)"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 1294.sol-MXCToken-grantToken(address,uint256,uint256,uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_to != address(0))
+
+IRs:
+TMP_78 = CONVERT 0 to address
+TMP_79(bool) = _to != TMP_78
+TMP_80(None) = SOLIDITY_CALL require(bool)(TMP_79)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(_amount <= balances[msg.sender],Not enough balance to grant token.)
+
+IRs:
+REF_103(uint256) -> balances[msg.sender]
+TMP_81(bool) = _amount <= REF_103
+TMP_82(None) = SOLIDITY_CALL require(bool,string)(TMP_81,Not enough balance to grant token.)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool,string)(_amount > 0,Nothing to transfer.)
+
+IRs:
+TMP_83(bool) = _amount > 0
+TMP_84(None) = SOLIDITY_CALL require(bool,string)(TMP_83,Nothing to transfer.)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool,string)((timeLocks[_to].amount.sub(timeLocks[_to].vestedAmount) == 0),The previous vesting should be completed.)
+
+IRs:
+REF_104(MXCToken.TimeLock) -> timeLocks[_to]
+REF_105(uint256) -> REF_104.amount
+REF_107(MXCToken.TimeLock) -> timeLocks[_to]
+REF_108(uint256) -> REF_107.vestedAmount
+TMP_85(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_105', 'REF_108'] 
+TMP_86(bool) = TMP_85 == 0
+TMP_87(None) = SOLIDITY_CALL require(bool,string)(TMP_86,The previous vesting should be completed.)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool,string)(_cliff >= _start,_cliff must be >= _start)
+
+IRs:
+TMP_88(bool) = _cliff >= _start
+TMP_89(None) = SOLIDITY_CALL require(bool,string)(TMP_88,_cliff must be >= _start)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+require(bool,string)(_vesting > _start,_vesting must be bigger than _start)
+
+IRs:
+TMP_90(bool) = _vesting > _start
+TMP_91(None) = SOLIDITY_CALL require(bool,string)(TMP_90,_vesting must be bigger than _start)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+require(bool,string)(_vesting > _cliff,_vesting must be bigger than _cliff)
+
+IRs:
+TMP_92(bool) = _vesting > _cliff
+TMP_93(None) = SOLIDITY_CALL require(bool,string)(TMP_92,_vesting must be bigger than _cliff)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+balances[msg.sender] = balances[msg.sender].sub(_amount)
+
+IRs:
+REF_109(uint256) -> balances[msg.sender]
+REF_110(uint256) -> balances[msg.sender]
+TMP_94(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_110', '_amount'] 
+REF_109(uint256) (->balances) := TMP_94(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+timeLocks[_to] = TimeLock(_amount,0,0,_start,_cliff,_vesting,msg.sender)
+
+IRs:
+REF_112(MXCToken.TimeLock) -> timeLocks[_to]
+TMP_95(MXCToken.TimeLock) = new TimeLock(_amount,0,0,_start,_cliff,_vesting,msg.sender)
+REF_112(MXCToken.TimeLock) (->timeLocks) := TMP_95(MXCToken.TimeLock)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+NewTokenGrant(msg.sender,_to,_amount,_start,_cliff,_vesting)
+
+IRs:
+Emit NewTokenGrant(msg.sender,_to,_amount,_start,_cliff,_vesting)"];
+10->11;
+11[label="Node Type: RETURN 11
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+12[label="Node Type: RETURN 12
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 1294.sol-MXCToken-grantTokenStartNow(address,uint256,uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+grantToken(_to,_amount,now,now.add(_cliffMonths.mul(MONTH)),now.add(_vestingMonths.mul(MONTH)))
+
+IRs:
+TMP_97(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['_cliffMonths', 'MONTH'] 
+TMP_98(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['now', 'TMP_97'] 
+TMP_99(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['_vestingMonths', 'MONTH'] 
+TMP_100(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['now', 'TMP_99'] 
+TMP_101(bool) = INTERNAL_CALL, MXCToken.grantToken(address,uint256,uint256,uint256,uint256)(_to,_amount,now,TMP_98,TMP_100)
+RETURN TMP_101"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 1294.sol-MXCToken-increaseApproval(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowed[msg.sender][_spender] = (allowed[msg.sender][_spender].add(_addedValue))
+
+IRs:
+REF_68(mapping(address => uint256)) -> allowed[msg.sender]
+REF_69(uint256) -> REF_68[_spender]
+REF_70(mapping(address => uint256)) -> allowed[msg.sender]
+REF_71(uint256) -> REF_70[_spender]
+TMP_57(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_71', '_addedValue'] 
+REF_69(uint256) (->allowed) := TMP_57(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,allowed[msg.sender][_spender])
+
+IRs:
+REF_73(mapping(address => uint256)) -> allowed[msg.sender]
+REF_74(uint256) -> REF_73[_spender]
+Emit Approval(msg.sender,_spender,REF_74)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 1294.sol-MXCToken-redeemVestableToken(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_to != address(0))
+
+IRs:
+TMP_118 = CONVERT 0 to address
+TMP_119(bool) = _to != TMP_118
+TMP_120(None) = SOLIDITY_CALL require(bool)(TMP_119)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(timeLocks[_to].amount > 0,Nothing was granted to this address!)
+
+IRs:
+REF_153(MXCToken.TimeLock) -> timeLocks[_to]
+REF_154(uint256) -> REF_153.amount
+TMP_121(bool) = REF_154 > 0
+TMP_122(None) = SOLIDITY_CALL require(bool,string)(TMP_121,Nothing was granted to this address!)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool,string)(timeLocks[_to].vestedAmount < timeLocks[_to].amount,All tokens were vested!)
+
+IRs:
+REF_155(MXCToken.TimeLock) -> timeLocks[_to]
+REF_156(uint256) -> REF_155.vestedAmount
+REF_157(MXCToken.TimeLock) -> timeLocks[_to]
+REF_158(uint256) -> REF_157.amount
+TMP_123(bool) = REF_156 < REF_158
+TMP_124(None) = SOLIDITY_CALL require(bool,string)(TMP_123,All tokens were vested!)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+(amount,vestedMonths,curTime) = calcVestableToken(_to)
+
+IRs:
+TUPLE_0(uint256,uint256,uint256) = INTERNAL_CALL, MXCToken.calcVestableToken(address)(_to)
+amount(uint256)= UNPACK TUPLE_0 index: 0 
+vestedMonths(uint256)= UNPACK TUPLE_0 index: 1 
+curTime(uint256)= UNPACK TUPLE_0 index: 2 "];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+require(bool,string)(amount > 0,Nothing to redeem now.)
+
+IRs:
+TMP_125(bool) = amount > 0
+TMP_126(None) = SOLIDITY_CALL require(bool,string)(TMP_125,Nothing to redeem now.)"];
+8->9;
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+t = timeLocks[_to]
+
+IRs:
+REF_159(MXCToken.TimeLock) -> timeLocks[_to]
+t(MXCToken.TimeLock) := REF_159(MXCToken.TimeLock)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+balances[_to] = balances[_to].add(amount)
+
+IRs:
+REF_160(uint256) -> balances[_to]
+REF_161(uint256) -> balances[_to]
+TMP_127(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_161', 'amount'] 
+REF_160(uint256) (->balances) := TMP_127(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+t.vestedAmount = t.vestedAmount.add(amount)
+
+IRs:
+REF_163(uint256) -> t.vestedAmount
+REF_164(uint256) -> t.vestedAmount
+TMP_128(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_164', 'amount'] 
+REF_163(uint256) (->t) := TMP_128(uint256)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+t.vestedMonths = t.vestedMonths + uint16(vestedMonths)
+
+IRs:
+REF_166(uint16) -> t.vestedMonths
+REF_167(uint16) -> t.vestedMonths
+TMP_129 = CONVERT vestedMonths to uint16
+TMP_130(uint16) = REF_167 + TMP_129
+REF_166(uint16) (->t) := TMP_130(uint16)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+t.cliff = curTime
+
+IRs:
+REF_168(uint256) -> t.cliff
+REF_168(uint256) (->t) := curTime(uint256)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+VestedTokenRedeemed(_to,amount,vestedMonths)
+
+IRs:
+Emit VestedTokenRedeemed(_to,amount,vestedMonths)"];
+14->15;
+15[label="Node Type: RETURN 15
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+16[label="Node Type: RETURN 16
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 1294.sol-MXCToken-returnGrantedToken(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+to = timeLocks[msg.sender].from
+
+IRs:
+REF_169(MXCToken.TimeLock) -> timeLocks[msg.sender]
+REF_170(address) -> REF_169.from
+to(address) := REF_170(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(to != address(0))
+
+IRs:
+TMP_132 = CONVERT 0 to address
+TMP_133(bool) = to != TMP_132
+TMP_134(None) = SOLIDITY_CALL require(bool)(TMP_133)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool,string)(_amount > 0,Nothing to transfer.)
+
+IRs:
+TMP_135(bool) = _amount > 0
+TMP_136(None) = SOLIDITY_CALL require(bool,string)(TMP_135,Nothing to transfer.)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool,string)(timeLocks[msg.sender].amount > 0,Nothing to return.)
+
+IRs:
+REF_171(MXCToken.TimeLock) -> timeLocks[msg.sender]
+REF_172(uint256) -> REF_171.amount
+TMP_137(bool) = REF_172 > 0
+TMP_138(None) = SOLIDITY_CALL require(bool,string)(TMP_137,Nothing to return.)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool,string)(_amount <= timeLocks[msg.sender].amount.sub(timeLocks[msg.sender].vestedAmount),Not enough granted token to return.)
+
+IRs:
+REF_173(MXCToken.TimeLock) -> timeLocks[msg.sender]
+REF_174(uint256) -> REF_173.amount
+REF_176(MXCToken.TimeLock) -> timeLocks[msg.sender]
+REF_177(uint256) -> REF_176.vestedAmount
+TMP_139(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_174', 'REF_177'] 
+TMP_140(bool) = _amount <= TMP_139
+TMP_141(None) = SOLIDITY_CALL require(bool,string)(TMP_140,Not enough granted token to return.)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+timeLocks[msg.sender].amount = timeLocks[msg.sender].amount.sub(_amount)
+
+IRs:
+REF_178(MXCToken.TimeLock) -> timeLocks[msg.sender]
+REF_179(uint256) -> REF_178.amount
+REF_180(MXCToken.TimeLock) -> timeLocks[msg.sender]
+REF_181(uint256) -> REF_180.amount
+TMP_142(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_181', '_amount'] 
+REF_179(uint256) (->timeLocks) := TMP_142(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+balances[to] = balances[to].add(_amount)
+
+IRs:
+REF_183(uint256) -> balances[to]
+REF_184(uint256) -> balances[to]
+TMP_143(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_184', '_amount'] 
+REF_183(uint256) (->balances) := TMP_143(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+GrantedTokenReturned(msg.sender,to,_amount)
+
+IRs:
+Emit GrantedTokenReturned(msg.sender,to,_amount)"];
+8->9;
+9[label="Node Type: RETURN 9
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+10[label="Node Type: RETURN 10
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 1294.sol-MXCToken-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+name = MXCToken
+
+IRs:
+name(string) := MXCToken(string)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+symbol = MXC
+
+IRs:
+symbol(string) := MXC(string)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+decimals = 18
+
+IRs:
+decimals(uint8) := 18(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+MONTH = 3600 * 24 * 30
+
+IRs:
+TMP_145(uint256) = 3600 * 24
+TMP_146(uint256) = TMP_145 * 30
+MONTH(uint256) := TMP_146(uint256)"];
+}
+// Function: 1294.sol-MXCToken-totalSupply()
+digraph{
+}
+// Function: 1294.sol-MXCToken-transfer(address,uint256)
+digraph{
+}
+// Function: 1294.sol-MXCToken-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 1294.sol-MXCToken-vestBalanceOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(who != address(0))
+
+IRs:
+TMP_75 = CONVERT 0 to address
+TMP_76(bool) = who != TMP_75
+TMP_77(None) = SOLIDITY_CALL require(bool)(TMP_76)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+amount = timeLocks[who].amount
+
+IRs:
+REF_93(MXCToken.TimeLock) -> timeLocks[who]
+REF_94(uint256) -> REF_93.amount
+amount(uint256) := REF_94(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+vestedAmount = timeLocks[who].vestedAmount
+
+IRs:
+REF_95(MXCToken.TimeLock) -> timeLocks[who]
+REF_96(uint256) -> REF_95.vestedAmount
+vestedAmount(uint256) := REF_96(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+start = timeLocks[who].start
+
+IRs:
+REF_97(MXCToken.TimeLock) -> timeLocks[who]
+REF_98(uint256) -> REF_97.start
+start(uint256) := REF_98(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+cliff = timeLocks[who].cliff
+
+IRs:
+REF_99(MXCToken.TimeLock) -> timeLocks[who]
+REF_100(uint256) -> REF_99.cliff
+cliff(uint256) := REF_100(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+vesting = timeLocks[who].vesting
+
+IRs:
+REF_101(MXCToken.TimeLock) -> timeLocks[who]
+REF_102(uint256) -> REF_101.vesting
+vesting(uint256) := REF_102(uint256)"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+(amount,vestedAmount,start,cliff,vesting)
+
+IRs:
+RETURN amount,vestedAmount,start,cliff,vesting"];
+}
+// Function: 1294.sol-SafeMath-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_9(uint256) = a + b
+c(uint256) := TMP_9(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(c >= a)
+
+IRs:
+TMP_10(bool) = c >= a
+TMP_11(None) = SOLIDITY_CALL assert(bool)(TMP_10)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 1294.sol-SafeMath-div(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+a / b
+
+IRs:
+TMP_5(uint256) = a / b
+RETURN TMP_5"];
+}
+// Function: 1294.sol-SafeMath-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+a == 0
+
+IRs:
+TMP_0(bool) = a == 0
+CONDITION TMP_0"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_1(uint256) = a * b
+c(uint256) := TMP_1(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+assert(bool)(c / a == b)
+
+IRs:
+TMP_2(uint256) = c / a
+TMP_3(bool) = TMP_2 == b
+TMP_4(None) = SOLIDITY_CALL assert(bool)(TMP_3)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 1294.sol-SafeMath-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(b <= a)
+
+IRs:
+TMP_6(bool) = b <= a
+TMP_7(None) = SOLIDITY_CALL assert(bool)(TMP_6)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_8(uint256) = a - b
+RETURN TMP_8"];
+}
+// Function: 1294.sol-StandardToken-allowance(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+allowed[_owner][_spender]
+
+IRs:
+REF_32(mapping(address => uint256)) -> allowed[_owner]
+REF_33(uint256) -> REF_32[_spender]
+RETURN REF_33"];
+}
+// Function: 1294.sol-StandardToken-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowed[msg.sender][_spender] = _value
+
+IRs:
+REF_30(mapping(address => uint256)) -> allowed[msg.sender]
+REF_31(uint256) -> REF_30[_spender]
+REF_31(uint256) (->allowed) := _value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,_value)
+
+IRs:
+Emit Approval(msg.sender,_spender,_value)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 1294.sol-StandardToken-balanceOf(address)
+digraph{
+}
+// Function: 1294.sol-StandardToken-decreaseApproval(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+oldValue = allowed[msg.sender][_spender]
+
+IRs:
+REF_41(mapping(address => uint256)) -> allowed[msg.sender]
+REF_42(uint256) -> REF_41[_spender]
+oldValue(uint256) := REF_42(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+_subtractedValue > oldValue
+
+IRs:
+TMP_42(bool) = _subtractedValue > oldValue
+CONDITION TMP_42"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+allowed[msg.sender][_spender] = 0
+
+IRs:
+REF_43(mapping(address => uint256)) -> allowed[msg.sender]
+REF_44(uint256) -> REF_43[_spender]
+REF_44(uint256) (->allowed) := 0(uint256)"];
+3->5;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+allowed[msg.sender][_spender] = oldValue.sub(_subtractedValue)
+
+IRs:
+REF_45(mapping(address => uint256)) -> allowed[msg.sender]
+REF_46(uint256) -> REF_45[_spender]
+TMP_43(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['oldValue', '_subtractedValue'] 
+REF_46(uint256) (->allowed) := TMP_43(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+Approval(msg.sender,_spender,allowed[msg.sender][_spender])
+
+IRs:
+REF_48(mapping(address => uint256)) -> allowed[msg.sender]
+REF_49(uint256) -> REF_48[_spender]
+Emit Approval(msg.sender,_spender,REF_49)"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 1294.sol-StandardToken-increaseApproval(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowed[msg.sender][_spender] = (allowed[msg.sender][_spender].add(_addedValue))
+
+IRs:
+REF_34(mapping(address => uint256)) -> allowed[msg.sender]
+REF_35(uint256) -> REF_34[_spender]
+REF_36(mapping(address => uint256)) -> allowed[msg.sender]
+REF_37(uint256) -> REF_36[_spender]
+TMP_40(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_37', '_addedValue'] 
+REF_35(uint256) (->allowed) := TMP_40(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,allowed[msg.sender][_spender])
+
+IRs:
+REF_39(mapping(address => uint256)) -> allowed[msg.sender]
+REF_40(uint256) -> REF_39[_spender]
+Emit Approval(msg.sender,_spender,REF_40)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 1294.sol-StandardToken-totalSupply()
+digraph{
+}
+// Function: 1294.sol-StandardToken-transfer(address,uint256)
+digraph{
+}
+// Function: 1294.sol-StandardToken-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_to != address(0))
+
+IRs:
+TMP_28 = CONVERT 0 to address
+TMP_29(bool) = _to != TMP_28
+TMP_30(None) = SOLIDITY_CALL require(bool)(TMP_29)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_value <= balances[_from])
+
+IRs:
+REF_16(uint256) -> balances[_from]
+TMP_31(bool) = _value <= REF_16
+TMP_32(None) = SOLIDITY_CALL require(bool)(TMP_31)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(_value <= allowed[_from][msg.sender])
+
+IRs:
+REF_17(mapping(address => uint256)) -> allowed[_from]
+REF_18(uint256) -> REF_17[msg.sender]
+TMP_33(bool) = _value <= REF_18
+TMP_34(None) = SOLIDITY_CALL require(bool)(TMP_33)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+balances[_from] = balances[_from].sub(_value)
+
+IRs:
+REF_19(uint256) -> balances[_from]
+REF_20(uint256) -> balances[_from]
+TMP_35(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_20', '_value'] 
+REF_19(uint256) (->balances) := TMP_35(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balances[_to] = balances[_to].add(_value)
+
+IRs:
+REF_22(uint256) -> balances[_to]
+REF_23(uint256) -> balances[_to]
+TMP_36(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_23', '_value'] 
+REF_22(uint256) (->balances) := TMP_36(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+allowed[_from][msg.sender] = allowed[_from][msg.sender].sub(_value)
+
+IRs:
+REF_25(mapping(address => uint256)) -> allowed[_from]
+REF_26(uint256) -> REF_25[msg.sender]
+REF_27(mapping(address => uint256)) -> allowed[_from]
+REF_28(uint256) -> REF_27[msg.sender]
+TMP_37(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_28', '_value'] 
+REF_26(uint256) (->allowed) := TMP_37(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+Transfer(_from,_to,_value)
+
+IRs:
+Emit Transfer(_from,_to,_value)"];
+7->8;
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+}

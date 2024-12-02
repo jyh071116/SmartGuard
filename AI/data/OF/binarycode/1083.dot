@@ -1,0 +1,287 @@
+digraph G {
+// Function: 1083.sol-BBCC-BBCC(uint256,string,uint8,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+totalSupply = _initialAmount * 10 ** uint256(_decimalUnits)
+
+IRs:
+TMP_0 = CONVERT _decimalUnits to uint256
+TMP_1(uint256) = 10 ** TMP_0
+TMP_2(uint256) = _initialAmount * TMP_1
+totalSupply(uint256) := TMP_2(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balances[msg.sender] = totalSupply
+
+IRs:
+REF_0(uint256) -> balances[msg.sender]
+REF_0(uint256) (->balances) := totalSupply(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+name = _tokenName
+
+IRs:
+name(string) := _tokenName(string)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+decimals = _decimalUnits
+
+IRs:
+decimals(uint8) := _decimalUnits(uint8)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+symbol = _tokenSymbol
+
+IRs:
+symbol(string) := _tokenSymbol(string)"];
+}
+// Function: 1083.sol-BBCC-allowance(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+allowed[_owner][_spender]
+
+IRs:
+REF_16(mapping(address => uint256)) -> allowed[_owner]
+REF_17(uint256) -> REF_16[_spender]
+RETURN REF_17"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+remaining
+
+IRs:
+RETURN remaining"];
+}
+// Function: 1083.sol-BBCC-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowed[msg.sender][_spender] = _value
+
+IRs:
+REF_14(mapping(address => uint256)) -> allowed[msg.sender]
+REF_15(uint256) -> REF_14[_spender]
+REF_15(uint256) (->allowed) := _value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,_value)
+
+IRs:
+Emit Approval(msg.sender,_spender,_value)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 1083.sol-BBCC-balanceOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+balances[_owner]
+
+IRs:
+REF_13(uint256) -> balances[_owner]
+RETURN REF_13"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+balance
+
+IRs:
+RETURN balance"];
+}
+// Function: 1083.sol-BBCC-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(balances[msg.sender] >= _value && balances[_to] + _value > balances[_to])
+
+IRs:
+REF_1(uint256) -> balances[msg.sender]
+TMP_3(bool) = REF_1 >= _value
+REF_2(uint256) -> balances[_to]
+TMP_4(uint256) = REF_2 + _value
+REF_3(uint256) -> balances[_to]
+TMP_5(bool) = TMP_4 > REF_3
+TMP_6(bool) = TMP_3 && TMP_5
+TMP_7(None) = SOLIDITY_CALL require(bool)(TMP_6)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_to != 0x0)
+
+IRs:
+TMP_8(bool) = _to != 0
+TMP_9(None) = SOLIDITY_CALL require(bool)(TMP_8)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balances[msg.sender] -= _value
+
+IRs:
+REF_4(uint256) -> balances[msg.sender]
+REF_4(-> balances) = REF_4 - _value"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+balances[_to] += _value
+
+IRs:
+REF_5(uint256) -> balances[_to]
+REF_5(-> balances) = REF_5 + _value"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Transfer(msg.sender,_to,_value)
+
+IRs:
+Emit Transfer(msg.sender,_to,_value)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 1083.sol-BBCC-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(balances[_from] >= _value && allowed[_from][msg.sender] >= _value)
+
+IRs:
+REF_6(uint256) -> balances[_from]
+TMP_11(bool) = REF_6 >= _value
+REF_7(mapping(address => uint256)) -> allowed[_from]
+REF_8(uint256) -> REF_7[msg.sender]
+TMP_12(bool) = REF_8 >= _value
+TMP_13(bool) = TMP_11 && TMP_12
+TMP_14(None) = SOLIDITY_CALL require(bool)(TMP_13)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balances[_to] += _value
+
+IRs:
+REF_9(uint256) -> balances[_to]
+REF_9(-> balances) = REF_9 + _value"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balances[_from] -= _value
+
+IRs:
+REF_10(uint256) -> balances[_from]
+REF_10(-> balances) = REF_10 - _value"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+allowed[_from][msg.sender] -= _value
+
+IRs:
+REF_11(mapping(address => uint256)) -> allowed[_from]
+REF_12(uint256) -> REF_11[msg.sender]
+REF_12(-> allowed) = REF_12 - _value"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Transfer(_from,_to,_value)
+
+IRs:
+Emit Transfer(_from,_to,_value)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 1083.sol-BBCCToken-allowance(address,address)
+digraph{
+}
+// Function: 1083.sol-BBCCToken-approve(address,uint256)
+digraph{
+}
+// Function: 1083.sol-BBCCToken-balanceOf(address)
+digraph{
+}
+// Function: 1083.sol-BBCCToken-transfer(address,uint256)
+digraph{
+}
+// Function: 1083.sol-BBCCToken-transferFrom(address,address,uint256)
+digraph{
+}
+}

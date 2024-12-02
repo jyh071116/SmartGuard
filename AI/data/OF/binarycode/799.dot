@@ -1,0 +1,836 @@
+digraph G {
+// Function: 799.sol-BlockchainMoneyEngine-BlockchainMoneyEngine(uint256,string,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+totalSupply = initialSupply * 10 ** uint256(decimals)
+
+IRs:
+TMP_19 = CONVERT decimals to uint256
+TMP_20(uint256) = 10 ** TMP_19
+TMP_21(uint256) = initialSupply * TMP_20
+totalSupply(uint256) := TMP_21(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balanceOf[msg.sender] = totalSupply
+
+IRs:
+REF_0(uint256) -> balanceOf[msg.sender]
+REF_0(uint256) (->balanceOf) := totalSupply(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+name = tokenName
+
+IRs:
+name(string) := tokenName(string)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+symbol = tokenSymbol
+
+IRs:
+symbol(string) := tokenSymbol(string)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 799.sol-BlockchainMoneyEngine-Ownable()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 799.sol-BlockchainMoneyEngine-_transfer(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_to != 0x0)
+
+IRs:
+TMP_24(bool) = _to != 0
+TMP_25(None) = SOLIDITY_CALL require(bool)(TMP_24)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(balanceOf[_from] >= _value)
+
+IRs:
+REF_1(uint256) -> balanceOf[_from]
+TMP_26(bool) = REF_1 >= _value
+TMP_27(None) = SOLIDITY_CALL require(bool)(TMP_26)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(balanceOf[_to] + _value >= balanceOf[_to])
+
+IRs:
+REF_2(uint256) -> balanceOf[_to]
+TMP_28(uint256) = REF_2 + _value
+REF_3(uint256) -> balanceOf[_to]
+TMP_29(bool) = TMP_28 >= REF_3
+TMP_30(None) = SOLIDITY_CALL require(bool)(TMP_29)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+previousBalances = balanceOf[_from] + balanceOf[_to]
+
+IRs:
+REF_4(uint256) -> balanceOf[_from]
+REF_5(uint256) -> balanceOf[_to]
+TMP_31(uint256) = REF_4 + REF_5
+previousBalances(uint256) := TMP_31(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balanceOf[_from] -= _value
+
+IRs:
+REF_6(uint256) -> balanceOf[_from]
+REF_6(-> balanceOf) = REF_6 - _value"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+balanceOf[_to] += _value
+
+IRs:
+REF_7(uint256) -> balanceOf[_to]
+REF_7(-> balanceOf) = REF_7 + _value"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+Transfer(_from,_to,_value)
+
+IRs:
+Emit Transfer(_from,_to,_value)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+assert(bool)(balanceOf[_from] + balanceOf[_to] == previousBalances)
+
+IRs:
+REF_8(uint256) -> balanceOf[_from]
+REF_9(uint256) -> balanceOf[_to]
+TMP_33(uint256) = REF_8 + REF_9
+TMP_34(bool) = TMP_33 == previousBalances
+TMP_35(None) = SOLIDITY_CALL assert(bool)(TMP_34)"];
+}
+// Function: 799.sol-BlockchainMoneyEngine-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowance[msg.sender][_spender] = _value
+
+IRs:
+REF_14(mapping(address => uint256)) -> allowance[msg.sender]
+REF_15(uint256) -> REF_14[_spender]
+REF_15(uint256) (->allowance) := _value(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+whenNotPaused()
+
+IRs:
+MODIFIER_CALL, Pausable.whenNotPaused()()"];
+3->1;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 799.sol-BlockchainMoneyEngine-approveAndCall(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+spender = tokenRecipient(_spender)
+
+IRs:
+TMP_45 = CONVERT _spender to tokenRecipient
+spender(tokenRecipient) := TMP_45(tokenRecipient)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+approve(_spender,_value)
+
+IRs:
+TMP_46(bool) = INTERNAL_CALL, BlockchainMoneyEngine.approve(address,uint256)(_spender,_value)
+CONDITION TMP_46"];
+2->3[label="True"];
+2->5[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+spender.receiveApproval(msg.sender,_value,this,_extraData)
+
+IRs:
+HIGH_LEVEL_CALL, dest:spender(tokenRecipient), function:receiveApproval, arguments:['msg.sender', '_value', 'this', '_extraData']  "];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 799.sol-BlockchainMoneyEngine-burn(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(balanceOf[msg.sender] >= _value)
+
+IRs:
+REF_17(uint256) -> balanceOf[msg.sender]
+TMP_48(bool) = REF_17 >= _value
+TMP_49(None) = SOLIDITY_CALL require(bool)(TMP_48)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balanceOf[msg.sender] -= _value
+
+IRs:
+REF_18(uint256) -> balanceOf[msg.sender]
+REF_18(-> balanceOf) = REF_18 - _value"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+totalSupply -= _value
+
+IRs:
+totalSupply(uint256) = totalSupply - _value"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Burn(msg.sender,_value)
+
+IRs:
+Emit Burn(msg.sender,_value)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 799.sol-BlockchainMoneyEngine-burnFrom(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(balanceOf[_from] >= _value)
+
+IRs:
+REF_19(uint256) -> balanceOf[_from]
+TMP_51(bool) = REF_19 >= _value
+TMP_52(None) = SOLIDITY_CALL require(bool)(TMP_51)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_value <= allowance[_from][msg.sender])
+
+IRs:
+REF_20(mapping(address => uint256)) -> allowance[_from]
+REF_21(uint256) -> REF_20[msg.sender]
+TMP_53(bool) = _value <= REF_21
+TMP_54(None) = SOLIDITY_CALL require(bool)(TMP_53)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balanceOf[_from] -= _value
+
+IRs:
+REF_22(uint256) -> balanceOf[_from]
+REF_22(-> balanceOf) = REF_22 - _value"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+allowance[_from][msg.sender] -= _value
+
+IRs:
+REF_23(mapping(address => uint256)) -> allowance[_from]
+REF_24(uint256) -> REF_23[msg.sender]
+REF_24(-> allowance) = REF_24 - _value"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+totalSupply -= _value
+
+IRs:
+totalSupply(uint256) = totalSupply - _value"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+Burn(_from,_value)
+
+IRs:
+Emit Burn(_from,_value)"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 799.sol-BlockchainMoneyEngine-destruct()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+owner == msg.sender
+
+IRs:
+TMP_36(bool) = owner == msg.sender
+CONDITION TMP_36"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+selfdestruct(address)(owner)
+
+IRs:
+TMP_37(None) = SOLIDITY_CALL selfdestruct(address)(owner)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 799.sol-BlockchainMoneyEngine-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_59(bool) = msg.sender == owner
+TMP_60(None) = SOLIDITY_CALL require(bool)(TMP_59)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 799.sol-BlockchainMoneyEngine-pause()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+paused = true
+
+IRs:
+paused(bool) := True(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Pause()
+
+IRs:
+Emit Pause()"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+whenNotPaused()
+
+IRs:
+MODIFIER_CALL, Pausable.whenNotPaused()()"];
+4->1;
+}
+// Function: 799.sol-BlockchainMoneyEngine-setName(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+name = _name
+
+IRs:
+name(string) := _name(string)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 799.sol-BlockchainMoneyEngine-setSymbol(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+symbol = _symbol
+
+IRs:
+symbol(string) := _symbol(string)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 799.sol-BlockchainMoneyEngine-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+paused = false
+
+IRs:
+paused(bool) := False(bool)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+decimals = 18
+
+IRs:
+decimals(uint8) := 18(uint256)"];
+}
+// Function: 799.sol-BlockchainMoneyEngine-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transfer(msg.sender,_to,_value)
+
+IRs:
+INTERNAL_CALL, BlockchainMoneyEngine._transfer(address,address,uint256)(msg.sender,_to,_value)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+whenNotPaused()
+
+IRs:
+MODIFIER_CALL, Pausable.whenNotPaused()()"];
+2->1;
+}
+// Function: 799.sol-BlockchainMoneyEngine-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_value <= allowance[_from][msg.sender])
+
+IRs:
+REF_10(mapping(address => uint256)) -> allowance[_from]
+REF_11(uint256) -> REF_10[msg.sender]
+TMP_40(bool) = _value <= REF_11
+TMP_41(None) = SOLIDITY_CALL require(bool)(TMP_40)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+allowance[_from][msg.sender] -= _value
+
+IRs:
+REF_12(mapping(address => uint256)) -> allowance[_from]
+REF_13(uint256) -> REF_12[msg.sender]
+REF_13(-> allowance) = REF_13 - _value"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_transfer(_from,_to,_value)
+
+IRs:
+INTERNAL_CALL, BlockchainMoneyEngine._transfer(address,address,uint256)(_from,_to,_value)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+whenNotPaused()
+
+IRs:
+MODIFIER_CALL, Pausable.whenNotPaused()()"];
+5->1;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 799.sol-BlockchainMoneyEngine-unpause()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+paused = false
+
+IRs:
+paused(bool) := False(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Unpause()
+
+IRs:
+Emit Unpause()"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+whenPaused()
+
+IRs:
+MODIFIER_CALL, Pausable.whenPaused()()"];
+4->1;
+}
+// Function: 799.sol-BlockchainMoneyEngine-whenNotPaused()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! paused)
+
+IRs:
+TMP_56 = UnaryType.BANG paused 
+TMP_57(None) = SOLIDITY_CALL require(bool)(TMP_56)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 799.sol-BlockchainMoneyEngine-whenPaused()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(paused)
+
+IRs:
+TMP_58(None) = SOLIDITY_CALL require(bool)(paused)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 799.sol-Ownable-Ownable()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 799.sol-Ownable-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_0(bool) = msg.sender == owner
+TMP_1(None) = SOLIDITY_CALL require(bool)(TMP_0)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 799.sol-Pausable-Ownable()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 799.sol-Pausable-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_8(bool) = msg.sender == owner
+TMP_9(None) = SOLIDITY_CALL require(bool)(TMP_8)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 799.sol-Pausable-pause()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+paused = true
+
+IRs:
+paused(bool) := True(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Pause()
+
+IRs:
+Emit Pause()"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+whenNotPaused()
+
+IRs:
+MODIFIER_CALL, Pausable.whenNotPaused()()"];
+4->1;
+}
+// Function: 799.sol-Pausable-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+paused = false
+
+IRs:
+paused(bool) := False(bool)"];
+}
+// Function: 799.sol-Pausable-unpause()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+paused = false
+
+IRs:
+paused(bool) := False(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Unpause()
+
+IRs:
+Emit Unpause()"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+whenPaused()
+
+IRs:
+MODIFIER_CALL, Pausable.whenPaused()()"];
+4->1;
+}
+// Function: 799.sol-Pausable-whenNotPaused()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! paused)
+
+IRs:
+TMP_10 = UnaryType.BANG paused 
+TMP_11(None) = SOLIDITY_CALL require(bool)(TMP_10)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 799.sol-Pausable-whenPaused()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(paused)
+
+IRs:
+TMP_12(None) = SOLIDITY_CALL require(bool)(paused)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 799.sol-tokenRecipient-receiveApproval(address,uint256,address,bytes)
+digraph{
+}
+}

@@ -1,0 +1,998 @@
+digraph G {
+// Function: 1182.sol-BitSongCrowdsale-_transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_newOwner != address(0))
+
+IRs:
+TMP_32 = CONVERT 0 to address
+TMP_33(bool) = _newOwner != TMP_32
+TMP_34(None) = SOLIDITY_CALL require(bool)(TMP_33)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,_newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,_newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = _newOwner
+
+IRs:
+owner(address) := _newOwner(address)"];
+}
+// Function: 1182.sol-BitSongCrowdsale-approveAddress(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+approvals[_beneficiary] = true
+
+IRs:
+REF_16(bool) -> approvals[_beneficiary]
+REF_16(bool) (->approvals) := True(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+KycApproved(_beneficiary,kycAdmin,true)
+
+IRs:
+Emit KycApproved(_beneficiary,kycAdmin,True)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyKycAdmin()
+
+IRs:
+MODIFIER_CALL, BitSongCrowdsale.onlyKycAdmin()()"];
+3->1;
+}
+// Function: 1182.sol-BitSongCrowdsale-buyTokens()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->11;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.value > 0)
+
+IRs:
+TMP_48(bool) = msg.value > 0
+TMP_49(None) = SOLIDITY_CALL require(bool)(TMP_48)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(approvals[msg.sender] == true)
+
+IRs:
+REF_2(bool) -> approvals[msg.sender]
+TMP_50(bool) = REF_2 == True
+TMP_51(None) = SOLIDITY_CALL require(bool)(TMP_50)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+weiAmount = msg.value
+
+IRs:
+weiAmount(uint256) := msg.value(uint256)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+tokenAmount = weiAmount.mul(rate)
+
+IRs:
+TMP_52(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['weiAmount', 'rate'] 
+tokenAmount(uint256) := TMP_52(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+tokensAllocated = tokensAllocated.add(tokenAmount)
+
+IRs:
+TMP_53(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['tokensAllocated', 'tokenAmount'] 
+tokensAllocated(uint256) := TMP_53(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+assert(bool)(tokensAllocated <= hardCap)
+
+IRs:
+TMP_54(bool) = tokensAllocated <= hardCap
+TMP_55(None) = SOLIDITY_CALL assert(bool)(TMP_54)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+weiRaised = weiRaised.add(weiAmount)
+
+IRs:
+TMP_56(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['weiRaised', 'weiAmount'] 
+weiRaised(uint256) := TMP_56(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+balances[msg.sender] = balances[msg.sender].add(tokenAmount)
+
+IRs:
+REF_6(uint256) -> balances[msg.sender]
+REF_7(uint256) -> balances[msg.sender]
+TMP_57(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_7', 'tokenAmount'] 
+REF_6(uint256) (->balances) := TMP_57(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+TokenPurchase(msg.sender,weiAmount,tokenAmount)
+
+IRs:
+Emit TokenPurchase(msg.sender,weiAmount,tokenAmount)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+wallet.transfer(msg.value)
+
+IRs:
+Transfer dest:wallet value:msg.value"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+onlyWhileOpen()
+
+IRs:
+MODIFIER_CALL, BitSongCrowdsale.onlyWhileOpen()()"];
+11->1;
+}
+// Function: 1182.sol-BitSongCrowdsale-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 1182.sol-BitSongCrowdsale-constructor(uint256,address,uint256,uint256,ERC20)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_rate > 0)
+
+IRs:
+TMP_36(bool) = _rate > 0
+TMP_37(None) = SOLIDITY_CALL require(bool)(TMP_36)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_wallet != address(0))
+
+IRs:
+TMP_38 = CONVERT 0 to address
+TMP_39(bool) = _wallet != TMP_38
+TMP_40(None) = SOLIDITY_CALL require(bool)(TMP_39)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(_tokenAddress != address(0))
+
+IRs:
+TMP_41 = CONVERT 0 to address
+TMP_42(bool) = _tokenAddress != TMP_41
+TMP_43(None) = SOLIDITY_CALL require(bool)(TMP_42)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+rate = _rate
+
+IRs:
+rate(uint256) := _rate(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+wallet = _wallet
+
+IRs:
+wallet(address) := _wallet(address)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+token = _tokenAddress
+
+IRs:
+token(ERC20) := _tokenAddress(ERC20)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+hardCap = _hardCap * 10 ** 18
+
+IRs:
+TMP_44(uint256) = 10 ** 18
+TMP_45(uint256) = _hardCap * TMP_44
+hardCap(uint256) := TMP_45(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+duration = _duration * 86400
+
+IRs:
+TMP_46(uint256) = _duration * 86400
+duration(uint256) := TMP_46(uint256)"];
+}
+// Function: 1182.sol-BitSongCrowdsale-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+buyTokens()
+
+IRs:
+INTERNAL_CALL, BitSongCrowdsale.buyTokens()()"];
+}
+// Function: 1182.sol-BitSongCrowdsale-hasClosed()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+block.timestamp > closingTime
+
+IRs:
+TMP_71(bool) = block.timestamp > closingTime
+RETURN TMP_71"];
+}
+// Function: 1182.sol-BitSongCrowdsale-onlyKycAdmin()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == kycAdmin)
+
+IRs:
+TMP_102(bool) = msg.sender == kycAdmin
+TMP_103(None) = SOLIDITY_CALL require(bool)(TMP_102)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1182.sol-BitSongCrowdsale-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_100(bool) = msg.sender == owner
+TMP_101(None) = SOLIDITY_CALL require(bool)(TMP_100)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1182.sol-BitSongCrowdsale-onlyWhileOpen()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(block.timestamp >= openingTime && block.timestamp <= closingTime)
+
+IRs:
+TMP_104(bool) = block.timestamp >= openingTime
+TMP_105(bool) = block.timestamp <= closingTime
+TMP_106(bool) = TMP_104 && TMP_105
+TMP_107(None) = SOLIDITY_CALL require(bool)(TMP_106)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1182.sol-BitSongCrowdsale-refuseAddress(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+approvals[_beneficiary] = false
+
+IRs:
+REF_17(bool) -> approvals[_beneficiary]
+REF_17(bool) (->approvals) := False(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+KycRefused(_beneficiary,kycAdmin,false)
+
+IRs:
+Emit KycRefused(_beneficiary,kycAdmin,False)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyKycAdmin()
+
+IRs:
+MODIFIER_CALL, BitSongCrowdsale.onlyKycAdmin()()"];
+3->1;
+}
+// Function: 1182.sol-BitSongCrowdsale-renounceOwnership()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+OwnershipRenounced(owner)
+
+IRs:
+Emit OwnershipRenounced(owner)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = address(0)
+
+IRs:
+TMP_28 = CONVERT 0 to address
+owner(address) := TMP_28(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 1182.sol-BitSongCrowdsale-rewardManual(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_amount > 0)
+
+IRs:
+TMP_76(bool) = _amount > 0
+TMP_77(None) = SOLIDITY_CALL require(bool)(TMP_76)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_beneficiary != address(0))
+
+IRs:
+TMP_78 = CONVERT 0 to address
+TMP_79(bool) = _beneficiary != TMP_78
+TMP_80(None) = SOLIDITY_CALL require(bool)(TMP_79)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+tokensAllocated = tokensAllocated.add(_amount)
+
+IRs:
+TMP_81(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['tokensAllocated', '_amount'] 
+tokensAllocated(uint256) := TMP_81(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+assert(bool)(tokensAllocated <= hardCap)
+
+IRs:
+TMP_82(bool) = tokensAllocated <= hardCap
+TMP_83(None) = SOLIDITY_CALL assert(bool)(TMP_82)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balances[_beneficiary] = balances[_beneficiary].add(_amount)
+
+IRs:
+REF_19(uint256) -> balances[_beneficiary]
+REF_20(uint256) -> balances[_beneficiary]
+TMP_84(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_20', '_amount'] 
+REF_19(uint256) (->balances) := TMP_84(uint256)"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+6->1;
+}
+// Function: 1182.sol-BitSongCrowdsale-setClosingTime(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+closingTime = _newTime
+
+IRs:
+closingTime(uint256) := _newTime(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 1182.sol-BitSongCrowdsale-setKycAdmin(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+kycAdmin = _newAdmin
+
+IRs:
+kycAdmin(address) := _newAdmin(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 1182.sol-BitSongCrowdsale-setRate(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+rate = _newRate
+
+IRs:
+rate(uint256) := _newRate(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 1182.sol-BitSongCrowdsale-startDistribution()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(openingTime == 0)
+
+IRs:
+TMP_94(bool) = openingTime == 0
+TMP_95(None) = SOLIDITY_CALL require(bool)(TMP_94)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+openingTime = block.timestamp
+
+IRs:
+openingTime(uint256) := block.timestamp(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+closingTime = openingTime.add(duration)
+
+IRs:
+TMP_96(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['openingTime', 'duration'] 
+closingTime(uint256) := TMP_96(uint256)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->1;
+}
+// Function: 1182.sol-BitSongCrowdsale-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_amount > 0)
+
+IRs:
+TMP_86(bool) = _amount > 0
+TMP_87(None) = SOLIDITY_CALL require(bool)(TMP_86)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_beneficiary != address(0))
+
+IRs:
+TMP_88 = CONVERT 0 to address
+TMP_89(bool) = _beneficiary != TMP_88
+TMP_90(None) = SOLIDITY_CALL require(bool)(TMP_89)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+token.safeTransfer(_beneficiary,_amount)
+
+IRs:
+LIBRARY_CALL, dest:SafeERC20, function:SafeERC20.safeTransfer(ERC20,address,uint256), arguments:['token', '_beneficiary', '_amount'] "];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->1;
+}
+// Function: 1182.sol-BitSongCrowdsale-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transferOwnership(_newOwner)
+
+IRs:
+INTERNAL_CALL, Ownable._transferOwnership(address)(_newOwner)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 1182.sol-BitSongCrowdsale-withdrawTokens()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(hasClosed())
+
+IRs:
+TMP_61(bool) = INTERNAL_CALL, BitSongCrowdsale.hasClosed()()
+TMP_62(None) = SOLIDITY_CALL require(bool)(TMP_61)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+amount = balances[msg.sender]
+
+IRs:
+REF_10(uint256) -> balances[msg.sender]
+amount(uint256) := REF_10(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(amount > 0)
+
+IRs:
+TMP_63(bool) = amount > 0
+TMP_64(None) = SOLIDITY_CALL require(bool)(TMP_63)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+balances[msg.sender] = 0
+
+IRs:
+REF_11(uint256) -> balances[msg.sender]
+REF_11(uint256) (->balances) := 0(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+token.safeTransferFrom(wallet,msg.sender,amount)
+
+IRs:
+LIBRARY_CALL, dest:SafeERC20, function:SafeERC20.safeTransferFrom(ERC20,address,address,uint256), arguments:['token', 'wallet', 'msg.sender', 'amount'] "];
+}
+// Function: 1182.sol-BitSongCrowdsale-withdrawTokensFor(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(hasClosed())
+
+IRs:
+TMP_66(bool) = INTERNAL_CALL, BitSongCrowdsale.hasClosed()()
+TMP_67(None) = SOLIDITY_CALL require(bool)(TMP_66)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+amount = balances[_beneficiary]
+
+IRs:
+REF_13(uint256) -> balances[_beneficiary]
+amount(uint256) := REF_13(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(amount > 0)
+
+IRs:
+TMP_68(bool) = amount > 0
+TMP_69(None) = SOLIDITY_CALL require(bool)(TMP_68)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+balances[_beneficiary] = 0
+
+IRs:
+REF_14(uint256) -> balances[_beneficiary]
+REF_14(uint256) (->balances) := 0(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+token.safeTransferFrom(wallet,_beneficiary,amount)
+
+IRs:
+LIBRARY_CALL, dest:SafeERC20, function:SafeERC20.safeTransferFrom(ERC20,address,address,uint256), arguments:['token', 'wallet', '_beneficiary', 'amount'] "];
+}
+// Function: 1182.sol-ERC20-transfer(address,uint256)
+digraph{
+}
+// Function: 1182.sol-ERC20-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 1182.sol-Ownable-_transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_newOwner != address(0))
+
+IRs:
+TMP_21 = CONVERT 0 to address
+TMP_22(bool) = _newOwner != TMP_21
+TMP_23(None) = SOLIDITY_CALL require(bool)(TMP_22)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,_newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,_newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = _newOwner
+
+IRs:
+owner(address) := _newOwner(address)"];
+}
+// Function: 1182.sol-Ownable-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 1182.sol-Ownable-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_25(bool) = msg.sender == owner
+TMP_26(None) = SOLIDITY_CALL require(bool)(TMP_25)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1182.sol-Ownable-renounceOwnership()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+OwnershipRenounced(owner)
+
+IRs:
+Emit OwnershipRenounced(owner)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = address(0)
+
+IRs:
+TMP_17 = CONVERT 0 to address
+owner(address) := TMP_17(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 1182.sol-Ownable-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transferOwnership(_newOwner)
+
+IRs:
+INTERNAL_CALL, Ownable._transferOwnership(address)(_newOwner)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 1182.sol-SafeERC20-safeTransfer(ERC20,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_token.transfer(_to,_value))
+
+IRs:
+TMP_12(bool) = HIGH_LEVEL_CALL, dest:_token(ERC20), function:transfer, arguments:['_to', '_value']  
+TMP_13(None) = SOLIDITY_CALL require(bool)(TMP_12)"];
+}
+// Function: 1182.sol-SafeERC20-safeTransferFrom(ERC20,address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_token.transferFrom(_from,_to,_value))
+
+IRs:
+TMP_14(bool) = HIGH_LEVEL_CALL, dest:_token(ERC20), function:transferFrom, arguments:['_from', '_to', '_value']  
+TMP_15(None) = SOLIDITY_CALL require(bool)(TMP_14)"];
+}
+// Function: 1182.sol-SafeMath-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+c = _a + _b
+
+IRs:
+TMP_9(uint256) = _a + _b
+c(uint256) := TMP_9(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(c >= _a)
+
+IRs:
+TMP_10(bool) = c >= _a
+TMP_11(None) = SOLIDITY_CALL assert(bool)(TMP_10)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 1182.sol-SafeMath-div(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+_a / _b
+
+IRs:
+TMP_5(uint256) = _a / _b
+RETURN TMP_5"];
+}
+// Function: 1182.sol-SafeMath-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_a == 0
+
+IRs:
+TMP_0(bool) = _a == 0
+CONDITION TMP_0"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+c = _a * _b
+
+IRs:
+TMP_1(uint256) = _a * _b
+c(uint256) := TMP_1(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+assert(bool)(c / _a == _b)
+
+IRs:
+TMP_2(uint256) = c / _a
+TMP_3(bool) = TMP_2 == _b
+TMP_4(None) = SOLIDITY_CALL assert(bool)(TMP_3)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 1182.sol-SafeMath-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(_b <= _a)
+
+IRs:
+TMP_6(bool) = _b <= _a
+TMP_7(None) = SOLIDITY_CALL assert(bool)(TMP_6)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+_a - _b
+
+IRs:
+TMP_8(uint256) = _a - _b
+RETURN TMP_8"];
+}
+}

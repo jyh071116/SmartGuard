@@ -1,0 +1,1026 @@
+digraph G {
+// Function: 1353.sol-CTFOCrowdsale-_burn(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_value <= balances[_who])
+
+IRs:
+REF_97(uint256) -> balances[_who]
+TMP_94(bool) = _value <= REF_97
+TMP_95(None) = SOLIDITY_CALL require(bool)(TMP_94)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balances[_who] = balances[_who].sub(_value)
+
+IRs:
+REF_98(uint256) -> balances[_who]
+REF_99(uint256) -> balances[_who]
+TMP_96(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_99', '_value'] 
+REF_98(uint256) (->balances) := TMP_96(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+totalSupply_ = totalSupply_.sub(_value)
+
+IRs:
+TMP_97(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['totalSupply_', '_value'] 
+totalSupply_(uint256) := TMP_97(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Burn(_who,_value)
+
+IRs:
+Emit Burn(_who,_value)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Transfer(_who,address(0),_value)
+
+IRs:
+TMP_99 = CONVERT 0 to address
+Emit Transfer(_who,TMP_99,_value)"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+balances[_who] == 0
+
+IRs:
+REF_102(uint256) -> balances[_who]
+TMP_101(bool) = REF_102 == 0
+CONDITION TMP_101"];
+6->7[label="True"];
+6->8[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+isFinalized = true
+
+IRs:
+isFinalized(bool) := True(bool)"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+}
+// Function: 1353.sol-CTFOCrowdsale-allowance(address,address)
+digraph{
+}
+// Function: 1353.sol-CTFOCrowdsale-approve(address,uint256)
+digraph{
+}
+// Function: 1353.sol-CTFOCrowdsale-balanceOf(address)
+digraph{
+}
+// Function: 1353.sol-CTFOCrowdsale-burn(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! isFinalized)
+
+IRs:
+TMP_85 = UnaryType.BANG isFinalized 
+TMP_86(None) = SOLIDITY_CALL require(bool)(TMP_85)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(msg.sender == saleWallet)
+
+IRs:
+TMP_87(bool) = msg.sender == saleWallet
+TMP_88(None) = SOLIDITY_CALL require(bool)(TMP_87)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(now > crowdsaleEnd || balances[msg.sender] == 0)
+
+IRs:
+TMP_89(bool) = now > crowdsaleEnd
+REF_96(uint256) -> balances[msg.sender]
+TMP_90(bool) = REF_96 == 0
+TMP_91(bool) = TMP_89 || TMP_90
+TMP_92(None) = SOLIDITY_CALL require(bool)(TMP_91)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+_burn(msg.sender,_value)
+
+IRs:
+INTERNAL_CALL, CTFOCrowdsale._burn(address,uint256)(msg.sender,_value)"];
+}
+// Function: 1353.sol-CTFOCrowdsale-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+totalSupply_ = INITIAL_SUPPLY
+
+IRs:
+totalSupply_(uint256) := INITIAL_SUPPLY(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balances[teamWallet] = TEAM_TOKENS
+
+IRs:
+REF_84(uint256) -> balances[teamWallet]
+REF_84(uint256) (->balances) := TEAM_TOKENS(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+Mint(teamWallet,TEAM_TOKENS)
+
+IRs:
+Emit Mint(teamWallet,TEAM_TOKENS)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Transfer(address(0),teamWallet,TEAM_TOKENS)
+
+IRs:
+TMP_63 = CONVERT 0 to address
+Emit Transfer(TMP_63,teamWallet,TEAM_TOKENS)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balances[saleWallet] = SALE_TOKENS
+
+IRs:
+REF_85(uint256) -> balances[saleWallet]
+REF_85(uint256) (->balances) := SALE_TOKENS(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+Mint(saleWallet,SALE_TOKENS)
+
+IRs:
+Emit Mint(saleWallet,SALE_TOKENS)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+Transfer(address(0),saleWallet,SALE_TOKENS)
+
+IRs:
+TMP_66 = CONVERT 0 to address
+Emit Transfer(TMP_66,saleWallet,SALE_TOKENS)"];
+}
+// Function: 1353.sol-CTFOCrowdsale-decreaseApproval(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+oldValue = allowed[msg.sender][_spender]
+
+IRs:
+REF_75(mapping(address => uint256)) -> allowed[msg.sender]
+REF_76(uint256) -> REF_75[_spender]
+oldValue(uint256) := REF_76(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+_subtractedValue >= oldValue
+
+IRs:
+TMP_59(bool) = _subtractedValue >= oldValue
+CONDITION TMP_59"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+allowed[msg.sender][_spender] = 0
+
+IRs:
+REF_77(mapping(address => uint256)) -> allowed[msg.sender]
+REF_78(uint256) -> REF_77[_spender]
+REF_78(uint256) (->allowed) := 0(uint256)"];
+3->5;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+allowed[msg.sender][_spender] = oldValue.sub(_subtractedValue)
+
+IRs:
+REF_79(mapping(address => uint256)) -> allowed[msg.sender]
+REF_80(uint256) -> REF_79[_spender]
+TMP_60(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['oldValue', '_subtractedValue'] 
+REF_80(uint256) (->allowed) := TMP_60(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+Approval(msg.sender,_spender,allowed[msg.sender][_spender])
+
+IRs:
+REF_82(mapping(address => uint256)) -> allowed[msg.sender]
+REF_83(uint256) -> REF_82[_spender]
+Emit Approval(msg.sender,_spender,REF_83)"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 1353.sol-CTFOCrowdsale-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+purchaseTokens()
+
+IRs:
+INTERNAL_CALL, CTFOCrowdsale.purchaseTokens()()"];
+}
+// Function: 1353.sol-CTFOCrowdsale-increaseApproval(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowed[msg.sender][_spender] = (allowed[msg.sender][_spender].add(_addedValue))
+
+IRs:
+REF_68(mapping(address => uint256)) -> allowed[msg.sender]
+REF_69(uint256) -> REF_68[_spender]
+REF_70(mapping(address => uint256)) -> allowed[msg.sender]
+REF_71(uint256) -> REF_70[_spender]
+TMP_57(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_71', '_addedValue'] 
+REF_69(uint256) (->allowed) := TMP_57(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,allowed[msg.sender][_spender])
+
+IRs:
+REF_73(mapping(address => uint256)) -> allowed[msg.sender]
+REF_74(uint256) -> REF_73[_spender]
+Emit Approval(msg.sender,_spender,REF_74)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 1353.sol-CTFOCrowdsale-purchaseTokens()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(now >= crowdsaleStart)
+
+IRs:
+TMP_68(bool) = now >= crowdsaleStart
+TMP_69(None) = SOLIDITY_CALL require(bool)(TMP_68)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(now <= crowdsaleEnd)
+
+IRs:
+TMP_70(bool) = now <= crowdsaleEnd
+TMP_71(None) = SOLIDITY_CALL require(bool)(TMP_70)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(msg.value >= 1000000000000000000)
+
+IRs:
+TMP_72(bool) = msg.value >= 1000000000000000000
+TMP_73(None) = SOLIDITY_CALL require(bool)(TMP_72)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+tokens = 0
+
+IRs:
+tokens(uint256) := 0(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+tokens = msg.value.mul(exchangeRate)
+
+IRs:
+TMP_74(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['msg.value', 'exchangeRate'] 
+tokens(uint256) := TMP_74(uint256)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+unsoldTokens = balances[saleWallet]
+
+IRs:
+REF_87(uint256) -> balances[saleWallet]
+unsoldTokens(uint256) := REF_87(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+require(bool)(unsoldTokens >= tokens)
+
+IRs:
+TMP_75(bool) = unsoldTokens >= tokens
+TMP_76(None) = SOLIDITY_CALL require(bool)(TMP_75)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+balances[saleWallet] -= tokens
+
+IRs:
+REF_88(uint256) -> balances[saleWallet]
+REF_88(-> balances) = REF_88 - tokens"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+balances[msg.sender] += tokens
+
+IRs:
+REF_89(uint256) -> balances[msg.sender]
+REF_89(-> balances) = REF_89 + tokens"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+Transfer(saleWallet,msg.sender,tokens)
+
+IRs:
+Emit Transfer(saleWallet,msg.sender,tokens)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+etherAddress.transfer(msg.value.mul(90).div(100))
+
+IRs:
+TMP_78(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['msg.value', '90'] 
+TMP_79(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['TMP_78', '100'] 
+Transfer dest:etherAddress value:TMP_79"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+teamWallet.transfer(msg.value.mul(10).div(100))
+
+IRs:
+TMP_81(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['msg.value', '10'] 
+TMP_82(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['TMP_81', '100'] 
+Transfer dest:teamWallet value:TMP_82"];
+}
+// Function: 1353.sol-CTFOCrowdsale-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+name = Orinoco D. F. Co-founder Token
+
+IRs:
+name(string) := Orinoco D. F. Co-founder Token(string)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+symbol = CTFO
+
+IRs:
+symbol(string) := CTFO(string)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+decimals = 18
+
+IRs:
+decimals(uint8) := 18(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+INITIAL_SUPPLY = 1000000 * (10 ** uint256(decimals))
+
+IRs:
+TMP_102 = CONVERT decimals to uint256
+TMP_103(uint256) = 10 ** TMP_102
+TMP_104(uint256) = 1000000 * TMP_103
+INITIAL_SUPPLY(uint256) := TMP_104(uint256)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+TEAM_TOKENS = 140000 * (10 ** uint256(decimals))
+
+IRs:
+TMP_105 = CONVERT decimals to uint256
+TMP_106(uint256) = 10 ** TMP_105
+TMP_107(uint256) = 140000 * TMP_106
+TEAM_TOKENS(uint256) := TMP_107(uint256)"];
+4->5;
+5[label="Node Type: OTHER_ENTRYPOINT 5
+
+EXPRESSION:
+SALE_TOKENS = 860000 * (10 ** uint256(decimals))
+
+IRs:
+TMP_108 = CONVERT decimals to uint256
+TMP_109(uint256) = 10 ** TMP_108
+TMP_110(uint256) = 860000 * TMP_109
+SALE_TOKENS(uint256) := TMP_110(uint256)"];
+5->6;
+6[label="Node Type: OTHER_ENTRYPOINT 6
+
+EXPRESSION:
+exchangeRate = 500
+
+IRs:
+exchangeRate(uint256) := 500(uint256)"];
+6->7;
+7[label="Node Type: OTHER_ENTRYPOINT 7
+
+EXPRESSION:
+etherAddress = 0xFC20A4238ABAfBFa29F582CbcF93e23cD3c9858b
+
+IRs:
+etherAddress(address) := 1439393596603140532299420371158208475813202462091(address)"];
+7->8;
+8[label="Node Type: OTHER_ENTRYPOINT 8
+
+EXPRESSION:
+teamWallet = 0x4c646420d8A8ae7C66de9c40FfE31c295c87272B
+
+IRs:
+teamWallet(address) := 436122095508082875607743456928029330850919687979(address)"];
+8->9;
+9[label="Node Type: OTHER_ENTRYPOINT 9
+
+EXPRESSION:
+saleWallet = 0x9D4537094Fa30d8042A51F4F0CD29F170B28456B
+
+IRs:
+saleWallet(address) := 897855096782164597291486100280364655652914087275(address)"];
+9->10;
+10[label="Node Type: OTHER_ENTRYPOINT 10
+
+EXPRESSION:
+crowdsaleStart = 1534204800
+
+IRs:
+crowdsaleStart(uint256) := 1534204800(uint256)"];
+10->11;
+11[label="Node Type: OTHER_ENTRYPOINT 11
+
+EXPRESSION:
+crowdsaleEnd = 1536019200
+
+IRs:
+crowdsaleEnd(uint256) := 1536019200(uint256)"];
+}
+// Function: 1353.sol-CTFOCrowdsale-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+isFinalized = false
+
+IRs:
+isFinalized(bool) := False(bool)"];
+}
+// Function: 1353.sol-CTFOCrowdsale-totalSupply()
+digraph{
+}
+// Function: 1353.sol-CTFOCrowdsale-transfer(address,uint256)
+digraph{
+}
+// Function: 1353.sol-CTFOCrowdsale-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 1353.sol-ERC20-allowance(address,address)
+digraph{
+}
+// Function: 1353.sol-ERC20-approve(address,uint256)
+digraph{
+}
+// Function: 1353.sol-ERC20-balanceOf(address)
+digraph{
+}
+// Function: 1353.sol-ERC20-totalSupply()
+digraph{
+}
+// Function: 1353.sol-ERC20-transfer(address,uint256)
+digraph{
+}
+// Function: 1353.sol-ERC20-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 1353.sol-SafeMath-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+c = _a + _b
+
+IRs:
+TMP_9(uint256) = _a + _b
+c(uint256) := TMP_9(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(c >= _a)
+
+IRs:
+TMP_10(bool) = c >= _a
+TMP_11(None) = SOLIDITY_CALL assert(bool)(TMP_10)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 1353.sol-SafeMath-div(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+_a / _b
+
+IRs:
+TMP_5(uint256) = _a / _b
+RETURN TMP_5"];
+}
+// Function: 1353.sol-SafeMath-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_a == 0
+
+IRs:
+TMP_0(bool) = _a == 0
+CONDITION TMP_0"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+c = _a * _b
+
+IRs:
+TMP_1(uint256) = _a * _b
+c(uint256) := TMP_1(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+assert(bool)(c / _a == _b)
+
+IRs:
+TMP_2(uint256) = c / _a
+TMP_3(bool) = TMP_2 == _b
+TMP_4(None) = SOLIDITY_CALL assert(bool)(TMP_3)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 1353.sol-SafeMath-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(_b <= _a)
+
+IRs:
+TMP_6(bool) = _b <= _a
+TMP_7(None) = SOLIDITY_CALL assert(bool)(TMP_6)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+_a - _b
+
+IRs:
+TMP_8(uint256) = _a - _b
+RETURN TMP_8"];
+}
+// Function: 1353.sol-StandardToken-allowance(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+allowed[_owner][_spender]
+
+IRs:
+REF_1(mapping(address => uint256)) -> allowed[_owner]
+REF_2(uint256) -> REF_1[_spender]
+RETURN REF_2"];
+}
+// Function: 1353.sol-StandardToken-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowed[msg.sender][_spender] = _value
+
+IRs:
+REF_10(mapping(address => uint256)) -> allowed[msg.sender]
+REF_11(uint256) -> REF_10[_spender]
+REF_11(uint256) (->allowed) := _value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,_value)
+
+IRs:
+Emit Approval(msg.sender,_spender,_value)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 1353.sol-StandardToken-balanceOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+balances[_owner]
+
+IRs:
+REF_0(uint256) -> balances[_owner]
+RETURN REF_0"];
+}
+// Function: 1353.sol-StandardToken-decreaseApproval(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+oldValue = allowed[msg.sender][_spender]
+
+IRs:
+REF_33(mapping(address => uint256)) -> allowed[msg.sender]
+REF_34(uint256) -> REF_33[_spender]
+oldValue(uint256) := REF_34(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+_subtractedValue >= oldValue
+
+IRs:
+TMP_34(bool) = _subtractedValue >= oldValue
+CONDITION TMP_34"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+allowed[msg.sender][_spender] = 0
+
+IRs:
+REF_35(mapping(address => uint256)) -> allowed[msg.sender]
+REF_36(uint256) -> REF_35[_spender]
+REF_36(uint256) (->allowed) := 0(uint256)"];
+3->5;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+allowed[msg.sender][_spender] = oldValue.sub(_subtractedValue)
+
+IRs:
+REF_37(mapping(address => uint256)) -> allowed[msg.sender]
+REF_38(uint256) -> REF_37[_spender]
+TMP_35(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['oldValue', '_subtractedValue'] 
+REF_38(uint256) (->allowed) := TMP_35(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+Approval(msg.sender,_spender,allowed[msg.sender][_spender])
+
+IRs:
+REF_40(mapping(address => uint256)) -> allowed[msg.sender]
+REF_41(uint256) -> REF_40[_spender]
+Emit Approval(msg.sender,_spender,REF_41)"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 1353.sol-StandardToken-increaseApproval(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowed[msg.sender][_spender] = (allowed[msg.sender][_spender].add(_addedValue))
+
+IRs:
+REF_26(mapping(address => uint256)) -> allowed[msg.sender]
+REF_27(uint256) -> REF_26[_spender]
+REF_28(mapping(address => uint256)) -> allowed[msg.sender]
+REF_29(uint256) -> REF_28[_spender]
+TMP_32(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_29', '_addedValue'] 
+REF_27(uint256) (->allowed) := TMP_32(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,allowed[msg.sender][_spender])
+
+IRs:
+REF_31(mapping(address => uint256)) -> allowed[msg.sender]
+REF_32(uint256) -> REF_31[_spender]
+Emit Approval(msg.sender,_spender,REF_32)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 1353.sol-StandardToken-totalSupply()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+totalSupply_
+
+IRs:
+RETURN totalSupply_"];
+}
+// Function: 1353.sol-StandardToken-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_value <= balances[msg.sender])
+
+IRs:
+REF_3(uint256) -> balances[msg.sender]
+TMP_12(bool) = _value <= REF_3
+TMP_13(None) = SOLIDITY_CALL require(bool)(TMP_12)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_to != address(0))
+
+IRs:
+TMP_14 = CONVERT 0 to address
+TMP_15(bool) = _to != TMP_14
+TMP_16(None) = SOLIDITY_CALL require(bool)(TMP_15)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balances[msg.sender] = balances[msg.sender].sub(_value)
+
+IRs:
+REF_4(uint256) -> balances[msg.sender]
+REF_5(uint256) -> balances[msg.sender]
+TMP_17(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_5', '_value'] 
+REF_4(uint256) (->balances) := TMP_17(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+balances[_to] = balances[_to].add(_value)
+
+IRs:
+REF_7(uint256) -> balances[_to]
+REF_8(uint256) -> balances[_to]
+TMP_18(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_8', '_value'] 
+REF_7(uint256) (->balances) := TMP_18(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Transfer(msg.sender,_to,_value)
+
+IRs:
+Emit Transfer(msg.sender,_to,_value)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 1353.sol-StandardToken-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_value <= balances[_from])
+
+IRs:
+REF_12(uint256) -> balances[_from]
+TMP_21(bool) = _value <= REF_12
+TMP_22(None) = SOLIDITY_CALL require(bool)(TMP_21)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_value <= allowed[_from][msg.sender])
+
+IRs:
+REF_13(mapping(address => uint256)) -> allowed[_from]
+REF_14(uint256) -> REF_13[msg.sender]
+TMP_23(bool) = _value <= REF_14
+TMP_24(None) = SOLIDITY_CALL require(bool)(TMP_23)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(_to != address(0))
+
+IRs:
+TMP_25 = CONVERT 0 to address
+TMP_26(bool) = _to != TMP_25
+TMP_27(None) = SOLIDITY_CALL require(bool)(TMP_26)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+balances[_from] = balances[_from].sub(_value)
+
+IRs:
+REF_15(uint256) -> balances[_from]
+REF_16(uint256) -> balances[_from]
+TMP_28(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_16', '_value'] 
+REF_15(uint256) (->balances) := TMP_28(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balances[_to] = balances[_to].add(_value)
+
+IRs:
+REF_18(uint256) -> balances[_to]
+REF_19(uint256) -> balances[_to]
+TMP_29(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_19', '_value'] 
+REF_18(uint256) (->balances) := TMP_29(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+allowed[_from][msg.sender] = allowed[_from][msg.sender].sub(_value)
+
+IRs:
+REF_21(mapping(address => uint256)) -> allowed[_from]
+REF_22(uint256) -> REF_21[msg.sender]
+REF_23(mapping(address => uint256)) -> allowed[_from]
+REF_24(uint256) -> REF_23[msg.sender]
+TMP_30(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_24', '_value'] 
+REF_22(uint256) (->allowed) := TMP_30(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+Transfer(_from,_to,_value)
+
+IRs:
+Emit Transfer(_from,_to,_value)"];
+7->8;
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+}

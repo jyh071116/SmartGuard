@@ -1,0 +1,1872 @@
+digraph G {
+// Function: 395.sol-ERC20-allowance(address,address)
+digraph{
+}
+// Function: 395.sol-ERC20-approve(address,uint256)
+digraph{
+}
+// Function: 395.sol-ERC20-balanceOf(address)
+digraph{
+}
+// Function: 395.sol-ERC20-transfer(address,uint256)
+digraph{
+}
+// Function: 395.sol-ERC20-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 395.sol-ERC20Basic-balanceOf(address)
+digraph{
+}
+// Function: 395.sol-ERC20Basic-transfer(address,uint256)
+digraph{
+}
+// Function: 395.sol-KAA-_transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_newOwner != address(0))
+
+IRs:
+TMP_54 = CONVERT 0 to address
+TMP_55(bool) = _newOwner != TMP_54
+TMP_56(None) = SOLIDITY_CALL require(bool)(TMP_55)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,_newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,_newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = _newOwner
+
+IRs:
+owner(address) := _newOwner(address)"];
+}
+// Function: 395.sol-KAA-allowance(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+allowed[_owner][_spender]
+
+IRs:
+REF_52(mapping(address => uint256)) -> allowed[_owner]
+REF_53(uint256) -> REF_52[_spender]
+RETURN REF_53"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+remaining
+
+IRs:
+RETURN remaining"];
+}
+// Function: 395.sol-KAA-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowed[msg.sender][_spender] = _value
+
+IRs:
+REF_50(mapping(address => uint256)) -> allowed[msg.sender]
+REF_51(uint256) -> REF_50[_spender]
+REF_51(uint256) (->allowed) := _value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,_value)
+
+IRs:
+Emit Approval(msg.sender,_spender,_value)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+whenNotPaused()
+
+IRs:
+MODIFIER_CALL, Pausable.whenNotPaused()()"];
+4->1;
+}
+// Function: 395.sol-KAA-balanceOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+balances[_owner]
+
+IRs:
+REF_34(uint256) -> balances[_owner]
+RETURN REF_34"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+balance
+
+IRs:
+RETURN balance"];
+}
+// Function: 395.sol-KAA-canPlatformFundingWithdraw(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+queryNow() < innerlockStartTime
+
+IRs:
+TMP_90(uint256) = INTERNAL_CALL, KAA.queryNow()()
+TMP_91(bool) = TMP_90 < innerlockStartTime
+CONDITION TMP_91"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+epoch = queryNow().sub(innerlockStartTime).div(unlockStepLong)
+
+IRs:
+TMP_92(uint256) = INTERNAL_CALL, KAA.queryNow()()
+TMP_93(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['TMP_92', 'innerlockStartTime'] 
+TMP_94(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['TMP_93', 'unlockStepLong'] 
+epoch(uint256) := TMP_94(uint256)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+epoch > 12
+
+IRs:
+TMP_95(bool) = epoch > 12
+CONDITION TMP_95"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+epoch = 12
+
+IRs:
+epoch(uint256) := 12(uint256)"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+releaseAmount = platformFundingPerEpoch.mul(epoch)
+
+IRs:
+TMP_96(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['platformFundingPerEpoch', 'epoch'] 
+releaseAmount(uint256) := TMP_96(uint256)"];
+8->9;
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+canWithdrawAmount = releaseAmount.sub(platformFundingSupply)
+
+IRs:
+TMP_97(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['releaseAmount', 'platformFundingSupply'] 
+canWithdrawAmount(uint256) := TMP_97(uint256)"];
+9->10;
+10[label="Node Type: IF 10
+
+EXPRESSION:
+canWithdrawAmount >= _value
+
+IRs:
+TMP_98(bool) = canWithdrawAmount >= _value
+CONDITION TMP_98"];
+10->11[label="True"];
+10->12[label="False"];
+11[label="Node Type: RETURN 11
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+12[label="Node Type: RETURN 12
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+}
+// Function: 395.sol-KAA-canTeamKeepingWithdraw(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+queryNow() < innerlockStartTime
+
+IRs:
+TMP_99(uint256) = INTERNAL_CALL, KAA.queryNow()()
+TMP_100(bool) = TMP_99 < innerlockStartTime
+CONDITION TMP_100"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+epoch = queryNow().sub(innerlockStartTime).div(unlockStepLong)
+
+IRs:
+TMP_101(uint256) = INTERNAL_CALL, KAA.queryNow()()
+TMP_102(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['TMP_101', 'innerlockStartTime'] 
+TMP_103(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['TMP_102', 'unlockStepLong'] 
+epoch(uint256) := TMP_103(uint256)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+epoch > 12
+
+IRs:
+TMP_104(bool) = epoch > 12
+CONDITION TMP_104"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+epoch = 12
+
+IRs:
+epoch(uint256) := 12(uint256)"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+releaseAmount = teamKeepingPerEpoch.mul(epoch)
+
+IRs:
+TMP_105(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['teamKeepingPerEpoch', 'epoch'] 
+releaseAmount(uint256) := TMP_105(uint256)"];
+8->9;
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+canWithdrawAmount = releaseAmount.sub(teamKeepingSupply)
+
+IRs:
+TMP_106(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['releaseAmount', 'teamKeepingSupply'] 
+canWithdrawAmount(uint256) := TMP_106(uint256)"];
+9->10;
+10[label="Node Type: IF 10
+
+EXPRESSION:
+canWithdrawAmount >= _value
+
+IRs:
+TMP_107(bool) = canWithdrawAmount >= _value
+CONDITION TMP_107"];
+10->11[label="True"];
+10->12[label="False"];
+11[label="Node Type: RETURN 11
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+12[label="Node Type: RETURN 12
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+}
+// Function: 395.sol-KAA-clacCooperateNeedLockAmount(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+queryNow() < outterlockStartTime
+
+IRs:
+TMP_108(uint256) = INTERNAL_CALL, KAA.queryNow()()
+TMP_109(bool) = TMP_108 < outterlockStartTime
+CONDITION TMP_109"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+totalLockAmount
+
+IRs:
+RETURN totalLockAmount"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+epoch = queryNow().sub(outterlockStartTime).div(unlockStepLong)
+
+IRs:
+TMP_110(uint256) = INTERNAL_CALL, KAA.queryNow()()
+TMP_111(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['TMP_110', 'outterlockStartTime'] 
+TMP_112(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['TMP_111', 'unlockStepLong'] 
+epoch(uint256) := TMP_112(uint256)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+epoch > 12
+
+IRs:
+TMP_113(bool) = epoch > 12
+CONDITION TMP_113"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+epoch = 12
+
+IRs:
+epoch(uint256) := 12(uint256)"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+remainingEpoch = uint256(12).sub(epoch)
+
+IRs:
+TMP_114 = CONVERT 12 to uint256
+TMP_115(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['TMP_114', 'epoch'] 
+remainingEpoch(uint256) := TMP_115(uint256)"];
+8->9;
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+cooperatePerEpoch = totalLockAmount.div(12)
+
+IRs:
+TMP_116(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['totalLockAmount', '12'] 
+cooperatePerEpoch(uint256) := TMP_116(uint256)"];
+9->10;
+10[label="Node Type: RETURN 10
+
+EXPRESSION:
+cooperatePerEpoch.mul(remainingEpoch)
+
+IRs:
+TMP_117(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['cooperatePerEpoch', 'remainingEpoch'] 
+RETURN TMP_117"];
+}
+// Function: 395.sol-KAA-commonWithdraw(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+processFunding(msg.sender,_value)
+
+IRs:
+INTERNAL_CALL, KAA.processFunding(address,uint256)(msg.sender,_value)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+totalCommonWithdrawSupply = totalCommonWithdrawSupply.add(_value)
+
+IRs:
+TMP_68(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['totalCommonWithdrawSupply', '_value'] 
+totalCommonWithdrawSupply(uint256) := TMP_68(uint256)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+notReachCommonWithdrawSupply(_value)
+
+IRs:
+MODIFIER_CALL, KAA.notReachCommonWithdrawSupply(uint256)(_value)"];
+4->1;
+}
+// Function: 395.sol-KAA-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+totalSupply = 0
+
+IRs:
+totalSupply(uint256) := 0(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+platformFundingSupply = 0
+
+IRs:
+platformFundingSupply(uint256) := 0(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+teamKeepingSupply = 0
+
+IRs:
+teamKeepingSupply(uint256) := 0(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+cooperateRewardSupply = 0
+
+IRs:
+cooperateRewardSupply(uint256) := 0(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+totalCommonWithdrawSupply = 0
+
+IRs:
+totalCommonWithdrawSupply(uint256) := 0(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+platformFundingPerEpoch = 1116250000 * 10 ** decimals
+
+IRs:
+TMP_58(uint256) = 10 ** decimals
+TMP_59(uint256) = 1116250000 * TMP_58
+platformFundingPerEpoch(uint256) := TMP_59(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+teamKeepingPerEpoch = 1116250000 * 10 ** decimals
+
+IRs:
+TMP_60(uint256) = 10 ** decimals
+TMP_61(uint256) = 1116250000 * TMP_60
+teamKeepingPerEpoch(uint256) := TMP_61(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+innerlockStartTime = 1629216000
+
+IRs:
+innerlockStartTime(uint256) := 1629216000(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+outterlockStartTime = 1566057600
+
+IRs:
+outterlockStartTime(uint256) := 1566057600(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+unlockStepLong = 2592000
+
+IRs:
+unlockStepLong(uint256) := 2592000(uint256)"];
+}
+// Function: 395.sol-KAA-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_118(None) = SOLIDITY_CALL revert()()"];
+}
+// Function: 395.sol-KAA-notReachCommonWithdrawSupply(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(COMMON_WITHDRAW_SUPPLY >= totalCommonWithdrawSupply.add(_value))
+
+IRs:
+TMP_177(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['totalCommonWithdrawSupply', '_value'] 
+TMP_178(bool) = COMMON_WITHDRAW_SUPPLY >= TMP_177
+TMP_179(None) = SOLIDITY_CALL assert(bool)(TMP_178)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 395.sol-KAA-notReachCooperateRewardSupply(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(COOPERATE_REWARD >= cooperateRewardSupply.add(_value))
+
+IRs:
+TMP_174(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['cooperateRewardSupply', '_value'] 
+TMP_175(bool) = COOPERATE_REWARD >= TMP_174
+TMP_176(None) = SOLIDITY_CALL assert(bool)(TMP_175)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 395.sol-KAA-notReachPlatformFundingSupply(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(PLATFORM_FUNDING_SUPPLY >= platformFundingSupply.add(_value))
+
+IRs:
+TMP_168(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['platformFundingSupply', '_value'] 
+TMP_169(bool) = PLATFORM_FUNDING_SUPPLY >= TMP_168
+TMP_170(None) = SOLIDITY_CALL assert(bool)(TMP_169)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 395.sol-KAA-notReachTeamKeepingSupply(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(TEAM_KEEPING >= teamKeepingSupply.add(_value))
+
+IRs:
+TMP_171(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['teamKeepingSupply', '_value'] 
+TMP_172(bool) = TEAM_KEEPING >= TMP_171
+TMP_173(None) = SOLIDITY_CALL assert(bool)(TMP_172)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 395.sol-KAA-notReachTotalSupply(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(MAX_SUPPLY >= totalSupply.add(_value))
+
+IRs:
+TMP_165(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['totalSupply', '_value'] 
+TMP_166(bool) = MAX_SUPPLY >= TMP_165
+TMP_167(None) = SOLIDITY_CALL assert(bool)(TMP_166)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 395.sol-KAA-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_163(bool) = msg.sender == owner
+TMP_164(None) = SOLIDITY_CALL require(bool)(TMP_163)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 395.sol-KAA-pause()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+paused = true
+
+IRs:
+paused(bool) := True(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Pause()
+
+IRs:
+Emit Pause()"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+whenNotPaused()
+
+IRs:
+MODIFIER_CALL, Pausable.whenNotPaused()()"];
+4->1;
+}
+// Function: 395.sol-KAA-processFunding(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+totalSupply = totalSupply.add(_value)
+
+IRs:
+TMP_62(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['totalSupply', '_value'] 
+totalSupply(uint256) := TMP_62(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balances[receiver] = balances[receiver].add(_value)
+
+IRs:
+REF_1(uint256) -> balances[receiver]
+REF_2(uint256) -> balances[receiver]
+TMP_63(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_2', '_value'] 
+REF_1(uint256) (->balances) := TMP_63(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+CreateKAA(receiver,_value)
+
+IRs:
+Emit CreateKAA(receiver,_value)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Transfer(0x0,receiver,_value)
+
+IRs:
+Emit Transfer(0,receiver,_value)"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+notReachTotalSupply(_value)
+
+IRs:
+MODIFIER_CALL, KAA.notReachTotalSupply(uint256)(_value)"];
+5->1;
+}
+// Function: 395.sol-KAA-queryNow()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+now
+
+IRs:
+RETURN now"];
+}
+// Function: 395.sol-KAA-renounceOwnership()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+OwnershipRenounced(owner)
+
+IRs:
+Emit OwnershipRenounced(owner)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = address(0)
+
+IRs:
+TMP_50 = CONVERT 0 to address
+owner(address) := TMP_50(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 395.sol-KAA-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+name = KAA
+
+IRs:
+name(string) := KAA(string)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+symbol = KAA
+
+IRs:
+symbol(string) := KAA(string)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+version = 1.0
+
+IRs:
+version(string) := 1.0(string)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+decimals = 18
+
+IRs:
+decimals(uint256) := 18(uint256)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+PLATFORM_FUNDING_SUPPLY = 13395000000 * 10 ** decimals
+
+IRs:
+TMP_146(uint256) = 10 ** decimals
+TMP_147(uint256) = 13395000000 * TMP_146
+PLATFORM_FUNDING_SUPPLY(uint256) := TMP_147(uint256)"];
+4->5;
+5[label="Node Type: OTHER_ENTRYPOINT 5
+
+EXPRESSION:
+TEAM_KEEPING = 13395000000 * 10 ** decimals
+
+IRs:
+TMP_148(uint256) = 10 ** decimals
+TMP_149(uint256) = 13395000000 * TMP_148
+TEAM_KEEPING(uint256) := TMP_149(uint256)"];
+5->6;
+6[label="Node Type: OTHER_ENTRYPOINT 6
+
+EXPRESSION:
+COOPERATE_REWARD = 8037000000 * 10 ** decimals
+
+IRs:
+TMP_150(uint256) = 10 ** decimals
+TMP_151(uint256) = 8037000000 * TMP_150
+COOPERATE_REWARD(uint256) := TMP_151(uint256)"];
+6->7;
+7[label="Node Type: OTHER_ENTRYPOINT 7
+
+EXPRESSION:
+SHARDING_REWARD = 8930000000 * 10 ** decimals
+
+IRs:
+TMP_152(uint256) = 10 ** decimals
+TMP_153(uint256) = 8930000000 * TMP_152
+SHARDING_REWARD(uint256) := TMP_153(uint256)"];
+7->8;
+8[label="Node Type: OTHER_ENTRYPOINT 8
+
+EXPRESSION:
+MINING_REWARD = 45543000000 * 10 ** decimals
+
+IRs:
+TMP_154(uint256) = 10 ** decimals
+TMP_155(uint256) = 45543000000 * TMP_154
+MINING_REWARD(uint256) := TMP_155(uint256)"];
+8->9;
+9[label="Node Type: OTHER_ENTRYPOINT 9
+
+EXPRESSION:
+COMMON_WITHDRAW_SUPPLY = SHARDING_REWARD + MINING_REWARD
+
+IRs:
+TMP_156(uint256) = SHARDING_REWARD + MINING_REWARD
+COMMON_WITHDRAW_SUPPLY(uint256) := TMP_156(uint256)"];
+9->10;
+10[label="Node Type: OTHER_ENTRYPOINT 10
+
+EXPRESSION:
+MAX_SUPPLY = COMMON_WITHDRAW_SUPPLY + PLATFORM_FUNDING_SUPPLY + TEAM_KEEPING + COOPERATE_REWARD
+
+IRs:
+TMP_157(uint256) = COMMON_WITHDRAW_SUPPLY + PLATFORM_FUNDING_SUPPLY
+TMP_158(uint256) = TMP_157 + TEAM_KEEPING
+TMP_159(uint256) = TMP_158 + COOPERATE_REWARD
+MAX_SUPPLY(uint256) := TMP_159(uint256)"];
+}
+// Function: 395.sol-KAA-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+paused = false
+
+IRs:
+paused(bool) := False(bool)"];
+}
+// Function: 395.sol-KAA-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->11;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_to != address(0))
+
+IRs:
+TMP_119 = CONVERT 0 to address
+TMP_120(bool) = _to != TMP_119
+TMP_121(None) = SOLIDITY_CALL require(bool)(TMP_120)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+needLockBalance = 0
+
+IRs:
+needLockBalance(uint256) := 0(uint256)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+lockAmount[msg.sender] > 0
+
+IRs:
+REF_24(uint256) -> lockAmount[msg.sender]
+TMP_122(bool) = REF_24 > 0
+CONDITION TMP_122"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+needLockBalance = clacCooperateNeedLockAmount(lockAmount[msg.sender])
+
+IRs:
+REF_25(uint256) -> lockAmount[msg.sender]
+TMP_123(uint256) = INTERNAL_CALL, KAA.clacCooperateNeedLockAmount(uint256)(REF_25)
+needLockBalance(uint256) := TMP_123(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+require(bool)(balances[msg.sender].sub(_value) >= needLockBalance)
+
+IRs:
+REF_26(uint256) -> balances[msg.sender]
+TMP_124(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_26', '_value'] 
+TMP_125(bool) = TMP_124 >= needLockBalance
+TMP_126(None) = SOLIDITY_CALL require(bool)(TMP_125)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+balances[msg.sender] = balances[msg.sender].sub(_value)
+
+IRs:
+REF_28(uint256) -> balances[msg.sender]
+REF_29(uint256) -> balances[msg.sender]
+TMP_127(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_29', '_value'] 
+REF_28(uint256) (->balances) := TMP_127(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+balances[_to] = balances[_to].add(_value)
+
+IRs:
+REF_31(uint256) -> balances[_to]
+REF_32(uint256) -> balances[_to]
+TMP_128(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_32', '_value'] 
+REF_31(uint256) (->balances) := TMP_128(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+Transfer(msg.sender,_to,_value)
+
+IRs:
+Emit Transfer(msg.sender,_to,_value)"];
+9->10;
+10[label="Node Type: RETURN 10
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+whenNotPaused()
+
+IRs:
+MODIFIER_CALL, Pausable.whenNotPaused()()"];
+11->1;
+}
+// Function: 395.sol-KAA-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->13;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_to != address(0))
+
+IRs:
+TMP_131 = CONVERT 0 to address
+TMP_132(bool) = _to != TMP_131
+TMP_133(None) = SOLIDITY_CALL require(bool)(TMP_132)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+needLockBalance = 0
+
+IRs:
+needLockBalance(uint256) := 0(uint256)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+lockAmount[_from] > 0
+
+IRs:
+REF_35(uint256) -> lockAmount[_from]
+TMP_134(bool) = REF_35 > 0
+CONDITION TMP_134"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+needLockBalance = clacCooperateNeedLockAmount(lockAmount[_from])
+
+IRs:
+REF_36(uint256) -> lockAmount[_from]
+TMP_135(uint256) = INTERNAL_CALL, KAA.clacCooperateNeedLockAmount(uint256)(REF_36)
+needLockBalance(uint256) := TMP_135(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+require(bool)(balances[_from].sub(_value) >= needLockBalance)
+
+IRs:
+REF_37(uint256) -> balances[_from]
+TMP_136(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_37', '_value'] 
+TMP_137(bool) = TMP_136 >= needLockBalance
+TMP_138(None) = SOLIDITY_CALL require(bool)(TMP_137)"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+_allowance = allowed[_from][msg.sender]
+
+IRs:
+REF_39(mapping(address => uint256)) -> allowed[_from]
+REF_40(uint256) -> REF_39[msg.sender]
+_allowance(uint256) := REF_40(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+balances[_from] = balances[_from].sub(_value)
+
+IRs:
+REF_41(uint256) -> balances[_from]
+REF_42(uint256) -> balances[_from]
+TMP_139(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_42', '_value'] 
+REF_41(uint256) (->balances) := TMP_139(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+balances[_to] = balances[_to].add(_value)
+
+IRs:
+REF_44(uint256) -> balances[_to]
+REF_45(uint256) -> balances[_to]
+TMP_140(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_45', '_value'] 
+REF_44(uint256) (->balances) := TMP_140(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+allowed[_from][msg.sender] = _allowance.sub(_value)
+
+IRs:
+REF_47(mapping(address => uint256)) -> allowed[_from]
+REF_48(uint256) -> REF_47[msg.sender]
+TMP_141(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['_allowance', '_value'] 
+REF_48(uint256) (->allowed) := TMP_141(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+Transfer(_from,_to,_value)
+
+IRs:
+Emit Transfer(_from,_to,_value)"];
+11->12;
+12[label="Node Type: RETURN 12
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+whenNotPaused()
+
+IRs:
+MODIFIER_CALL, Pausable.whenNotPaused()()"];
+13->1;
+}
+// Function: 395.sol-KAA-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transferOwnership(_newOwner)
+
+IRs:
+INTERNAL_CALL, Ownable._transferOwnership(address)(_newOwner)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 395.sol-KAA-unpause()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+paused = false
+
+IRs:
+paused(bool) := False(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Unpause()
+
+IRs:
+Emit Unpause()"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+whenPaused()
+
+IRs:
+MODIFIER_CALL, Pausable.whenPaused()()"];
+4->1;
+}
+// Function: 395.sol-KAA-whenNotPaused()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! paused)
+
+IRs:
+TMP_160 = UnaryType.BANG paused 
+TMP_161(None) = SOLIDITY_CALL require(bool)(TMP_160)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 395.sol-KAA-whenPaused()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(paused)
+
+IRs:
+TMP_162(None) = SOLIDITY_CALL require(bool)(paused)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 395.sol-KAA-withdrawToCooperate(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+processFunding(_to,_value)
+
+IRs:
+INTERNAL_CALL, KAA.processFunding(address,uint256)(_to,_value)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+cooperateRewardSupply = cooperateRewardSupply.add(_value)
+
+IRs:
+TMP_86(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['cooperateRewardSupply', '_value'] 
+cooperateRewardSupply(uint256) := TMP_86(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+lockAmount[_to] = lockAmount[_to].add(_value)
+
+IRs:
+REF_8(uint256) -> lockAmount[_to]
+REF_9(uint256) -> lockAmount[_to]
+TMP_87(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_9', '_value'] 
+REF_8(uint256) (->lockAmount) := TMP_87(uint256)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+notReachCooperateRewardSupply(_value)
+
+IRs:
+MODIFIER_CALL, KAA.notReachCooperateRewardSupply(uint256)(_value)"];
+5->1;
+}
+// Function: 395.sol-KAA-withdrawToPlatformFunding(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! canPlatformFundingWithdraw(_value)
+
+IRs:
+TMP_71(bool) = INTERNAL_CALL, KAA.canPlatformFundingWithdraw(uint256)(_value)
+TMP_72 = UnaryType.BANG TMP_71 
+CONDITION TMP_72"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_73(None) = SOLIDITY_CALL revert()()"];
+2->5;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+processFunding(msg.sender,_value)
+
+IRs:
+INTERNAL_CALL, KAA.processFunding(address,uint256)(msg.sender,_value)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+platformFundingSupply = platformFundingSupply.add(_value)
+
+IRs:
+TMP_75(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['platformFundingSupply', '_value'] 
+platformFundingSupply(uint256) := TMP_75(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+notReachPlatformFundingSupply(_value)
+
+IRs:
+MODIFIER_CALL, KAA.notReachPlatformFundingSupply(uint256)(_value)"];
+7->1;
+}
+// Function: 395.sol-KAA-withdrawToTeam(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! canTeamKeepingWithdraw(_value)
+
+IRs:
+TMP_78(bool) = INTERNAL_CALL, KAA.canTeamKeepingWithdraw(uint256)(_value)
+TMP_79 = UnaryType.BANG TMP_78 
+CONDITION TMP_79"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_80(None) = SOLIDITY_CALL revert()()"];
+2->5;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+processFunding(msg.sender,_value)
+
+IRs:
+INTERNAL_CALL, KAA.processFunding(address,uint256)(msg.sender,_value)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+teamKeepingSupply = teamKeepingSupply.add(_value)
+
+IRs:
+TMP_82(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['teamKeepingSupply', '_value'] 
+teamKeepingSupply(uint256) := TMP_82(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+notReachTeamKeepingSupply(_value)
+
+IRs:
+MODIFIER_CALL, KAA.notReachTeamKeepingSupply(uint256)(_value)"];
+7->1;
+}
+// Function: 395.sol-Ownable-_transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_newOwner != address(0))
+
+IRs:
+TMP_5 = CONVERT 0 to address
+TMP_6(bool) = _newOwner != TMP_5
+TMP_7(None) = SOLIDITY_CALL require(bool)(TMP_6)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,_newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,_newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = _newOwner
+
+IRs:
+owner(address) := _newOwner(address)"];
+}
+// Function: 395.sol-Ownable-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 395.sol-Ownable-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_9(bool) = msg.sender == owner
+TMP_10(None) = SOLIDITY_CALL require(bool)(TMP_9)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 395.sol-Ownable-renounceOwnership()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+OwnershipRenounced(owner)
+
+IRs:
+Emit OwnershipRenounced(owner)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = address(0)
+
+IRs:
+TMP_1 = CONVERT 0 to address
+owner(address) := TMP_1(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 395.sol-Ownable-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transferOwnership(_newOwner)
+
+IRs:
+INTERNAL_CALL, Ownable._transferOwnership(address)(_newOwner)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 395.sol-Pausable-_transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_newOwner != address(0))
+
+IRs:
+TMP_16 = CONVERT 0 to address
+TMP_17(bool) = _newOwner != TMP_16
+TMP_18(None) = SOLIDITY_CALL require(bool)(TMP_17)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,_newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,_newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = _newOwner
+
+IRs:
+owner(address) := _newOwner(address)"];
+}
+// Function: 395.sol-Pausable-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 395.sol-Pausable-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_26(bool) = msg.sender == owner
+TMP_27(None) = SOLIDITY_CALL require(bool)(TMP_26)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 395.sol-Pausable-pause()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+paused = true
+
+IRs:
+paused(bool) := True(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Pause()
+
+IRs:
+Emit Pause()"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+whenNotPaused()
+
+IRs:
+MODIFIER_CALL, Pausable.whenNotPaused()()"];
+4->1;
+}
+// Function: 395.sol-Pausable-renounceOwnership()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+OwnershipRenounced(owner)
+
+IRs:
+Emit OwnershipRenounced(owner)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = address(0)
+
+IRs:
+TMP_12 = CONVERT 0 to address
+owner(address) := TMP_12(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 395.sol-Pausable-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+paused = false
+
+IRs:
+paused(bool) := False(bool)"];
+}
+// Function: 395.sol-Pausable-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transferOwnership(_newOwner)
+
+IRs:
+INTERNAL_CALL, Ownable._transferOwnership(address)(_newOwner)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 395.sol-Pausable-unpause()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+paused = false
+
+IRs:
+paused(bool) := False(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Unpause()
+
+IRs:
+Emit Unpause()"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+whenPaused()
+
+IRs:
+MODIFIER_CALL, Pausable.whenPaused()()"];
+4->1;
+}
+// Function: 395.sol-Pausable-whenNotPaused()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! paused)
+
+IRs:
+TMP_28 = UnaryType.BANG paused 
+TMP_29(None) = SOLIDITY_CALL require(bool)(TMP_28)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 395.sol-Pausable-whenPaused()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(paused)
+
+IRs:
+TMP_30(None) = SOLIDITY_CALL require(bool)(paused)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 395.sol-SafeMath-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_40(uint256) = a + b
+c(uint256) := TMP_40(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(c >= a)
+
+IRs:
+TMP_41(bool) = c >= a
+TMP_42(None) = SOLIDITY_CALL assert(bool)(TMP_41)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 395.sol-SafeMath-div(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a / b
+
+IRs:
+TMP_36(uint256) = a / b
+c(uint256) := TMP_36(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 395.sol-SafeMath-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+a == 0
+
+IRs:
+TMP_31(bool) = a == 0
+CONDITION TMP_31"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_32(uint256) = a * b
+c(uint256) := TMP_32(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+assert(bool)(c / a == b)
+
+IRs:
+TMP_33(uint256) = c / a
+TMP_34(bool) = TMP_33 == b
+TMP_35(None) = SOLIDITY_CALL assert(bool)(TMP_34)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 395.sol-SafeMath-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(b <= a)
+
+IRs:
+TMP_37(bool) = b <= a
+TMP_38(None) = SOLIDITY_CALL assert(bool)(TMP_37)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_39(uint256) = a - b
+RETURN TMP_39"];
+}
+}

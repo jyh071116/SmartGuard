@@ -1,0 +1,808 @@
+digraph G {
+// Function: 1969.sol-Membership-addMemberAcct(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->8;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_memberAddress != address(0))
+
+IRs:
+TMP_39 = CONVERT 0 to address
+TMP_40(bool) = _memberAddress != TMP_39
+TMP_41(None) = SOLIDITY_CALL require(bool)(TMP_40)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+memberAddress = members[_memberAddress]
+
+IRs:
+REF_36(Membership.Member) -> members[_memberAddress]
+memberAddress(Membership.Member) := REF_36(Membership.Member)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+membersAcctsIndex[_memberAddress] = membersAccts.length
+
+IRs:
+REF_37(uint256) -> membersAcctsIndex[_memberAddress]
+REF_38 -> LENGTH membersAccts
+REF_37(uint256) (->membersAcctsIndex) := REF_38(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+membersAccts.push(_memberAddress)
+
+IRs:
+REF_40 -> LENGTH membersAccts
+TMP_43(uint256) := REF_40(uint256)
+TMP_44(uint256) = TMP_43 + 1
+REF_40(uint256) (->membersAccts) := TMP_44(uint256)
+REF_41(address) -> membersAccts[TMP_43]
+REF_41(address) (->membersAccts) := _memberAddress(address)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+memberAddress.memberId = membersAccts.length
+
+IRs:
+REF_42(uint256) -> memberAddress.memberId
+REF_43 -> LENGTH membersAccts
+REF_42(uint256) (->memberAddress) := REF_43(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+memberAddress.membershipType = 1
+
+IRs:
+REF_44(uint256) -> memberAddress.membershipType
+REF_44(uint256) (->memberAddress) := 1(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+NewMember(_memberAddress,memberAddress.memberId,memberAddress.membershipType)
+
+IRs:
+REF_45(uint256) -> memberAddress.memberId
+REF_46(uint256) -> memberAddress.membershipType
+Emit NewMember(_memberAddress,REF_45,REF_46)"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Membership.onlyOwner()()"];
+8->1;
+}
+// Function: 1969.sol-Membership-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 1969.sol-Membership-countMembers()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+membersAccts.length
+
+IRs:
+REF_51 -> LENGTH membersAccts
+RETURN REF_51"];
+}
+// Function: 1969.sol-Membership-getMember(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+(members[_memberAddress].memberId,members[_memberAddress].membershipType)
+
+IRs:
+REF_47(Membership.Member) -> members[_memberAddress]
+REF_48(uint256) -> REF_47.memberId
+REF_49(Membership.Member) -> members[_memberAddress]
+REF_50(uint256) -> REF_49.membershipType
+RETURN REF_48,REF_50"];
+}
+// Function: 1969.sol-Membership-getMembers()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+membersAccts
+
+IRs:
+RETURN membersAccts"];
+}
+// Function: 1969.sol-Membership-getMembershipType(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+members[_memberAddress].membershipType
+
+IRs:
+REF_52(Membership.Member) -> members[_memberAddress]
+REF_53(uint256) -> REF_52.membershipType
+RETURN REF_53"];
+}
+// Function: 1969.sol-Membership-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_58(bool) = msg.sender == owner
+TMP_59(None) = SOLIDITY_CALL require(bool)(TMP_58)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1969.sol-Membership-refund(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->8;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_to != address(0))
+
+IRs:
+TMP_48 = CONVERT 0 to address
+TMP_49(bool) = _to != TMP_48
+TMP_50(None) = SOLIDITY_CALL require(bool)(TMP_49)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+_amount == 0
+
+IRs:
+TMP_51(bool) = _amount == 0
+CONDITION TMP_51"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_amount = memberFee
+
+IRs:
+_amount(uint256) := memberFee(uint256)"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+removeMemberAcct(_to)
+
+IRs:
+INTERNAL_CALL, Membership.removeMemberAcct(address)(_to)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+_to.transfer(_amount)
+
+IRs:
+Transfer dest:_to value:_amount"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+Refund(_to,_amount)
+
+IRs:
+Emit Refund(_to,_amount)"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Membership.onlyOwner()()"];
+8->1;
+}
+// Function: 1969.sol-Membership-removeMemberAcct(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->15;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_memberAddress != address(0))
+
+IRs:
+TMP_33 = CONVERT 0 to address
+TMP_34(bool) = _memberAddress != TMP_33
+TMP_35(None) = SOLIDITY_CALL require(bool)(TMP_34)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+memberAddress = members[_memberAddress]
+
+IRs:
+REF_25(Membership.Member) -> members[_memberAddress]
+memberAddress(Membership.Member) := REF_25(Membership.Member)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+memberAddress.memberId = 0
+
+IRs:
+REF_26(uint256) -> memberAddress.memberId
+REF_26(uint256) (->memberAddress) := 0(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+memberAddress.membershipType = 0
+
+IRs:
+REF_27(uint256) -> memberAddress.membershipType
+REF_27(uint256) (->memberAddress) := 0(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+indexToDelete = membersAcctsIndex[_memberAddress]
+
+IRs:
+REF_28(uint256) -> membersAcctsIndex[_memberAddress]
+indexToDelete(uint256) := REF_28(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+lastAcctIndex = membersAccts.length.sub(1)
+
+IRs:
+REF_29 -> LENGTH membersAccts
+TMP_36(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_29', '1'] 
+lastAcctIndex(uint256) := TMP_36(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+lastAdd = membersAccts[lastAcctIndex]
+
+IRs:
+REF_31(address) -> membersAccts[lastAcctIndex]
+lastAdd(address) := REF_31(address)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+membersAccts[indexToDelete] = lastAdd
+
+IRs:
+REF_32(address) -> membersAccts[indexToDelete]
+REF_32(address) (->membersAccts) := lastAdd(address)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+membersAcctsIndex[lastAdd] = indexToDelete
+
+IRs:
+REF_33(uint256) -> membersAcctsIndex[lastAdd]
+REF_33(uint256) (->membersAcctsIndex) := indexToDelete(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+membersAccts.length --
+
+IRs:
+REF_34 -> LENGTH membersAccts
+TMP_37(uint256) := REF_34(uint256)
+REF_34(-> membersAccts) = REF_34 - 1"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+membersAcctsIndex[_memberAddress] = 0
+
+IRs:
+REF_35(uint256) -> membersAcctsIndex[_memberAddress]
+REF_35(uint256) (->membersAcctsIndex) := 0(uint256)"];
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Membership.onlyOwner()()"];
+15->1;
+}
+// Function: 1969.sol-Membership-requestMembership()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+sender = members[msg.sender]
+
+IRs:
+REF_0(Membership.Member) -> members[msg.sender]
+sender(Membership.Member) := REF_0(Membership.Member)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(msg.value >= memberFee && sender.membershipType == 0)
+
+IRs:
+TMP_15(bool) = msg.value >= memberFee
+REF_1(uint256) -> sender.membershipType
+TMP_16(bool) = REF_1 == 0
+TMP_17(bool) = TMP_15 && TMP_16
+TMP_18(None) = SOLIDITY_CALL require(bool)(TMP_17)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+membersAccts.push(msg.sender)
+
+IRs:
+REF_3 -> LENGTH membersAccts
+TMP_20(uint256) := REF_3(uint256)
+TMP_21(uint256) = TMP_20 + 1
+REF_3(uint256) (->membersAccts) := TMP_21(uint256)
+REF_4(address) -> membersAccts[TMP_20]
+REF_4(address) (->membersAccts) := msg.sender(address)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+sender.memberId = membersAccts.length
+
+IRs:
+REF_5(uint256) -> sender.memberId
+REF_6 -> LENGTH membersAccts
+REF_5(uint256) (->sender) := REF_6(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+sender.membershipType = 1
+
+IRs:
+REF_7(uint256) -> sender.membershipType
+REF_7(uint256) (->sender) := 1(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+NewMember(msg.sender,sender.memberId,sender.membershipType)
+
+IRs:
+REF_8(uint256) -> sender.memberId
+REF_9(uint256) -> sender.membershipType
+Emit NewMember(msg.sender,REF_8,REF_9)"];
+}
+// Function: 1969.sol-Membership-setFee(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+memberFee = _memberFee
+
+IRs:
+memberFee(uint256) := _memberFee(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Membership.onlyOwner()()"];
+2->1;
+}
+// Function: 1969.sol-Membership-setMemberId(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+memberAddress = members[_memberAddress]
+
+IRs:
+REF_23(Membership.Member) -> members[_memberAddress]
+memberAddress(Membership.Member) := REF_23(Membership.Member)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+memberAddress.memberId = _memberId
+
+IRs:
+REF_24(uint256) -> memberAddress.memberId
+REF_24(uint256) (->memberAddress) := _memberId(uint256)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Membership.onlyOwner()()"];
+3->1;
+}
+// Function: 1969.sol-Membership-setMembershipType(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+memberAddress = members[_memberAddress]
+
+IRs:
+REF_21(Membership.Member) -> members[_memberAddress]
+memberAddress(Membership.Member) := REF_21(Membership.Member)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+memberAddress.membershipType = _membershipType
+
+IRs:
+REF_22(uint256) -> memberAddress.membershipType
+REF_22(uint256) (->memberAddress) := _membershipType(uint256)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Membership.onlyOwner()()"];
+3->1;
+}
+// Function: 1969.sol-Membership-setOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = _new_owner
+
+IRs:
+owner(address) := _new_owner(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Membership.onlyOwner()()"];
+2->1;
+}
+// Function: 1969.sol-Membership-updateMemberAddress(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->11;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_to != address(0))
+
+IRs:
+TMP_23 = CONVERT 0 to address
+TMP_24(bool) = _to != TMP_23
+TMP_25(None) = SOLIDITY_CALL require(bool)(TMP_24)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+currentAddress = members[_from]
+
+IRs:
+REF_10(Membership.Member) -> members[_from]
+currentAddress(Membership.Member) := REF_10(Membership.Member)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+newAddress = members[_to]
+
+IRs:
+REF_11(Membership.Member) -> members[_to]
+newAddress(Membership.Member) := REF_11(Membership.Member)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool)(newAddress.memberId == 0)
+
+IRs:
+REF_12(uint256) -> newAddress.memberId
+TMP_26(bool) = REF_12 == 0
+TMP_27(None) = SOLIDITY_CALL require(bool)(TMP_26)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+newAddress.memberId = currentAddress.memberId
+
+IRs:
+REF_13(uint256) -> newAddress.memberId
+REF_14(uint256) -> currentAddress.memberId
+REF_13(uint256) (->newAddress) := REF_14(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+newAddress.membershipType = currentAddress.membershipType
+
+IRs:
+REF_15(uint256) -> newAddress.membershipType
+REF_16(uint256) -> currentAddress.membershipType
+REF_15(uint256) (->newAddress) := REF_16(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+membersAccts[currentAddress.memberId - 1] = _to
+
+IRs:
+REF_17(uint256) -> currentAddress.memberId
+TMP_28(uint256) = REF_17 - 1
+REF_18(address) -> membersAccts[TMP_28]
+REF_18(address) (->membersAccts) := _to(address)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+currentAddress.memberId = 0
+
+IRs:
+REF_19(uint256) -> currentAddress.memberId
+REF_19(uint256) (->currentAddress) := 0(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+currentAddress.membershipType = 0
+
+IRs:
+REF_20(uint256) -> currentAddress.membershipType
+REF_20(uint256) (->currentAddress) := 0(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+UpdateMemberAddress(_from,_to)
+
+IRs:
+Emit UpdateMemberAddress(_from,_to)"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Membership.onlyOwner()()"];
+11->1;
+}
+// Function: 1969.sol-Membership-withdraw(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_to.transfer(_amount)
+
+IRs:
+Transfer dest:_to value:_amount"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Membership.onlyOwner()()"];
+2->1;
+}
+// Function: 1969.sol-SafeMath-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_10(uint256) = a + b
+c(uint256) := TMP_10(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(c >= a)
+
+IRs:
+TMP_11(bool) = c >= a
+TMP_12(None) = SOLIDITY_CALL assert(bool)(TMP_11)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 1969.sol-SafeMath-div(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a / b
+
+IRs:
+TMP_6(uint256) = a / b
+c(uint256) := TMP_6(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 1969.sol-SafeMath-min(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+a < b
+
+IRs:
+TMP_13(bool) = a < b
+CONDITION TMP_13"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+a
+
+IRs:
+RETURN a"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+b
+
+IRs:
+RETURN b"];
+}
+// Function: 1969.sol-SafeMath-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_0(uint256) = a * b
+c(uint256) := TMP_0(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(a == 0 || c / a == b)
+
+IRs:
+TMP_1(bool) = a == 0
+TMP_2(uint256) = c / a
+TMP_3(bool) = TMP_2 == b
+TMP_4(bool) = TMP_1 || TMP_3
+TMP_5(None) = SOLIDITY_CALL assert(bool)(TMP_4)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 1969.sol-SafeMath-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(b <= a)
+
+IRs:
+TMP_7(bool) = b <= a
+TMP_8(None) = SOLIDITY_CALL assert(bool)(TMP_7)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_9(uint256) = a - b
+RETURN TMP_9"];
+}
+}

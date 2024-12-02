@@ -1,0 +1,2839 @@
+digraph G {
+// Function: 8311.sol-Agreement-_approveEscrow(bytes32,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+claimable = claimable.add(_amount)
+
+IRs:
+TMP_61(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['claimable', '_amount'] 
+claimable(uint256) := TMP_61(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+claimableRewards[_id] = _amount
+
+IRs:
+REF_81(uint256) -> claimableRewards[_id]
+REF_81(uint256) (->claimableRewards) := _amount(uint256)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 8311.sol-Agreement-_depositEscrow(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+currentBalance = currentBalance.add(_amount)
+
+IRs:
+TMP_60(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['currentBalance', '_amount'] 
+currentBalance(uint256) := TMP_60(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 8311.sol-Agreement-_fulfill(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+_fulfilled = content.fulfill(_id,creator,brand)
+
+IRs:
+TMP_66(bool) = LIBRARY_CALL, dest:ContentUtils, function:ContentUtils.fulfill(ContentUtils.ContentMapping,bytes32,address,address), arguments:['content', '_id', 'creator', 'brand'] 
+_fulfilled(bool) := TMP_66(bool)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+_fulfilled
+
+IRs:
+CONDITION _fulfilled"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+completeDeliverable(_id,creator,brand)
+
+IRs:
+TMP_67(bool) = INTERNAL_CALL, Escrow.completeDeliverable(bytes32,address,address)(_id,creator,brand)
+RETURN TMP_67"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+}
+// Function: 8311.sol-Agreement-addContent(string,string,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+content.put(_name,_description,_reward)
+
+IRs:
+TMP_62(bool) = LIBRARY_CALL, dest:ContentUtils, function:ContentUtils.put(ContentUtils.ContentMapping,string,string,uint256), arguments:['content', '_name', '_description', '_reward'] 
+RETURN TMP_62"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+notLocked()
+
+IRs:
+MODIFIER_CALL, Agreement.notLocked()()"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyBrand()
+
+IRs:
+MODIFIER_CALL, Agreement.onlyBrand()()"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+validReward(_reward)
+
+IRs:
+MODIFIER_CALL, Escrow.validReward(uint256)(_reward)"];
+4->1;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+_success
+
+IRs:
+RETURN _success"];
+}
+// Function: 8311.sol-Agreement-approveDeliverable(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+_fulfill(_id)
+
+IRs:
+TMP_71(bool) = INTERNAL_CALL, Agreement._fulfill(bytes32)(_id)
+RETURN TMP_71"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyBrand()
+
+IRs:
+MODIFIER_CALL, Agreement.onlyBrand()()"];
+2->1;
+}
+// Function: 8311.sol-Agreement-claim(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+claimableRewards[_id] = 0
+
+IRs:
+REF_95(uint256) -> claimableRewards[_id]
+REF_95(uint256) (->claimableRewards) := 0(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyCreator()
+
+IRs:
+MODIFIER_CALL, Agreement.onlyCreator()()"];
+2->1;
+}
+// Function: 8311.sol-Agreement-completeDeliverable(bytes32,address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(content.isFulfilled(_id,_creator,_brand))
+
+IRs:
+TMP_55(bool) = LIBRARY_CALL, dest:ContentUtils, function:ContentUtils.isFulfilled(ContentUtils.ContentMapping,bytes32,address,address), arguments:['content', '_id', '_creator', '_brand'] 
+TMP_56(None) = SOLIDITY_CALL require(bool)(TMP_55)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+content.completeDeliverable(_id)
+
+IRs:
+TMP_57(bool) = LIBRARY_CALL, dest:ContentUtils, function:ContentUtils.completeDeliverable(ContentUtils.ContentMapping,bytes32), arguments:['content', '_id'] "];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+_approveEscrow(_id,content.rewardOf(_id))
+
+IRs:
+TMP_58(uint256) = LIBRARY_CALL, dest:ContentUtils, function:ContentUtils.rewardOf(ContentUtils.ContentMapping,bytes32), arguments:['content', '_id'] 
+TMP_59(bool) = INTERNAL_CALL, Escrow._approveEscrow(bytes32,uint256)(_id,TMP_58)
+RETURN TMP_59"];
+}
+// Function: 8311.sol-Agreement-constructor(address,uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+brand = msg.sender
+
+IRs:
+brand(address) := msg.sender(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+creator = _creator
+
+IRs:
+creator(address) := _creator(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+expiration = _expiration
+
+IRs:
+expiration(uint256) := _expiration(uint256)"];
+}
+// Function: 8311.sol-Agreement-currentFulfillment(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+(_content,exist) = content.getContentByName(_name)
+
+IRs:
+TUPLE_3(ContentUtils.Content,bool) = LIBRARY_CALL, dest:ContentUtils, function:ContentUtils.getContentByName(ContentUtils.ContentMapping,string), arguments:['content', '_name'] 
+_content(ContentUtils.Content)= UNPACK TUPLE_3 index: 0 
+exist(bool)= UNPACK TUPLE_3 index: 1 "];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+exist
+
+IRs:
+CONDITION exist"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+_content.deliverable.fulfillment[msg.sender]
+
+IRs:
+REF_90(DeliverableUtils.Deliverable) -> _content.deliverable
+REF_91(mapping(address => bool)) -> REF_90.fulfillment
+REF_92(bool) -> REF_91[msg.sender]
+RETURN REF_92"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+false
+"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+fulfillment
+
+IRs:
+RETURN fulfillment"];
+}
+// Function: 8311.sol-Agreement-deposit()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 8311.sol-Agreement-destroy()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+selfdestruct(address)(msg.sender)
+
+IRs:
+TMP_81(None) = SOLIDITY_CALL selfdestruct(address)(msg.sender)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyBrand()
+
+IRs:
+MODIFIER_CALL, Agreement.onlyBrand()()"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+expired()
+
+IRs:
+MODIFIER_CALL, Agreement.expired()()"];
+3->1;
+}
+// Function: 8311.sol-Agreement-expired()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(block.timestamp > expiration)
+
+IRs:
+TMP_95(bool) = block.timestamp > expiration
+TMP_96(None) = SOLIDITY_CALL require(bool)(TMP_95)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 8311.sol-Agreement-extendExpiration(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_expiration > expiration && _expiration >= block.timestamp)
+
+IRs:
+TMP_76(bool) = _expiration > expiration
+TMP_77(bool) = _expiration >= block.timestamp
+TMP_78(bool) = TMP_76 && TMP_77
+TMP_79(None) = SOLIDITY_CALL require(bool)(TMP_78)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+expiration = _expiration
+
+IRs:
+expiration(uint256) := _expiration(uint256)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyBrand()
+
+IRs:
+MODIFIER_CALL, Agreement.onlyBrand()()"];
+4->1;
+}
+// Function: 8311.sol-Agreement-fulfillDeliverable(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+_fulfill(_id)
+
+IRs:
+TMP_68(bool) = INTERNAL_CALL, Agreement._fulfill(bytes32)(_id)
+RETURN TMP_68"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+notExpired()
+
+IRs:
+MODIFIER_CALL, Agreement.notExpired()()"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyCreator()
+
+IRs:
+MODIFIER_CALL, Agreement.onlyCreator()()"];
+3->1;
+}
+// Function: 8311.sol-Agreement-fulfilled(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(content.isFulfilled(_id,creator,brand))
+
+IRs:
+TMP_93(bool) = LIBRARY_CALL, dest:ContentUtils, function:ContentUtils.isFulfilled(ContentUtils.ContentMapping,bytes32,address,address), arguments:['content', '_id', 'creator', 'brand'] 
+TMP_94(None) = SOLIDITY_CALL require(bool)(TMP_93)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 8311.sol-Agreement-getClaimableRewards(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+claimableRewards[_id]
+
+IRs:
+REF_82(uint256) -> claimableRewards[_id]
+RETURN REF_82"];
+}
+// Function: 8311.sol-Agreement-getContentByName(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+(_content,exist) = content.getContentByName(_name)
+
+IRs:
+TUPLE_2(ContentUtils.Content,bool) = LIBRARY_CALL, dest:ContentUtils, function:ContentUtils.getContentByName(ContentUtils.ContentMapping,string), arguments:['content', '_name'] 
+_content(ContentUtils.Content)= UNPACK TUPLE_2 index: 0 
+exist(bool)= UNPACK TUPLE_2 index: 1 "];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+exist
+
+IRs:
+CONDITION exist"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+(_content.name,_content.description,_content.deliverable.reward,_content.addedOn)
+
+IRs:
+REF_84(string) -> _content.name
+REF_85(string) -> _content.description
+REF_86(DeliverableUtils.Deliverable) -> _content.deliverable
+REF_87(uint256) -> REF_86.reward
+REF_88(uint256) -> _content.addedOn
+RETURN REF_84,REF_85,REF_87,REF_88"];
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+(,,0,0)
+
+IRs:
+RETURN ,,0,0"];
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+(name,description,reward,addedOn)
+
+IRs:
+RETURN name,description,reward,addedOn"];
+}
+// Function: 8311.sol-Agreement-lock()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+content.locked == true
+
+IRs:
+REF_96(bool) -> content.locked
+TMP_74(bool) = REF_96 == True"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+locked = true
+
+IRs:
+locked(bool) := True(bool)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+startTime = block.timestamp
+
+IRs:
+startTime(uint256) := block.timestamp(uint256)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyBrand()
+
+IRs:
+MODIFIER_CALL, Agreement.onlyBrand()()"];
+4->1;
+}
+// Function: 8311.sol-Agreement-notExpired()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(block.timestamp < expiration)
+
+IRs:
+TMP_97(bool) = block.timestamp < expiration
+TMP_98(None) = SOLIDITY_CALL require(bool)(TMP_97)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 8311.sol-Agreement-notLocked()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! locked)
+
+IRs:
+TMP_99 = UnaryType.BANG locked 
+TMP_100(None) = SOLIDITY_CALL require(bool)(TMP_99)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 8311.sol-Agreement-onlyBrand()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == brand)
+
+IRs:
+TMP_89(bool) = msg.sender == brand
+TMP_90(None) = SOLIDITY_CALL require(bool)(TMP_89)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 8311.sol-Agreement-onlyCreator()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == creator)
+
+IRs:
+TMP_91(bool) = msg.sender == creator
+TMP_92(None) = SOLIDITY_CALL require(bool)(TMP_91)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 8311.sol-Agreement-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+escrowAddr = address(this)
+
+IRs:
+TMP_84 = CONVERT this to address
+escrowAddr(address) := TMP_84(address)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+claimable = 0
+
+IRs:
+claimable(uint256) := 0(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+currentBalance = 0
+
+IRs:
+currentBalance(uint256) := 0(uint256)"];
+}
+// Function: 8311.sol-Agreement-validReward(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_reward > 0 && _depositEscrow(_reward))
+
+IRs:
+TMP_85(bool) = _reward > 0
+TMP_86(bool) = INTERNAL_CALL, Escrow._depositEscrow(uint256)(_reward)
+TMP_87(bool) = TMP_85 && TMP_86
+TMP_88(None) = SOLIDITY_CALL require(bool)(TMP_87)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 8311.sol-CCOIN-Airdrop(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(transfer(_to,_tokens))
+
+IRs:
+TMP_127(bool) = INTERNAL_CALL, CCOIN.transfer(address,uint256)(_to,_tokens)
+TMP_128(None) = SOLIDITY_CALL require(bool)(TMP_127)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyAuthorized()
+
+IRs:
+MODIFIER_CALL, CCOIN.onlyAuthorized()()"];
+2->1;
+}
+// Function: 8311.sol-CCOIN-BlacklistParticipant(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+whitelisted[participant] = false
+
+IRs:
+REF_140(bool) -> whitelisted[participant]
+REF_140(bool) (->whitelisted) := False(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Whitelist(participant)
+
+IRs:
+Emit Whitelist(participant)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyAuthorized()
+
+IRs:
+MODIFIER_CALL, CCOIN.onlyAuthorized()()"];
+3->1;
+}
+// Function: 8311.sol-CCOIN-Ownable()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 8311.sol-CCOIN-WhitelistParticipant(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+whitelisted[participant] = true
+
+IRs:
+REF_139(bool) -> whitelisted[participant]
+REF_139(bool) (->whitelisted) := True(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Whitelist(participant)
+
+IRs:
+Emit Whitelist(participant)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyAuthorized()
+
+IRs:
+MODIFIER_CALL, CCOIN.onlyAuthorized()()"];
+3->1;
+}
+// Function: 8311.sol-CCOIN-allowance(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+allowed[_owner][_spender]
+
+IRs:
+REF_128(mapping(address => uint256)) -> allowed[_owner]
+REF_129(uint256) -> REF_128[_spender]
+RETURN REF_129"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+remaining
+
+IRs:
+RETURN remaining"];
+}
+// Function: 8311.sol-CCOIN-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowed[msg.sender][_spender] = _value
+
+IRs:
+REF_126(mapping(address => uint256)) -> allowed[msg.sender]
+REF_127(uint256) -> REF_126[_spender]
+REF_127(uint256) (->allowed) := _value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,_value)
+
+IRs:
+Emit Approval(msg.sender,_spender,_value)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 8311.sol-CCOIN-balanceOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+balances[_owner]
+
+IRs:
+REF_125(uint256) -> balances[_owner]
+RETURN REF_125"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+balance
+
+IRs:
+RETURN balance"];
+}
+// Function: 8311.sol-CCOIN-burn(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+balances[_member] = SafeMath.sub(balances[_member],_value)
+
+IRs:
+REF_101(uint256) -> balances[_member]
+REF_103(uint256) -> balances[_member]
+TMP_122(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_103', '_value'] 
+REF_101(uint256) (->balances) := TMP_122(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+totalSupply = SafeMath.sub(totalSupply,_value)
+
+IRs:
+TMP_123(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['totalSupply', '_value'] 
+totalSupply(uint256) := TMP_123(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+Transfer(_member,0x0,_value)
+
+IRs:
+Emit Transfer(_member,0,_value)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Burned(_value)
+
+IRs:
+Emit Burned(_value)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyAuthorized()
+
+IRs:
+MODIFIER_CALL, CCOIN.onlyAuthorized()()"];
+6->1;
+}
+// Function: 8311.sol-CCOIN-calculateNoOfTokensToSend()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+tokenAmount = SafeMath.div(SafeMath.mul(msg.value,multiplier),tokenPriceWei)
+
+IRs:
+TMP_172(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['msg.value', 'multiplier'] 
+TMP_173(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['TMP_172', 'tokenPriceWei'] 
+tokenAmount(uint256) := TMP_173(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+block.number <= startBlock + firstPeriod
+
+IRs:
+TMP_174(uint256) = startBlock + firstPeriod
+TMP_175(bool) = block.number <= TMP_174
+CONDITION TMP_175"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+tokenAmount + SafeMath.div(SafeMath.mul(tokenAmount,firstBonus),100)
+
+IRs:
+TMP_176(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['tokenAmount', 'firstBonus'] 
+TMP_177(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['TMP_176', '100'] 
+TMP_178(uint256) = tokenAmount + TMP_177
+RETURN TMP_178"];
+4[label="Node Type: IF 4
+
+EXPRESSION:
+block.number <= startBlock + secondPeriod
+
+IRs:
+TMP_179(uint256) = startBlock + secondPeriod
+TMP_180(bool) = block.number <= TMP_179
+CONDITION TMP_180"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+tokenAmount + SafeMath.div(SafeMath.mul(tokenAmount,secondBonus),100)
+
+IRs:
+TMP_181(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['tokenAmount', 'secondBonus'] 
+TMP_182(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['TMP_181', '100'] 
+TMP_183(uint256) = tokenAmount + TMP_182
+RETURN TMP_183"];
+6[label="Node Type: IF 6
+
+EXPRESSION:
+block.number <= startBlock + thirdPeriod
+
+IRs:
+TMP_184(uint256) = startBlock + thirdPeriod
+TMP_185(bool) = block.number <= TMP_184
+CONDITION TMP_185"];
+6->7[label="True"];
+6->8[label="False"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+tokenAmount + SafeMath.div(SafeMath.mul(tokenAmount,thirdBonus),100)
+
+IRs:
+TMP_186(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['tokenAmount', 'thirdBonus'] 
+TMP_187(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['TMP_186', '100'] 
+TMP_188(uint256) = tokenAmount + TMP_187
+RETURN TMP_188"];
+8[label="Node Type: IF 8
+
+EXPRESSION:
+block.number <= startBlock + fourthPeriod
+
+IRs:
+TMP_189(uint256) = startBlock + fourthPeriod
+TMP_190(bool) = block.number <= TMP_189
+CONDITION TMP_190"];
+8->9[label="True"];
+8->10[label="False"];
+9[label="Node Type: RETURN 9
+
+EXPRESSION:
+tokenAmount + SafeMath.div(SafeMath.mul(tokenAmount,fourthBonus),100)
+
+IRs:
+TMP_191(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['tokenAmount', 'fourthBonus'] 
+TMP_192(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['TMP_191', '100'] 
+TMP_193(uint256) = tokenAmount + TMP_192
+RETURN TMP_193"];
+10[label="Node Type: IF 10
+
+EXPRESSION:
+block.number <= startBlock + fifthPeriod
+
+IRs:
+TMP_194(uint256) = startBlock + fifthPeriod
+TMP_195(bool) = block.number <= TMP_194
+CONDITION TMP_195"];
+10->11[label="True"];
+10->12[label="False"];
+11[label="Node Type: RETURN 11
+
+EXPRESSION:
+tokenAmount + SafeMath.div(SafeMath.mul(tokenAmount,fifthBonus),100)
+
+IRs:
+TMP_196(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['tokenAmount', 'fifthBonus'] 
+TMP_197(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['TMP_196', '100'] 
+TMP_198(uint256) = tokenAmount + TMP_197
+RETURN TMP_198"];
+12[label="Node Type: RETURN 12
+
+EXPRESSION:
+tokenAmount
+
+IRs:
+RETURN tokenAmount"];
+}
+// Function: 8311.sol-CCOIN-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+locked = true
+
+IRs:
+locked(bool) := True(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+multiplier = 10 ** 18
+
+IRs:
+TMP_112(uint256) = 10 ** 18
+multiplier(uint256) := TMP_112(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+multisigETH = msg.sender
+
+IRs:
+multisigETH(address) := msg.sender(address)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+minContributionETH = 1
+
+IRs:
+minContributionETH(uint256) := 1(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+startBlock = 0
+
+IRs:
+startBlock(uint256) := 0(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+endBlock = 0
+
+IRs:
+endBlock(uint256) := 0(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+maxCap = 1000 * multiplier
+
+IRs:
+TMP_113(uint256) = 1000 * multiplier
+maxCap(uint256) := TMP_113(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+tokenPriceWei = SafeMath.div(1,1400)
+
+IRs:
+TMP_114(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['1', '1400'] 
+tokenPriceWei(uint256) := TMP_114(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+minCap = 100 * multiplier
+
+IRs:
+TMP_115(uint256) = 100 * multiplier
+minCap(uint256) := TMP_115(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+totalTokensSent = 0
+
+IRs:
+totalTokensSent(uint256) := 0(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+firstPeriod = 100
+
+IRs:
+firstPeriod(uint256) := 100(uint256)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+secondPeriod = 200
+
+IRs:
+secondPeriod(uint256) := 200(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+thirdPeriod = 300
+
+IRs:
+thirdPeriod(uint256) := 300(uint256)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+fourthPeriod = 400
+
+IRs:
+fourthPeriod(uint256) := 400(uint256)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+fifthPeriod = 500
+
+IRs:
+fifthPeriod(uint256) := 500(uint256)"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+firstBonus = 120
+
+IRs:
+firstBonus(uint256) := 120(uint256)"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+secondBonus = 115
+
+IRs:
+secondBonus(uint256) := 115(uint256)"];
+17->18;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+thirdBonus = 110
+
+IRs:
+thirdBonus(uint256) := 110(uint256)"];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+fourthBonus = SafeMath.div(1075,10)
+
+IRs:
+TMP_116(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['1075', '10'] 
+fourthBonus(uint256) := TMP_116(uint256)"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+fifthBonus = 105
+
+IRs:
+fifthBonus(uint256) := 105(uint256)"];
+20->21;
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+balances[multisigETH] = totalSupply
+
+IRs:
+REF_100(uint256) -> balances[multisigETH]
+REF_100(uint256) (->balances) := totalSupply(uint256)"];
+}
+// Function: 8311.sol-CCOIN-contribute(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.value < minContributionETH
+
+IRs:
+TMP_161(bool) = msg.value < minContributionETH
+CONDITION TMP_161"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_162(None) = SOLIDITY_CALL revert()()"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+tokensToSend = calculateNoOfTokensToSend()
+
+IRs:
+TMP_163(uint256) = INTERNAL_CALL, CCOIN.calculateNoOfTokensToSend()()
+tokensToSend(uint256) := TMP_163(uint256)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+SafeMath.add(totalTokensSent,tokensToSend) > maxCap
+
+IRs:
+TMP_164(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['totalTokensSent', 'tokensToSend'] 
+TMP_165(bool) = TMP_164 > maxCap
+CONDITION TMP_165"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_166(None) = SOLIDITY_CALL revert()()"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: IF 8
+
+EXPRESSION:
+! transfer(_backer,tokensToSend)
+
+IRs:
+TMP_167(bool) = INTERNAL_CALL, CCOIN.transfer(address,uint256)(_backer,tokensToSend)
+TMP_168 = UnaryType.BANG TMP_167 
+CONDITION TMP_168"];
+8->9[label="True"];
+8->10[label="False"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_169(None) = SOLIDITY_CALL revert()()"];
+9->10;
+10[label="Node Type: END_IF 10
+"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+ethReceived = SafeMath.add(ethReceived,msg.value)
+
+IRs:
+TMP_170(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['ethReceived', 'msg.value'] 
+ethReceived(uint256) := TMP_170(uint256)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+totalTokensSent = SafeMath.add(totalTokensSent,tokensToSend)
+
+IRs:
+TMP_171(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['totalTokensSent', 'tokensToSend'] 
+totalTokensSent(uint256) := TMP_171(uint256)"];
+12->13;
+13[label="Node Type: RETURN 13
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+14[label="Node Type: RETURN 14
+
+EXPRESSION:
+res
+
+IRs:
+RETURN res"];
+}
+// Function: 8311.sol-CCOIN-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+contribute(msg.sender)
+
+IRs:
+TMP_159(bool) = INTERNAL_CALL, CCOIN.contribute(address)(msg.sender)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyPayloadSize(2)
+
+IRs:
+MODIFIER_CALL, CCOIN.onlyPayloadSize(uint256)(2)"];
+2->1;
+}
+// Function: 8311.sol-CCOIN-kill()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender == owner
+
+IRs:
+TMP_110(bool) = msg.sender == owner
+CONDITION TMP_110"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+selfdestruct(address)(owner)
+
+IRs:
+TMP_111(None) = SOLIDITY_CALL selfdestruct(address)(owner)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 8311.sol-CCOIN-lock()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+locked = true
+
+IRs:
+locked(bool) := True(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Locked()
+
+IRs:
+Emit Locked()"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyAuthorized()
+
+IRs:
+MODIFIER_CALL, CCOIN.onlyAuthorized()()"];
+3->1;
+}
+// Function: 8311.sol-CCOIN-onlyAuthorized()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != crowdSaleaddress && msg.sender != owner
+
+IRs:
+TMP_215(bool) = msg.sender != crowdSaleaddress
+TMP_216(bool) = msg.sender != owner
+TMP_217(bool) = TMP_215 && TMP_216
+CONDITION TMP_217"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_218(None) = SOLIDITY_CALL revert()()"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 8311.sol-CCOIN-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender == owner
+
+IRs:
+TMP_205(bool) = msg.sender == owner
+CONDITION TMP_205"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: _ 2
+"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 8311.sol-CCOIN-onlyPayloadSize(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(msg.data.length >= numWords * 32 + 4)
+
+IRs:
+REF_156 -> LENGTH msg.data
+TMP_211(uint256) = numWords * 32
+TMP_212(uint256) = TMP_211 + 4
+TMP_213(bool) = REF_156 >= TMP_212
+TMP_214(None) = SOLIDITY_CALL assert(bool)(TMP_213)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 8311.sol-CCOIN-onlyUnlocked()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != crowdSaleaddress && locked && msg.sender != owner
+
+IRs:
+TMP_206(bool) = msg.sender != crowdSaleaddress
+TMP_207(bool) = TMP_206 && locked
+TMP_208(bool) = msg.sender != owner
+TMP_209(bool) = TMP_207 && TMP_208
+CONDITION TMP_209"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_210(None) = SOLIDITY_CALL revert()()"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 8311.sol-CCOIN-resetCrowdSaleaddress(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+crowdSaleaddress = _newCrowdSaleaddress
+
+IRs:
+crowdSaleaddress(address) := _newCrowdSaleaddress(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyAuthorized()
+
+IRs:
+MODIFIER_CALL, CCOIN.onlyAuthorized()()"];
+2->1;
+}
+// Function: 8311.sol-CCOIN-restartCrowdsale()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+stopInEmergency = false
+
+IRs:
+stopInEmergency(bool) := False(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+RestartedCrowdsale()
+
+IRs:
+Emit RestartedCrowdsale()"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 8311.sol-CCOIN-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+name = CCOIN
+
+IRs:
+name(string) := CCOIN(string)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+symbol = CCOIN
+
+IRs:
+symbol(string) := CCOIN(string)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+decimals = 18
+
+IRs:
+decimals(uint256) := 18(uint256)"];
+}
+// Function: 8311.sol-CCOIN-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+totalSupply = 1000000000 * 10 ** 18
+
+IRs:
+TMP_203(uint256) = 10 ** 18
+TMP_204(uint256) = 1000000000 * TMP_203
+totalSupply(uint256) := TMP_204(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+stopInEmergency = false
+
+IRs:
+stopInEmergency(bool) := False(bool)"];
+}
+// Function: 8311.sol-CCOIN-stopCrowdsale()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+stopInEmergency = true
+
+IRs:
+stopInEmergency(bool) := True(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+StoppedCrowdsale()
+
+IRs:
+Emit StoppedCrowdsale()"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 8311.sol-CCOIN-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+balances[msg.sender] = SafeMath.sub(balances[msg.sender],_value)
+
+IRs:
+REF_105(uint256) -> balances[msg.sender]
+REF_107(uint256) -> balances[msg.sender]
+TMP_130(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_107', '_value'] 
+REF_105(uint256) (->balances) := TMP_130(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balances[_to] = SafeMath.add(balances[_to],_value)
+
+IRs:
+REF_108(uint256) -> balances[_to]
+REF_110(uint256) -> balances[_to]
+TMP_131(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_110', '_value'] 
+REF_108(uint256) (->balances) := TMP_131(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+Transfer(msg.sender,_to,_value)
+
+IRs:
+Emit Transfer(msg.sender,_to,_value)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+onlyUnlocked()
+
+IRs:
+MODIFIER_CALL, CCOIN.onlyUnlocked()()"];
+5->1;
+}
+// Function: 8311.sol-CCOIN-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->12;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+balances[_from] < _value
+
+IRs:
+REF_111(uint256) -> balances[_from]
+TMP_134(bool) = REF_111 < _value
+CONDITION TMP_134"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_135(None) = SOLIDITY_CALL revert()()"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+_value > allowed[_from][msg.sender]
+
+IRs:
+REF_112(mapping(address => uint256)) -> allowed[_from]
+REF_113(uint256) -> REF_112[msg.sender]
+TMP_136(bool) = _value > REF_113
+CONDITION TMP_136"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_137(None) = SOLIDITY_CALL revert()()"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+balances[_from] = SafeMath.sub(balances[_from],_value)
+
+IRs:
+REF_114(uint256) -> balances[_from]
+REF_116(uint256) -> balances[_from]
+TMP_138(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_116', '_value'] 
+REF_114(uint256) (->balances) := TMP_138(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+balances[_to] = SafeMath.add(balances[_to],_value)
+
+IRs:
+REF_117(uint256) -> balances[_to]
+REF_119(uint256) -> balances[_to]
+TMP_139(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_119', '_value'] 
+REF_117(uint256) (->balances) := TMP_139(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+allowed[_from][msg.sender] = SafeMath.sub(allowed[_from][msg.sender],_value)
+
+IRs:
+REF_120(mapping(address => uint256)) -> allowed[_from]
+REF_121(uint256) -> REF_120[msg.sender]
+REF_123(mapping(address => uint256)) -> allowed[_from]
+REF_124(uint256) -> REF_123[msg.sender]
+TMP_140(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_124', '_value'] 
+REF_121(uint256) (->allowed) := TMP_140(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+Transfer(_from,_to,_value)
+
+IRs:
+Emit Transfer(_from,_to,_value)"];
+10->11;
+11[label="Node Type: RETURN 11
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+onlyUnlocked()
+
+IRs:
+MODIFIER_CALL, CCOIN.onlyUnlocked()()"];
+12->1;
+13[label="Node Type: RETURN 13
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 8311.sol-CCOIN-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+newOwner != address(0)
+
+IRs:
+TMP_107 = CONVERT 0 to address
+TMP_108(bool) = newOwner != TMP_107
+CONDITION TMP_108"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->1;
+}
+// Function: 8311.sol-CCOIN-unlock()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+locked = false
+
+IRs:
+locked(bool) := False(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Unlocked()
+
+IRs:
+Emit Unlocked()"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyAuthorized()
+
+IRs:
+MODIFIER_CALL, CCOIN.onlyAuthorized()()"];
+3->1;
+}
+// Function: 8311.sol-CCOIN-withdrawFromEscrow(address,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(balances[_agreementAddr] > 0)
+
+IRs:
+REF_130(uint256) -> balances[_agreementAddr]
+TMP_144(bool) = REF_130 > 0
+TMP_145(None) = SOLIDITY_CALL require(bool)(TMP_144)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+agreement = Agreement(_agreementAddr)
+
+IRs:
+TMP_146 = CONVERT _agreementAddr to Agreement
+agreement(Agreement) := TMP_146(Agreement)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(agreement.creator() == msg.sender)
+
+IRs:
+TMP_147(address) = HIGH_LEVEL_CALL, dest:agreement(Agreement), function:creator, arguments:[]  
+TMP_148(bool) = TMP_147 == msg.sender
+TMP_149(None) = SOLIDITY_CALL require(bool)(TMP_148)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+reward = agreement.getClaimableRewards(_id)
+
+IRs:
+TMP_150(uint256) = HIGH_LEVEL_CALL, dest:agreement(Agreement), function:getClaimableRewards, arguments:['_id']  
+reward(uint256) := TMP_150(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool)(reward > 0)
+
+IRs:
+TMP_151(bool) = reward > 0
+TMP_152(None) = SOLIDITY_CALL require(bool)(TMP_151)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+balances[_agreementAddr] = SafeMath.sub(balances[_agreementAddr],reward)
+
+IRs:
+REF_133(uint256) -> balances[_agreementAddr]
+REF_135(uint256) -> balances[_agreementAddr]
+TMP_153(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_135', 'reward'] 
+REF_133(uint256) (->balances) := TMP_153(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+balances[msg.sender] = SafeMath.add(balances[msg.sender],reward)
+
+IRs:
+REF_136(uint256) -> balances[msg.sender]
+REF_138(uint256) -> balances[msg.sender]
+TMP_154(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_138', 'reward'] 
+REF_136(uint256) (->balances) := TMP_154(uint256)"];
+}
+// Function: 8311.sol-ContentUtils-completeDeliverable(ContentUtils.ContentMapping,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+self.data[_id].deliverable.fulfilled = true
+
+IRs:
+REF_72(mapping(bytes32 => ContentUtils.Content)) -> self.data
+REF_73(ContentUtils.Content) -> REF_72[_id]
+REF_74(DeliverableUtils.Deliverable) -> REF_73.deliverable
+REF_75(bool) -> REF_74.fulfilled
+REF_75(bool) (->self) := True(bool)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 8311.sol-ContentUtils-fulfill(ContentUtils.ContentMapping,bytes32,address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+self.data[_id].deliverable.fulfill(_creator,_brand)
+
+IRs:
+REF_64(mapping(bytes32 => ContentUtils.Content)) -> self.data
+REF_65(ContentUtils.Content) -> REF_64[_id]
+REF_66(DeliverableUtils.Deliverable) -> REF_65.deliverable
+TMP_50(bool) = LIBRARY_CALL, dest:DeliverableUtils, function:DeliverableUtils.fulfill(DeliverableUtils.Deliverable,address,address), arguments:['REF_66', '_creator', '_brand'] 
+RETURN TMP_50"];
+}
+// Function: 8311.sol-ContentUtils-generateContentID(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+keccak256()(_name)
+
+IRs:
+TMP_52(bytes32) = SOLIDITY_CALL keccak256()(_name)
+RETURN TMP_52"];
+}
+// Function: 8311.sol-ContentUtils-getContentByID(ContentUtils.ContentMapping,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+(self.data[_id],self.data[_id].id == bytes32(0))
+
+IRs:
+REF_53(mapping(bytes32 => ContentUtils.Content)) -> self.data
+REF_54(ContentUtils.Content) -> REF_53[_id]
+REF_55(mapping(bytes32 => ContentUtils.Content)) -> self.data
+REF_56(ContentUtils.Content) -> REF_55[_id]
+REF_57(bytes32) -> REF_56.id
+TMP_47 = CONVERT 0 to bytes32
+TMP_48(bool) = REF_57 == TMP_47
+RETURN REF_54,TMP_48"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+(_content,exists)
+
+IRs:
+RETURN _content,exists"];
+}
+// Function: 8311.sol-ContentUtils-getContentByKeyIndex(ContentUtils.ContentMapping,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+isValidIndex(_index,self.keys.length)
+
+IRs:
+REF_58(bytes32[]) -> self.keys
+REF_59 -> LENGTH REF_58
+INTERNAL_CALL, ContentUtils.isValidIndex(uint256,uint256)(_index,REF_59)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+(self.data[self.keys[_index]])
+
+IRs:
+REF_60(mapping(bytes32 => ContentUtils.Content)) -> self.data
+REF_61(bytes32[]) -> self.keys
+REF_62(bytes32) -> REF_61[_index]
+REF_63(ContentUtils.Content) -> REF_60[REF_62]
+RETURN REF_63"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+_content
+
+IRs:
+RETURN _content"];
+}
+// Function: 8311.sol-ContentUtils-getContentByName(ContentUtils.ContentMapping,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+_hash = generateContentID(_name)
+
+IRs:
+TMP_45(bytes32) = INTERNAL_CALL, ContentUtils.generateContentID(string)(_name)
+_hash(bytes32) := TMP_45(bytes32)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+(self.data[_hash],self.data[_hash].addedOn != 0)
+
+IRs:
+REF_48(mapping(bytes32 => ContentUtils.Content)) -> self.data
+REF_49(ContentUtils.Content) -> REF_48[_hash]
+REF_50(mapping(bytes32 => ContentUtils.Content)) -> self.data
+REF_51(ContentUtils.Content) -> REF_50[_hash]
+REF_52(uint256) -> REF_51.addedOn
+TMP_46(bool) = REF_52 != 0
+RETURN REF_49,TMP_46"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+(_content,exists)
+
+IRs:
+RETURN _content,exists"];
+}
+// Function: 8311.sol-ContentUtils-getKey(ContentUtils.ContentMapping,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+isValidIndex(_index,self.keys.length)
+
+IRs:
+REF_44(bytes32[]) -> self.keys
+REF_45 -> LENGTH REF_44
+INTERNAL_CALL, ContentUtils.isValidIndex(uint256,uint256)(_index,REF_45)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+self.keys[_index]
+
+IRs:
+REF_46(bytes32[]) -> self.keys
+REF_47(bytes32) -> REF_46[_index]
+RETURN REF_47"];
+}
+// Function: 8311.sol-ContentUtils-isFulfilled(ContentUtils.ContentMapping,bytes32,address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+self.data[_id].deliverable.isFulfilled(_creator,_brand)
+
+IRs:
+REF_68(mapping(bytes32 => ContentUtils.Content)) -> self.data
+REF_69(ContentUtils.Content) -> REF_68[_id]
+REF_70(DeliverableUtils.Deliverable) -> REF_69.deliverable
+TMP_51(bool) = LIBRARY_CALL, dest:DeliverableUtils, function:DeliverableUtils.isFulfilled(DeliverableUtils.Deliverable,address,address), arguments:['REF_70', '_creator', '_brand'] 
+RETURN TMP_51"];
+}
+// Function: 8311.sol-ContentUtils-isValidIndex(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(_index < _size,KEY_NOT_FOUND_ERR)
+
+IRs:
+TMP_53(bool) = _index < _size
+TMP_54(None) = SOLIDITY_CALL require(bool,string)(TMP_53,KEY_NOT_FOUND_ERR)"];
+}
+// Function: 8311.sol-ContentUtils-put(ContentUtils.ContentMapping,string,string,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! self.locked)
+
+IRs:
+REF_27(bool) -> self.locked
+TMP_33 = UnaryType.BANG REF_27 
+TMP_34(None) = SOLIDITY_CALL require(bool)(TMP_33)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+_id = generateContentID(_name)
+
+IRs:
+TMP_35(bytes32) = INTERNAL_CALL, ContentUtils.generateContentID(string)(_name)
+_id(bytes32) := TMP_35(bytes32)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(self.data[_id].id == bytes32(0))
+
+IRs:
+REF_28(mapping(bytes32 => ContentUtils.Content)) -> self.data
+REF_29(ContentUtils.Content) -> REF_28[_id]
+REF_30(bytes32) -> REF_29.id
+TMP_36 = CONVERT 0 to bytes32
+TMP_37(bool) = REF_30 == TMP_36
+TMP_38(None) = SOLIDITY_CALL require(bool)(TMP_37)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+self.data[_id] = Content(_id,_name,_description,block.timestamp,DeliverableUtils.newDeliverable(_reward))
+
+IRs:
+REF_31(mapping(bytes32 => ContentUtils.Content)) -> self.data
+REF_32(ContentUtils.Content) -> REF_31[_id]
+TMP_39(DeliverableUtils.Deliverable) = LIBRARY_CALL, dest:DeliverableUtils, function:DeliverableUtils.newDeliverable(uint256), arguments:['_reward'] 
+TMP_40(ContentUtils.Content) = new Content(_id,_name,_description,block.timestamp,TMP_39)
+REF_32(ContentUtils.Content) (->self) := TMP_40(ContentUtils.Content)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+self.keys.push(_id)
+
+IRs:
+REF_34(bytes32[]) -> self.keys
+REF_36 -> LENGTH REF_34
+TMP_42(uint256) := REF_36(uint256)
+TMP_43(uint256) = TMP_42 + 1
+REF_36(uint256) (->self) := TMP_43(uint256)
+REF_37(bytes32) -> REF_34[TMP_42]
+REF_37(bytes32) (->self) := _id(bytes32)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 8311.sol-ContentUtils-rewardOf(ContentUtils.ContentMapping,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+self.data[_id].deliverable.reward
+
+IRs:
+REF_40(mapping(bytes32 => ContentUtils.Content)) -> self.data
+REF_41(ContentUtils.Content) -> REF_40[_id]
+REF_42(DeliverableUtils.Deliverable) -> REF_41.deliverable
+REF_43(uint256) -> REF_42.reward
+RETURN REF_43"];
+}
+// Function: 8311.sol-ContentUtils-size(ContentUtils.ContentMapping)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+self.keys.length
+
+IRs:
+REF_38(bytes32[]) -> self.keys
+REF_39 -> LENGTH REF_38
+RETURN REF_39"];
+}
+// Function: 8311.sol-ContentUtils-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+UNIQUE_KEY_ERR = Content with ID already exists 
+
+IRs:
+UNIQUE_KEY_ERR(string) := Content with ID already exists (string)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+KEY_NOT_FOUND_ERR = Key not found
+
+IRs:
+KEY_NOT_FOUND_ERR(string) := Key not found(string)"];
+}
+// Function: 8311.sol-DeliverableUtils-fulfill(DeliverableUtils.Deliverable,address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == _creator || msg.sender == _brand)
+
+IRs:
+TMP_24(bool) = msg.sender == _creator
+TMP_25(bool) = msg.sender == _brand
+TMP_26(bool) = TMP_24 || TMP_25
+TMP_27(None) = SOLIDITY_CALL require(bool)(TMP_26)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+self.fulfillment[msg.sender] = true
+
+IRs:
+REF_17(mapping(address => bool)) -> self.fulfillment
+REF_18(bool) -> REF_17[msg.sender]
+REF_18(bool) (->self) := True(bool)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+self.fulfillment[_creator] && self.fulfillment[_brand]
+
+IRs:
+REF_19(mapping(address => bool)) -> self.fulfillment
+REF_20(bool) -> REF_19[_creator]
+REF_21(mapping(address => bool)) -> self.fulfillment
+REF_22(bool) -> REF_21[_brand]
+TMP_28(bool) = REF_20 && REF_22
+RETURN TMP_28"];
+}
+// Function: 8311.sol-DeliverableUtils-isFulfilled(DeliverableUtils.Deliverable,address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+self.fulfillment[_creator] && self.fulfillment[_brand]
+
+IRs:
+REF_23(mapping(address => bool)) -> self.fulfillment
+REF_24(bool) -> REF_23[_creator]
+REF_25(mapping(address => bool)) -> self.fulfillment
+REF_26(bool) -> REF_25[_brand]
+TMP_29(bool) = REF_24 && REF_26
+RETURN TMP_29"];
+}
+// Function: 8311.sol-DeliverableUtils-newDeliverable(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_reward > 0)
+
+IRs:
+TMP_30(bool) = _reward > 0
+TMP_31(None) = SOLIDITY_CALL require(bool)(TMP_30)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+Deliverable(_reward,false)
+
+IRs:
+TMP_32(DeliverableUtils.Deliverable) = new Deliverable(_reward,False)
+RETURN TMP_32"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+_deliverable
+
+IRs:
+RETURN _deliverable"];
+}
+// Function: 8311.sol-ERC20-allowance(address,address)
+digraph{
+}
+// Function: 8311.sol-ERC20-approve(address,uint256)
+digraph{
+}
+// Function: 8311.sol-ERC20-balanceOf(address)
+digraph{
+}
+// Function: 8311.sol-ERC20-transfer(address,uint256)
+digraph{
+}
+// Function: 8311.sol-ERC20-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 8311.sol-Escrow-_approveEscrow(bytes32,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+claimable = claimable.add(_amount)
+
+IRs:
+TMP_6(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['claimable', '_amount'] 
+claimable(uint256) := TMP_6(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+claimableRewards[_id] = _amount
+
+IRs:
+REF_5(uint256) -> claimableRewards[_id]
+REF_5(uint256) (->claimableRewards) := _amount(uint256)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 8311.sol-Escrow-_depositEscrow(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+currentBalance = currentBalance.add(_amount)
+
+IRs:
+TMP_5(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['currentBalance', '_amount'] 
+currentBalance(uint256) := TMP_5(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 8311.sol-Escrow-completeDeliverable(bytes32,address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(content.isFulfilled(_id,_creator,_brand))
+
+IRs:
+TMP_0(bool) = LIBRARY_CALL, dest:ContentUtils, function:ContentUtils.isFulfilled(ContentUtils.ContentMapping,bytes32,address,address), arguments:['content', '_id', '_creator', '_brand'] 
+TMP_1(None) = SOLIDITY_CALL require(bool)(TMP_0)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+content.completeDeliverable(_id)
+
+IRs:
+TMP_2(bool) = LIBRARY_CALL, dest:ContentUtils, function:ContentUtils.completeDeliverable(ContentUtils.ContentMapping,bytes32), arguments:['content', '_id'] "];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+_approveEscrow(_id,content.rewardOf(_id))
+
+IRs:
+TMP_3(uint256) = LIBRARY_CALL, dest:ContentUtils, function:ContentUtils.rewardOf(ContentUtils.ContentMapping,bytes32), arguments:['content', '_id'] 
+TMP_4(bool) = INTERNAL_CALL, Escrow._approveEscrow(bytes32,uint256)(_id,TMP_3)
+RETURN TMP_4"];
+}
+// Function: 8311.sol-Escrow-currentFulfillment(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+(_content,exist) = content.getContentByName(_name)
+
+IRs:
+TUPLE_1(ContentUtils.Content,bool) = LIBRARY_CALL, dest:ContentUtils, function:ContentUtils.getContentByName(ContentUtils.ContentMapping,string), arguments:['content', '_name'] 
+_content(ContentUtils.Content)= UNPACK TUPLE_1 index: 0 
+exist(bool)= UNPACK TUPLE_1 index: 1 "];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+exist
+
+IRs:
+CONDITION exist"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+_content.deliverable.fulfillment[msg.sender]
+
+IRs:
+REF_14(DeliverableUtils.Deliverable) -> _content.deliverable
+REF_15(mapping(address => bool)) -> REF_14.fulfillment
+REF_16(bool) -> REF_15[msg.sender]
+RETURN REF_16"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+false
+"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+fulfillment
+
+IRs:
+RETURN fulfillment"];
+}
+// Function: 8311.sol-Escrow-getClaimableRewards(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+claimableRewards[_id]
+
+IRs:
+REF_6(uint256) -> claimableRewards[_id]
+RETURN REF_6"];
+}
+// Function: 8311.sol-Escrow-getContentByName(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+(_content,exist) = content.getContentByName(_name)
+
+IRs:
+TUPLE_0(ContentUtils.Content,bool) = LIBRARY_CALL, dest:ContentUtils, function:ContentUtils.getContentByName(ContentUtils.ContentMapping,string), arguments:['content', '_name'] 
+_content(ContentUtils.Content)= UNPACK TUPLE_0 index: 0 
+exist(bool)= UNPACK TUPLE_0 index: 1 "];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+exist
+
+IRs:
+CONDITION exist"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+(_content.name,_content.description,_content.deliverable.reward,_content.addedOn)
+
+IRs:
+REF_8(string) -> _content.name
+REF_9(string) -> _content.description
+REF_10(DeliverableUtils.Deliverable) -> _content.deliverable
+REF_11(uint256) -> REF_10.reward
+REF_12(uint256) -> _content.addedOn
+RETURN REF_8,REF_9,REF_11,REF_12"];
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+(,,0,0)
+
+IRs:
+RETURN ,,0,0"];
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+(name,description,reward,addedOn)
+
+IRs:
+RETURN name,description,reward,addedOn"];
+}
+// Function: 8311.sol-Escrow-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+escrowAddr = address(this)
+
+IRs:
+TMP_7 = CONVERT this to address
+escrowAddr(address) := TMP_7(address)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+claimable = 0
+
+IRs:
+claimable(uint256) := 0(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+currentBalance = 0
+
+IRs:
+currentBalance(uint256) := 0(uint256)"];
+}
+// Function: 8311.sol-Escrow-validReward(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_reward > 0 && _depositEscrow(_reward))
+
+IRs:
+TMP_8(bool) = _reward > 0
+TMP_9(bool) = INTERNAL_CALL, Escrow._depositEscrow(uint256)(_reward)
+TMP_10(bool) = TMP_8 && TMP_9
+TMP_11(None) = SOLIDITY_CALL require(bool)(TMP_10)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 8311.sol-Ownable-Ownable()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 8311.sol-Ownable-kill()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender == owner
+
+IRs:
+TMP_104(bool) = msg.sender == owner
+CONDITION TMP_104"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+selfdestruct(address)(owner)
+
+IRs:
+TMP_105(None) = SOLIDITY_CALL selfdestruct(address)(owner)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 8311.sol-Ownable-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender == owner
+
+IRs:
+TMP_106(bool) = msg.sender == owner
+CONDITION TMP_106"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: _ 2
+"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 8311.sol-Ownable-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+newOwner != address(0)
+
+IRs:
+TMP_101 = CONVERT 0 to address
+TMP_102(bool) = newOwner != TMP_101
+CONDITION TMP_102"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->1;
+}
+// Function: 8311.sol-SafeMath-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_21(uint256) = a + b
+c(uint256) := TMP_21(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(c >= a)
+
+IRs:
+TMP_22(bool) = c >= a
+TMP_23(None) = SOLIDITY_CALL assert(bool)(TMP_22)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 8311.sol-SafeMath-div(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+a / b
+
+IRs:
+TMP_17(uint256) = a / b
+RETURN TMP_17"];
+}
+// Function: 8311.sol-SafeMath-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+a == 0
+
+IRs:
+TMP_12(bool) = a == 0
+CONDITION TMP_12"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_13(uint256) = a * b
+c(uint256) := TMP_13(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+assert(bool)(c / a == b)
+
+IRs:
+TMP_14(uint256) = c / a
+TMP_15(bool) = TMP_14 == b
+TMP_16(None) = SOLIDITY_CALL assert(bool)(TMP_15)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 8311.sol-SafeMath-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(b <= a)
+
+IRs:
+TMP_18(bool) = b <= a
+TMP_19(None) = SOLIDITY_CALL assert(bool)(TMP_18)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_20(uint256) = a - b
+RETURN TMP_20"];
+}
+}

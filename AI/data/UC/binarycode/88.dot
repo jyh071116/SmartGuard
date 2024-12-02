@@ -1,0 +1,1698 @@
+digraph G {
+// Function: 88.sol-RegistryExec-checkErrors(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+err_sel = ERR
+
+IRs:
+err_sel(bytes4) := ERR(bytes4)"];
+2->3;
+3[label="Node Type: INLINE ASM 3
+"];
+3->4;
+4[label="Node Type: END INLINE ASM 4
+"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+bytes(message).length == 0
+
+IRs:
+TMP_47 = CONVERT message to bytes
+REF_26 -> LENGTH TMP_47
+TMP_48(bool) = REF_26 == 0
+CONDITION TMP_48"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+StorageException(_exec_id,No error recieved)
+
+IRs:
+Emit StorageException(_exec_id,No error recieved)"];
+6->8;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+StorageException(_exec_id,message)
+
+IRs:
+Emit StorageException(_exec_id,message)"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+}
+// Function: 88.sol-RegistryExec-checkReturn()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+success = false
+
+IRs:
+success(bool) := False(bool)"];
+1->2;
+2[label="Node Type: INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: END INLINE ASM 3
+"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 88.sol-RegistryExec-configure(address,address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(app_storage == 0,ScriptExec already configured)
+
+IRs:
+TMP_42(bool) = app_storage == 0
+TMP_43(None) = SOLIDITY_CALL require(bool,string)(TMP_42,ScriptExec already configured)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(_app_storage != 0,Invalid input)
+
+IRs:
+TMP_44(bool) = _app_storage != 0
+TMP_45(None) = SOLIDITY_CALL require(bool,string)(TMP_44,Invalid input)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+exec_admin = _exec_admin
+
+IRs:
+exec_admin(address) := _exec_admin(address)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+app_storage = _app_storage
+
+IRs:
+app_storage(address) := _app_storage(address)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+provider = _provider
+
+IRs:
+provider(address) := _provider(address)"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+exec_admin == 0
+
+IRs:
+TMP_46(bool) = exec_admin == 0
+CONDITION TMP_46"];
+6->7[label="True"];
+6->8[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+exec_admin = msg.sender
+
+IRs:
+exec_admin(address) := msg.sender(address)"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+}
+// Function: 88.sol-RegistryExec-createAppInstance(bytes32,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(_app_name != 0 && _init_calldata.length >= 4,invalid input)
+
+IRs:
+TMP_51(bool) = _app_name != 0
+REF_27 -> LENGTH _init_calldata
+TMP_52(bool) = REF_27 >= 4
+TMP_53(bool) = TMP_51 && TMP_52
+TMP_54(None) = SOLIDITY_CALL require(bool,string)(TMP_53,invalid input)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+(exec_id,version) = StorageInterface(app_storage).createInstance(msg.sender,_app_name,provider,registry_exec_id,_init_calldata)
+
+IRs:
+TMP_55 = CONVERT app_storage to StorageInterface
+TUPLE_2(bytes32,bytes32) = HIGH_LEVEL_CALL, dest:TMP_55(StorageInterface), function:createInstance, arguments:['msg.sender', '_app_name', 'provider', 'registry_exec_id', '_init_calldata']  
+exec_id(bytes32)= UNPACK TUPLE_2 index: 0 
+version(bytes32)= UNPACK TUPLE_2 index: 1 "];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+deployed_by[exec_id] = msg.sender
+
+IRs:
+REF_29(address) -> deployed_by[exec_id]
+REF_29(address) (->deployed_by) := msg.sender(address)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+app_instances[_app_name].push(exec_id)
+
+IRs:
+REF_30(bytes32[]) -> app_instances[_app_name]
+REF_32 -> LENGTH REF_30
+TMP_57(uint256) := REF_32(uint256)
+TMP_58(uint256) = TMP_57 + 1
+REF_32(uint256) (->app_instances) := TMP_58(uint256)
+REF_33(bytes32) -> REF_30[TMP_57]
+REF_33(bytes32) (->app_instances) := exec_id(bytes32)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+inst = Instance(provider,registry_exec_id,exec_id,_app_name,version)
+
+IRs:
+TMP_59(ScriptExec.Instance) = new Instance(provider,registry_exec_id,exec_id,_app_name,version)
+inst(ScriptExec.Instance) := TMP_59(ScriptExec.Instance)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+instance_info[exec_id] = inst
+
+IRs:
+REF_34(ScriptExec.Instance) -> instance_info[exec_id]
+REF_34(ScriptExec.Instance) (->instance_info) := inst(ScriptExec.Instance)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+deployed_instances[msg.sender].push(inst)
+
+IRs:
+REF_35(ScriptExec.Instance[]) -> deployed_instances[msg.sender]
+REF_37 -> LENGTH REF_35
+TMP_61(uint256) := REF_37(uint256)
+TMP_62(uint256) = TMP_61 + 1
+REF_37(uint256) (->deployed_instances) := TMP_62(uint256)
+REF_38(ScriptExec.Instance) -> REF_35[TMP_61]
+REF_38(ScriptExec.Instance) (->deployed_instances) := inst(ScriptExec.Instance)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+AppInstanceCreated(msg.sender,exec_id,_app_name,version)
+
+IRs:
+Emit AppInstanceCreated(msg.sender,exec_id,_app_name,version)"];
+8->9;
+9[label="Node Type: RETURN 9
+
+EXPRESSION:
+(exec_id,version)
+
+IRs:
+RETURN exec_id,version"];
+}
+// Function: 88.sol-RegistryExec-createRegistryInstance(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->12;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(_index != 0 && _implementation != 0,Invalid input)
+
+IRs:
+TMP_101(bool) = _index != 0
+TMP_102(bool) = _implementation != 0
+TMP_103(bool) = TMP_101 && TMP_102
+TMP_104(None) = SOLIDITY_CALL require(bool,string)(TMP_103,Invalid input)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+exec_id = StorageInterface(app_storage).createRegistry(_index,_implementation)
+
+IRs:
+TMP_105 = CONVERT app_storage to StorageInterface
+TMP_106(bytes32) = HIGH_LEVEL_CALL, dest:TMP_105(StorageInterface), function:createRegistry, arguments:['_index', '_implementation']  
+exec_id(bytes32) := TMP_106(bytes32)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool,string)(exec_id != 0,Invalid response from storage)
+
+IRs:
+TMP_107(bool) = exec_id != 0
+TMP_108(None) = SOLIDITY_CALL require(bool,string)(TMP_107,Invalid response from storage)"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+registry_exec_id == 0
+
+IRs:
+TMP_109(bool) = registry_exec_id == 0
+CONDITION TMP_109"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+registry_exec_id = exec_id
+
+IRs:
+registry_exec_id(bytes32) := exec_id(bytes32)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+reg = Registry(_index,_implementation)
+
+IRs:
+TMP_110(RegistryExec.Registry) = new Registry(_index,_implementation)
+reg(RegistryExec.Registry) := TMP_110(RegistryExec.Registry)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+deployed_by[exec_id] = msg.sender
+
+IRs:
+REF_62(address) -> deployed_by[exec_id]
+REF_62(address) (->deployed_by) := msg.sender(address)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+registry_instance_info[exec_id] = reg
+
+IRs:
+REF_63(RegistryExec.Registry) -> registry_instance_info[exec_id]
+REF_63(RegistryExec.Registry) (->registry_instance_info) := reg(RegistryExec.Registry)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+deployed_registry_instances[msg.sender].push(reg)
+
+IRs:
+REF_64(RegistryExec.Registry[]) -> deployed_registry_instances[msg.sender]
+REF_66 -> LENGTH REF_64
+TMP_112(uint256) := REF_66(uint256)
+TMP_113(uint256) = TMP_112 + 1
+REF_66(uint256) (->deployed_registry_instances) := TMP_113(uint256)
+REF_67(RegistryExec.Registry) -> REF_64[TMP_112]
+REF_67(RegistryExec.Registry) (->deployed_registry_instances) := reg(RegistryExec.Registry)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+RegistryInstanceCreated(msg.sender,exec_id,_index,_implementation)
+
+IRs:
+Emit RegistryInstanceCreated(msg.sender,exec_id,_index,_implementation)"];
+11->13;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+onlyAdmin()
+
+IRs:
+MODIFIER_CALL, ScriptExec.onlyAdmin()()"];
+12->1;
+13[label="Node Type: RETURN 13
+
+EXPRESSION:
+exec_id
+
+IRs:
+RETURN exec_id"];
+}
+// Function: 88.sol-RegistryExec-exec(bytes32,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+sel = getSelector(_calldata)
+
+IRs:
+TMP_76(bytes4) = INTERNAL_CALL, RegistryExec.getSelector(bytes)(_calldata)
+sel(bytes4) := TMP_76(bytes4)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(sel != this.registerApp.selector && sel != this.registerAppVersion.selector && sel != UPDATE_INST_SEL && sel != UPDATE_EXEC_SEL)
+
+IRs:
+REF_52(function(None,None,None,None)) -> this.registerApp
+REF_53(None) -> REF_52.selector
+TMP_77(bool) = sel != REF_53
+REF_54(function(None,None,None,None,None)) -> this.registerAppVersion
+REF_55(None) -> REF_54.selector
+TMP_78(bool) = sel != REF_55
+TMP_79(bool) = TMP_77 && TMP_78
+TMP_80(bool) = sel != UPDATE_INST_SEL
+TMP_81(bool) = TMP_79 && TMP_80
+TMP_82(bool) = sel != UPDATE_EXEC_SEL
+TMP_83(bool) = TMP_81 && TMP_82
+TMP_84(None) = SOLIDITY_CALL require(bool)(TMP_83)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+address(app_storage).call.value(msg.value)(abi.encodeWithSelector(EXEC_SEL,msg.sender,_exec_id,_calldata)) == false
+
+IRs:
+TMP_85 = CONVERT app_storage to address
+TMP_87(bytes) = SOLIDITY_CALL abi.encodeWithSelector()(EXEC_SEL,msg.sender,_exec_id,_calldata)
+TMP_88(bool) = LOW_LEVEL_CALL, dest:TMP_85, function:call, arguments:['TMP_87'] value:msg.value 
+TMP_89(bool) = TMP_88 == False
+CONDITION TMP_89"];
+3->4[label="True"];
+3->7[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+checkErrors(_exec_id)
+
+IRs:
+INTERNAL_CALL, ScriptExec.checkErrors(bytes32)(_exec_id)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+address(msg.sender).transfer(address(this).balance)
+
+IRs:
+TMP_91 = CONVERT msg.sender to address
+TMP_92 = CONVERT this to address
+TMP_93(uint256) = SOLIDITY_CALL balance(address)(TMP_92)
+Transfer dest:TMP_91 value:TMP_93"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+success = checkReturn()
+
+IRs:
+TMP_95(bool) = INTERNAL_CALL, ScriptExec.checkReturn()()
+success(bool) := TMP_95(bool)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+require(bool,string)(success,Execution failed)
+
+IRs:
+TMP_96(None) = SOLIDITY_CALL require(bool,string)(success,Execution failed)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+address(msg.sender).transfer(address(this).balance)
+
+IRs:
+TMP_97 = CONVERT msg.sender to address
+TMP_98 = CONVERT this to address
+TMP_99(uint256) = SOLIDITY_CALL balance(address)(TMP_98)
+Transfer dest:TMP_97 value:TMP_99"];
+10->11;
+11[label="Node Type: RETURN 11
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 88.sol-RegistryExec-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 88.sol-RegistryExec-getAction(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: INLINE ASM 1
+"];
+1->2;
+2[label="Node Type: END INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+action
+
+IRs:
+RETURN action"];
+}
+// Function: 88.sol-RegistryExec-getDeployedLength(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+deployed_instances[_deployer].length
+
+IRs:
+REF_40(ScriptExec.Instance[]) -> deployed_instances[_deployer]
+REF_41 -> LENGTH REF_40
+RETURN REF_41"];
+}
+// Function: 88.sol-RegistryExec-getInstanceImplementation(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+app = instance_info[_exec_id]
+
+IRs:
+REF_44(ScriptExec.Instance) -> instance_info[_exec_id]
+app(ScriptExec.Instance) := REF_44(ScriptExec.Instance)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+index = StorageInterface(app_storage).getIndex(app.current_registry_exec_id)
+
+IRs:
+TMP_73 = CONVERT app_storage to StorageInterface
+REF_46(bytes32) -> app.current_registry_exec_id
+TMP_74(address) = HIGH_LEVEL_CALL, dest:TMP_73(StorageInterface), function:getIndex, arguments:['REF_46']  
+index(address) := TMP_74(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+(index,functions,implementations) = RegistryInterface(index).getVersionImplementation(app_storage,app.current_registry_exec_id,app.current_provider,app.app_name,app.version_name)
+
+IRs:
+TMP_75 = CONVERT index to RegistryInterface
+REF_48(bytes32) -> app.current_registry_exec_id
+REF_49(address) -> app.current_provider
+REF_50(bytes32) -> app.app_name
+REF_51(bytes32) -> app.version_name
+TUPLE_3(address,bytes4[],address[]) = HIGH_LEVEL_CALL, dest:TMP_75(RegistryInterface), function:getVersionImplementation, arguments:['app_storage', 'REF_48', 'REF_49', 'REF_50', 'REF_51']  
+index(address)= UNPACK TUPLE_3 index: 0 
+functions(bytes4[])= UNPACK TUPLE_3 index: 1 
+implementations(address[])= UNPACK TUPLE_3 index: 2 "];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+(index,functions,implementations)
+
+IRs:
+RETURN index,functions,implementations"];
+}
+// Function: 88.sol-RegistryExec-getInstances(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+app_instances[_app_name]
+
+IRs:
+REF_39(bytes32[]) -> app_instances[_app_name]
+RETURN REF_39"];
+}
+// Function: 88.sol-RegistryExec-getRegistryImplementation()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+index = StorageInterface(app_storage).getIndex(registry_exec_id)
+
+IRs:
+TMP_69 = CONVERT app_storage to StorageInterface
+TMP_70(address) = HIGH_LEVEL_CALL, dest:TMP_69(StorageInterface), function:getIndex, arguments:['registry_exec_id']  
+index(address) := TMP_70(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+implementation = StorageInterface(app_storage).getTarget(registry_exec_id,REGISTER_APP_SEL)
+
+IRs:
+TMP_71 = CONVERT app_storage to StorageInterface
+TMP_72(address) = HIGH_LEVEL_CALL, dest:TMP_71(StorageInterface), function:getTarget, arguments:['registry_exec_id', 'REGISTER_APP_SEL']  
+implementation(address) := TMP_72(address)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+(index,implementation)
+
+IRs:
+RETURN index,implementation"];
+}
+// Function: 88.sol-RegistryExec-getSelector(bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: INLINE ASM 1
+"];
+1->2;
+2[label="Node Type: END INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+selector
+
+IRs:
+RETURN selector"];
+}
+// Function: 88.sol-RegistryExec-onlyAdmin()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == exec_admin)
+
+IRs:
+TMP_207(bool) = msg.sender == exec_admin
+TMP_208(None) = SOLIDITY_CALL require(bool)(TMP_207)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 88.sol-RegistryExec-registerApp(bytes32,address,bytes4[],address[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->9;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(_app_name != 0 && _index != 0,Invalid input)
+
+IRs:
+TMP_116(bool) = _app_name != 0
+TMP_117(bool) = _index != 0
+TMP_118(bool) = TMP_116 && TMP_117
+TMP_119(None) = SOLIDITY_CALL require(bool,string)(TMP_118,Invalid input)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(_selectors.length == _implementations.length && _selectors.length != 0,Invalid input)
+
+IRs:
+REF_68 -> LENGTH _selectors
+REF_69 -> LENGTH _implementations
+TMP_120(bool) = REF_68 == REF_69
+REF_70 -> LENGTH _selectors
+TMP_121(bool) = REF_70 != 0
+TMP_122(bool) = TMP_120 && TMP_121
+TMP_123(None) = SOLIDITY_CALL require(bool,string)(TMP_122,Invalid input)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool,string)(app_storage != 0 && registry_exec_id != 0 && provider != 0,Invalid state)
+
+IRs:
+TMP_124(bool) = app_storage != 0
+TMP_125(bool) = registry_exec_id != 0
+TMP_126(bool) = TMP_124 && TMP_125
+TMP_127(bool) = provider != 0
+TMP_128(bool) = TMP_126 && TMP_127
+TMP_129(None) = SOLIDITY_CALL require(bool,string)(TMP_128,Invalid state)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+(emitted,paid,stored) = StorageInterface(app_storage).exec(msg.sender,registry_exec_id,msg.data)
+
+IRs:
+TMP_130 = CONVERT app_storage to StorageInterface
+TUPLE_4(uint256,uint256,uint256) = HIGH_LEVEL_CALL, dest:TMP_130(StorageInterface), function:exec, arguments:['msg.sender', 'registry_exec_id', 'msg.data']  
+emitted(uint256)= UNPACK TUPLE_4 index: 0 
+paid(uint256)= UNPACK TUPLE_4 index: 1 
+stored(uint256)= UNPACK TUPLE_4 index: 2 "];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+require(bool,string)(emitted == 0 && paid == 0 && stored != 0,Invalid state change)
+
+IRs:
+TMP_131(bool) = emitted == 0
+TMP_132(bool) = paid == 0
+TMP_133(bool) = TMP_131 && TMP_132
+TMP_134(bool) = stored != 0
+TMP_135(bool) = TMP_133 && TMP_134
+TMP_136(None) = SOLIDITY_CALL require(bool,string)(TMP_135,Invalid state change)"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+onlyAdmin()
+
+IRs:
+MODIFIER_CALL, ScriptExec.onlyAdmin()()"];
+9->1;
+}
+// Function: 88.sol-RegistryExec-registerAppVersion(bytes32,bytes32,address,bytes4[],address[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->9;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(_app_name != 0 && _version_name != 0 && _index != 0,Invalid input)
+
+IRs:
+TMP_138(bool) = _app_name != 0
+TMP_139(bool) = _version_name != 0
+TMP_140(bool) = TMP_138 && TMP_139
+TMP_141(bool) = _index != 0
+TMP_142(bool) = TMP_140 && TMP_141
+TMP_143(None) = SOLIDITY_CALL require(bool,string)(TMP_142,Invalid input)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(_selectors.length == _implementations.length && _selectors.length != 0,Invalid input)
+
+IRs:
+REF_72 -> LENGTH _selectors
+REF_73 -> LENGTH _implementations
+TMP_144(bool) = REF_72 == REF_73
+REF_74 -> LENGTH _selectors
+TMP_145(bool) = REF_74 != 0
+TMP_146(bool) = TMP_144 && TMP_145
+TMP_147(None) = SOLIDITY_CALL require(bool,string)(TMP_146,Invalid input)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool,string)(app_storage != 0 && registry_exec_id != 0 && provider != 0,Invalid state)
+
+IRs:
+TMP_148(bool) = app_storage != 0
+TMP_149(bool) = registry_exec_id != 0
+TMP_150(bool) = TMP_148 && TMP_149
+TMP_151(bool) = provider != 0
+TMP_152(bool) = TMP_150 && TMP_151
+TMP_153(None) = SOLIDITY_CALL require(bool,string)(TMP_152,Invalid state)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+(emitted,paid,stored) = StorageInterface(app_storage).exec(msg.sender,registry_exec_id,msg.data)
+
+IRs:
+TMP_154 = CONVERT app_storage to StorageInterface
+TUPLE_5(uint256,uint256,uint256) = HIGH_LEVEL_CALL, dest:TMP_154(StorageInterface), function:exec, arguments:['msg.sender', 'registry_exec_id', 'msg.data']  
+emitted(uint256)= UNPACK TUPLE_5 index: 0 
+paid(uint256)= UNPACK TUPLE_5 index: 1 
+stored(uint256)= UNPACK TUPLE_5 index: 2 "];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+require(bool,string)(emitted == 0 && paid == 0 && stored != 0,Invalid state change)
+
+IRs:
+TMP_155(bool) = emitted == 0
+TMP_156(bool) = paid == 0
+TMP_157(bool) = TMP_155 && TMP_156
+TMP_158(bool) = stored != 0
+TMP_159(bool) = TMP_157 && TMP_158
+TMP_160(None) = SOLIDITY_CALL require(bool,string)(TMP_159,Invalid state change)"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+onlyAdmin()
+
+IRs:
+MODIFIER_CALL, ScriptExec.onlyAdmin()()"];
+9->1;
+}
+// Function: 88.sol-RegistryExec-setAdmin(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_admin != 0)
+
+IRs:
+TMP_66(bool) = _admin != 0
+TMP_67(None) = SOLIDITY_CALL require(bool)(TMP_66)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+exec_admin = _admin
+
+IRs:
+exec_admin(address) := _admin(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyAdmin()
+
+IRs:
+MODIFIER_CALL, ScriptExec.onlyAdmin()()"];
+3->1;
+}
+// Function: 88.sol-RegistryExec-setProvider(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+provider = _provider
+
+IRs:
+provider(address) := _provider(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyAdmin()
+
+IRs:
+MODIFIER_CALL, ScriptExec.onlyAdmin()()"];
+2->1;
+}
+// Function: 88.sol-RegistryExec-setRegistryExecID(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+registry_exec_id = _exec_id
+
+IRs:
+registry_exec_id(bytes32) := _exec_id(bytes32)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyAdmin()
+
+IRs:
+MODIFIER_CALL, ScriptExec.onlyAdmin()()"];
+2->1;
+}
+// Function: 88.sol-RegistryExec-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+EXEC_SEL = bytes4(keccak256()(exec(address,bytes32,bytes)))
+
+IRs:
+TMP_197(bytes32) = SOLIDITY_CALL keccak256()(exec(address,bytes32,bytes))
+TMP_198 = CONVERT TMP_197 to bytes4
+EXEC_SEL(bytes4) := TMP_198(bytes4)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+ERR = bytes4(keccak256()(Error(string)))
+
+IRs:
+TMP_199(bytes32) = SOLIDITY_CALL keccak256()(Error(string))
+TMP_200 = CONVERT TMP_199 to bytes4
+ERR(bytes4) := TMP_200(bytes4)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+REGISTER_APP_SEL = bytes4(keccak256()(registerApp(bytes32,address,bytes4[],address[])))
+
+IRs:
+TMP_201(bytes32) = SOLIDITY_CALL keccak256()(registerApp(bytes32,address,bytes4[],address[]))
+TMP_202 = CONVERT TMP_201 to bytes4
+REGISTER_APP_SEL(bytes4) := TMP_202(bytes4)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+UPDATE_INST_SEL = bytes4(keccak256()(updateInstance(bytes32,bytes32,bytes32)))
+
+IRs:
+TMP_203(bytes32) = SOLIDITY_CALL keccak256()(updateInstance(bytes32,bytes32,bytes32))
+TMP_204 = CONVERT TMP_203 to bytes4
+UPDATE_INST_SEL(bytes4) := TMP_204(bytes4)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+UPDATE_EXEC_SEL = bytes4(keccak256()(updateExec(address)))
+
+IRs:
+TMP_205(bytes32) = SOLIDITY_CALL keccak256()(updateExec(address))
+TMP_206 = CONVERT TMP_205 to bytes4
+UPDATE_EXEC_SEL(bytes4) := TMP_206(bytes4)"];
+}
+// Function: 88.sol-RegistryExec-updateAppExec(bytes32,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(_exec_id != 0 && msg.sender == deployed_by[_exec_id] && address(this) != _new_exec_addr && _new_exec_addr != 0,invalid input)
+
+IRs:
+TMP_180(bool) = _exec_id != 0
+REF_93(address) -> deployed_by[_exec_id]
+TMP_181(bool) = msg.sender == REF_93
+TMP_182(bool) = TMP_180 && TMP_181
+TMP_183 = CONVERT this to address
+TMP_184(bool) = TMP_183 != _new_exec_addr
+TMP_185(bool) = TMP_182 && TMP_184
+TMP_186(bool) = _new_exec_addr != 0
+TMP_187(bool) = TMP_185 && TMP_186
+TMP_188(None) = SOLIDITY_CALL require(bool,string)(TMP_187,invalid input)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+address(app_storage).call(abi.encodeWithSelector(EXEC_SEL,msg.sender,_exec_id,abi.encodeWithSelector(UPDATE_EXEC_SEL,_new_exec_addr))) == false
+
+IRs:
+TMP_189 = CONVERT app_storage to address
+TMP_190(bytes) = SOLIDITY_CALL abi.encodeWithSelector()(UPDATE_EXEC_SEL,_new_exec_addr)
+TMP_191(bytes) = SOLIDITY_CALL abi.encodeWithSelector()(EXEC_SEL,msg.sender,_exec_id,TMP_190)
+TMP_192(bool) = LOW_LEVEL_CALL, dest:TMP_189, function:call, arguments:['TMP_191']  
+TMP_193(bool) = TMP_192 == False
+CONDITION TMP_193"];
+2->3[label="True"];
+2->5[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+checkErrors(_exec_id)
+
+IRs:
+INTERNAL_CALL, ScriptExec.checkErrors(bytes32)(_exec_id)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+success = checkReturn()
+
+IRs:
+TMP_195(bool) = INTERNAL_CALL, ScriptExec.checkReturn()()
+success(bool) := TMP_195(bool)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+require(bool,string)(success,Execution failed)
+
+IRs:
+TMP_196(None) = SOLIDITY_CALL require(bool,string)(success,Execution failed)"];
+7->8;
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 88.sol-RegistryExec-updateAppInstance(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(_exec_id != 0 && msg.sender == deployed_by[_exec_id],invalid sender or input)
+
+IRs:
+TMP_162(bool) = _exec_id != 0
+REF_76(address) -> deployed_by[_exec_id]
+TMP_163(bool) = msg.sender == REF_76
+TMP_164(bool) = TMP_162 && TMP_163
+TMP_165(None) = SOLIDITY_CALL require(bool,string)(TMP_164,invalid sender or input)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+inst = instance_info[_exec_id]
+
+IRs:
+REF_77(ScriptExec.Instance) -> instance_info[_exec_id]
+inst(ScriptExec.Instance) := REF_77(ScriptExec.Instance)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+address(app_storage).call(abi.encodeWithSelector(EXEC_SEL,inst.current_provider,_exec_id,abi.encodeWithSelector(UPDATE_INST_SEL,inst.app_name,inst.version_name,inst.current_registry_exec_id))) == false
+
+IRs:
+TMP_166 = CONVERT app_storage to address
+REF_80(address) -> inst.current_provider
+REF_82(bytes32) -> inst.app_name
+REF_83(bytes32) -> inst.version_name
+REF_84(bytes32) -> inst.current_registry_exec_id
+TMP_167(bytes) = SOLIDITY_CALL abi.encodeWithSelector()(UPDATE_INST_SEL,REF_82,REF_83,REF_84)
+TMP_168(bytes) = SOLIDITY_CALL abi.encodeWithSelector()(EXEC_SEL,REF_80,_exec_id,TMP_167)
+TMP_169(bool) = LOW_LEVEL_CALL, dest:TMP_166, function:call, arguments:['TMP_168']  
+TMP_170(bool) = TMP_169 == False
+CONDITION TMP_170"];
+3->4[label="True"];
+3->6[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+checkErrors(_exec_id)
+
+IRs:
+INTERNAL_CALL, ScriptExec.checkErrors(bytes32)(_exec_id)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+success = checkReturn()
+
+IRs:
+TMP_172(bool) = INTERNAL_CALL, ScriptExec.checkReturn()()
+success(bool) := TMP_172(bool)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+require(bool,string)(success,Execution failed)
+
+IRs:
+TMP_173(None) = SOLIDITY_CALL require(bool,string)(success,Execution failed)"];
+8->9;
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+registry_idx = StorageInterface(app_storage).getIndex(inst.current_registry_exec_id)
+
+IRs:
+TMP_174 = CONVERT app_storage to StorageInterface
+REF_86(bytes32) -> inst.current_registry_exec_id
+TMP_175(address) = HIGH_LEVEL_CALL, dest:TMP_174(StorageInterface), function:getIndex, arguments:['REF_86']  
+registry_idx(address) := TMP_175(address)"];
+9->10;
+10[label="Node Type: NEW VARIABLE 10
+
+EXPRESSION:
+latest_version = RegistryInterface(registry_idx).getLatestVersion(app_storage,inst.current_registry_exec_id,inst.current_provider,inst.app_name)
+
+IRs:
+TMP_176 = CONVERT registry_idx to RegistryInterface
+REF_88(bytes32) -> inst.current_registry_exec_id
+REF_89(address) -> inst.current_provider
+REF_90(bytes32) -> inst.app_name
+TMP_177(bytes32) = HIGH_LEVEL_CALL, dest:TMP_176(RegistryInterface), function:getLatestVersion, arguments:['app_storage', 'REF_88', 'REF_89', 'REF_90']  
+latest_version(bytes32) := TMP_177(bytes32)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+require(bool,string)(latest_version != 0,invalid latest version)
+
+IRs:
+TMP_178(bool) = latest_version != 0
+TMP_179(None) = SOLIDITY_CALL require(bool,string)(TMP_178,invalid latest version)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+instance_info[_exec_id].version_name = latest_version
+
+IRs:
+REF_91(ScriptExec.Instance) -> instance_info[_exec_id]
+REF_92(bytes32) -> REF_91.version_name
+REF_92(bytes32) (->instance_info) := latest_version(bytes32)"];
+12->13;
+13[label="Node Type: RETURN 13
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 88.sol-RegistryInterface-getLatestVersion(address,bytes32,address,bytes32)
+digraph{
+}
+// Function: 88.sol-RegistryInterface-getVersionImplementation(address,bytes32,address,bytes32,bytes32)
+digraph{
+}
+// Function: 88.sol-ScriptExec-checkErrors(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+err_sel = ERR
+
+IRs:
+err_sel(bytes4) := ERR(bytes4)"];
+2->3;
+3[label="Node Type: INLINE ASM 3
+"];
+3->4;
+4[label="Node Type: END INLINE ASM 4
+"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+bytes(message).length == 0
+
+IRs:
+TMP_5 = CONVERT message to bytes
+REF_0 -> LENGTH TMP_5
+TMP_6(bool) = REF_0 == 0
+CONDITION TMP_6"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+StorageException(_exec_id,No error recieved)
+
+IRs:
+Emit StorageException(_exec_id,No error recieved)"];
+6->8;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+StorageException(_exec_id,message)
+
+IRs:
+Emit StorageException(_exec_id,message)"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+}
+// Function: 88.sol-ScriptExec-checkReturn()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+success = false
+
+IRs:
+success(bool) := False(bool)"];
+1->2;
+2[label="Node Type: INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: END INLINE ASM 3
+"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 88.sol-ScriptExec-configure(address,address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(app_storage == 0,ScriptExec already configured)
+
+IRs:
+TMP_0(bool) = app_storage == 0
+TMP_1(None) = SOLIDITY_CALL require(bool,string)(TMP_0,ScriptExec already configured)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(_app_storage != 0,Invalid input)
+
+IRs:
+TMP_2(bool) = _app_storage != 0
+TMP_3(None) = SOLIDITY_CALL require(bool,string)(TMP_2,Invalid input)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+exec_admin = _exec_admin
+
+IRs:
+exec_admin(address) := _exec_admin(address)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+app_storage = _app_storage
+
+IRs:
+app_storage(address) := _app_storage(address)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+provider = _provider
+
+IRs:
+provider(address) := _provider(address)"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+exec_admin == 0
+
+IRs:
+TMP_4(bool) = exec_admin == 0
+CONDITION TMP_4"];
+6->7[label="True"];
+6->8[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+exec_admin = msg.sender
+
+IRs:
+exec_admin(address) := msg.sender(address)"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+}
+// Function: 88.sol-ScriptExec-createAppInstance(bytes32,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(_app_name != 0 && _init_calldata.length >= 4,invalid input)
+
+IRs:
+TMP_9(bool) = _app_name != 0
+REF_1 -> LENGTH _init_calldata
+TMP_10(bool) = REF_1 >= 4
+TMP_11(bool) = TMP_9 && TMP_10
+TMP_12(None) = SOLIDITY_CALL require(bool,string)(TMP_11,invalid input)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+(exec_id,version) = StorageInterface(app_storage).createInstance(msg.sender,_app_name,provider,registry_exec_id,_init_calldata)
+
+IRs:
+TMP_13 = CONVERT app_storage to StorageInterface
+TUPLE_0(bytes32,bytes32) = HIGH_LEVEL_CALL, dest:TMP_13(StorageInterface), function:createInstance, arguments:['msg.sender', '_app_name', 'provider', 'registry_exec_id', '_init_calldata']  
+exec_id(bytes32)= UNPACK TUPLE_0 index: 0 
+version(bytes32)= UNPACK TUPLE_0 index: 1 "];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+deployed_by[exec_id] = msg.sender
+
+IRs:
+REF_3(address) -> deployed_by[exec_id]
+REF_3(address) (->deployed_by) := msg.sender(address)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+app_instances[_app_name].push(exec_id)
+
+IRs:
+REF_4(bytes32[]) -> app_instances[_app_name]
+REF_6 -> LENGTH REF_4
+TMP_15(uint256) := REF_6(uint256)
+TMP_16(uint256) = TMP_15 + 1
+REF_6(uint256) (->app_instances) := TMP_16(uint256)
+REF_7(bytes32) -> REF_4[TMP_15]
+REF_7(bytes32) (->app_instances) := exec_id(bytes32)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+inst = Instance(provider,registry_exec_id,exec_id,_app_name,version)
+
+IRs:
+TMP_17(ScriptExec.Instance) = new Instance(provider,registry_exec_id,exec_id,_app_name,version)
+inst(ScriptExec.Instance) := TMP_17(ScriptExec.Instance)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+instance_info[exec_id] = inst
+
+IRs:
+REF_8(ScriptExec.Instance) -> instance_info[exec_id]
+REF_8(ScriptExec.Instance) (->instance_info) := inst(ScriptExec.Instance)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+deployed_instances[msg.sender].push(inst)
+
+IRs:
+REF_9(ScriptExec.Instance[]) -> deployed_instances[msg.sender]
+REF_11 -> LENGTH REF_9
+TMP_19(uint256) := REF_11(uint256)
+TMP_20(uint256) = TMP_19 + 1
+REF_11(uint256) (->deployed_instances) := TMP_20(uint256)
+REF_12(ScriptExec.Instance) -> REF_9[TMP_19]
+REF_12(ScriptExec.Instance) (->deployed_instances) := inst(ScriptExec.Instance)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+AppInstanceCreated(msg.sender,exec_id,_app_name,version)
+
+IRs:
+Emit AppInstanceCreated(msg.sender,exec_id,_app_name,version)"];
+8->9;
+9[label="Node Type: RETURN 9
+
+EXPRESSION:
+(exec_id,version)
+
+IRs:
+RETURN exec_id,version"];
+}
+// Function: 88.sol-ScriptExec-exec(bytes32,bytes)
+digraph{
+}
+// Function: 88.sol-ScriptExec-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 88.sol-ScriptExec-getAction(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: INLINE ASM 1
+"];
+1->2;
+2[label="Node Type: END INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+action
+
+IRs:
+RETURN action"];
+}
+// Function: 88.sol-ScriptExec-getDeployedLength(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+deployed_instances[_deployer].length
+
+IRs:
+REF_14(ScriptExec.Instance[]) -> deployed_instances[_deployer]
+REF_15 -> LENGTH REF_14
+RETURN REF_15"];
+}
+// Function: 88.sol-ScriptExec-getInstanceImplementation(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+app = instance_info[_exec_id]
+
+IRs:
+REF_18(ScriptExec.Instance) -> instance_info[_exec_id]
+app(ScriptExec.Instance) := REF_18(ScriptExec.Instance)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+index = StorageInterface(app_storage).getIndex(app.current_registry_exec_id)
+
+IRs:
+TMP_31 = CONVERT app_storage to StorageInterface
+REF_20(bytes32) -> app.current_registry_exec_id
+TMP_32(address) = HIGH_LEVEL_CALL, dest:TMP_31(StorageInterface), function:getIndex, arguments:['REF_20']  
+index(address) := TMP_32(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+(index,functions,implementations) = RegistryInterface(index).getVersionImplementation(app_storage,app.current_registry_exec_id,app.current_provider,app.app_name,app.version_name)
+
+IRs:
+TMP_33 = CONVERT index to RegistryInterface
+REF_22(bytes32) -> app.current_registry_exec_id
+REF_23(address) -> app.current_provider
+REF_24(bytes32) -> app.app_name
+REF_25(bytes32) -> app.version_name
+TUPLE_1(address,bytes4[],address[]) = HIGH_LEVEL_CALL, dest:TMP_33(RegistryInterface), function:getVersionImplementation, arguments:['app_storage', 'REF_22', 'REF_23', 'REF_24', 'REF_25']  
+index(address)= UNPACK TUPLE_1 index: 0 
+functions(bytes4[])= UNPACK TUPLE_1 index: 1 
+implementations(address[])= UNPACK TUPLE_1 index: 2 "];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+(index,functions,implementations)
+
+IRs:
+RETURN index,functions,implementations"];
+}
+// Function: 88.sol-ScriptExec-getInstances(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+app_instances[_app_name]
+
+IRs:
+REF_13(bytes32[]) -> app_instances[_app_name]
+RETURN REF_13"];
+}
+// Function: 88.sol-ScriptExec-getRegistryImplementation()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+index = StorageInterface(app_storage).getIndex(registry_exec_id)
+
+IRs:
+TMP_27 = CONVERT app_storage to StorageInterface
+TMP_28(address) = HIGH_LEVEL_CALL, dest:TMP_27(StorageInterface), function:getIndex, arguments:['registry_exec_id']  
+index(address) := TMP_28(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+implementation = StorageInterface(app_storage).getTarget(registry_exec_id,REGISTER_APP_SEL)
+
+IRs:
+TMP_29 = CONVERT app_storage to StorageInterface
+TMP_30(address) = HIGH_LEVEL_CALL, dest:TMP_29(StorageInterface), function:getTarget, arguments:['registry_exec_id', 'REGISTER_APP_SEL']  
+implementation(address) := TMP_30(address)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+(index,implementation)
+
+IRs:
+RETURN index,implementation"];
+}
+// Function: 88.sol-ScriptExec-onlyAdmin()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == exec_admin)
+
+IRs:
+TMP_40(bool) = msg.sender == exec_admin
+TMP_41(None) = SOLIDITY_CALL require(bool)(TMP_40)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 88.sol-ScriptExec-setAdmin(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_admin != 0)
+
+IRs:
+TMP_24(bool) = _admin != 0
+TMP_25(None) = SOLIDITY_CALL require(bool)(TMP_24)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+exec_admin = _admin
+
+IRs:
+exec_admin(address) := _admin(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyAdmin()
+
+IRs:
+MODIFIER_CALL, ScriptExec.onlyAdmin()()"];
+3->1;
+}
+// Function: 88.sol-ScriptExec-setProvider(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+provider = _provider
+
+IRs:
+provider(address) := _provider(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyAdmin()
+
+IRs:
+MODIFIER_CALL, ScriptExec.onlyAdmin()()"];
+2->1;
+}
+// Function: 88.sol-ScriptExec-setRegistryExecID(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+registry_exec_id = _exec_id
+
+IRs:
+registry_exec_id(bytes32) := _exec_id(bytes32)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyAdmin()
+
+IRs:
+MODIFIER_CALL, ScriptExec.onlyAdmin()()"];
+2->1;
+}
+// Function: 88.sol-ScriptExec-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+EXEC_SEL = bytes4(keccak256()(exec(address,bytes32,bytes)))
+
+IRs:
+TMP_34(bytes32) = SOLIDITY_CALL keccak256()(exec(address,bytes32,bytes))
+TMP_35 = CONVERT TMP_34 to bytes4
+EXEC_SEL(bytes4) := TMP_35(bytes4)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+ERR = bytes4(keccak256()(Error(string)))
+
+IRs:
+TMP_36(bytes32) = SOLIDITY_CALL keccak256()(Error(string))
+TMP_37 = CONVERT TMP_36 to bytes4
+ERR(bytes4) := TMP_37(bytes4)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+REGISTER_APP_SEL = bytes4(keccak256()(registerApp(bytes32,address,bytes4[],address[])))
+
+IRs:
+TMP_38(bytes32) = SOLIDITY_CALL keccak256()(registerApp(bytes32,address,bytes4[],address[]))
+TMP_39 = CONVERT TMP_38 to bytes4
+REGISTER_APP_SEL(bytes4) := TMP_39(bytes4)"];
+}
+// Function: 88.sol-StorageInterface-createInstance(address,bytes32,address,bytes32,bytes)
+digraph{
+}
+// Function: 88.sol-StorageInterface-createRegistry(address,address)
+digraph{
+}
+// Function: 88.sol-StorageInterface-exec(address,bytes32,bytes)
+digraph{
+}
+// Function: 88.sol-StorageInterface-getIndex(bytes32)
+digraph{
+}
+// Function: 88.sol-StorageInterface-getTarget(bytes32,bytes4)
+digraph{
+}
+}

@@ -1,0 +1,480 @@
+digraph G {
+// Function: 3106.sol-AirDropWinner-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! address(fomo3d).call.value(100000000000000000)()
+
+IRs:
+TMP_0 = CONVERT fomo3d to address
+TMP_2(bool) = LOW_LEVEL_CALL, dest:TMP_0, function:call, arguments:[] value:100000000000000000 
+TMP_3 = UnaryType.BANG TMP_2 
+CONDITION TMP_3"];
+1->2[label="True"];
+1->4[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+fomo3d.withdraw()
+
+IRs:
+HIGH_LEVEL_CALL, dest:fomo3d(GameOfSwordsInterface), function:withdraw, arguments:[]  "];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+selfdestruct(address)(msg.sender)
+
+IRs:
+TMP_5(None) = SOLIDITY_CALL selfdestruct(address)(msg.sender)"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+}
+// Function: 3106.sol-AirDropWinner-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+fomo3d = GameOfSwordsInterface(0xE7d2c826292CE8bDd5e51Ce44fff4033Be657269)
+
+IRs:
+TMP_6 = CONVERT 1323477459994646185450874806127456658639886316137 to GameOfSwordsInterface
+fomo3d(GameOfSwordsInterface) := TMP_6(GameOfSwordsInterface)"];
+}
+// Function: 3106.sol-BlankContract-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 3106.sol-GameOfSwordsInterface-airDropPot_()
+digraph{
+}
+// Function: 3106.sol-GameOfSwordsInterface-airDropTracker_()
+digraph{
+}
+// Function: 3106.sol-GameOfSwordsInterface-withdraw()
+digraph{
+}
+// Function: 3106.sol-PonziPwn-beginPwn()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->8;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+(_pwnCost,_nContracts,_newSender) = checkPwnData()
+
+IRs:
+TUPLE_0(uint256,uint256,address) = INTERNAL_CALL, PonziPwn.checkPwnData()()
+_pwnCost(uint256)= UNPACK TUPLE_0 index: 0 
+_nContracts(uint256)= UNPACK TUPLE_0 index: 1 
+_newSender(address)= UNPACK TUPLE_0 index: 2 "];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+_pwnCost + 100000000000000000 < maxAmount
+
+IRs:
+TMP_48(uint256) = _pwnCost + 100000000000000000
+TMP_49(bool) = TMP_48 < maxAmount
+CONDITION TMP_49"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+deployContracts(_nContracts,_newSender)
+
+IRs:
+INTERNAL_CALL, PonziPwn.deployContracts(uint256,address)(_nContracts,_newSender)"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+onlyAdmin()
+
+IRs:
+MODIFIER_CALL, PonziPwn.onlyAdmin()()"];
+8->1;
+}
+// Function: 3106.sol-PonziPwn-checkPwnData()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+_newSender = address(keccak256()(abi.encodePacked(0xd6,0x94,address(this),0x01)))
+
+IRs:
+TMP_7 = CONVERT this to address
+TMP_8(bytes) = SOLIDITY_CALL abi.encodePacked()(214,148,TMP_7,1)
+TMP_9(bytes32) = SOLIDITY_CALL keccak256()(TMP_8)
+TMP_10 = CONVERT TMP_9 to address
+_newSender(address) := TMP_10(address)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+_nContracts = 0
+
+IRs:
+_nContracts(uint256) := 0(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+_pwnCost = 0
+
+IRs:
+_pwnCost(uint256) := 0(uint256)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+_seed = 0
+
+IRs:
+_seed(uint256) := 0(uint256)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+_tracker = fomo3d.airDropTracker_()
+
+IRs:
+TMP_11(uint256) = HIGH_LEVEL_CALL, dest:fomo3d(GameOfSwordsInterface), function:airDropTracker_, arguments:[]  
+_tracker(uint256) := TMP_11(uint256)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+_canWin = false
+
+IRs:
+_canWin(bool) := False(bool)"];
+6->7;
+7[label="Node Type: BEGIN_LOOP 7
+"];
+7->8;
+8[label="Node Type: IF_LOOP 8
+
+EXPRESSION:
+! _canWin
+
+IRs:
+TMP_12 = UnaryType.BANG _canWin 
+CONDITION TMP_12"];
+8->9[label="True"];
+8->17[label="False"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+_seed = uint256(keccak256()(abi.encodePacked((block.timestamp) + (block.difficulty) + ((uint256(keccak256()(abi.encodePacked(block.coinbase)))) / (now)) + (block.gaslimit) + ((uint256(keccak256()(abi.encodePacked(_newSender)))) / (now)) + (block.number))))
+
+IRs:
+TMP_13(uint256) = block.timestamp + block.difficulty
+TMP_14(bytes) = SOLIDITY_CALL abi.encodePacked()(block.coinbase)
+TMP_15(bytes32) = SOLIDITY_CALL keccak256()(TMP_14)
+TMP_16 = CONVERT TMP_15 to uint256
+TMP_17(uint256) = TMP_16 / now
+TMP_18(uint256) = TMP_13 + TMP_17
+TMP_19(uint256) = TMP_18 + block.gaslimit
+TMP_20(bytes) = SOLIDITY_CALL abi.encodePacked()(_newSender)
+TMP_21(bytes32) = SOLIDITY_CALL keccak256()(TMP_20)
+TMP_22 = CONVERT TMP_21 to uint256
+TMP_23(uint256) = TMP_22 / now
+TMP_24(uint256) = TMP_19 + TMP_23
+TMP_25(uint256) = TMP_24 + block.number
+TMP_26(bytes) = SOLIDITY_CALL abi.encodePacked()(TMP_25)
+TMP_27(bytes32) = SOLIDITY_CALL keccak256()(TMP_26)
+TMP_28 = CONVERT TMP_27 to uint256
+_seed(uint256) := TMP_28(uint256)"];
+9->10;
+10[label="Node Type: IF 10
+
+EXPRESSION:
+(_seed - ((_seed / 1000) * 1000)) >= _tracker
+
+IRs:
+TMP_29(uint256) = _seed / 1000
+TMP_30(uint256) = TMP_29 * 1000
+TMP_31(uint256) = _seed - TMP_30
+TMP_32(bool) = TMP_31 >= _tracker
+CONDITION TMP_32"];
+10->11[label="True"];
+10->14[label="False"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+_newSender = address(keccak256()(abi.encodePacked(0xd6,0x94,_newSender,0x01)))
+
+IRs:
+TMP_33(bytes) = SOLIDITY_CALL abi.encodePacked()(214,148,_newSender,1)
+TMP_34(bytes32) = SOLIDITY_CALL keccak256()(TMP_33)
+TMP_35 = CONVERT TMP_34 to address
+_newSender(address) := TMP_35(address)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+_nContracts ++
+
+IRs:
+TMP_36(uint256) := _nContracts(uint256)
+_nContracts(uint256) = _nContracts + 1"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+_pwnCost += blankContractCost
+
+IRs:
+_pwnCost(uint256) = _pwnCost + blankContractCost"];
+13->16;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+_canWin = true
+
+IRs:
+_canWin(bool) := True(bool)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+_pwnCost += pwnContractCost
+
+IRs:
+_pwnCost(uint256) = _pwnCost + pwnContractCost"];
+15->16;
+16[label="Node Type: END_IF 16
+"];
+16->8;
+17[label="Node Type: END_LOOP 17
+"];
+17->18;
+18[label="Node Type: RETURN 18
+
+EXPRESSION:
+(_pwnCost,_nContracts,_newSender)
+
+IRs:
+RETURN _pwnCost,_nContracts,_newSender"];
+}
+// Function: 3106.sol-PonziPwn-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+admin = msg.sender
+
+IRs:
+admin(address) := msg.sender(address)"];
+}
+// Function: 3106.sol-PonziPwn-deployContracts(uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: BEGIN_LOOP 1
+"];
+1->4;
+2[label="Node Type: END_LOOP 2
+"];
+3[label="Node Type: NEW VARIABLE 3
+"];
+3->1;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+_i < _nContracts
+
+IRs:
+TMP_37(bool) = _i < _nContracts
+CONDITION TMP_37"];
+4->5[label="True"];
+4->2[label="False"];
+5[label="Node Type: IF 5
+
+EXPRESSION:
+_i ++ == _nContracts
+
+IRs:
+TMP_38(uint256) := _i(uint256)
+_i(uint256) = _i + 1
+TMP_39(bool) = TMP_38 == _nContracts
+CONDITION TMP_39"];
+5->6[label="True"];
+5->8[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+address(_newSender).call.value(100000000000000000)()
+
+IRs:
+TMP_40 = CONVERT _newSender to address
+TMP_42(bool) = LOW_LEVEL_CALL, dest:TMP_40, function:call, arguments:[] value:100000000000000000 "];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+new AirDropWinner()
+
+IRs:
+TMP_44(AirDropWinner) = new AirDropWinner() "];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+new BlankContract()
+
+IRs:
+TMP_46(BlankContract) = new BlankContract() "];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+_i ++
+
+IRs:
+TMP_47(uint256) := _i(uint256)
+_i(uint256) = _i + 1"];
+10->4;
+}
+// Function: 3106.sol-PonziPwn-onlyAdmin()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == admin)
+
+IRs:
+TMP_60(bool) = msg.sender == admin
+TMP_61(None) = SOLIDITY_CALL require(bool)(TMP_60)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 3106.sol-PonziPwn-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+fomo3d = GameOfSwordsInterface(0xE7d2c826292CE8bDd5e51Ce44fff4033Be657269)
+
+IRs:
+TMP_56 = CONVERT 1323477459994646185450874806127456658639886316137 to GameOfSwordsInterface
+fomo3d(GameOfSwordsInterface) := TMP_56(GameOfSwordsInterface)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+blankContractGasLimit = 20000
+
+IRs:
+blankContractGasLimit(uint256) := 20000(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+pwnContractGasLimit = 250000
+
+IRs:
+pwnContractGasLimit(uint256) := 250000(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+gasPrice = 10
+
+IRs:
+gasPrice(uint256) := 10(uint256)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+gasPriceInWei = gasPrice * 1e9
+
+IRs:
+TMP_57(uint256) = gasPrice * 1000000000
+gasPriceInWei(uint256) := TMP_57(uint256)"];
+4->5;
+5[label="Node Type: OTHER_ENTRYPOINT 5
+
+EXPRESSION:
+blankContractCost = blankContractGasLimit * gasPrice
+
+IRs:
+TMP_58(uint256) = blankContractGasLimit * gasPrice
+blankContractCost(uint256) := TMP_58(uint256)"];
+5->6;
+6[label="Node Type: OTHER_ENTRYPOINT 6
+
+EXPRESSION:
+pwnContractCost = pwnContractGasLimit * gasPrice
+
+IRs:
+TMP_59(uint256) = pwnContractGasLimit * gasPrice
+pwnContractCost(uint256) := TMP_59(uint256)"];
+6->7;
+7[label="Node Type: OTHER_ENTRYPOINT 7
+
+EXPRESSION:
+maxAmount = 10000000000000000000
+
+IRs:
+maxAmount(uint256) := 10000000000000000000(uint256)"];
+}
+// Function: 3106.sol-PonziPwn-withdraw()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+admin.transfer(address(this).balance)
+
+IRs:
+TMP_52 = CONVERT this to address
+TMP_53(uint256) = SOLIDITY_CALL balance(address)(TMP_52)
+Transfer dest:admin value:TMP_53"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyAdmin()
+
+IRs:
+MODIFIER_CALL, PonziPwn.onlyAdmin()()"];
+2->1;
+}
+}

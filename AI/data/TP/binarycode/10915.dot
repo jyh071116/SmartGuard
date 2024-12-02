@@ -1,0 +1,1594 @@
+digraph G {
+// Function: 10915.sol-DiceRoll-betIsValid(uint256,uint8,uint8)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_betSize >= minBet && _betSize <= maxBet && _start >= minNumber && _end <= maxNumber)
+
+IRs:
+TMP_176(bool) = _betSize >= minBet
+TMP_177(bool) = _betSize <= maxBet
+TMP_178(bool) = TMP_176 && TMP_177
+TMP_179(bool) = _start >= minNumber
+TMP_180(bool) = TMP_178 && TMP_179
+TMP_181(bool) = _end <= maxNumber
+TMP_182(bool) = TMP_180 && TMP_181
+TMP_183(None) = SOLIDITY_CALL require(bool)(TMP_182)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 10915.sol-DiceRoll-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+houseEdge = 20
+
+IRs:
+houseEdge(uint16) := 20(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+maxProfitAsPercentOfHouse = 100
+
+IRs:
+maxProfitAsPercentOfHouse(uint16) := 100(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+minBet = 100000000000000000
+
+IRs:
+minBet(uint256) := 100000000000000000(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+maxBet = 1000000000000000000
+
+IRs:
+maxBet(uint256) := 1000000000000000000(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+jackpotOfHouseEdge = 500
+
+IRs:
+jackpotOfHouseEdge(uint16) := 500(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+recommendProportion = 100
+
+IRs:
+recommendProportion(uint256) := 100(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+minJackpotBet = 100000000000000000
+
+IRs:
+minJackpotBet(uint256) := 100000000000000000(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+jackpotPersent = 100
+
+IRs:
+jackpotPersent(uint16) := 100(uint256)"];
+}
+// Function: 10915.sol-DiceRoll-createWinner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->10;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+tmNow = uint64(block.timestamp)
+
+IRs:
+TMP_112 = CONVERT block.timestamp to uint64
+tmNow(uint64) := TMP_112(uint64)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(tmNow >= nextJackpotTime)
+
+IRs:
+TMP_113(bool) = tmNow >= nextJackpotTime
+TMP_114(None) = SOLIDITY_CALL require(bool)(TMP_113)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(jackpotPlayer.length > 0)
+
+IRs:
+REF_8 -> LENGTH jackpotPlayer
+TMP_115(bool) = REF_8 > 0
+TMP_116(None) = SOLIDITY_CALL require(bool)(TMP_115)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+nextJackpotTime = tmNow + 72000
+
+IRs:
+TMP_117(uint64) = tmNow + 72000
+nextJackpotTime(uint64) := TMP_117(uint64)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+JackpotPeriods += 1
+
+IRs:
+JackpotPeriods(uint256) = JackpotPeriods + 1"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+random = rand() % jackpotPlayer.length
+
+IRs:
+TMP_118(uint256) = INTERNAL_CALL, DiceRoll.rand()()
+REF_9 -> LENGTH jackpotPlayer
+TMP_119(uint256) = TMP_118 % REF_9
+random(uint256) := TMP_119(uint256)"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+winner = jackpotPlayer[random - 1]
+
+IRs:
+TMP_120(uint256) = random - 1
+REF_10(address) -> jackpotPlayer[TMP_120]
+winner(address) := REF_10(address)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+jackpotPlayer.length = 0
+
+IRs:
+REF_11 -> LENGTH jackpotPlayer
+REF_11(uint256) (->jackpotPlayer) := 0(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+sendJackpot(winner)
+
+IRs:
+INTERNAL_CALL, DiceRoll.sendJackpot(address)(winner)"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, DiceRoll.onlyOwner()()"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+jackpotAreActive()
+
+IRs:
+MODIFIER_CALL, DiceRoll.jackpotAreActive()()"];
+11->1;
+}
+// Function: 10915.sol-DiceRoll-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+contractBalance = safeAdd(contractBalance,msg.value)
+
+IRs:
+TMP_18(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(contractBalance,msg.value)
+contractBalance(uint256) := TMP_18(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+setMaxProfit()
+
+IRs:
+INTERNAL_CALL, DiceRoll.setMaxProfit()()"];
+}
+// Function: 10915.sol-DiceRoll-gameIsActive()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! gamePaused)
+
+IRs:
+TMP_192 = UnaryType.BANG gamePaused 
+TMP_193(None) = SOLIDITY_CALL require(bool)(TMP_192)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 10915.sol-DiceRoll-getHouseEdgeFee(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+(_betValue * (100 - _probability) / _probability + _betValue) * houseEdge / 1000
+
+IRs:
+TMP_135(uint256) = 100 - _probability
+TMP_136(uint256) = _betValue * TMP_135
+TMP_137(uint256) = TMP_136 / _probability
+TMP_138(uint256) = TMP_137 + _betValue
+TMP_139(uint256) = TMP_138 * houseEdge
+TMP_140(uint256) = TMP_139 / 1000
+RETURN TMP_140"];
+}
+// Function: 10915.sol-DiceRoll-increaseJackpot(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(increaseAmount < maxProfit)
+
+IRs:
+TMP_103(bool) = increaseAmount < maxProfit
+TMP_104(None) = SOLIDITY_CALL require(bool)(TMP_103)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+LogJackpot(_betId,msg.sender,increaseAmount)
+
+IRs:
+Emit LogJackpot(_betId,msg.sender,increaseAmount)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+jackpotBlance = safeAdd(jackpotBlance,increaseAmount)
+
+IRs:
+TMP_106(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(jackpotBlance,increaseAmount)
+jackpotBlance(uint256) := TMP_106(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+contractBalance = safeSub(contractBalance,increaseAmount)
+
+IRs:
+TMP_107(uint256) = INTERNAL_CALL, SafeMath.safeSub(uint256,uint256)(contractBalance,increaseAmount)
+contractBalance(uint256) := TMP_107(uint256)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+msg.value >= minJackpotBet
+
+IRs:
+TMP_108(bool) = msg.value >= minJackpotBet
+CONDITION TMP_108"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+jackpotPlayer.push(msg.sender)
+
+IRs:
+REF_6 -> LENGTH jackpotPlayer
+TMP_110(uint256) := REF_6(uint256)
+TMP_111(uint256) = TMP_110 + 1
+REF_6(uint256) (->jackpotPlayer) := TMP_111(uint256)
+REF_7(address) -> jackpotPlayer[TMP_110]
+REF_7(address) (->jackpotPlayer) := msg.sender(address)"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+}
+// Function: 10915.sol-DiceRoll-jackpotAreActive()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! jackpotPaused)
+
+IRs:
+TMP_196 = UnaryType.BANG jackpotPaused 
+TMP_197(None) = SOLIDITY_CALL require(bool)(TMP_196)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 10915.sol-DiceRoll-oddEven(uint8,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->29;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+betId += 1
+
+IRs:
+betId(uint256) = betId + 1"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+probability = 50
+
+IRs:
+probability(uint8) := 50(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+playerProfit = ((msg.value * (100 - probability) / probability + msg.value) * (1000 - houseEdge) / 1000) - msg.value
+
+IRs:
+TMP_61(uint256) = 100 - probability
+TMP_62(uint256) = msg.value * TMP_61
+TMP_63(uint256) = TMP_62 / probability
+TMP_64(uint256) = TMP_63 + msg.value
+TMP_65(uint256) = 1000 - houseEdge
+TMP_66(uint256) = TMP_64 * TMP_65
+TMP_67(uint256) = TMP_66 / 1000
+TMP_68(uint256) = TMP_67 - msg.value
+playerProfit(uint256) := TMP_68(uint256)"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+playerProfit > maxProfit
+
+IRs:
+TMP_69(bool) = playerProfit > maxProfit
+CONDITION TMP_69"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+playerProfit = maxProfit
+
+IRs:
+playerProfit(uint256) := maxProfit(uint256)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+random = uint8(rand() % 100 + 1)
+
+IRs:
+TMP_70(uint256) = INTERNAL_CALL, DiceRoll.rand()()
+TMP_71(uint256) = TMP_70 % 100
+TMP_72(uint256) = TMP_71 + 1
+TMP_73 = CONVERT TMP_72 to uint8
+random(uint8) := TMP_73(uint8)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+totalWeiWagered += msg.value
+
+IRs:
+totalWeiWagered(uint256) = totalWeiWagered + msg.value"];
+8->9;
+9[label="Node Type: IF 9
+
+EXPRESSION:
+random % 2 == oddeven
+
+IRs:
+TMP_74(uint8) = random % 2
+TMP_75(bool) = TMP_74 == oddeven
+CONDITION TMP_75"];
+9->10[label="True"];
+9->23[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+totalWeiWon = safeAdd(totalWeiWon,playerProfit)
+
+IRs:
+TMP_76(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(totalWeiWon,playerProfit)
+totalWeiWon(uint256) := TMP_76(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+contractBalance = safeSub(contractBalance,playerProfit)
+
+IRs:
+TMP_77(uint256) = INTERNAL_CALL, SafeMath.safeSub(uint256,uint256)(contractBalance,playerProfit)
+contractBalance(uint256) := TMP_77(uint256)"];
+11->12;
+12[label="Node Type: NEW VARIABLE 12
+
+EXPRESSION:
+payout = safeAdd(playerProfit,msg.value)
+
+IRs:
+TMP_78(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(playerProfit,msg.value)
+payout(uint256) := TMP_78(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+setMaxProfit()
+
+IRs:
+INTERNAL_CALL, DiceRoll.setMaxProfit()()"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+LogResult(betId,msg.sender,random,playerProfit,1,0,0,oddeven,msg.value)
+
+IRs:
+Emit LogResult(betId,msg.sender,random,playerProfit,1,0,0,oddeven,msg.value)"];
+14->15;
+15[label="Node Type: NEW VARIABLE 15
+
+EXPRESSION:
+houseEdgeFee = getHouseEdgeFee(probability,msg.value)
+
+IRs:
+TMP_81(uint256) = INTERNAL_CALL, DiceRoll.getHouseEdgeFee(uint256,uint256)(probability,msg.value)
+houseEdgeFee(uint256) := TMP_81(uint256)"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+increaseJackpot(houseEdgeFee * jackpotOfHouseEdge / 1000,betId)
+
+IRs:
+TMP_82(uint256) = houseEdgeFee * jackpotOfHouseEdge
+TMP_83(uint256) = TMP_82 / 1000
+INTERNAL_CALL, DiceRoll.increaseJackpot(uint256,uint256)(TMP_83,betId)"];
+16->17;
+17[label="Node Type: IF 17
+
+EXPRESSION:
+inviter != address(0)
+
+IRs:
+TMP_85 = CONVERT 0 to address
+TMP_86(bool) = inviter != TMP_85
+CONDITION TMP_86"];
+17->18[label="True"];
+17->20[label="False"];
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+LogRecommendProfit(betId,msg.sender,playerProfit)
+
+IRs:
+Emit LogRecommendProfit(betId,msg.sender,playerProfit)"];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+sendProportion(inviter,houseEdgeFee * recommendProportion / 1000)
+
+IRs:
+TMP_88(uint256) = houseEdgeFee * recommendProportion
+TMP_89(uint256) = TMP_88 / 1000
+INTERNAL_CALL, DiceRoll.sendProportion(address,uint256)(inviter,TMP_89)"];
+19->20;
+20[label="Node Type: END_IF 20
+"];
+20->21;
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+msg.sender.transfer(payout)
+
+IRs:
+Transfer dest:msg.sender value:payout"];
+21->22;
+22[label="Node Type: RETURN 22
+"];
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+LogResult(betId,msg.sender,random,0,0,0,0,oddeven,msg.value)
+
+IRs:
+Emit LogResult(betId,msg.sender,random,0,0,0,0,oddeven,msg.value)"];
+23->24;
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+contractBalance = safeAdd(contractBalance,(msg.value - 1))
+
+IRs:
+TMP_93(uint256) = msg.value - 1
+TMP_94(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(contractBalance,TMP_93)
+contractBalance(uint256) := TMP_94(uint256)"];
+24->25;
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+setMaxProfit()
+
+IRs:
+INTERNAL_CALL, DiceRoll.setMaxProfit()()"];
+25->26;
+26[label="Node Type: EXPRESSION 26
+
+EXPRESSION:
+msg.sender.transfer(1)
+
+IRs:
+Transfer dest:msg.sender value:1"];
+26->27;
+27[label="Node Type: RETURN 27
+"];
+29[label="Node Type: EXPRESSION 29
+
+EXPRESSION:
+gameIsActive()
+
+IRs:
+MODIFIER_CALL, DiceRoll.gameIsActive()()"];
+29->30;
+30[label="Node Type: EXPRESSION 30
+
+EXPRESSION:
+oddEvenBetIsValid(msg.value,oddeven)
+
+IRs:
+MODIFIER_CALL, DiceRoll.oddEvenBetIsValid(uint256,uint8)(msg.value,oddeven)"];
+30->1;
+}
+// Function: 10915.sol-DiceRoll-oddEvenBetIsValid(uint256,uint8)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_betSize >= minBet && _betSize <= maxBet && (_oddeven == 1 || _oddeven == 0))
+
+IRs:
+TMP_184(bool) = _betSize >= minBet
+TMP_185(bool) = _betSize <= maxBet
+TMP_186(bool) = TMP_184 && TMP_185
+TMP_187(bool) = _oddeven == 1
+TMP_188(bool) = _oddeven == 0
+TMP_189(bool) = TMP_187 || TMP_188
+TMP_190(bool) = TMP_186 && TMP_189
+TMP_191(None) = SOLIDITY_CALL require(bool)(TMP_190)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 10915.sol-DiceRoll-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_198(bool) = msg.sender == owner
+TMP_199(None) = SOLIDITY_CALL require(bool)(TMP_198)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 10915.sol-DiceRoll-ownerChangeOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, DiceRoll.onlyOwner()()"];
+2->1;
+}
+// Function: 10915.sol-DiceRoll-ownerPauseGame(bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+gamePaused = newStatus
+
+IRs:
+gamePaused(bool) := newStatus(bool)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, DiceRoll.onlyOwner()()"];
+2->1;
+}
+// Function: 10915.sol-DiceRoll-ownerPauseJackpot(bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+jackpotPaused = newStatus
+
+IRs:
+jackpotPaused(bool) := newStatus(bool)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, DiceRoll.onlyOwner()()"];
+2->1;
+}
+// Function: 10915.sol-DiceRoll-ownerPauseRecommend(bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+recommendPaused = newStatus
+
+IRs:
+recommendPaused(bool) := newStatus(bool)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, DiceRoll.onlyOwner()()"];
+2->1;
+}
+// Function: 10915.sol-DiceRoll-ownerSetHouseEdge(uint16)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newHouseEdge <= 1000)
+
+IRs:
+TMP_147(bool) = newHouseEdge <= 1000
+TMP_148(None) = SOLIDITY_CALL require(bool)(TMP_147)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+houseEdge = newHouseEdge
+
+IRs:
+houseEdge(uint16) := newHouseEdge(uint16)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, DiceRoll.onlyOwner()()"];
+3->1;
+}
+// Function: 10915.sol-DiceRoll-ownerSetJackpotOfHouseEdge(uint16)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newProportion < 1000)
+
+IRs:
+TMP_159(bool) = newProportion < 1000
+TMP_160(None) = SOLIDITY_CALL require(bool)(TMP_159)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+jackpotOfHouseEdge = newProportion
+
+IRs:
+jackpotOfHouseEdge(uint16) := newProportion(uint16)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, DiceRoll.onlyOwner()()"];
+3->1;
+}
+// Function: 10915.sol-DiceRoll-ownerSetMaxBet(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+maxBet = newMaxBet
+
+IRs:
+maxBet(uint256) := newMaxBet(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, DiceRoll.onlyOwner()()"];
+2->1;
+}
+// Function: 10915.sol-DiceRoll-ownerSetMaxProfitAsPercentOfHouse(uint8)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newMaxProfitAsPercent <= 1000)
+
+IRs:
+TMP_153(bool) = newMaxProfitAsPercent <= 1000
+TMP_154(None) = SOLIDITY_CALL require(bool)(TMP_153)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+maxProfitAsPercentOfHouse = newMaxProfitAsPercent
+
+IRs:
+maxProfitAsPercentOfHouse(uint16) := newMaxProfitAsPercent(uint8)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+setMaxProfit()
+
+IRs:
+INTERNAL_CALL, DiceRoll.setMaxProfit()()"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, DiceRoll.onlyOwner()()"];
+4->1;
+}
+// Function: 10915.sol-DiceRoll-ownerSetMinBet(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+minBet = newMinimumBet
+
+IRs:
+minBet(uint256) := newMinimumBet(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, DiceRoll.onlyOwner()()"];
+2->1;
+}
+// Function: 10915.sol-DiceRoll-ownerSetMinJackpoBet(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newVal <= 1000000000000000000)
+
+IRs:
+TMP_150(bool) = newVal <= 1000000000000000000
+TMP_151(None) = SOLIDITY_CALL require(bool)(TMP_150)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+minJackpotBet = newVal
+
+IRs:
+minJackpotBet(uint256) := newVal(uint256)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, DiceRoll.onlyOwner()()"];
+3->1;
+}
+// Function: 10915.sol-DiceRoll-ownerSetRecommendProportion(uint16)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newRecommendProportion < 1000)
+
+IRs:
+TMP_162(bool) = newRecommendProportion < 1000
+TMP_163(None) = SOLIDITY_CALL require(bool)(TMP_162)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+recommendProportion = newRecommendProportion
+
+IRs:
+recommendProportion(uint256) := newRecommendProportion(uint16)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, DiceRoll.onlyOwner()()"];
+3->1;
+}
+// Function: 10915.sol-DiceRoll-ownerTransferEther(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+contractBalance = safeSub(contractBalance,amount)
+
+IRs:
+TMP_168(uint256) = INTERNAL_CALL, SafeMath.safeSub(uint256,uint256)(contractBalance,amount)
+contractBalance(uint256) := TMP_168(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+sendTo.transfer(amount)
+
+IRs:
+Transfer dest:sendTo value:amount"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+setMaxProfit()
+
+IRs:
+INTERNAL_CALL, DiceRoll.setMaxProfit()()"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+LogOwnerTransfer(sendTo,amount)
+
+IRs:
+Emit LogOwnerTransfer(sendTo,amount)"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, DiceRoll.onlyOwner()()"];
+5->1;
+}
+// Function: 10915.sol-DiceRoll-ownerkill()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+selfdestruct(address)(owner)
+
+IRs:
+TMP_174(None) = SOLIDITY_CALL selfdestruct(address)(owner)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, DiceRoll.onlyOwner()()"];
+2->1;
+}
+// Function: 10915.sol-DiceRoll-playerRoll(uint8,uint8,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->29;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+betId += 1
+
+IRs:
+betId(uint256) = betId + 1"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+probability = end - start + 1
+
+IRs:
+TMP_20(uint8) = end - start
+TMP_21(uint8) = TMP_20 + 1
+probability(uint8) := TMP_21(uint8)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+playerProfit = ((msg.value * (100 - probability) / probability + msg.value) * (1000 - houseEdge) / 1000) - msg.value
+
+IRs:
+TMP_22(uint256) = 100 - probability
+TMP_23(uint256) = msg.value * TMP_22
+TMP_24(uint256) = TMP_23 / probability
+TMP_25(uint256) = TMP_24 + msg.value
+TMP_26(uint256) = 1000 - houseEdge
+TMP_27(uint256) = TMP_25 * TMP_26
+TMP_28(uint256) = TMP_27 / 1000
+TMP_29(uint256) = TMP_28 - msg.value
+playerProfit(uint256) := TMP_29(uint256)"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+playerProfit > maxProfit
+
+IRs:
+TMP_30(bool) = playerProfit > maxProfit
+CONDITION TMP_30"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+playerProfit = maxProfit
+
+IRs:
+playerProfit(uint256) := maxProfit(uint256)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+random = uint8(rand() % 100 + 1)
+
+IRs:
+TMP_31(uint256) = INTERNAL_CALL, DiceRoll.rand()()
+TMP_32(uint256) = TMP_31 % 100
+TMP_33(uint256) = TMP_32 + 1
+TMP_34 = CONVERT TMP_33 to uint8
+random(uint8) := TMP_34(uint8)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+totalWeiWagered += msg.value
+
+IRs:
+totalWeiWagered(uint256) = totalWeiWagered + msg.value"];
+8->9;
+9[label="Node Type: IF 9
+
+EXPRESSION:
+start <= random && random <= end
+
+IRs:
+TMP_35(bool) = start <= random
+TMP_36(bool) = random <= end
+TMP_37(bool) = TMP_35 && TMP_36
+CONDITION TMP_37"];
+9->10[label="True"];
+9->23[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+totalWeiWon = safeAdd(totalWeiWon,playerProfit)
+
+IRs:
+TMP_38(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(totalWeiWon,playerProfit)
+totalWeiWon(uint256) := TMP_38(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+contractBalance = safeSub(contractBalance,playerProfit)
+
+IRs:
+TMP_39(uint256) = INTERNAL_CALL, SafeMath.safeSub(uint256,uint256)(contractBalance,playerProfit)
+contractBalance(uint256) := TMP_39(uint256)"];
+11->12;
+12[label="Node Type: NEW VARIABLE 12
+
+EXPRESSION:
+payout = safeAdd(playerProfit,msg.value)
+
+IRs:
+TMP_40(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(playerProfit,msg.value)
+payout(uint256) := TMP_40(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+setMaxProfit()
+
+IRs:
+INTERNAL_CALL, DiceRoll.setMaxProfit()()"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+LogResult(betId,msg.sender,random,playerProfit,1,start,end,2,msg.value)
+
+IRs:
+Emit LogResult(betId,msg.sender,random,playerProfit,1,start,end,2,msg.value)"];
+14->15;
+15[label="Node Type: NEW VARIABLE 15
+
+EXPRESSION:
+houseEdgeFee = getHouseEdgeFee(probability,msg.value)
+
+IRs:
+TMP_43(uint256) = INTERNAL_CALL, DiceRoll.getHouseEdgeFee(uint256,uint256)(probability,msg.value)
+houseEdgeFee(uint256) := TMP_43(uint256)"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+increaseJackpot(houseEdgeFee * jackpotOfHouseEdge / 1000,betId)
+
+IRs:
+TMP_44(uint256) = houseEdgeFee * jackpotOfHouseEdge
+TMP_45(uint256) = TMP_44 / 1000
+INTERNAL_CALL, DiceRoll.increaseJackpot(uint256,uint256)(TMP_45,betId)"];
+16->17;
+17[label="Node Type: IF 17
+
+EXPRESSION:
+inviter != address(0)
+
+IRs:
+TMP_47 = CONVERT 0 to address
+TMP_48(bool) = inviter != TMP_47
+CONDITION TMP_48"];
+17->18[label="True"];
+17->20[label="False"];
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+LogRecommendProfit(betId,msg.sender,playerProfit)
+
+IRs:
+Emit LogRecommendProfit(betId,msg.sender,playerProfit)"];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+sendProportion(inviter,houseEdgeFee * recommendProportion / 1000)
+
+IRs:
+TMP_50(uint256) = houseEdgeFee * recommendProportion
+TMP_51(uint256) = TMP_50 / 1000
+INTERNAL_CALL, DiceRoll.sendProportion(address,uint256)(inviter,TMP_51)"];
+19->20;
+20[label="Node Type: END_IF 20
+"];
+20->21;
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+msg.sender.transfer(payout)
+
+IRs:
+Transfer dest:msg.sender value:payout"];
+21->22;
+22[label="Node Type: RETURN 22
+"];
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+LogResult(betId,msg.sender,random,0,0,start,end,2,msg.value)
+
+IRs:
+Emit LogResult(betId,msg.sender,random,0,0,start,end,2,msg.value)"];
+23->24;
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+contractBalance = safeAdd(contractBalance,(msg.value - 1))
+
+IRs:
+TMP_55(uint256) = msg.value - 1
+TMP_56(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(contractBalance,TMP_55)
+contractBalance(uint256) := TMP_56(uint256)"];
+24->25;
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+setMaxProfit()
+
+IRs:
+INTERNAL_CALL, DiceRoll.setMaxProfit()()"];
+25->26;
+26[label="Node Type: EXPRESSION 26
+
+EXPRESSION:
+msg.sender.transfer(1)
+
+IRs:
+Transfer dest:msg.sender value:1"];
+26->27;
+27[label="Node Type: RETURN 27
+"];
+29[label="Node Type: EXPRESSION 29
+
+EXPRESSION:
+gameIsActive()
+
+IRs:
+MODIFIER_CALL, DiceRoll.gameIsActive()()"];
+29->30;
+30[label="Node Type: EXPRESSION 30
+
+EXPRESSION:
+betIsValid(msg.value,start,end)
+
+IRs:
+MODIFIER_CALL, DiceRoll.betIsValid(uint256,uint8,uint8)(msg.value,start,end)"];
+30->1;
+}
+// Function: 10915.sol-DiceRoll-rand()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+seed = uint256(keccak256()(msg.sender,blockhash(uint256)(block.number - 1),block.coinbase,block.difficulty))
+
+IRs:
+TMP_141(uint256) = block.number - 1
+TMP_142(uint256) = SOLIDITY_CALL blockhash(uint256)(TMP_141)
+TMP_143(bytes32) = SOLIDITY_CALL keccak256()(msg.sender,TMP_142,block.coinbase,block.difficulty)
+TMP_144 = CONVERT TMP_143 to uint256
+seed(uint256) := TMP_144(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+seed
+
+IRs:
+RETURN seed"];
+}
+// Function: 10915.sol-DiceRoll-recommendAreActive()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! recommendPaused)
+
+IRs:
+TMP_194 = UnaryType.BANG recommendPaused 
+TMP_195(None) = SOLIDITY_CALL require(bool)(TMP_194)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 10915.sol-DiceRoll-safeAdd(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(safeToAdd(a,b))
+
+IRs:
+TMP_11(bool) = INTERNAL_CALL, SafeMath.safeToAdd(uint256,uint256)(a,b)
+TMP_12(None) = SOLIDITY_CALL require(bool)(TMP_11)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a + b
+
+IRs:
+TMP_13(uint256) = a + b
+RETURN TMP_13"];
+}
+// Function: 10915.sol-DiceRoll-safeSub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(safeToSubtract(a,b))
+
+IRs:
+TMP_15(bool) = INTERNAL_CALL, SafeMath.safeToSubtract(uint256,uint256)(a,b)
+TMP_16(None) = SOLIDITY_CALL require(bool)(TMP_15)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_17(uint256) = a - b
+RETURN TMP_17"];
+}
+// Function: 10915.sol-DiceRoll-safeToAdd(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+(a + b >= a)
+
+IRs:
+TMP_9(uint256) = a + b
+TMP_10(bool) = TMP_9 >= a
+RETURN TMP_10"];
+}
+// Function: 10915.sol-DiceRoll-safeToSubtract(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+(b <= a)
+
+IRs:
+TMP_14(bool) = b <= a
+RETURN TMP_14"];
+}
+// Function: 10915.sol-DiceRoll-sendJackpot(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+amount = jackpotBlance * jackpotPersent / 1000
+
+IRs:
+TMP_124(uint256) = jackpotBlance * jackpotPersent
+TMP_125(uint256) = TMP_124 / 1000
+amount(uint256) := TMP_125(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(jackpotBlance > amount)
+
+IRs:
+TMP_126(bool) = jackpotBlance > amount
+TMP_127(None) = SOLIDITY_CALL require(bool)(TMP_126)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+SendJackpotSuccesss(winner,amount,JackpotPeriods)
+
+IRs:
+Emit SendJackpotSuccesss(winner,amount,JackpotPeriods)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+jackpotBlance = safeSub(jackpotBlance,amount)
+
+IRs:
+TMP_129(uint256) = INTERNAL_CALL, SafeMath.safeSub(uint256,uint256)(jackpotBlance,amount)
+jackpotBlance(uint256) := TMP_129(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+winner.transfer(amount)
+
+IRs:
+Transfer dest:winner value:amount"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, DiceRoll.onlyOwner()()"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+jackpotAreActive()
+
+IRs:
+MODIFIER_CALL, DiceRoll.jackpotAreActive()()"];
+7->1;
+}
+// Function: 10915.sol-DiceRoll-sendProportion(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(amount < contractBalance)
+
+IRs:
+TMP_99(bool) = amount < contractBalance
+TMP_100(None) = SOLIDITY_CALL require(bool)(TMP_99)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+contractBalance = safeSub(contractBalance,amount)
+
+IRs:
+TMP_101(uint256) = INTERNAL_CALL, SafeMath.safeSub(uint256,uint256)(contractBalance,amount)
+contractBalance(uint256) := TMP_101(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+inviter.transfer(amount)
+
+IRs:
+Transfer dest:inviter value:amount"];
+}
+// Function: 10915.sol-DiceRoll-sendValueToJackpot()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+jackpotBlance = safeAdd(jackpotBlance,msg.value)
+
+IRs:
+TMP_133(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(jackpotBlance,msg.value)
+jackpotBlance(uint256) := TMP_133(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+jackpotAreActive()
+
+IRs:
+MODIFIER_CALL, DiceRoll.jackpotAreActive()()"];
+2->1;
+}
+// Function: 10915.sol-DiceRoll-setMaxProfit()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+maxProfit = contractBalance * maxProfitAsPercentOfHouse / 1000
+
+IRs:
+TMP_145(uint256) = contractBalance * maxProfitAsPercentOfHouse
+TMP_146(uint256) = TMP_145 / 1000
+maxProfit(uint256) := TMP_146(uint256)"];
+}
+// Function: 10915.sol-DiceRoll-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+maxNumber = 99
+
+IRs:
+maxNumber(uint8) := 99(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+minNumber = 1
+
+IRs:
+minNumber(uint8) := 1(uint256)"];
+}
+// Function: 10915.sol-DiceRoll-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+JackpotPeriods = 1
+
+IRs:
+JackpotPeriods(uint256) := 1(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+jackpotPersent = 100
+
+IRs:
+jackpotPersent(uint16) := 100(uint256)"];
+}
+// Function: 10915.sol-SafeMath-safeAdd(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(safeToAdd(a,b))
+
+IRs:
+TMP_2(bool) = INTERNAL_CALL, SafeMath.safeToAdd(uint256,uint256)(a,b)
+TMP_3(None) = SOLIDITY_CALL require(bool)(TMP_2)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a + b
+
+IRs:
+TMP_4(uint256) = a + b
+RETURN TMP_4"];
+}
+// Function: 10915.sol-SafeMath-safeSub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(safeToSubtract(a,b))
+
+IRs:
+TMP_6(bool) = INTERNAL_CALL, SafeMath.safeToSubtract(uint256,uint256)(a,b)
+TMP_7(None) = SOLIDITY_CALL require(bool)(TMP_6)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_8(uint256) = a - b
+RETURN TMP_8"];
+}
+// Function: 10915.sol-SafeMath-safeToAdd(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+(a + b >= a)
+
+IRs:
+TMP_0(uint256) = a + b
+TMP_1(bool) = TMP_0 >= a
+RETURN TMP_1"];
+}
+// Function: 10915.sol-SafeMath-safeToSubtract(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+(b <= a)
+
+IRs:
+TMP_5(bool) = b <= a
+RETURN TMP_5"];
+}
+}

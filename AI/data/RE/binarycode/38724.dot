@@ -1,0 +1,910 @@
+digraph G {
+// Function: 38724.sol-ERC20nator-Ownable()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 38724.sol-ERC20nator-allowance(address,address)
+digraph{
+}
+// Function: 38724.sol-ERC20nator-approve(address,uint256)
+digraph{
+}
+// Function: 38724.sol-ERC20nator-balanceOf(address)
+digraph{
+}
+// Function: 38724.sol-ERC20nator-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+issuedTokens = msg.value * (100 - issueFeePercent) / 100
+
+IRs:
+TMP_29(uint256) = 100 - issueFeePercent
+TMP_30(uint256) = msg.value * TMP_29
+TMP_31(uint256) = TMP_30 / 100
+issuedTokens(uint256) := TMP_31(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+! owner.send(msg.value - issuedTokens)
+
+IRs:
+TMP_32(uint256) = msg.value - issuedTokens
+TMP_33 = SEND dest:owner value:TMP_32
+TMP_34 = UnaryType.BANG TMP_33 
+CONDITION TMP_34"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: THROW 3
+"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+! fundraiserAddress.call.value(issuedTokens)(fundraiserCallData)
+
+IRs:
+TMP_36(bool) = LOW_LEVEL_CALL, dest:fundraiserAddress, function:call, arguments:['fundraiserCallData'] value:issuedTokens 
+TMP_37 = UnaryType.BANG TMP_36 
+CONDITION TMP_37"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: THROW 6
+"];
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+totalSupply += issuedTokens
+
+IRs:
+totalSupply(uint256) = totalSupply + issuedTokens"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+balances[msg.sender] += issuedTokens
+
+IRs:
+REF_33(uint256) -> balances[msg.sender]
+REF_33(-> balances) = REF_33 + issuedTokens"];
+}
+// Function: 38724.sol-ERC20nator-hexStrToBytes(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+bytes(_hexString)[0] != 0 || bytes(_hexString)[1] != x || bytes(_hexString).length % 2 != 0 || bytes(_hexString).length < 4
+
+IRs:
+TMP_44 = CONVERT _hexString to bytes
+REF_34(None) -> TMP_44[0]
+TMP_45(bool) = REF_34 != 0
+TMP_46 = CONVERT _hexString to bytes
+REF_35(None) -> TMP_46[1]
+TMP_47(bool) = REF_35 != x
+TMP_48(bool) = TMP_45 || TMP_47
+TMP_49 = CONVERT _hexString to bytes
+REF_36 -> LENGTH TMP_49
+TMP_50(uint256) = REF_36 % 2
+TMP_51(bool) = TMP_50 != 0
+TMP_52(bool) = TMP_48 || TMP_51
+TMP_53 = CONVERT _hexString to bytes
+REF_37 -> LENGTH TMP_53
+TMP_54(bool) = REF_37 < 4
+TMP_55(bool) = TMP_52 || TMP_54
+CONDITION TMP_55"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+bytes_array = new bytes((bytes(_hexString).length - 2) / 2)
+
+IRs:
+TMP_57 = CONVERT _hexString to bytes
+REF_38 -> LENGTH TMP_57
+TMP_58(uint256) = REF_38 - 2
+TMP_59(uint256) = TMP_58 / 2
+TMP_60 = new bytes(TMP_59)
+bytes_array(bytes) := TMP_60(bytes)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+len = bytes(_hexString).length
+
+IRs:
+TMP_61 = CONVERT _hexString to bytes
+REF_39 -> LENGTH TMP_61
+len(uint256) := REF_39(uint256)"];
+5->8;
+6[label="Node Type: BEGIN_LOOP 6
+"];
+6->9;
+7[label="Node Type: END_LOOP 7
+"];
+7->35;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+i = 2
+
+IRs:
+i(uint256) := 2(uint256)"];
+8->6;
+9[label="Node Type: IF_LOOP 9
+
+EXPRESSION:
+i < len
+
+IRs:
+TMP_62(bool) = i < len
+CONDITION TMP_62"];
+9->10[label="True"];
+9->7[label="False"];
+10[label="Node Type: NEW VARIABLE 10
+
+EXPRESSION:
+tetrad1 = 16
+
+IRs:
+tetrad1(uint256) := 16(uint256)"];
+10->11;
+11[label="Node Type: NEW VARIABLE 11
+
+EXPRESSION:
+tetrad2 = 16
+
+IRs:
+tetrad2(uint256) := 16(uint256)"];
+11->12;
+12[label="Node Type: IF 12
+
+EXPRESSION:
+uint256(bytes(_hexString)[i]) >= 48 && uint256(bytes(_hexString)[i]) <= 57
+
+IRs:
+TMP_63 = CONVERT _hexString to bytes
+REF_40(None) -> TMP_63[i]
+TMP_64 = CONVERT REF_40 to uint256
+TMP_65(bool) = TMP_64 >= 48
+TMP_66 = CONVERT _hexString to bytes
+REF_41(None) -> TMP_66[i]
+TMP_67 = CONVERT REF_41 to uint256
+TMP_68(bool) = TMP_67 <= 57
+TMP_69(bool) = TMP_65 && TMP_68
+CONDITION TMP_69"];
+12->13[label="True"];
+12->14[label="False"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+tetrad1 = uint256(bytes(_hexString)[i]) - 48
+
+IRs:
+TMP_70 = CONVERT _hexString to bytes
+REF_42(None) -> TMP_70[i]
+TMP_71 = CONVERT REF_42 to uint256
+TMP_72(uint256) = TMP_71 - 48
+tetrad1(uint256) := TMP_72(uint256)"];
+13->14;
+14[label="Node Type: END_IF 14
+"];
+14->15;
+15[label="Node Type: IF 15
+
+EXPRESSION:
+uint256(bytes(_hexString)[i + 1]) >= 48 && uint256(bytes(_hexString)[i + 1]) <= 57
+
+IRs:
+TMP_73 = CONVERT _hexString to bytes
+TMP_74(uint256) = i + 1
+REF_43(None) -> TMP_73[TMP_74]
+TMP_75 = CONVERT REF_43 to uint256
+TMP_76(bool) = TMP_75 >= 48
+TMP_77 = CONVERT _hexString to bytes
+TMP_78(uint256) = i + 1
+REF_44(None) -> TMP_77[TMP_78]
+TMP_79 = CONVERT REF_44 to uint256
+TMP_80(bool) = TMP_79 <= 57
+TMP_81(bool) = TMP_76 && TMP_80
+CONDITION TMP_81"];
+15->16[label="True"];
+15->17[label="False"];
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+tetrad2 = uint256(bytes(_hexString)[i + 1]) - 48
+
+IRs:
+TMP_82 = CONVERT _hexString to bytes
+TMP_83(uint256) = i + 1
+REF_45(None) -> TMP_82[TMP_83]
+TMP_84 = CONVERT REF_45 to uint256
+TMP_85(uint256) = TMP_84 - 48
+tetrad2(uint256) := TMP_85(uint256)"];
+16->17;
+17[label="Node Type: END_IF 17
+"];
+17->18;
+18[label="Node Type: IF 18
+
+EXPRESSION:
+uint256(bytes(_hexString)[i]) >= 65 && uint256(bytes(_hexString)[i]) <= 70
+
+IRs:
+TMP_86 = CONVERT _hexString to bytes
+REF_46(None) -> TMP_86[i]
+TMP_87 = CONVERT REF_46 to uint256
+TMP_88(bool) = TMP_87 >= 65
+TMP_89 = CONVERT _hexString to bytes
+REF_47(None) -> TMP_89[i]
+TMP_90 = CONVERT REF_47 to uint256
+TMP_91(bool) = TMP_90 <= 70
+TMP_92(bool) = TMP_88 && TMP_91
+CONDITION TMP_92"];
+18->19[label="True"];
+18->20[label="False"];
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+tetrad1 = uint256(bytes(_hexString)[i]) - 65 + 10
+
+IRs:
+TMP_93 = CONVERT _hexString to bytes
+REF_48(None) -> TMP_93[i]
+TMP_94 = CONVERT REF_48 to uint256
+TMP_95(uint256) = TMP_94 - 65
+TMP_96(uint256) = TMP_95 + 10
+tetrad1(uint256) := TMP_96(uint256)"];
+19->20;
+20[label="Node Type: END_IF 20
+"];
+20->21;
+21[label="Node Type: IF 21
+
+EXPRESSION:
+uint256(bytes(_hexString)[i + 1]) >= 65 && uint256(bytes(_hexString)[i + 1]) <= 70
+
+IRs:
+TMP_97 = CONVERT _hexString to bytes
+TMP_98(uint256) = i + 1
+REF_49(None) -> TMP_97[TMP_98]
+TMP_99 = CONVERT REF_49 to uint256
+TMP_100(bool) = TMP_99 >= 65
+TMP_101 = CONVERT _hexString to bytes
+TMP_102(uint256) = i + 1
+REF_50(None) -> TMP_101[TMP_102]
+TMP_103 = CONVERT REF_50 to uint256
+TMP_104(bool) = TMP_103 <= 70
+TMP_105(bool) = TMP_100 && TMP_104
+CONDITION TMP_105"];
+21->22[label="True"];
+21->23[label="False"];
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+tetrad2 = uint256(bytes(_hexString)[i + 1]) - 65 + 10
+
+IRs:
+TMP_106 = CONVERT _hexString to bytes
+TMP_107(uint256) = i + 1
+REF_51(None) -> TMP_106[TMP_107]
+TMP_108 = CONVERT REF_51 to uint256
+TMP_109(uint256) = TMP_108 - 65
+TMP_110(uint256) = TMP_109 + 10
+tetrad2(uint256) := TMP_110(uint256)"];
+22->23;
+23[label="Node Type: END_IF 23
+"];
+23->24;
+24[label="Node Type: IF 24
+
+EXPRESSION:
+uint256(bytes(_hexString)[i]) >= 97 && uint256(bytes(_hexString)[i]) <= 102
+
+IRs:
+TMP_111 = CONVERT _hexString to bytes
+REF_52(None) -> TMP_111[i]
+TMP_112 = CONVERT REF_52 to uint256
+TMP_113(bool) = TMP_112 >= 97
+TMP_114 = CONVERT _hexString to bytes
+REF_53(None) -> TMP_114[i]
+TMP_115 = CONVERT REF_53 to uint256
+TMP_116(bool) = TMP_115 <= 102
+TMP_117(bool) = TMP_113 && TMP_116
+CONDITION TMP_117"];
+24->25[label="True"];
+24->26[label="False"];
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+tetrad1 = uint256(bytes(_hexString)[i]) - 97 + 10
+
+IRs:
+TMP_118 = CONVERT _hexString to bytes
+REF_54(None) -> TMP_118[i]
+TMP_119 = CONVERT REF_54 to uint256
+TMP_120(uint256) = TMP_119 - 97
+TMP_121(uint256) = TMP_120 + 10
+tetrad1(uint256) := TMP_121(uint256)"];
+25->26;
+26[label="Node Type: END_IF 26
+"];
+26->27;
+27[label="Node Type: IF 27
+
+EXPRESSION:
+uint256(bytes(_hexString)[i + 1]) >= 97 && uint256(bytes(_hexString)[i + 1]) <= 102
+
+IRs:
+TMP_122 = CONVERT _hexString to bytes
+TMP_123(uint256) = i + 1
+REF_55(None) -> TMP_122[TMP_123]
+TMP_124 = CONVERT REF_55 to uint256
+TMP_125(bool) = TMP_124 >= 97
+TMP_126 = CONVERT _hexString to bytes
+TMP_127(uint256) = i + 1
+REF_56(None) -> TMP_126[TMP_127]
+TMP_128 = CONVERT REF_56 to uint256
+TMP_129(bool) = TMP_128 <= 102
+TMP_130(bool) = TMP_125 && TMP_129
+CONDITION TMP_130"];
+27->28[label="True"];
+27->29[label="False"];
+28[label="Node Type: EXPRESSION 28
+
+EXPRESSION:
+tetrad2 = uint256(bytes(_hexString)[i + 1]) - 97 + 10
+
+IRs:
+TMP_131 = CONVERT _hexString to bytes
+TMP_132(uint256) = i + 1
+REF_57(None) -> TMP_131[TMP_132]
+TMP_133 = CONVERT REF_57 to uint256
+TMP_134(uint256) = TMP_133 - 97
+TMP_135(uint256) = TMP_134 + 10
+tetrad2(uint256) := TMP_135(uint256)"];
+28->29;
+29[label="Node Type: END_IF 29
+"];
+29->30;
+30[label="Node Type: IF 30
+
+EXPRESSION:
+tetrad1 == 16 || tetrad2 == 16
+
+IRs:
+TMP_136(bool) = tetrad1 == 16
+TMP_137(bool) = tetrad2 == 16
+TMP_138(bool) = TMP_136 || TMP_137
+CONDITION TMP_138"];
+30->31[label="True"];
+30->32[label="False"];
+31[label="Node Type: THROW 31
+"];
+32[label="Node Type: END_IF 32
+"];
+32->33;
+33[label="Node Type: EXPRESSION 33
+
+EXPRESSION:
+bytes_array[i / 2 - 1] = bytes1(16 * tetrad1 + tetrad2)
+
+IRs:
+TMP_139(uint256) = i / 2
+TMP_140(uint256) = TMP_139 - 1
+REF_58(bytes1) -> bytes_array[TMP_140]
+TMP_141(uint256) = 16 * tetrad1
+TMP_142(uint256) = TMP_141 + tetrad2
+TMP_143 = CONVERT TMP_142 to bytes1
+REF_58(bytes1) (->bytes_array) := TMP_143(bytes1)"];
+33->34;
+34[label="Node Type: EXPRESSION 34
+
+EXPRESSION:
+i += 2
+
+IRs:
+i(uint256) = i + 2"];
+34->9;
+35[label="Node Type: RETURN 35
+
+EXPRESSION:
+bytes_array
+
+IRs:
+RETURN bytes_array"];
+}
+// Function: 38724.sol-ERC20nator-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != owner
+
+IRs:
+TMP_144(bool) = msg.sender != owner
+CONDITION TMP_144"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 38724.sol-ERC20nator-redeem(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+redeemed(msg.sender,_amount)
+
+IRs:
+Emit redeemed(msg.sender,_amount)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 38724.sol-ERC20nator-requestRedeem(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+requestedRedeem(msg.sender,_amount)
+
+IRs:
+Emit requestedRedeem(msg.sender,_amount)"];
+}
+// Function: 38724.sol-ERC20nator-setFundraiserAddress(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+fundraiserAddress = _fundraiserAddress
+
+IRs:
+fundraiserAddress(address) := _fundraiserAddress(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 38724.sol-ERC20nator-setFundraiserCallData(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+fundraiserCallData = hexStrToBytes(_fundraiserCallData)
+
+IRs:
+TMP_39(bytes) = INTERNAL_CALL, ERC20nator.hexStrToBytes(string)(_fundraiserCallData)
+fundraiserCallData(bytes) := TMP_39(bytes)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 38724.sol-ERC20nator-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+issueFeePercent = 2
+
+IRs:
+issueFeePercent(uint256) := 2(uint256)"];
+}
+// Function: 38724.sol-ERC20nator-transfer(address,uint256)
+digraph{
+}
+// Function: 38724.sol-ERC20nator-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 38724.sol-ERC20nator-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+newOwner != address(0)
+
+IRs:
+TMP_15 = CONVERT 0 to address
+TMP_16(bool) = newOwner != TMP_15
+CONDITION TMP_16"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->1;
+}
+// Function: 38724.sol-Ownable-Ownable()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 38724.sol-Ownable-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != owner
+
+IRs:
+TMP_3(bool) = msg.sender != owner
+CONDITION TMP_3"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 38724.sol-Ownable-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+newOwner != address(0)
+
+IRs:
+TMP_0 = CONVERT 0 to address
+TMP_1(bool) = newOwner != TMP_0
+CONDITION TMP_1"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->1;
+}
+// Function: 38724.sol-StandardToken-allowance(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+allowed[_owner][_spender]
+
+IRs:
+REF_13(mapping(address => uint256)) -> allowed[_owner]
+REF_14(uint256) -> REF_13[_spender]
+RETURN REF_14"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+remaining
+
+IRs:
+RETURN remaining"];
+}
+// Function: 38724.sol-StandardToken-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowed[msg.sender][_spender] = _value
+
+IRs:
+REF_11(mapping(address => uint256)) -> allowed[msg.sender]
+REF_12(uint256) -> REF_11[_spender]
+REF_12(uint256) (->allowed) := _value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,_value)
+
+IRs:
+Emit Approval(msg.sender,_spender,_value)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 38724.sol-StandardToken-balanceOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+balances[_owner]
+
+IRs:
+REF_10(uint256) -> balances[_owner]
+RETURN REF_10"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+balance
+
+IRs:
+RETURN balance"];
+}
+// Function: 38724.sol-StandardToken-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+balances[msg.sender] >= _value && _value > 0
+
+IRs:
+REF_0(uint256) -> balances[msg.sender]
+TMP_4(bool) = REF_0 >= _value
+TMP_5(bool) = _value > 0
+TMP_6(bool) = TMP_4 && TMP_5
+CONDITION TMP_6"];
+1->2[label="True"];
+1->6[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balances[msg.sender] -= _value
+
+IRs:
+REF_1(uint256) -> balances[msg.sender]
+REF_1(-> balances) = REF_1 - _value"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balances[_to] += _value
+
+IRs:
+REF_2(uint256) -> balances[_to]
+REF_2(-> balances) = REF_2 + _value"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Transfer(msg.sender,_to,_value)
+
+IRs:
+Emit Transfer(msg.sender,_to,_value)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 38724.sol-StandardToken-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+balances[_from] >= _value && allowed[_from][msg.sender] >= _value && _value > 0
+
+IRs:
+REF_3(uint256) -> balances[_from]
+TMP_8(bool) = REF_3 >= _value
+REF_4(mapping(address => uint256)) -> allowed[_from]
+REF_5(uint256) -> REF_4[msg.sender]
+TMP_9(bool) = REF_5 >= _value
+TMP_10(bool) = TMP_8 && TMP_9
+TMP_11(bool) = _value > 0
+TMP_12(bool) = TMP_10 && TMP_11
+CONDITION TMP_12"];
+1->2[label="True"];
+1->7[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balances[_to] += _value
+
+IRs:
+REF_6(uint256) -> balances[_to]
+REF_6(-> balances) = REF_6 + _value"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balances[_from] -= _value
+
+IRs:
+REF_7(uint256) -> balances[_from]
+REF_7(-> balances) = REF_7 - _value"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+allowed[_from][msg.sender] -= _value
+
+IRs:
+REF_8(mapping(address => uint256)) -> allowed[_from]
+REF_9(uint256) -> REF_8[msg.sender]
+REF_9(-> allowed) = REF_9 - _value"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Transfer(_from,_to,_value)
+
+IRs:
+Emit Transfer(_from,_to,_value)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+9[label="Node Type: RETURN 9
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 38724.sol-Token-allowance(address,address)
+digraph{
+}
+// Function: 38724.sol-Token-approve(address,uint256)
+digraph{
+}
+// Function: 38724.sol-Token-balanceOf(address)
+digraph{
+}
+// Function: 38724.sol-Token-transfer(address,uint256)
+digraph{
+}
+// Function: 38724.sol-Token-transferFrom(address,address,uint256)
+digraph{
+}
+}

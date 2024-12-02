@@ -1,0 +1,1789 @@
+digraph G {
+// Function: 21227.sol-ContractReceiver-tokenFallback(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+tkn.sender = _from
+
+IRs:
+REF_0(address) -> tkn.sender
+REF_0(address) (->tkn) := _from(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+tkn.value = _value
+
+IRs:
+REF_1(uint256) -> tkn.value
+REF_1(uint256) (->tkn) := _value(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+tkn.data = _data
+
+IRs:
+REF_2(bytes) -> tkn.data
+REF_2(bytes) (->tkn) := _data(bytes)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+u = uint32(_data[3]) + (uint32(_data[2]) << 8) + (uint32(_data[1]) << 16) + (uint32(_data[0]) << 24)
+
+IRs:
+REF_3(None) -> _data[3]
+TMP_0 = CONVERT REF_3 to uint32
+REF_4(None) -> _data[2]
+TMP_1 = CONVERT REF_4 to uint32
+TMP_2(uint32) = TMP_1 << 8
+TMP_3(uint32) = TMP_0 + TMP_2
+REF_5(None) -> _data[1]
+TMP_4 = CONVERT REF_5 to uint32
+TMP_5(uint32) = TMP_4 << 16
+TMP_6(uint32) = TMP_3 + TMP_5
+REF_6(None) -> _data[0]
+TMP_7 = CONVERT REF_6 to uint32
+TMP_8(uint32) = TMP_7 << 24
+TMP_9(uint32) = TMP_6 + TMP_8
+u(uint32) := TMP_9(uint32)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+tkn.sig = bytes4(u)
+
+IRs:
+REF_7(bytes4) -> tkn.sig
+TMP_10 = CONVERT u to bytes4
+REF_7(bytes4) (->tkn) := TMP_10(bytes4)"];
+}
+// Function: 21227.sol-ERC223-balanceOf(address)
+digraph{
+}
+// Function: 21227.sol-ERC223-decimals()
+digraph{
+}
+// Function: 21227.sol-ERC223-name()
+digraph{
+}
+// Function: 21227.sol-ERC223-symbol()
+digraph{
+}
+// Function: 21227.sol-ERC223-totalSupply()
+digraph{
+}
+// Function: 21227.sol-ERC223-transfer(address,uint256)
+digraph{
+}
+// Function: 21227.sol-ERC223-transfer(address,uint256,bytes)
+digraph{
+}
+// Function: 21227.sol-ERC223-transfer(address,uint256,bytes,string)
+digraph{
+}
+// Function: 21227.sol-Excalibur-Excalibur()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+totalSupply = initialSupply
+
+IRs:
+totalSupply(uint256) := initialSupply(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balances[msg.sender] = totalSupply
+
+IRs:
+REF_8(uint256) -> balances[msg.sender]
+REF_8(uint256) (->balances) := totalSupply(uint256)"];
+}
+// Function: 21227.sol-Excalibur-Ownable()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 21227.sol-Excalibur-autoDistribute()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(distributeAmount > 0 && balanceOf(owner) >= distributeAmount && frozenAccount[msg.sender] == false && now > unlockUnixTime[msg.sender])
+
+IRs:
+TMP_190(bool) = distributeAmount > 0
+TMP_191(uint256) = INTERNAL_CALL, Excalibur.balanceOf(address)(owner)
+TMP_192(bool) = TMP_191 >= distributeAmount
+TMP_193(bool) = TMP_190 && TMP_192
+REF_114(bool) -> frozenAccount[msg.sender]
+TMP_194(bool) = REF_114 == False
+TMP_195(bool) = TMP_193 && TMP_194
+REF_115(uint256) -> unlockUnixTime[msg.sender]
+TMP_196(bool) = now > REF_115
+TMP_197(bool) = TMP_195 && TMP_196
+TMP_198(None) = SOLIDITY_CALL require(bool)(TMP_197)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+msg.value > 0
+
+IRs:
+TMP_199(bool) = msg.value > 0
+CONDITION TMP_199"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner.transfer(msg.value)
+
+IRs:
+Transfer dest:owner value:msg.value"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+balances[owner] = SafeMath.sub(balances[owner],distributeAmount)
+
+IRs:
+REF_117(uint256) -> balances[owner]
+REF_119(uint256) -> balances[owner]
+TMP_201(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_119', 'distributeAmount'] 
+REF_117(uint256) (->balances) := TMP_201(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+balances[msg.sender] = SafeMath.add(balances[msg.sender],distributeAmount)
+
+IRs:
+REF_120(uint256) -> balances[msg.sender]
+REF_122(uint256) -> balances[msg.sender]
+TMP_202(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_122', 'distributeAmount'] 
+REF_120(uint256) (->balances) := TMP_202(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+Transfer(owner,msg.sender,distributeAmount,empty)
+
+IRs:
+Emit Transfer(owner,msg.sender,distributeAmount,empty)"];
+}
+// Function: 21227.sol-Excalibur-balanceOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+balances[_owner]
+
+IRs:
+REF_9(uint256) -> balances[_owner]
+RETURN REF_9"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+balance
+
+IRs:
+RETURN balance"];
+}
+// Function: 21227.sol-Excalibur-burn(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_unitAmount > 0 && balanceOf(_from) >= _unitAmount)
+
+IRs:
+TMP_123(bool) = _unitAmount > 0
+TMP_124(uint256) = INTERNAL_CALL, Excalibur.balanceOf(address)(_from)
+TMP_125(bool) = TMP_124 >= _unitAmount
+TMP_126(bool) = TMP_123 && TMP_125
+TMP_127(None) = SOLIDITY_CALL require(bool)(TMP_126)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balances[_from] = SafeMath.sub(balances[_from],_unitAmount)
+
+IRs:
+REF_55(uint256) -> balances[_from]
+REF_57(uint256) -> balances[_from]
+TMP_128(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_57', '_unitAmount'] 
+REF_55(uint256) (->balances) := TMP_128(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+totalSupply = SafeMath.sub(totalSupply,_unitAmount)
+
+IRs:
+TMP_129(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['totalSupply', '_unitAmount'] 
+totalSupply(uint256) := TMP_129(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Burn(_from,_unitAmount)
+
+IRs:
+Emit Burn(_from,_unitAmount)"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+5->1;
+}
+// Function: 21227.sol-Excalibur-canMint()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! mintingFinished)
+
+IRs:
+TMP_211 = UnaryType.BANG mintingFinished 
+TMP_212(None) = SOLIDITY_CALL require(bool)(TMP_211)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 21227.sol-Excalibur-collectTokens(address[],uint256[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->17;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(addresses.length > 0 && addresses.length == amounts.length)
+
+IRs:
+REF_85 -> LENGTH addresses
+TMP_167(bool) = REF_85 > 0
+REF_86 -> LENGTH addresses
+REF_87 -> LENGTH amounts
+TMP_168(bool) = REF_86 == REF_87
+TMP_169(bool) = TMP_167 && TMP_168
+TMP_170(None) = SOLIDITY_CALL require(bool)(TMP_169)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+totalAmount = 0
+
+IRs:
+totalAmount(uint256) := 0(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+"];
+3->6;
+4[label="Node Type: BEGIN_LOOP 4
+"];
+4->7;
+5[label="Node Type: END_LOOP 5
+"];
+5->15;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+6->4;
+7[label="Node Type: IF_LOOP 7
+
+EXPRESSION:
+i < addresses.length
+
+IRs:
+REF_88 -> LENGTH addresses
+TMP_171(bool) = i < REF_88
+CONDITION TMP_171"];
+7->8[label="True"];
+7->5[label="False"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+require(bool)(amounts[i] > 0 && addresses[i] != 0x0 && frozenAccount[addresses[i]] == false && now > unlockUnixTime[addresses[i]])
+
+IRs:
+REF_89(uint256) -> amounts[i]
+TMP_172(bool) = REF_89 > 0
+REF_90(address) -> addresses[i]
+TMP_173(bool) = REF_90 != 0
+TMP_174(bool) = TMP_172 && TMP_173
+REF_91(address) -> addresses[i]
+REF_92(bool) -> frozenAccount[REF_91]
+TMP_175(bool) = REF_92 == False
+TMP_176(bool) = TMP_174 && TMP_175
+REF_93(address) -> addresses[i]
+REF_94(uint256) -> unlockUnixTime[REF_93]
+TMP_177(bool) = now > REF_94
+TMP_178(bool) = TMP_176 && TMP_177
+TMP_179(None) = SOLIDITY_CALL require(bool)(TMP_178)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+amounts[i] = SafeMath.mul(amounts[i],1e8)
+
+IRs:
+REF_95(uint256) -> amounts[i]
+REF_97(uint256) -> amounts[i]
+TMP_180(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['REF_97', '100000000'] 
+REF_95(uint256) (->amounts) := TMP_180(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+require(bool)(balances[addresses[i]] >= amounts[i])
+
+IRs:
+REF_98(address) -> addresses[i]
+REF_99(uint256) -> balances[REF_98]
+REF_100(uint256) -> amounts[i]
+TMP_181(bool) = REF_99 >= REF_100
+TMP_182(None) = SOLIDITY_CALL require(bool)(TMP_181)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+balances[addresses[i]] = SafeMath.sub(balances[addresses[i]],amounts[i])
+
+IRs:
+REF_101(address) -> addresses[i]
+REF_102(uint256) -> balances[REF_101]
+REF_104(address) -> addresses[i]
+REF_105(uint256) -> balances[REF_104]
+REF_106(uint256) -> amounts[i]
+TMP_183(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_105', 'REF_106'] 
+REF_102(uint256) (->balances) := TMP_183(uint256)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+totalAmount = SafeMath.add(totalAmount,amounts[i])
+
+IRs:
+REF_108(uint256) -> amounts[i]
+TMP_184(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['totalAmount', 'REF_108'] 
+totalAmount(uint256) := TMP_184(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+Transfer(addresses[i],msg.sender,amounts[i],empty)
+
+IRs:
+REF_109(address) -> addresses[i]
+REF_110(uint256) -> amounts[i]
+Emit Transfer(REF_109,msg.sender,REF_110,empty)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_186(uint256) := i(uint256)
+i(uint256) = i + 1"];
+14->7;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+balances[msg.sender] = SafeMath.add(balances[msg.sender],totalAmount)
+
+IRs:
+REF_111(uint256) -> balances[msg.sender]
+REF_113(uint256) -> balances[msg.sender]
+TMP_187(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_113', 'totalAmount'] 
+REF_111(uint256) (->balances) := TMP_187(uint256)"];
+15->16;
+16[label="Node Type: RETURN 16
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+17->1;
+}
+// Function: 21227.sol-Excalibur-decimals()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+decimals
+
+IRs:
+RETURN decimals"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+_decimals
+
+IRs:
+RETURN _decimals"];
+}
+// Function: 21227.sol-Excalibur-distributeTokens(address[],uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(amount > 0 && addresses.length > 0 && frozenAccount[msg.sender] == false && now > unlockUnixTime[msg.sender])
+
+IRs:
+TMP_144(bool) = amount > 0
+REF_63 -> LENGTH addresses
+TMP_145(bool) = REF_63 > 0
+TMP_146(bool) = TMP_144 && TMP_145
+REF_64(bool) -> frozenAccount[msg.sender]
+TMP_147(bool) = REF_64 == False
+TMP_148(bool) = TMP_146 && TMP_147
+REF_65(uint256) -> unlockUnixTime[msg.sender]
+TMP_149(bool) = now > REF_65
+TMP_150(bool) = TMP_148 && TMP_149
+TMP_151(None) = SOLIDITY_CALL require(bool)(TMP_150)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+amount = SafeMath.mul(amount,1e8)
+
+IRs:
+TMP_152(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['amount', '100000000'] 
+amount(uint256) := TMP_152(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+totalAmount = SafeMath.mul(amount,addresses.length)
+
+IRs:
+REF_68 -> LENGTH addresses
+TMP_153(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['amount', 'REF_68'] 
+totalAmount(uint256) := TMP_153(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool)(balances[msg.sender] >= totalAmount)
+
+IRs:
+REF_69(uint256) -> balances[msg.sender]
+TMP_154(bool) = REF_69 >= totalAmount
+TMP_155(None) = SOLIDITY_CALL require(bool)(TMP_154)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+"];
+5->8;
+6[label="Node Type: BEGIN_LOOP 6
+"];
+6->9;
+7[label="Node Type: END_LOOP 7
+"];
+7->14;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+8->6;
+9[label="Node Type: IF_LOOP 9
+
+EXPRESSION:
+i < addresses.length
+
+IRs:
+REF_70 -> LENGTH addresses
+TMP_156(bool) = i < REF_70
+CONDITION TMP_156"];
+9->10[label="True"];
+9->7[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+require(bool)(addresses[i] != 0x0 && frozenAccount[addresses[i]] == false && now > unlockUnixTime[addresses[i]])
+
+IRs:
+REF_71(address) -> addresses[i]
+TMP_157(bool) = REF_71 != 0
+REF_72(address) -> addresses[i]
+REF_73(bool) -> frozenAccount[REF_72]
+TMP_158(bool) = REF_73 == False
+TMP_159(bool) = TMP_157 && TMP_158
+REF_74(address) -> addresses[i]
+REF_75(uint256) -> unlockUnixTime[REF_74]
+TMP_160(bool) = now > REF_75
+TMP_161(bool) = TMP_159 && TMP_160
+TMP_162(None) = SOLIDITY_CALL require(bool)(TMP_161)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+balances[addresses[i]] = SafeMath.add(balances[addresses[i]],amount)
+
+IRs:
+REF_76(address) -> addresses[i]
+REF_77(uint256) -> balances[REF_76]
+REF_79(address) -> addresses[i]
+REF_80(uint256) -> balances[REF_79]
+TMP_163(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_80', 'amount'] 
+REF_77(uint256) (->balances) := TMP_163(uint256)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+Transfer(msg.sender,addresses[i],amount,empty)
+
+IRs:
+REF_81(address) -> addresses[i]
+Emit Transfer(msg.sender,REF_81,amount,empty)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_165(uint256) := i(uint256)
+i(uint256) = i + 1"];
+13->9;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+balances[msg.sender] = SafeMath.sub(balances[msg.sender],totalAmount)
+
+IRs:
+REF_82(uint256) -> balances[msg.sender]
+REF_84(uint256) -> balances[msg.sender]
+TMP_166(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_84', 'totalAmount'] 
+REF_82(uint256) (->balances) := TMP_166(uint256)"];
+14->15;
+15[label="Node Type: RETURN 15
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 21227.sol-Excalibur-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+autoDistribute()
+
+IRs:
+INTERNAL_CALL, Excalibur.autoDistribute()()"];
+}
+// Function: 21227.sol-Excalibur-finishMinting()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+mintingFinished = true
+
+IRs:
+mintingFinished(bool) := True(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+MintFinished()
+
+IRs:
+Emit MintFinished()"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+canMint()
+
+IRs:
+MODIFIER_CALL, Excalibur.canMint()()"];
+5->1;
+}
+// Function: 21227.sol-Excalibur-freezeAccounts(address[],bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->10;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(targets.length > 0)
+
+IRs:
+REF_37 -> LENGTH targets
+TMP_105(bool) = REF_37 > 0
+TMP_106(None) = SOLIDITY_CALL require(bool)(TMP_105)"];
+1->4;
+2[label="Node Type: BEGIN_LOOP 2
+"];
+2->5;
+3[label="Node Type: END_LOOP 3
+"];
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+4->2;
+5[label="Node Type: IF_LOOP 5
+
+EXPRESSION:
+i < targets.length
+
+IRs:
+REF_38 -> LENGTH targets
+TMP_107(bool) = i < REF_38
+CONDITION TMP_107"];
+5->6[label="True"];
+5->3[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+require(bool)(targets[i] != 0x0)
+
+IRs:
+REF_39(address) -> targets[i]
+TMP_108(bool) = REF_39 != 0
+TMP_109(None) = SOLIDITY_CALL require(bool)(TMP_108)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+frozenAccount[targets[i]] = isFrozen
+
+IRs:
+REF_40(address) -> targets[i]
+REF_41(bool) -> frozenAccount[REF_40]
+REF_41(bool) (->frozenAccount) := isFrozen(bool)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+FrozenFunds(targets[i],isFrozen)
+
+IRs:
+REF_42(address) -> targets[i]
+Emit FrozenFunds(REF_42,isFrozen)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_111(uint256) := i(uint256)
+i(uint256) = i + 1"];
+9->5;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+10->1;
+}
+// Function: 21227.sol-Excalibur-isContract(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->2;
+2[label="Node Type: INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: END INLINE ASM 3
+"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+(length > 0)
+
+IRs:
+TMP_86(bool) = length > 0
+RETURN TMP_86"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+is_contract
+
+IRs:
+RETURN is_contract"];
+}
+// Function: 21227.sol-Excalibur-lockupAccounts(address[],uint256[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->10;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(targets.length > 0 && targets.length == unixTimes.length)
+
+IRs:
+REF_43 -> LENGTH targets
+TMP_113(bool) = REF_43 > 0
+REF_44 -> LENGTH targets
+REF_45 -> LENGTH unixTimes
+TMP_114(bool) = REF_44 == REF_45
+TMP_115(bool) = TMP_113 && TMP_114
+TMP_116(None) = SOLIDITY_CALL require(bool)(TMP_115)"];
+1->4;
+2[label="Node Type: BEGIN_LOOP 2
+"];
+2->5;
+3[label="Node Type: END_LOOP 3
+"];
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+4->2;
+5[label="Node Type: IF_LOOP 5
+
+EXPRESSION:
+i < targets.length
+
+IRs:
+REF_46 -> LENGTH targets
+TMP_117(bool) = i < REF_46
+CONDITION TMP_117"];
+5->6[label="True"];
+5->3[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+require(bool)(unlockUnixTime[targets[i]] < unixTimes[i])
+
+IRs:
+REF_47(address) -> targets[i]
+REF_48(uint256) -> unlockUnixTime[REF_47]
+REF_49(uint256) -> unixTimes[i]
+TMP_118(bool) = REF_48 < REF_49
+TMP_119(None) = SOLIDITY_CALL require(bool)(TMP_118)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+unlockUnixTime[targets[i]] = unixTimes[i]
+
+IRs:
+REF_50(address) -> targets[i]
+REF_51(uint256) -> unlockUnixTime[REF_50]
+REF_52(uint256) -> unixTimes[i]
+REF_51(uint256) (->unlockUnixTime) := REF_52(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+LockedFunds(targets[i],unixTimes[i])
+
+IRs:
+REF_53(address) -> targets[i]
+REF_54(uint256) -> unixTimes[i]
+Emit LockedFunds(REF_53,REF_54)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_121(uint256) := i(uint256)
+i(uint256) = i + 1"];
+9->5;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+10->1;
+}
+// Function: 21227.sol-Excalibur-mint(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->8;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_unitAmount > 0)
+
+IRs:
+TMP_132(bool) = _unitAmount > 0
+TMP_133(None) = SOLIDITY_CALL require(bool)(TMP_132)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+totalSupply = SafeMath.add(totalSupply,_unitAmount)
+
+IRs:
+TMP_134(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['totalSupply', '_unitAmount'] 
+totalSupply(uint256) := TMP_134(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balances[_to] = SafeMath.add(balances[_to],_unitAmount)
+
+IRs:
+REF_60(uint256) -> balances[_to]
+REF_62(uint256) -> balances[_to]
+TMP_135(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_62', '_unitAmount'] 
+REF_60(uint256) (->balances) := TMP_135(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Mint(_to,_unitAmount)
+
+IRs:
+Emit Mint(_to,_unitAmount)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+Transfer(address(0),_to,_unitAmount,empty)
+
+IRs:
+TMP_137 = CONVERT 0 to address
+Emit Transfer(TMP_137,_to,_unitAmount,empty)"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+canMint()
+
+IRs:
+MODIFIER_CALL, Excalibur.canMint()()"];
+9->1;
+}
+// Function: 21227.sol-Excalibur-name()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+name
+
+IRs:
+RETURN name"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+_name
+
+IRs:
+RETURN _name"];
+}
+// Function: 21227.sol-Excalibur-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_206(bool) = msg.sender == owner
+TMP_207(None) = SOLIDITY_CALL require(bool)(TMP_206)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 21227.sol-Excalibur-onlyPayloadSize(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(msg.data.length >= size + 4)
+
+IRs:
+REF_123 -> LENGTH msg.data
+TMP_208(uint256) = size + 4
+TMP_209(bool) = REF_123 >= TMP_208
+TMP_210(None) = SOLIDITY_CALL assert(bool)(TMP_209)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 21227.sol-Excalibur-setDistributeAmount(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+distributeAmount = _unitAmount
+
+IRs:
+distributeAmount(uint256) := _unitAmount(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 21227.sol-Excalibur-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+name = ExcaliburCoin
+
+IRs:
+name(string) := ExcaliburCoin(string)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+symbol = EXC
+
+IRs:
+symbol(string) := EXC(string)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+decimals = 8
+
+IRs:
+decimals(uint8) := 8(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+initialSupply = 10e11 * 1e8
+
+IRs:
+TMP_205(uint256) = 1000000000000 * 100000000
+initialSupply(uint256) := TMP_205(uint256)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+distributeAmount = 0
+
+IRs:
+distributeAmount(uint256) := 0(uint256)"];
+4->5;
+5[label="Node Type: OTHER_ENTRYPOINT 5
+
+EXPRESSION:
+mintingFinished = false
+
+IRs:
+mintingFinished(bool) := False(bool)"];
+}
+// Function: 21227.sol-Excalibur-symbol()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+symbol
+
+IRs:
+RETURN symbol"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+_symbol
+
+IRs:
+RETURN _symbol"];
+}
+// Function: 21227.sol-Excalibur-totalSupply()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+totalSupply
+
+IRs:
+RETURN totalSupply"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+_totalSupply
+
+IRs:
+RETURN _totalSupply"];
+}
+// Function: 21227.sol-Excalibur-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_value > 0 && frozenAccount[msg.sender] == false && frozenAccount[_to] == false && now > unlockUnixTime[msg.sender] && now > unlockUnixTime[_to])
+
+IRs:
+TMP_73(bool) = _value > 0
+REF_24(bool) -> frozenAccount[msg.sender]
+TMP_74(bool) = REF_24 == False
+TMP_75(bool) = TMP_73 && TMP_74
+REF_25(bool) -> frozenAccount[_to]
+TMP_76(bool) = REF_25 == False
+TMP_77(bool) = TMP_75 && TMP_76
+REF_26(uint256) -> unlockUnixTime[msg.sender]
+TMP_78(bool) = now > REF_26
+TMP_79(bool) = TMP_77 && TMP_78
+REF_27(uint256) -> unlockUnixTime[_to]
+TMP_80(bool) = now > REF_27
+TMP_81(bool) = TMP_79 && TMP_80
+TMP_82(None) = SOLIDITY_CALL require(bool)(TMP_81)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+isContract(_to)
+
+IRs:
+TMP_83(bool) = INTERNAL_CALL, Excalibur.isContract(address)(_to)
+CONDITION TMP_83"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+transferToContract(_to,_value,empty)
+
+IRs:
+TMP_84(bool) = INTERNAL_CALL, Excalibur.transferToContract(address,uint256,bytes)(_to,_value,empty)
+RETURN TMP_84"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+transferToAddress(_to,_value,empty)
+
+IRs:
+TMP_85(bool) = INTERNAL_CALL, Excalibur.transferToAddress(address,uint256,bytes)(_to,_value,empty)
+RETURN TMP_85"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 21227.sol-Excalibur-transfer(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_value > 0 && frozenAccount[msg.sender] == false && frozenAccount[_to] == false && now > unlockUnixTime[msg.sender] && now > unlockUnixTime[_to])
+
+IRs:
+TMP_60(bool) = _value > 0
+REF_20(bool) -> frozenAccount[msg.sender]
+TMP_61(bool) = REF_20 == False
+TMP_62(bool) = TMP_60 && TMP_61
+REF_21(bool) -> frozenAccount[_to]
+TMP_63(bool) = REF_21 == False
+TMP_64(bool) = TMP_62 && TMP_63
+REF_22(uint256) -> unlockUnixTime[msg.sender]
+TMP_65(bool) = now > REF_22
+TMP_66(bool) = TMP_64 && TMP_65
+REF_23(uint256) -> unlockUnixTime[_to]
+TMP_67(bool) = now > REF_23
+TMP_68(bool) = TMP_66 && TMP_67
+TMP_69(None) = SOLIDITY_CALL require(bool)(TMP_68)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+isContract(_to)
+
+IRs:
+TMP_70(bool) = INTERNAL_CALL, Excalibur.isContract(address)(_to)
+CONDITION TMP_70"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+transferToContract(_to,_value,_data)
+
+IRs:
+TMP_71(bool) = INTERNAL_CALL, Excalibur.transferToContract(address,uint256,bytes)(_to,_value,_data)
+RETURN TMP_71"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+transferToAddress(_to,_value,_data)
+
+IRs:
+TMP_72(bool) = INTERNAL_CALL, Excalibur.transferToAddress(address,uint256,bytes)(_to,_value,_data)
+RETURN TMP_72"];
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 21227.sol-Excalibur-transfer(address,uint256,bytes,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_value > 0 && frozenAccount[msg.sender] == false && frozenAccount[_to] == false && now > unlockUnixTime[msg.sender] && now > unlockUnixTime[_to])
+
+IRs:
+TMP_35(bool) = _value > 0
+REF_10(bool) -> frozenAccount[msg.sender]
+TMP_36(bool) = REF_10 == False
+TMP_37(bool) = TMP_35 && TMP_36
+REF_11(bool) -> frozenAccount[_to]
+TMP_38(bool) = REF_11 == False
+TMP_39(bool) = TMP_37 && TMP_38
+REF_12(uint256) -> unlockUnixTime[msg.sender]
+TMP_40(bool) = now > REF_12
+TMP_41(bool) = TMP_39 && TMP_40
+REF_13(uint256) -> unlockUnixTime[_to]
+TMP_42(bool) = now > REF_13
+TMP_43(bool) = TMP_41 && TMP_42
+TMP_44(None) = SOLIDITY_CALL require(bool)(TMP_43)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+isContract(_to)
+
+IRs:
+TMP_45(bool) = INTERNAL_CALL, Excalibur.isContract(address)(_to)
+CONDITION TMP_45"];
+2->3[label="True"];
+2->11[label="False"];
+3[label="Node Type: IF 3
+
+EXPRESSION:
+balanceOf(msg.sender) < _value
+
+IRs:
+TMP_46(uint256) = INTERNAL_CALL, Excalibur.balanceOf(address)(msg.sender)
+TMP_47(bool) = TMP_46 < _value
+CONDITION TMP_47"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_48(None) = SOLIDITY_CALL revert()()"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+balances[msg.sender] = SafeMath.sub(balanceOf(msg.sender),_value)
+
+IRs:
+REF_14(uint256) -> balances[msg.sender]
+TMP_49(uint256) = INTERNAL_CALL, Excalibur.balanceOf(address)(msg.sender)
+TMP_50(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['TMP_49', '_value'] 
+REF_14(uint256) (->balances) := TMP_50(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+balances[_to] = SafeMath.add(balanceOf(_to),_value)
+
+IRs:
+REF_16(uint256) -> balances[_to]
+TMP_51(uint256) = INTERNAL_CALL, Excalibur.balanceOf(address)(_to)
+TMP_52(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['TMP_51', '_value'] 
+REF_16(uint256) (->balances) := TMP_52(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+assert(bool)(_to.call.value(0)(bytes4(keccak256()(_custom_fallback)),msg.sender,_value,_data))
+
+IRs:
+TMP_54(bytes32) = SOLIDITY_CALL keccak256()(_custom_fallback)
+TMP_55 = CONVERT TMP_54 to bytes4
+TMP_56(bool) = LOW_LEVEL_CALL, dest:_to, function:call, arguments:['TMP_55', 'msg.sender', '_value', '_data'] value:0 
+TMP_57(None) = SOLIDITY_CALL assert(bool)(TMP_56)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+Transfer(msg.sender,_to,_value,_data)
+
+IRs:
+Emit Transfer(msg.sender,_to,_value,_data)"];
+9->10;
+10[label="Node Type: RETURN 10
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+11[label="Node Type: RETURN 11
+
+EXPRESSION:
+transferToAddress(_to,_value,_data)
+
+IRs:
+TMP_59(bool) = INTERNAL_CALL, Excalibur.transferToAddress(address,uint256,bytes)(_to,_value,_data)
+RETURN TMP_59"];
+13[label="Node Type: RETURN 13
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 21227.sol-Excalibur-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newOwner != address(0))
+
+IRs:
+TMP_30 = CONVERT 0 to address
+TMP_31(bool) = newOwner != TMP_30
+TMP_32(None) = SOLIDITY_CALL require(bool)(TMP_31)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->1;
+}
+// Function: 21227.sol-Excalibur-transferToAddress(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+balanceOf(msg.sender) < _value
+
+IRs:
+TMP_87(uint256) = INTERNAL_CALL, Excalibur.balanceOf(address)(msg.sender)
+TMP_88(bool) = TMP_87 < _value
+CONDITION TMP_88"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_89(None) = SOLIDITY_CALL revert()()"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+balances[msg.sender] = SafeMath.sub(balanceOf(msg.sender),_value)
+
+IRs:
+REF_28(uint256) -> balances[msg.sender]
+TMP_90(uint256) = INTERNAL_CALL, Excalibur.balanceOf(address)(msg.sender)
+TMP_91(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['TMP_90', '_value'] 
+REF_28(uint256) (->balances) := TMP_91(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balances[_to] = SafeMath.add(balanceOf(_to),_value)
+
+IRs:
+REF_30(uint256) -> balances[_to]
+TMP_92(uint256) = INTERNAL_CALL, Excalibur.balanceOf(address)(_to)
+TMP_93(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['TMP_92', '_value'] 
+REF_30(uint256) (->balances) := TMP_93(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+Transfer(msg.sender,_to,_value,_data)
+
+IRs:
+Emit Transfer(msg.sender,_to,_value,_data)"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 21227.sol-Excalibur-transferToContract(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+balanceOf(msg.sender) < _value
+
+IRs:
+TMP_95(uint256) = INTERNAL_CALL, Excalibur.balanceOf(address)(msg.sender)
+TMP_96(bool) = TMP_95 < _value
+CONDITION TMP_96"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_97(None) = SOLIDITY_CALL revert()()"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+balances[msg.sender] = SafeMath.sub(balanceOf(msg.sender),_value)
+
+IRs:
+REF_32(uint256) -> balances[msg.sender]
+TMP_98(uint256) = INTERNAL_CALL, Excalibur.balanceOf(address)(msg.sender)
+TMP_99(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['TMP_98', '_value'] 
+REF_32(uint256) (->balances) := TMP_99(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balances[_to] = SafeMath.add(balanceOf(_to),_value)
+
+IRs:
+REF_34(uint256) -> balances[_to]
+TMP_100(uint256) = INTERNAL_CALL, Excalibur.balanceOf(address)(_to)
+TMP_101(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['TMP_100', '_value'] 
+REF_34(uint256) (->balances) := TMP_101(uint256)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+receiver = ContractReceiver(_to)
+
+IRs:
+TMP_102 = CONVERT _to to ContractReceiver
+receiver(ContractReceiver) := TMP_102(ContractReceiver)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+receiver.tokenFallback(msg.sender,_value,_data)
+
+IRs:
+HIGH_LEVEL_CALL, dest:receiver(ContractReceiver), function:tokenFallback, arguments:['msg.sender', '_value', '_data']  "];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+Transfer(msg.sender,_to,_value,_data)
+
+IRs:
+Emit Transfer(msg.sender,_to,_value,_data)"];
+8->9;
+9[label="Node Type: RETURN 9
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+10[label="Node Type: RETURN 10
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 21227.sol-Ownable-Ownable()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 21227.sol-Ownable-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_16(bool) = msg.sender == owner
+TMP_17(None) = SOLIDITY_CALL require(bool)(TMP_16)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 21227.sol-Ownable-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newOwner != address(0))
+
+IRs:
+TMP_11 = CONVERT 0 to address
+TMP_12(bool) = newOwner != TMP_11
+TMP_13(None) = SOLIDITY_CALL require(bool)(TMP_12)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->1;
+}
+// Function: 21227.sol-SafeMath-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_27(uint256) = a + b
+c(uint256) := TMP_27(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(c >= a)
+
+IRs:
+TMP_28(bool) = c >= a
+TMP_29(None) = SOLIDITY_CALL assert(bool)(TMP_28)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 21227.sol-SafeMath-div(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a / b
+
+IRs:
+TMP_23(uint256) = a / b
+c(uint256) := TMP_23(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 21227.sol-SafeMath-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+a == 0
+
+IRs:
+TMP_18(bool) = a == 0
+CONDITION TMP_18"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_19(uint256) = a * b
+c(uint256) := TMP_19(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+assert(bool)(c / a == b)
+
+IRs:
+TMP_20(uint256) = c / a
+TMP_21(bool) = TMP_20 == b
+TMP_22(None) = SOLIDITY_CALL assert(bool)(TMP_21)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 21227.sol-SafeMath-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(b <= a)
+
+IRs:
+TMP_24(bool) = b <= a
+TMP_25(None) = SOLIDITY_CALL assert(bool)(TMP_24)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_26(uint256) = a - b
+RETURN TMP_26"];
+}
+}

@@ -1,0 +1,2988 @@
+digraph G {
+// Function: 1058.sol-AddressUtils-isContract(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->2;
+2[label="Node Type: INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: END INLINE ASM 3
+"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+size > 0
+
+IRs:
+TMP_245(bool) = size > 0
+RETURN TMP_245"];
+}
+// Function: 1058.sol-EFMAPlatform-_transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_newOwner != address(0))
+
+IRs:
+TMP_16 = CONVERT 0 to address
+TMP_17(bool) = _newOwner != TMP_16
+TMP_18(None) = SOLIDITY_CALL require(bool)(TMP_17)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,_newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,_newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = _newOwner
+
+IRs:
+owner(address) := _newOwner(address)"];
+}
+// Function: 1058.sol-EFMAPlatform-acceptHelp(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->21;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+(canAcceptLeft,None) = calcCanAcceptAmount(msg.sender,true,0)
+
+IRs:
+TUPLE_0(uint256,uint256) = INTERNAL_CALL, EFMAPlatform.calcCanAcceptAmount(address,bool,uint256)(msg.sender,True,0)
+canAcceptLeft(uint256)= UNPACK TUPLE_0 index: 0 "];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(amount <= canAcceptLeft,sorry, you don't have enough acceptable amount)
+
+IRs:
+TMP_47(bool) = amount <= canAcceptLeft
+TMP_48(None) = SOLIDITY_CALL require(bool,string)(TMP_47,sorry, you don't have enough acceptable amount)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+_nextOrderId = currentOrder_.nextOrder
+
+IRs:
+REF_26(uint256) -> currentOrder_.nextOrder
+_nextOrderId(uint256) := REF_26(uint256)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+acceptOrder.playerAddress = msg.sender
+
+IRs:
+REF_27(address) -> acceptOrder.playerAddress
+REF_27(address) (->acceptOrder) := msg.sender(address)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+acceptOrder.acceptAmount = amount
+
+IRs:
+REF_28(uint256) -> acceptOrder.acceptAmount
+REF_28(uint256) (->acceptOrder) := amount(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+acceptOrder.acceptedAmount = 0
+
+IRs:
+REF_29(uint256) -> acceptOrder.acceptedAmount
+REF_29(uint256) (->acceptOrder) := 0(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+acceptOrder.nextOrder = _nextOrderId + 1
+
+IRs:
+REF_30(uint256) -> acceptOrder.nextOrder
+TMP_49(uint256) = _nextOrderId + 1
+REF_30(uint256) (->acceptOrder) := TMP_49(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+acceptOrders_[_nextOrderId] = acceptOrder
+
+IRs:
+REF_31(FMAPDatasets.AcceptOrder) -> acceptOrders_[_nextOrderId]
+REF_31(FMAPDatasets.AcceptOrder) (->acceptOrders_) := acceptOrder(FMAPDatasets.AcceptOrder)"];
+9->10;
+10[label="Node Type: IF 10
+
+EXPRESSION:
+currentOrder_.orderId == _nextOrderId || currentOrder_.acceptAmount == currentOrder_.acceptedAmount
+
+IRs:
+REF_32(uint256) -> currentOrder_.orderId
+TMP_50(bool) = REF_32 == _nextOrderId
+REF_33(uint256) -> currentOrder_.acceptAmount
+REF_34(uint256) -> currentOrder_.acceptedAmount
+TMP_51(bool) = REF_33 == REF_34
+TMP_52(bool) = TMP_50 || TMP_51
+CONDITION TMP_52"];
+10->11[label="True"];
+10->12[label="False"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+currentOrder_ = acceptOrder
+
+IRs:
+currentOrder_(FMAPDatasets.AcceptOrder) := acceptOrder(FMAPDatasets.AcceptOrder)"];
+11->12;
+12[label="Node Type: END_IF 12
+"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+players_[acceptOrder.playerAddress].totalAccepted = amount.add(players_[acceptOrder.playerAddress].totalAccepted)
+
+IRs:
+REF_35(address) -> acceptOrder.playerAddress
+REF_36(FMAPDatasets.Player) -> players_[REF_35]
+REF_37(uint256) -> REF_36.totalAccepted
+REF_39(address) -> acceptOrder.playerAddress
+REF_40(FMAPDatasets.Player) -> players_[REF_39]
+REF_41(uint256) -> REF_40.totalAccepted
+TMP_53(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['amount', 'REF_41'] 
+REF_37(uint256) (->players_) := TMP_53(uint256)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+players_[acceptOrder.playerAddress].acceptOrderCount ++
+
+IRs:
+REF_42(address) -> acceptOrder.playerAddress
+REF_43(FMAPDatasets.Player) -> players_[REF_42]
+REF_44(uint256) -> REF_43.acceptOrderCount
+TMP_54(uint256) := REF_44(uint256)
+REF_44(-> players_) = REF_44 + 1"];
+14->15;
+15[label="Node Type: IF 15
+
+EXPRESSION:
+restOfferAmount_ > 0
+
+IRs:
+TMP_55(bool) = restOfferAmount_ > 0
+CONDITION TMP_55"];
+15->16[label="True"];
+15->17[label="False"];
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+matching()
+
+IRs:
+INTERNAL_CALL, EFMAPlatform.matching()()"];
+16->17;
+17[label="Node Type: END_IF 17
+"];
+17->18;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+calcAndSetPlayerTotalCanAccept(acceptOrder.playerAddress,amount)
+
+IRs:
+REF_45(address) -> acceptOrder.playerAddress
+INTERNAL_CALL, EFMAPlatform.calcAndSetPlayerTotalCanAccept(address,uint256)(REF_45,amount)"];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+onAccepted(acceptOrder.playerAddress,acceptOrder.acceptAmount)
+
+IRs:
+REF_46(address) -> acceptOrder.playerAddress
+REF_47(uint256) -> acceptOrder.acceptAmount
+Emit onAccepted(REF_46,REF_47)"];
+19->20;
+20[label="Node Type: RETURN 20
+
+EXPRESSION:
+(canAcceptLeft)
+
+IRs:
+RETURN canAcceptLeft"];
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+isHuman()
+
+IRs:
+MODIFIER_CALL, EFMAPlatform.isHuman()()"];
+21->1;
+22[label="Node Type: RETURN 22
+
+EXPRESSION:
+canAcceptLeft
+
+IRs:
+RETURN canAcceptLeft"];
+}
+// Function: 1058.sol-EFMAPlatform-airdrop()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+seed = uint256(keccak256()(abi.encodePacked(block.timestamp,block.number,block.timestamp,block.difficulty,block.gaslimit,airDropTracker_,block.coinbase,msg.sender)))
+
+IRs:
+TMP_169(bytes) = SOLIDITY_CALL abi.encodePacked()(block.timestamp,block.number,block.timestamp,block.difficulty,block.gaslimit,airDropTracker_,block.coinbase,msg.sender)
+TMP_170(bytes32) = SOLIDITY_CALL keccak256()(TMP_169)
+TMP_171 = CONVERT TMP_170 to uint256
+seed(uint256) := TMP_171(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+seed - (seed / 10000).mul(10000) < airDropTracker_
+
+IRs:
+TMP_172(uint256) = seed / 10000
+TMP_173(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['TMP_172', '10000'] 
+TMP_174(uint256) = seed - TMP_173
+TMP_175(bool) = TMP_174 < airDropTracker_
+CONDITION TMP_175"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+(true)
+
+IRs:
+RETURN True"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+(false)
+
+IRs:
+RETURN False"];
+}
+// Function: 1058.sol-EFMAPlatform-calcAndSetPlayerTotalCanAccept(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+_now = block.timestamp
+
+IRs:
+_now(uint256) := block.timestamp(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+_latestCalced = players_[pAddr].lastCalcOfferNo
+
+IRs:
+REF_223(FMAPDatasets.Player) -> players_[pAddr]
+REF_224(uint256) -> REF_223.lastCalcOfferNo
+_latestCalced(uint256) := REF_224(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+_acceptedAmount = acceptAmount
+
+IRs:
+_acceptedAmount(uint256) := acceptAmount(uint256)"];
+3->4;
+4[label="Node Type: BEGIN_LOOP 4
+"];
+4->5;
+5[label="Node Type: IF_LOOP 5
+
+EXPRESSION:
+_latestCalced < players_[pAddr].offeredCount
+
+IRs:
+REF_225(FMAPDatasets.Player) -> players_[pAddr]
+REF_226(uint256) -> REF_225.offeredCount
+TMP_130(bool) = _latestCalced < REF_226
+CONDITION TMP_130"];
+5->6[label="True"];
+5->44[label="False"];
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+oi = playerOfferOrders_[pAddr][_latestCalced]
+
+IRs:
+REF_227(mapping(uint256 => FMAPDatasets.OfferInfo)) -> playerOfferOrders_[pAddr]
+REF_228(FMAPDatasets.OfferInfo) -> REF_227[_latestCalced]
+oi(FMAPDatasets.OfferInfo) := REF_228(FMAPDatasets.OfferInfo)"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+_ts = _now.sub(oi.timestamp)
+
+IRs:
+REF_230(uint256) -> oi.timestamp
+TMP_131(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['_now', 'REF_230'] 
+_ts(uint256) := TMP_131(uint256)"];
+7->8;
+8[label="Node Type: IF 8
+
+EXPRESSION:
+oi.interesting == true
+
+IRs:
+REF_231(bool) -> oi.interesting
+TMP_132(bool) = REF_231 == True
+CONDITION TMP_132"];
+8->9[label="True"];
+8->31[label="False"];
+9[label="Node Type: IF 9
+
+EXPRESSION:
+_ts >= maxInterestTime_
+
+IRs:
+TMP_133(bool) = _ts >= maxInterestTime_
+CONDITION TMP_133"];
+9->10[label="True"];
+9->19[label="False"];
+10[label="Node Type: NEW VARIABLE 10
+
+EXPRESSION:
+interest1 = oi.offerAmount.sub(oi.acceptAmount).mul(1).div(1000).mul(maxInterestTime_ / interestPeriod_)
+
+IRs:
+REF_232(uint256) -> oi.offerAmount
+REF_234(uint256) -> oi.acceptAmount
+TMP_134(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_232', 'REF_234'] 
+TMP_135(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['TMP_134', '1'] 
+TMP_136(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['TMP_135', '1000'] 
+TMP_137(uint256) = maxInterestTime_ / interestPeriod_
+TMP_138(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['TMP_136', 'TMP_137'] 
+interest1(uint256) := TMP_138(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+players_[pAddr].canAccept = (players_[pAddr].canAccept).add(oi.offerAmount).add(interest1)
+
+IRs:
+REF_238(FMAPDatasets.Player) -> players_[pAddr]
+REF_239(uint256) -> REF_238.canAccept
+REF_240(FMAPDatasets.Player) -> players_[pAddr]
+REF_241(uint256) -> REF_240.canAccept
+REF_243(uint256) -> oi.offerAmount
+TMP_139(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_241', 'REF_243'] 
+TMP_140(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['TMP_139', 'interest1'] 
+REF_239(uint256) (->players_) := TMP_140(uint256)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+oi.interesting = false
+
+IRs:
+REF_245(bool) -> oi.interesting
+REF_245(bool) (->oi) := False(bool)"];
+12->13;
+13[label="Node Type: IF 13
+
+EXPRESSION:
+oi.offerAmount.sub(oi.acceptAmount) > _acceptedAmount
+
+IRs:
+REF_246(uint256) -> oi.offerAmount
+REF_248(uint256) -> oi.acceptAmount
+TMP_141(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_246', 'REF_248'] 
+TMP_142(bool) = TMP_141 > _acceptedAmount
+CONDITION TMP_142"];
+13->14[label="True"];
+13->16[label="False"];
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+_acceptedAmount = 0
+
+IRs:
+_acceptedAmount(uint256) := 0(uint256)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+oi.acceptAmount = oi.acceptAmount.add(_acceptedAmount)
+
+IRs:
+REF_249(uint256) -> oi.acceptAmount
+REF_250(uint256) -> oi.acceptAmount
+TMP_143(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_250', '_acceptedAmount'] 
+REF_249(uint256) (->oi) := TMP_143(uint256)"];
+15->18;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+_acceptedAmount = _acceptedAmount.sub(oi.offerAmount.sub(oi.acceptAmount))
+
+IRs:
+REF_253(uint256) -> oi.offerAmount
+REF_255(uint256) -> oi.acceptAmount
+TMP_144(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_253', 'REF_255'] 
+TMP_145(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['_acceptedAmount', 'TMP_144'] 
+_acceptedAmount(uint256) := TMP_145(uint256)"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+oi.acceptAmount = oi.offerAmount
+
+IRs:
+REF_256(uint256) -> oi.acceptAmount
+REF_257(uint256) -> oi.offerAmount
+REF_256(uint256) (->oi) := REF_257(uint256)"];
+17->18;
+18[label="Node Type: END_IF 18
+"];
+18->30;
+19[label="Node Type: IF 19
+
+EXPRESSION:
+_acceptedAmount > 0
+
+IRs:
+TMP_146(bool) = _acceptedAmount > 0
+CONDITION TMP_146"];
+19->20[label="True"];
+19->29[label="False"];
+20[label="Node Type: IF 20
+
+EXPRESSION:
+_acceptedAmount < oi.offerAmount.sub(oi.acceptAmount)
+
+IRs:
+REF_258(uint256) -> oi.offerAmount
+REF_260(uint256) -> oi.acceptAmount
+TMP_147(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_258', 'REF_260'] 
+TMP_148(bool) = _acceptedAmount < TMP_147
+CONDITION TMP_148"];
+20->21[label="True"];
+20->23[label="False"];
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+oi.acceptAmount = oi.acceptAmount.add(_acceptedAmount)
+
+IRs:
+REF_261(uint256) -> oi.acceptAmount
+REF_262(uint256) -> oi.acceptAmount
+TMP_149(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_262', '_acceptedAmount'] 
+REF_261(uint256) (->oi) := TMP_149(uint256)"];
+21->22;
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+_acceptedAmount = 0
+
+IRs:
+_acceptedAmount(uint256) := 0(uint256)"];
+22->28;
+23[label="Node Type: NEW VARIABLE 23
+
+EXPRESSION:
+interest0 = oi.offerAmount.sub(oi.acceptAmount).mul(1).div(1000).mul(_ts / interestPeriod_)
+
+IRs:
+REF_264(uint256) -> oi.offerAmount
+REF_266(uint256) -> oi.acceptAmount
+TMP_150(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_264', 'REF_266'] 
+TMP_151(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['TMP_150', '1'] 
+TMP_152(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['TMP_151', '1000'] 
+TMP_153(uint256) = _ts / interestPeriod_
+TMP_154(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['TMP_152', 'TMP_153'] 
+interest0(uint256) := TMP_154(uint256)"];
+23->24;
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+players_[pAddr].canAccept = (players_[pAddr].canAccept).add(oi.offerAmount).add(interest0)
+
+IRs:
+REF_270(FMAPDatasets.Player) -> players_[pAddr]
+REF_271(uint256) -> REF_270.canAccept
+REF_272(FMAPDatasets.Player) -> players_[pAddr]
+REF_273(uint256) -> REF_272.canAccept
+REF_275(uint256) -> oi.offerAmount
+TMP_155(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_273', 'REF_275'] 
+TMP_156(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['TMP_155', 'interest0'] 
+REF_271(uint256) (->players_) := TMP_156(uint256)"];
+24->25;
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+oi.interesting = false
+
+IRs:
+REF_277(bool) -> oi.interesting
+REF_277(bool) (->oi) := False(bool)"];
+25->26;
+26[label="Node Type: EXPRESSION 26
+
+EXPRESSION:
+_acceptedAmount = _acceptedAmount.sub(oi.offerAmount.sub(oi.acceptAmount))
+
+IRs:
+REF_279(uint256) -> oi.offerAmount
+REF_281(uint256) -> oi.acceptAmount
+TMP_157(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_279', 'REF_281'] 
+TMP_158(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['_acceptedAmount', 'TMP_157'] 
+_acceptedAmount(uint256) := TMP_158(uint256)"];
+26->27;
+27[label="Node Type: EXPRESSION 27
+
+EXPRESSION:
+oi.acceptAmount = oi.offerAmount
+
+IRs:
+REF_282(uint256) -> oi.acceptAmount
+REF_283(uint256) -> oi.offerAmount
+REF_282(uint256) (->oi) := REF_283(uint256)"];
+27->28;
+28[label="Node Type: END_IF 28
+"];
+28->29;
+29[label="Node Type: END_IF 29
+"];
+29->30;
+30[label="Node Type: END_IF 30
+"];
+30->39;
+31[label="Node Type: IF 31
+
+EXPRESSION:
+oi.offerAmount > oi.acceptAmount && _acceptedAmount > 0
+
+IRs:
+REF_284(uint256) -> oi.offerAmount
+REF_285(uint256) -> oi.acceptAmount
+TMP_159(bool) = REF_284 > REF_285
+TMP_160(bool) = _acceptedAmount > 0
+TMP_161(bool) = TMP_159 && TMP_160
+CONDITION TMP_161"];
+31->32[label="True"];
+31->38[label="False"];
+32[label="Node Type: IF 32
+
+EXPRESSION:
+oi.offerAmount.sub(oi.acceptAmount) > _acceptedAmount
+
+IRs:
+REF_286(uint256) -> oi.offerAmount
+REF_288(uint256) -> oi.acceptAmount
+TMP_162(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_286', 'REF_288'] 
+TMP_163(bool) = TMP_162 > _acceptedAmount
+CONDITION TMP_163"];
+32->33[label="True"];
+32->35[label="False"];
+33[label="Node Type: EXPRESSION 33
+
+EXPRESSION:
+_acceptedAmount = 0
+
+IRs:
+_acceptedAmount(uint256) := 0(uint256)"];
+33->34;
+34[label="Node Type: EXPRESSION 34
+
+EXPRESSION:
+oi.acceptAmount = oi.acceptAmount.add(_acceptedAmount)
+
+IRs:
+REF_289(uint256) -> oi.acceptAmount
+REF_290(uint256) -> oi.acceptAmount
+TMP_164(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_290', '_acceptedAmount'] 
+REF_289(uint256) (->oi) := TMP_164(uint256)"];
+34->37;
+35[label="Node Type: EXPRESSION 35
+
+EXPRESSION:
+_acceptedAmount = _acceptedAmount.sub(oi.offerAmount.sub(oi.acceptAmount))
+
+IRs:
+REF_293(uint256) -> oi.offerAmount
+REF_295(uint256) -> oi.acceptAmount
+TMP_165(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_293', 'REF_295'] 
+TMP_166(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['_acceptedAmount', 'TMP_165'] 
+_acceptedAmount(uint256) := TMP_166(uint256)"];
+35->36;
+36[label="Node Type: EXPRESSION 36
+
+EXPRESSION:
+oi.acceptAmount = oi.offerAmount
+
+IRs:
+REF_296(uint256) -> oi.acceptAmount
+REF_297(uint256) -> oi.offerAmount
+REF_296(uint256) (->oi) := REF_297(uint256)"];
+36->37;
+37[label="Node Type: END_IF 37
+"];
+37->38;
+38[label="Node Type: END_IF 38
+"];
+38->39;
+39[label="Node Type: END_IF 39
+"];
+39->40;
+40[label="Node Type: IF 40
+
+EXPRESSION:
+_acceptedAmount == 0
+
+IRs:
+TMP_167(bool) = _acceptedAmount == 0
+CONDITION TMP_167"];
+40->41[label="True"];
+40->42[label="False"];
+41[label="Node Type: BREAK 41
+"];
+41->44;
+42[label="Node Type: END_IF 42
+"];
+42->43;
+43[label="Node Type: EXPRESSION 43
+
+EXPRESSION:
+_latestCalced = _latestCalced + 1
+
+IRs:
+TMP_168(uint256) = _latestCalced + 1
+_latestCalced(uint256) := TMP_168(uint256)"];
+43->5;
+44[label="Node Type: END_LOOP 44
+"];
+44->45;
+45[label="Node Type: EXPRESSION 45
+
+EXPRESSION:
+players_[pAddr].lastCalcOfferNo = _latestCalced
+
+IRs:
+REF_298(FMAPDatasets.Player) -> players_[pAddr]
+REF_299(uint256) -> REF_298.lastCalcOfferNo
+REF_299(uint256) (->players_) := _latestCalced(uint256)"];
+}
+// Function: 1058.sol-EFMAPlatform-calcCanAcceptAmount(address,bool,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+_totalCanAccepted = players_[pAddr].canAccept
+
+IRs:
+REF_302(FMAPDatasets.Player) -> players_[pAddr]
+REF_303(uint256) -> REF_302.canAccept
+_totalCanAccepted(uint256) := REF_303(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+i = players_[pAddr].offeredCount
+
+IRs:
+REF_304(FMAPDatasets.Player) -> players_[pAddr]
+REF_305(uint256) -> REF_304.offeredCount
+i(uint256) := REF_305(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+_now = block.timestamp.add(offsetTime)
+
+IRs:
+TMP_176(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['block.timestamp', 'offsetTime'] 
+_now(uint256) := TMP_176(uint256)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+_nextUpdateTime = _now.add(interestPeriod_)
+
+IRs:
+TMP_177(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['_now', 'interestPeriod_'] 
+_nextUpdateTime(uint256) := TMP_177(uint256)"];
+4->5;
+5[label="Node Type: BEGIN_LOOP 5
+"];
+5->7;
+6[label="Node Type: END_LOOP 6
+"];
+6->29;
+7[label="Node Type: IF_LOOP 7
+
+EXPRESSION:
+i > 0
+
+IRs:
+TMP_178(bool) = i > 0
+CONDITION TMP_178"];
+7->8[label="True"];
+7->6[label="False"];
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+oi = playerOfferOrders_[pAddr][i - 1]
+
+IRs:
+REF_308(mapping(uint256 => FMAPDatasets.OfferInfo)) -> playerOfferOrders_[pAddr]
+TMP_179(uint256) = i - 1
+REF_309(FMAPDatasets.OfferInfo) -> REF_308[TMP_179]
+oi(FMAPDatasets.OfferInfo) := REF_309(FMAPDatasets.OfferInfo)"];
+8->9;
+9[label="Node Type: IF 9
+
+EXPRESSION:
+oi.interesting == true
+
+IRs:
+REF_310(bool) -> oi.interesting
+TMP_180(bool) = REF_310 == True
+CONDITION TMP_180"];
+9->10[label="True"];
+9->23[label="False"];
+10[label="Node Type: NEW VARIABLE 10
+
+EXPRESSION:
+timepassed = _now.sub(oi.timestamp)
+
+IRs:
+REF_312(uint256) -> oi.timestamp
+TMP_181(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['_now', 'REF_312'] 
+timepassed(uint256) := TMP_181(uint256)"];
+10->11;
+11[label="Node Type: IF 11
+
+EXPRESSION:
+! isLimit || (timepassed >= interestPeriod_)
+
+IRs:
+TMP_182 = UnaryType.BANG isLimit 
+TMP_183(bool) = timepassed >= interestPeriod_
+TMP_184(bool) = TMP_182 || TMP_183
+CONDITION TMP_184"];
+11->12[label="True"];
+11->22[label="False"];
+12[label="Node Type: NEW VARIABLE 12
+"];
+12->13;
+13[label="Node Type: IF 13
+
+EXPRESSION:
+timepassed < maxInterestTime_
+
+IRs:
+TMP_185(bool) = timepassed < maxInterestTime_
+CONDITION TMP_185"];
+13->14[label="True"];
+13->19[label="False"];
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+interest = oi.offerAmount.sub(oi.acceptAmount).mul(1).div(1000).mul(timepassed / interestPeriod_)
+
+IRs:
+REF_313(uint256) -> oi.offerAmount
+REF_315(uint256) -> oi.acceptAmount
+TMP_186(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_313', 'REF_315'] 
+TMP_187(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['TMP_186', '1'] 
+TMP_188(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['TMP_187', '1000'] 
+TMP_189(uint256) = timepassed / interestPeriod_
+TMP_190(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['TMP_188', 'TMP_189'] 
+interest(uint256) := TMP_190(uint256)"];
+14->15;
+15[label="Node Type: NEW VARIABLE 15
+
+EXPRESSION:
+oiNextUpdateTime = (timepassed / interestPeriod_).add(1).mul(interestPeriod_).add(oi.timestamp)
+
+IRs:
+TMP_191(uint256) = timepassed / interestPeriod_
+TMP_192(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['TMP_191', '1'] 
+TMP_193(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['TMP_192', 'interestPeriod_'] 
+REF_322(uint256) -> oi.timestamp
+TMP_194(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['TMP_193', 'REF_322'] 
+oiNextUpdateTime(uint256) := TMP_194(uint256)"];
+15->16;
+16[label="Node Type: IF 16
+
+EXPRESSION:
+_nextUpdateTime > oiNextUpdateTime
+
+IRs:
+TMP_195(bool) = _nextUpdateTime > oiNextUpdateTime
+CONDITION TMP_195"];
+16->17[label="True"];
+16->18[label="False"];
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+_nextUpdateTime = oiNextUpdateTime
+
+IRs:
+_nextUpdateTime(uint256) := oiNextUpdateTime(uint256)"];
+17->18;
+18[label="Node Type: END_IF 18
+"];
+18->20;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+interest = oi.offerAmount.sub(oi.acceptAmount).mul(1).div(1000).mul(maxInterestTime_ / interestPeriod_)
+
+IRs:
+REF_323(uint256) -> oi.offerAmount
+REF_325(uint256) -> oi.acceptAmount
+TMP_196(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_323', 'REF_325'] 
+TMP_197(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['TMP_196', '1'] 
+TMP_198(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['TMP_197', '1000'] 
+TMP_199(uint256) = maxInterestTime_ / interestPeriod_
+TMP_200(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['TMP_198', 'TMP_199'] 
+interest(uint256) := TMP_200(uint256)"];
+19->20;
+20[label="Node Type: END_IF 20
+"];
+20->21;
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+_totalCanAccepted = _totalCanAccepted.add(oi.offerAmount).add(interest)
+
+IRs:
+REF_330(uint256) -> oi.offerAmount
+TMP_201(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['_totalCanAccepted', 'REF_330'] 
+TMP_202(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['TMP_201', 'interest'] 
+_totalCanAccepted(uint256) := TMP_202(uint256)"];
+21->22;
+22[label="Node Type: END_IF 22
+"];
+22->27;
+23[label="Node Type: IF 23
+
+EXPRESSION:
+oi.timestamp == 0
+
+IRs:
+REF_332(uint256) -> oi.timestamp
+TMP_203(bool) = REF_332 == 0
+CONDITION TMP_203"];
+23->24[label="True"];
+23->25[label="False"];
+24[label="Node Type: CONTINUE 24
+"];
+24->28;
+25[label="Node Type: BREAK 25
+"];
+25->6;
+27[label="Node Type: END_IF 27
+"];
+27->28;
+28[label="Node Type: EXPRESSION 28
+
+EXPRESSION:
+i --
+
+IRs:
+TMP_204(uint256) := i(uint256)
+i(uint256) = i - 1"];
+28->7;
+29[label="Node Type: RETURN 29
+
+EXPRESSION:
+(_totalCanAccepted.sub(players_[pAddr].totalAccepted),_nextUpdateTime)
+
+IRs:
+REF_334(FMAPDatasets.Player) -> players_[pAddr]
+REF_335(uint256) -> REF_334.totalAccepted
+TMP_205(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['_totalCanAccepted', 'REF_335'] 
+RETURN TMP_205,_nextUpdateTime"];
+30[label="Node Type: RETURN 30
+
+EXPRESSION:
+(nextUpdateTime)
+
+IRs:
+RETURN nextUpdateTime"];
+}
+// Function: 1058.sol-EFMAPlatform-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+teamXWallet = msg.sender
+
+IRs:
+teamXWallet(address) := msg.sender(address)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+ao.nextOrder = 1
+
+IRs:
+REF_0(uint256) -> ao.nextOrder
+REF_0(uint256) (->ao) := 1(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+ao.playerAddress = msg.sender
+
+IRs:
+REF_1(address) -> ao.playerAddress
+REF_1(address) (->ao) := msg.sender(address)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+ao.acceptAmount = 1000000000000000
+
+IRs:
+REF_2(uint256) -> ao.acceptAmount
+REF_2(uint256) (->ao) := 1000000000000000(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+acceptOrders_[0] = ao
+
+IRs:
+REF_3(FMAPDatasets.AcceptOrder) -> acceptOrders_[0]
+REF_3(FMAPDatasets.AcceptOrder) (->acceptOrders_) := ao(FMAPDatasets.AcceptOrder)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+currentOrder_ = ao
+
+IRs:
+currentOrder_(FMAPDatasets.AcceptOrder) := ao(FMAPDatasets.AcceptOrder)"];
+}
+// Function: 1058.sol-EFMAPlatform-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+offerInfo = packageOfferInfo(address(0),msg.value)
+
+IRs:
+TMP_24 = CONVERT 0 to address
+TMP_25(FMAPDatasets.OfferInfo) = INTERNAL_CALL, EFMAPlatform.packageOfferInfo(address,uint256)(TMP_24,msg.value)
+offerInfo(FMAPDatasets.OfferInfo) := TMP_25(FMAPDatasets.OfferInfo)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+offerCore(offerInfo,false)
+
+IRs:
+INTERNAL_CALL, EFMAPlatform.offerCore(FMAPDatasets.OfferInfo,bool)(offerInfo,False)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+isHuman()
+
+IRs:
+MODIFIER_CALL, EFMAPlatform.isHuman()()"];
+3->1;
+}
+// Function: 1058.sol-EFMAPlatform-getBalance(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+balance = players_[playerAddr].balance
+
+IRs:
+REF_55(FMAPDatasets.Player) -> players_[playerAddr]
+REF_56(uint256) -> REF_55.balance
+balance(uint256) := REF_56(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+(balance)
+
+IRs:
+RETURN balance"];
+}
+// Function: 1058.sol-EFMAPlatform-getCanAcceptAmount(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+(canAccept,earliest) = calcCanAcceptAmount(playerAddr,true,0)
+
+IRs:
+TUPLE_1(uint256,uint256) = INTERNAL_CALL, EFMAPlatform.calcCanAcceptAmount(address,bool,uint256)(playerAddr,True,0)
+canAccept(uint256)= UNPACK TUPLE_1 index: 0 
+earliest(uint256)= UNPACK TUPLE_1 index: 1 "];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+(canAccept,earliest)
+
+IRs:
+RETURN canAccept,earliest"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+(canAccept,earliest)
+
+IRs:
+RETURN canAccept,earliest"];
+}
+// Function: 1058.sol-EFMAPlatform-getPlayerInfo(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+_player = players_[playerAddr]
+
+IRs:
+REF_57(FMAPDatasets.Player) -> players_[playerAddr]
+_player(FMAPDatasets.Player) := REF_57(FMAPDatasets.Player)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+(_calculatedCanAccept,None) = calcCanAcceptAmount(playerAddr,false,0)
+
+IRs:
+TUPLE_2(uint256,uint256) = INTERNAL_CALL, EFMAPlatform.calcCanAcceptAmount(address,bool,uint256)(playerAddr,False,0)
+_calculatedCanAccept(uint256)= UNPACK TUPLE_2 index: 0 "];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+totalAssets = _player.balance.add(_calculatedCanAccept)
+
+IRs:
+REF_58(uint256) -> _player.balance
+TMP_65(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_58', '_calculatedCanAccept'] 
+totalAssets(uint256) := TMP_65(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+(_calculatedCanAccept,None) = calcCanAcceptAmount(playerAddr,false,interestPeriod_)
+
+IRs:
+TUPLE_3(uint256,uint256) = INTERNAL_CALL, EFMAPlatform.calcCanAcceptAmount(address,bool,uint256)(playerAddr,False,interestPeriod_)
+_calculatedCanAccept(uint256)= UNPACK TUPLE_3 index: 0 "];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+nextPeriodAssets = _player.balance.add(_calculatedCanAccept)
+
+IRs:
+REF_60(uint256) -> _player.balance
+TMP_66(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_60', '_calculatedCanAccept'] 
+nextPeriodAssets(uint256) := TMP_66(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+(canAccept,nextUpdateTime) = calcCanAcceptAmount(playerAddr,true,0)
+
+IRs:
+TUPLE_4(uint256,uint256) = INTERNAL_CALL, EFMAPlatform.calcCanAcceptAmount(address,bool,uint256)(playerAddr,True,0)
+canAccept(uint256)= UNPACK TUPLE_4 index: 0 
+nextUpdateTime(uint256)= UNPACK TUPLE_4 index: 1 "];
+7->8;
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+(totalAssets,nextPeriodAssets,_player.balance,canAccept,_player.airDroped,_player.totalOffered,_player.totalAccepted,_player.affiliateEarned,_player.siteEarned,nextUpdateTime)
+
+IRs:
+REF_62(uint256) -> _player.balance
+REF_63(uint256) -> _player.airDroped
+REF_64(uint256) -> _player.totalOffered
+REF_65(uint256) -> _player.totalAccepted
+REF_66(uint256) -> _player.affiliateEarned
+REF_67(uint256) -> _player.siteEarned
+RETURN totalAssets,nextPeriodAssets,REF_62,canAccept,REF_63,REF_64,REF_65,REF_66,REF_67,nextUpdateTime"];
+9[label="Node Type: RETURN 9
+
+EXPRESSION:
+(totalAssets,nextPeriodAssets,balance,canAccept,airdrop,offered,accepted,affiliateEarned,siteEarned,nextUpdateTime)
+
+IRs:
+RETURN totalAssets,nextPeriodAssets,balance,canAccept,airdrop,offered,accepted,affiliateEarned,siteEarned,nextUpdateTime"];
+}
+// Function: 1058.sol-EFMAPlatform-isHuman()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(AddressUtils.isContract(msg.sender) == false,sorry, only human allowed)
+
+IRs:
+TMP_208(bool) = LIBRARY_CALL, dest:AddressUtils, function:AddressUtils.isContract(address), arguments:['msg.sender'] 
+TMP_209(bool) = TMP_208 == False
+TMP_210(None) = SOLIDITY_CALL require(bool,string)(TMP_209,sorry, only human allowed)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1058.sol-EFMAPlatform-matching()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: BEGIN_LOOP 1
+"];
+1->2;
+2[label="Node Type: IF_LOOP 2
+
+EXPRESSION:
+restOfferAmount_ > 0 && currentOrder_.acceptAmount > currentOrder_.acceptedAmount
+
+IRs:
+TMP_120(bool) = restOfferAmount_ > 0
+REF_195(uint256) -> currentOrder_.acceptAmount
+REF_196(uint256) -> currentOrder_.acceptedAmount
+TMP_121(bool) = REF_195 > REF_196
+TMP_122(bool) = TMP_120 && TMP_121
+CONDITION TMP_122"];
+2->3[label="True"];
+2->13[label="False"];
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+needAcceptAmount = (currentOrder_.acceptAmount).sub(currentOrder_.acceptedAmount)
+
+IRs:
+REF_197(uint256) -> currentOrder_.acceptAmount
+REF_199(uint256) -> currentOrder_.acceptedAmount
+TMP_123(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_197', 'REF_199'] 
+needAcceptAmount(uint256) := TMP_123(uint256)"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+needAcceptAmount <= restOfferAmount_
+
+IRs:
+TMP_124(bool) = needAcceptAmount <= restOfferAmount_
+CONDITION TMP_124"];
+4->5[label="True"];
+4->9[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+restOfferAmount_ = restOfferAmount_.sub(needAcceptAmount)
+
+IRs:
+TMP_125(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['restOfferAmount_', 'needAcceptAmount'] 
+restOfferAmount_(uint256) := TMP_125(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+players_[currentOrder_.playerAddress].balance = needAcceptAmount.add(players_[currentOrder_.playerAddress].balance)
+
+IRs:
+REF_201(address) -> currentOrder_.playerAddress
+REF_202(FMAPDatasets.Player) -> players_[REF_201]
+REF_203(uint256) -> REF_202.balance
+REF_205(address) -> currentOrder_.playerAddress
+REF_206(FMAPDatasets.Player) -> players_[REF_205]
+REF_207(uint256) -> REF_206.balance
+TMP_126(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['needAcceptAmount', 'REF_207'] 
+REF_203(uint256) (->players_) := TMP_126(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+currentOrder_.acceptedAmount = (currentOrder_.acceptedAmount).add(needAcceptAmount)
+
+IRs:
+REF_208(uint256) -> currentOrder_.acceptedAmount
+REF_209(uint256) -> currentOrder_.acceptedAmount
+TMP_127(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_209', 'needAcceptAmount'] 
+REF_208(uint256) (->currentOrder_) := TMP_127(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+currentOrder_ = acceptOrders_[currentOrder_.nextOrder]
+
+IRs:
+REF_211(uint256) -> currentOrder_.nextOrder
+REF_212(FMAPDatasets.AcceptOrder) -> acceptOrders_[REF_211]
+currentOrder_(FMAPDatasets.AcceptOrder) := REF_212(FMAPDatasets.AcceptOrder)"];
+8->12;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+currentOrder_.acceptedAmount = (currentOrder_.acceptedAmount).add(restOfferAmount_)
+
+IRs:
+REF_213(uint256) -> currentOrder_.acceptedAmount
+REF_214(uint256) -> currentOrder_.acceptedAmount
+TMP_128(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_214', 'restOfferAmount_'] 
+REF_213(uint256) (->currentOrder_) := TMP_128(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+players_[currentOrder_.playerAddress].balance = (players_[currentOrder_.playerAddress].balance).add(restOfferAmount_)
+
+IRs:
+REF_216(address) -> currentOrder_.playerAddress
+REF_217(FMAPDatasets.Player) -> players_[REF_216]
+REF_218(uint256) -> REF_217.balance
+REF_219(address) -> currentOrder_.playerAddress
+REF_220(FMAPDatasets.Player) -> players_[REF_219]
+REF_221(uint256) -> REF_220.balance
+TMP_129(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_221', 'restOfferAmount_'] 
+REF_218(uint256) (->players_) := TMP_129(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+restOfferAmount_ = 0
+
+IRs:
+restOfferAmount_(uint256) := 0(uint256)"];
+11->12;
+12[label="Node Type: END_IF 12
+"];
+12->2;
+13[label="Node Type: END_LOOP 13
+"];
+}
+// Function: 1058.sol-EFMAPlatform-offerCore(FMAPDatasets.OfferInfo,bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+_fee = (offerInfo.offerAmount).mul(feePercent_).div(100)
+
+IRs:
+REF_76(uint256) -> offerInfo.offerAmount
+TMP_67(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['REF_76', 'feePercent_'] 
+TMP_68(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['TMP_67', '100'] 
+_fee(uint256) := TMP_68(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+_aff = (offerInfo.offerAmount).mul(affPercent_).div(100)
+
+IRs:
+REF_79(uint256) -> offerInfo.offerAmount
+TMP_69(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['REF_79', 'affPercent_'] 
+TMP_70(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['TMP_69', '100'] 
+_aff(uint256) := TMP_70(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+_sit = (offerInfo.offerAmount).mul(sitePercent_).div(100)
+
+IRs:
+REF_82(uint256) -> offerInfo.offerAmount
+TMP_71(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['REF_82', 'sitePercent_'] 
+TMP_72(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['TMP_71', '100'] 
+_sit(uint256) := TMP_72(uint256)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+_air = (offerInfo.offerAmount).mul(airDropPercent_).div(100)
+
+IRs:
+REF_85(uint256) -> offerInfo.offerAmount
+TMP_73(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['REF_85', 'airDropPercent_'] 
+TMP_74(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['TMP_73', '100'] 
+_air(uint256) := TMP_74(uint256)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+_xt = (offerInfo.offerAmount).mul(xTokenPercent_).div(100)
+
+IRs:
+REF_88(uint256) -> offerInfo.offerAmount
+TMP_75(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['REF_88', 'xTokenPercent_'] 
+TMP_76(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['TMP_75', '100'] 
+_xt(uint256) := TMP_76(uint256)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+_leftAmount = offerInfo.offerAmount
+
+IRs:
+REF_91(uint256) -> offerInfo.offerAmount
+_leftAmount(uint256) := REF_91(uint256)"];
+6->7;
+7[label="Node Type: IF 7
+
+EXPRESSION:
+offerInfo.affiliateAddress == offerInfo.siteOwner
+
+IRs:
+REF_92(address) -> offerInfo.affiliateAddress
+REF_93(address) -> offerInfo.siteOwner
+TMP_77(bool) = REF_92 == REF_93
+CONDITION TMP_77"];
+7->8[label="True"];
+7->9[label="False"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+offerInfo.affiliateAddress = address(0)
+
+IRs:
+REF_94(address) -> offerInfo.affiliateAddress
+TMP_78 = CONVERT 0 to address
+REF_94(address) (->offerInfo) := TMP_78(address)"];
+8->9;
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+players_[offerInfo.playerAddress].totalOffered = (offerInfo.offerAmount).add(players_[offerInfo.playerAddress].totalOffered)
+
+IRs:
+REF_95(address) -> offerInfo.playerAddress
+REF_96(FMAPDatasets.Player) -> players_[REF_95]
+REF_97(uint256) -> REF_96.totalOffered
+REF_98(uint256) -> offerInfo.offerAmount
+REF_100(address) -> offerInfo.playerAddress
+REF_101(FMAPDatasets.Player) -> players_[REF_100]
+REF_102(uint256) -> REF_101.totalOffered
+TMP_79(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_98', 'REF_102'] 
+REF_97(uint256) (->players_) := TMP_79(uint256)"];
+10->11;
+11[label="Node Type: IF 11
+
+EXPRESSION:
+offerInfo.affiliateAddress == address(0) || offerInfo.affiliateAddress == offerInfo.playerAddress
+
+IRs:
+REF_103(address) -> offerInfo.affiliateAddress
+TMP_80 = CONVERT 0 to address
+TMP_81(bool) = REF_103 == TMP_80
+REF_104(address) -> offerInfo.affiliateAddress
+REF_105(address) -> offerInfo.playerAddress
+TMP_82(bool) = REF_104 == REF_105
+TMP_83(bool) = TMP_81 || TMP_82
+CONDITION TMP_83"];
+11->12[label="True"];
+11->14[label="False"];
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+_fee = _fee.add(_aff)
+
+IRs:
+TMP_84(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['_fee', '_aff'] 
+_fee(uint256) := TMP_84(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+_aff = 0
+
+IRs:
+_aff(uint256) := 0(uint256)"];
+13->14;
+14[label="Node Type: END_IF 14
+"];
+14->15;
+15[label="Node Type: IF 15
+
+EXPRESSION:
+offerInfo.siteOwner == address(0) || offerInfo.siteOwner == offerInfo.playerAddress
+
+IRs:
+REF_107(address) -> offerInfo.siteOwner
+TMP_85 = CONVERT 0 to address
+TMP_86(bool) = REF_107 == TMP_85
+REF_108(address) -> offerInfo.siteOwner
+REF_109(address) -> offerInfo.playerAddress
+TMP_87(bool) = REF_108 == REF_109
+TMP_88(bool) = TMP_86 || TMP_87
+CONDITION TMP_88"];
+15->16[label="True"];
+15->18[label="False"];
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+_fee = _fee.add(_sit)
+
+IRs:
+TMP_89(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['_fee', '_sit'] 
+_fee(uint256) := TMP_89(uint256)"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+_sit = 0
+
+IRs:
+_sit(uint256) := 0(uint256)"];
+17->18;
+18[label="Node Type: END_IF 18
+"];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+_totalFee = _totalFee.add(_fee)
+
+IRs:
+TMP_90(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['_totalFee', '_fee'] 
+_totalFee(uint256) := TMP_90(uint256)"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+_totalXT = _totalXT.add(_xt)
+
+IRs:
+TMP_91(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['_totalXT', '_xt'] 
+_totalXT(uint256) := TMP_91(uint256)"];
+20->21;
+21[label="Node Type: IF 21
+
+EXPRESSION:
+_totalXT > 1000000000000000
+
+IRs:
+TMP_92(bool) = _totalXT > 1000000000000000
+CONDITION TMP_92"];
+21->22[label="True"];
+21->23[label="False"];
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+xTokenAddress.transfer(_totalXT)
+
+IRs:
+Transfer dest:xTokenAddress value:_totalXT"];
+22->23;
+23[label="Node Type: END_IF 23
+"];
+23->24;
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+_leftAmount = _leftAmount.sub(_fee)
+
+IRs:
+TMP_94(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['_leftAmount', '_fee'] 
+_leftAmount(uint256) := TMP_94(uint256)"];
+24->25;
+25[label="Node Type: IF 25
+
+EXPRESSION:
+_aff > 0
+
+IRs:
+TMP_95(bool) = _aff > 0
+CONDITION TMP_95"];
+25->26[label="True"];
+25->29[label="False"];
+26[label="Node Type: EXPRESSION 26
+
+EXPRESSION:
+players_[offerInfo.affiliateAddress].balance = _aff.add(players_[offerInfo.affiliateAddress].balance)
+
+IRs:
+REF_115(address) -> offerInfo.affiliateAddress
+REF_116(FMAPDatasets.Player) -> players_[REF_115]
+REF_117(uint256) -> REF_116.balance
+REF_119(address) -> offerInfo.affiliateAddress
+REF_120(FMAPDatasets.Player) -> players_[REF_119]
+REF_121(uint256) -> REF_120.balance
+TMP_96(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['_aff', 'REF_121'] 
+REF_117(uint256) (->players_) := TMP_96(uint256)"];
+26->27;
+27[label="Node Type: EXPRESSION 27
+
+EXPRESSION:
+players_[offerInfo.affiliateAddress].affiliateEarned = _aff.add(players_[offerInfo.affiliateAddress].affiliateEarned)
+
+IRs:
+REF_122(address) -> offerInfo.affiliateAddress
+REF_123(FMAPDatasets.Player) -> players_[REF_122]
+REF_124(uint256) -> REF_123.affiliateEarned
+REF_126(address) -> offerInfo.affiliateAddress
+REF_127(FMAPDatasets.Player) -> players_[REF_126]
+REF_128(uint256) -> REF_127.affiliateEarned
+TMP_97(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['_aff', 'REF_128'] 
+REF_124(uint256) (->players_) := TMP_97(uint256)"];
+27->28;
+28[label="Node Type: EXPRESSION 28
+
+EXPRESSION:
+_leftAmount = _leftAmount.sub(_aff)
+
+IRs:
+TMP_98(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['_leftAmount', '_aff'] 
+_leftAmount(uint256) := TMP_98(uint256)"];
+28->29;
+29[label="Node Type: END_IF 29
+"];
+29->30;
+30[label="Node Type: IF 30
+
+EXPRESSION:
+_sit > 0
+
+IRs:
+TMP_99(bool) = _sit > 0
+CONDITION TMP_99"];
+30->31[label="True"];
+30->34[label="False"];
+31[label="Node Type: EXPRESSION 31
+
+EXPRESSION:
+players_[offerInfo.siteOwner].balance = _sit.add(players_[offerInfo.siteOwner].balance)
+
+IRs:
+REF_130(address) -> offerInfo.siteOwner
+REF_131(FMAPDatasets.Player) -> players_[REF_130]
+REF_132(uint256) -> REF_131.balance
+REF_134(address) -> offerInfo.siteOwner
+REF_135(FMAPDatasets.Player) -> players_[REF_134]
+REF_136(uint256) -> REF_135.balance
+TMP_100(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['_sit', 'REF_136'] 
+REF_132(uint256) (->players_) := TMP_100(uint256)"];
+31->32;
+32[label="Node Type: EXPRESSION 32
+
+EXPRESSION:
+players_[offerInfo.siteOwner].siteEarned = _sit.add(players_[offerInfo.siteOwner].siteEarned)
+
+IRs:
+REF_137(address) -> offerInfo.siteOwner
+REF_138(FMAPDatasets.Player) -> players_[REF_137]
+REF_139(uint256) -> REF_138.siteEarned
+REF_141(address) -> offerInfo.siteOwner
+REF_142(FMAPDatasets.Player) -> players_[REF_141]
+REF_143(uint256) -> REF_142.siteEarned
+TMP_101(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['_sit', 'REF_143'] 
+REF_139(uint256) (->players_) := TMP_101(uint256)"];
+32->33;
+33[label="Node Type: EXPRESSION 33
+
+EXPRESSION:
+_leftAmount = _leftAmount.sub(_sit)
+
+IRs:
+TMP_102(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['_leftAmount', '_sit'] 
+_leftAmount(uint256) := TMP_102(uint256)"];
+33->34;
+34[label="Node Type: END_IF 34
+"];
+34->35;
+35[label="Node Type: IF 35
+
+EXPRESSION:
+offerInfo.offerAmount >= 1000000000000000
+
+IRs:
+REF_145(uint256) -> offerInfo.offerAmount
+TMP_103(bool) = REF_145 >= 1000000000000000
+CONDITION TMP_103"];
+35->36[label="True"];
+35->43[label="False"];
+36[label="Node Type: EXPRESSION 36
+
+EXPRESSION:
+airDropTracker_ = airDropTracker_ + FMAPMath.calcTrackerCount(offerInfo.offerAmount)
+
+IRs:
+REF_147(uint256) -> offerInfo.offerAmount
+TMP_104(uint256) = LIBRARY_CALL, dest:FMAPMath, function:FMAPMath.calcTrackerCount(uint256), arguments:['REF_147'] 
+TMP_105(uint256) = airDropTracker_ + TMP_104
+airDropTracker_(uint256) := TMP_105(uint256)"];
+36->37;
+37[label="Node Type: IF 37
+
+EXPRESSION:
+airdrop() == true
+
+IRs:
+TMP_106(bool) = INTERNAL_CALL, EFMAPlatform.airdrop()()
+TMP_107(bool) = TMP_106 == True
+CONDITION TMP_107"];
+37->38[label="True"];
+37->42[label="False"];
+38[label="Node Type: NEW VARIABLE 38
+
+EXPRESSION:
+_airdrop = FMAPMath.calcAirDropAmount(offerInfo.offerAmount)
+
+IRs:
+REF_149(uint256) -> offerInfo.offerAmount
+TMP_108(uint256) = LIBRARY_CALL, dest:FMAPMath, function:FMAPMath.calcAirDropAmount(uint256), arguments:['REF_149'] 
+_airdrop(uint256) := TMP_108(uint256)"];
+38->39;
+39[label="Node Type: EXPRESSION 39
+
+EXPRESSION:
+players_[offerInfo.playerAddress].balance = _airdrop.add(players_[offerInfo.playerAddress].balance)
+
+IRs:
+REF_150(address) -> offerInfo.playerAddress
+REF_151(FMAPDatasets.Player) -> players_[REF_150]
+REF_152(uint256) -> REF_151.balance
+REF_154(address) -> offerInfo.playerAddress
+REF_155(FMAPDatasets.Player) -> players_[REF_154]
+REF_156(uint256) -> REF_155.balance
+TMP_109(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['_airdrop', 'REF_156'] 
+REF_152(uint256) (->players_) := TMP_109(uint256)"];
+39->40;
+40[label="Node Type: EXPRESSION 40
+
+EXPRESSION:
+players_[offerInfo.playerAddress].airDroped = _airdrop.add(players_[offerInfo.playerAddress].airDroped)
+
+IRs:
+REF_157(address) -> offerInfo.playerAddress
+REF_158(FMAPDatasets.Player) -> players_[REF_157]
+REF_159(uint256) -> REF_158.airDroped
+REF_161(address) -> offerInfo.playerAddress
+REF_162(FMAPDatasets.Player) -> players_[REF_161]
+REF_163(uint256) -> REF_162.airDroped
+TMP_110(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['_airdrop', 'REF_163'] 
+REF_159(uint256) (->players_) := TMP_110(uint256)"];
+40->41;
+41[label="Node Type: EXPRESSION 41
+
+EXPRESSION:
+onAirDrop(offerInfo.playerAddress,_airdrop,offerInfo.offerAmount)
+
+IRs:
+REF_164(address) -> offerInfo.playerAddress
+REF_165(uint256) -> offerInfo.offerAmount
+Emit onAirDrop(REF_164,_airdrop,REF_165)"];
+41->42;
+42[label="Node Type: END_IF 42
+"];
+42->43;
+43[label="Node Type: END_IF 43
+"];
+43->44;
+44[label="Node Type: EXPRESSION 44
+
+EXPRESSION:
+airDropPool_ = airDropPool_.add(_air)
+
+IRs:
+TMP_112(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['airDropPool_', '_air'] 
+airDropPool_(uint256) := TMP_112(uint256)"];
+44->45;
+45[label="Node Type: EXPRESSION 45
+
+EXPRESSION:
+_leftAmount = _leftAmount.sub(_air)
+
+IRs:
+TMP_113(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['_leftAmount', '_air'] 
+_leftAmount(uint256) := TMP_113(uint256)"];
+45->46;
+46[label="Node Type: IF 46
+
+EXPRESSION:
+updateAff
+
+IRs:
+CONDITION updateAff"];
+46->47[label="True"];
+46->48[label="False"];
+47[label="Node Type: EXPRESSION 47
+
+EXPRESSION:
+players_[offerInfo.playerAddress].lastAffiliate = offerInfo.affiliateAddress
+
+IRs:
+REF_168(address) -> offerInfo.playerAddress
+REF_169(FMAPDatasets.Player) -> players_[REF_168]
+REF_170(address) -> REF_169.lastAffiliate
+REF_171(address) -> offerInfo.affiliateAddress
+REF_170(address) (->players_) := REF_171(address)"];
+47->48;
+48[label="Node Type: END_IF 48
+"];
+48->49;
+49[label="Node Type: EXPRESSION 49
+
+EXPRESSION:
+restOfferAmount_ = restOfferAmount_.add(_leftAmount)
+
+IRs:
+TMP_114(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['restOfferAmount_', '_leftAmount'] 
+restOfferAmount_(uint256) := TMP_114(uint256)"];
+49->50;
+50[label="Node Type: IF 50
+
+EXPRESSION:
+currentOrder_.acceptAmount > currentOrder_.acceptedAmount
+
+IRs:
+REF_173(uint256) -> currentOrder_.acceptAmount
+REF_174(uint256) -> currentOrder_.acceptedAmount
+TMP_115(bool) = REF_173 > REF_174
+CONDITION TMP_115"];
+50->51[label="True"];
+50->52[label="False"];
+51[label="Node Type: EXPRESSION 51
+
+EXPRESSION:
+matching()
+
+IRs:
+INTERNAL_CALL, EFMAPlatform.matching()()"];
+51->52;
+52[label="Node Type: END_IF 52
+"];
+52->53;
+53[label="Node Type: EXPRESSION 53
+
+EXPRESSION:
+playerOfferOrders_[offerInfo.playerAddress][players_[offerInfo.playerAddress].offeredCount] = offerInfo
+
+IRs:
+REF_175(address) -> offerInfo.playerAddress
+REF_176(mapping(uint256 => FMAPDatasets.OfferInfo)) -> playerOfferOrders_[REF_175]
+REF_177(address) -> offerInfo.playerAddress
+REF_178(FMAPDatasets.Player) -> players_[REF_177]
+REF_179(uint256) -> REF_178.offeredCount
+REF_180(FMAPDatasets.OfferInfo) -> REF_176[REF_179]
+REF_180(FMAPDatasets.OfferInfo) (->playerOfferOrders_) := offerInfo(FMAPDatasets.OfferInfo)"];
+53->54;
+54[label="Node Type: EXPRESSION 54
+
+EXPRESSION:
+players_[offerInfo.playerAddress].offeredCount = (players_[offerInfo.playerAddress].offeredCount).add(1)
+
+IRs:
+REF_181(address) -> offerInfo.playerAddress
+REF_182(FMAPDatasets.Player) -> players_[REF_181]
+REF_183(uint256) -> REF_182.offeredCount
+REF_184(address) -> offerInfo.playerAddress
+REF_185(FMAPDatasets.Player) -> players_[REF_184]
+REF_186(uint256) -> REF_185.offeredCount
+TMP_117(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_186', '1'] 
+REF_183(uint256) (->players_) := TMP_117(uint256)"];
+54->55;
+55[label="Node Type: IF 55
+
+EXPRESSION:
+players_[offerInfo.playerAddress].playerAddress == address(0)
+
+IRs:
+REF_188(address) -> offerInfo.playerAddress
+REF_189(FMAPDatasets.Player) -> players_[REF_188]
+REF_190(address) -> REF_189.playerAddress
+TMP_118 = CONVERT 0 to address
+TMP_119(bool) = REF_190 == TMP_118
+CONDITION TMP_119"];
+55->56[label="True"];
+55->57[label="False"];
+56[label="Node Type: EXPRESSION 56
+
+EXPRESSION:
+players_[offerInfo.playerAddress].playerAddress = offerInfo.playerAddress
+
+IRs:
+REF_191(address) -> offerInfo.playerAddress
+REF_192(FMAPDatasets.Player) -> players_[REF_191]
+REF_193(address) -> REF_192.playerAddress
+REF_194(address) -> offerInfo.playerAddress
+REF_193(address) (->players_) := REF_194(address)"];
+56->57;
+57[label="Node Type: END_IF 57
+"];
+}
+// Function: 1058.sol-EFMAPlatform-offerHelp(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->9;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+offerInfo = packageOfferInfo(siteOwner,msg.value)
+
+IRs:
+TMP_28(FMAPDatasets.OfferInfo) = INTERNAL_CALL, EFMAPlatform.packageOfferInfo(address,uint256)(siteOwner,msg.value)
+offerInfo(FMAPDatasets.OfferInfo) := TMP_28(FMAPDatasets.OfferInfo)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+updateAff = false
+
+IRs:
+updateAff(bool) := False(bool)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+affiliate != address(0) && affiliate != offerInfo.affiliateAddress
+
+IRs:
+TMP_29 = CONVERT 0 to address
+TMP_30(bool) = affiliate != TMP_29
+REF_5(address) -> offerInfo.affiliateAddress
+TMP_31(bool) = affiliate != REF_5
+TMP_32(bool) = TMP_30 && TMP_31
+CONDITION TMP_32"];
+3->4[label="True"];
+3->6[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+offerInfo.affiliateAddress = affiliate
+
+IRs:
+REF_6(address) -> offerInfo.affiliateAddress
+REF_6(address) (->offerInfo) := affiliate(address)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+updateAff = true
+
+IRs:
+updateAff(bool) := True(bool)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+offerCore(offerInfo,updateAff)
+
+IRs:
+INTERNAL_CALL, EFMAPlatform.offerCore(FMAPDatasets.OfferInfo,bool)(offerInfo,updateAff)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+onOffered(offerInfo.playerAddress,offerInfo.offerAmount,offerInfo.affiliateAddress,offerInfo.siteOwner,offerInfo.timestamp)
+
+IRs:
+REF_7(address) -> offerInfo.playerAddress
+REF_8(uint256) -> offerInfo.offerAmount
+REF_9(address) -> offerInfo.affiliateAddress
+REF_10(address) -> offerInfo.siteOwner
+REF_11(uint256) -> offerInfo.timestamp
+Emit onOffered(REF_7,REF_8,REF_9,REF_10,REF_11)"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+isHuman()
+
+IRs:
+MODIFIER_CALL, EFMAPlatform.isHuman()()"];
+9->1;
+}
+// Function: 1058.sol-EFMAPlatform-offerHelpUsingBalance(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->11;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(ethAmount <= players_[msg.sender].balance,sorry, you don't have enough balance)
+
+IRs:
+REF_12(FMAPDatasets.Player) -> players_[msg.sender]
+REF_13(uint256) -> REF_12.balance
+TMP_36(bool) = ethAmount <= REF_13
+TMP_37(None) = SOLIDITY_CALL require(bool,string)(TMP_36,sorry, you don't have enough balance)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+offerInfo = packageOfferInfo(siteOwner,ethAmount)
+
+IRs:
+TMP_38(FMAPDatasets.OfferInfo) = INTERNAL_CALL, EFMAPlatform.packageOfferInfo(address,uint256)(siteOwner,ethAmount)
+offerInfo(FMAPDatasets.OfferInfo) := TMP_38(FMAPDatasets.OfferInfo)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+updateAff = false
+
+IRs:
+updateAff(bool) := False(bool)"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+affiliate != address(0) && affiliate != offerInfo.affiliateAddress
+
+IRs:
+TMP_39 = CONVERT 0 to address
+TMP_40(bool) = affiliate != TMP_39
+REF_14(address) -> offerInfo.affiliateAddress
+TMP_41(bool) = affiliate != REF_14
+TMP_42(bool) = TMP_40 && TMP_41
+CONDITION TMP_42"];
+4->5[label="True"];
+4->7[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+offerInfo.affiliateAddress = affiliate
+
+IRs:
+REF_15(address) -> offerInfo.affiliateAddress
+REF_15(address) (->offerInfo) := affiliate(address)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+updateAff = true
+
+IRs:
+updateAff(bool) := True(bool)"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+players_[msg.sender].balance = players_[msg.sender].balance.sub(ethAmount)
+
+IRs:
+REF_16(FMAPDatasets.Player) -> players_[msg.sender]
+REF_17(uint256) -> REF_16.balance
+REF_18(FMAPDatasets.Player) -> players_[msg.sender]
+REF_19(uint256) -> REF_18.balance
+TMP_43(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_19', 'ethAmount'] 
+REF_17(uint256) (->players_) := TMP_43(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+offerCore(offerInfo,updateAff)
+
+IRs:
+INTERNAL_CALL, EFMAPlatform.offerCore(FMAPDatasets.OfferInfo,bool)(offerInfo,updateAff)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+onOffered(offerInfo.playerAddress,offerInfo.offerAmount,offerInfo.affiliateAddress,offerInfo.siteOwner,offerInfo.timestamp)
+
+IRs:
+REF_21(address) -> offerInfo.playerAddress
+REF_22(uint256) -> offerInfo.offerAmount
+REF_23(address) -> offerInfo.affiliateAddress
+REF_24(address) -> offerInfo.siteOwner
+REF_25(uint256) -> offerInfo.timestamp
+Emit onOffered(REF_21,REF_22,REF_23,REF_24,REF_25)"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+isHuman()
+
+IRs:
+MODIFIER_CALL, EFMAPlatform.isHuman()()"];
+11->1;
+}
+// Function: 1058.sol-EFMAPlatform-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_206(bool) = msg.sender == owner
+TMP_207(None) = SOLIDITY_CALL require(bool)(TMP_206)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1058.sol-EFMAPlatform-packageOfferInfo(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+offerInfo.playerAddress = msg.sender
+
+IRs:
+REF_68(address) -> offerInfo.playerAddress
+REF_68(address) (->offerInfo) := msg.sender(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+offerInfo.offerAmount = amount
+
+IRs:
+REF_69(uint256) -> offerInfo.offerAmount
+REF_69(uint256) (->offerInfo) := amount(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+offerInfo.affiliateAddress = players_[msg.sender].lastAffiliate
+
+IRs:
+REF_70(address) -> offerInfo.affiliateAddress
+REF_71(FMAPDatasets.Player) -> players_[msg.sender]
+REF_72(address) -> REF_71.lastAffiliate
+REF_70(address) (->offerInfo) := REF_72(address)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+offerInfo.siteOwner = siteOwner
+
+IRs:
+REF_73(address) -> offerInfo.siteOwner
+REF_73(address) (->offerInfo) := siteOwner(address)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+offerInfo.timestamp = block.timestamp
+
+IRs:
+REF_74(uint256) -> offerInfo.timestamp
+REF_74(uint256) (->offerInfo) := block.timestamp(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+offerInfo.interesting = true
+
+IRs:
+REF_75(bool) -> offerInfo.interesting
+REF_75(bool) (->offerInfo) := True(bool)"];
+7->8;
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+(offerInfo)
+
+IRs:
+RETURN offerInfo"];
+}
+// Function: 1058.sol-EFMAPlatform-renounceOwnership()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+OwnershipRenounced(owner)
+
+IRs:
+Emit OwnershipRenounced(owner)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = address(0)
+
+IRs:
+TMP_12 = CONVERT 0 to address
+owner(address) := TMP_12(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 1058.sol-EFMAPlatform-setTeamWallet(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+teamXWallet = wallet
+
+IRs:
+teamXWallet(address) := wallet(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 1058.sol-EFMAPlatform-setXToken(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+xTokenAddress = xToken
+
+IRs:
+xTokenAddress(address) := xToken(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 1058.sol-EFMAPlatform-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+name = Escape Financial Mutual Aid Platform
+
+IRs:
+name(string) := Escape Financial Mutual Aid Platform(string)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+symbol = EFMAP
+
+IRs:
+symbol(string) := EFMAP(string)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+interestPeriod_ = 3600
+
+IRs:
+interestPeriod_(uint256) := 3600(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+maxInterestTime_ = 604800
+
+IRs:
+maxInterestTime_(uint256) := 604800(uint256)"];
+}
+// Function: 1058.sol-EFMAPlatform-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+xTokenAddress = 0xfe8b40a35ff222c8475385f74e77d33954531b41
+
+IRs:
+xTokenAddress(address) := 1453189090151710337449612810658928080106835614529(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+feePercent_ = 1
+
+IRs:
+feePercent_(uint8) := 1(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+affPercent_ = 5
+
+IRs:
+affPercent_(uint8) := 5(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+sitePercent_ = 5
+
+IRs:
+sitePercent_(uint8) := 5(uint256)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+airDropPercent_ = 10
+
+IRs:
+airDropPercent_(uint8) := 10(uint256)"];
+4->5;
+5[label="Node Type: OTHER_ENTRYPOINT 5
+
+EXPRESSION:
+xTokenPercent_ = 3
+
+IRs:
+xTokenPercent_(uint8) := 3(uint256)"];
+5->6;
+6[label="Node Type: OTHER_ENTRYPOINT 6
+
+EXPRESSION:
+airDropTracker_ = 0
+
+IRs:
+airDropTracker_(uint256) := 0(uint256)"];
+6->7;
+7[label="Node Type: OTHER_ENTRYPOINT 7
+
+EXPRESSION:
+restOfferAmount_ = 0
+
+IRs:
+restOfferAmount_(uint256) := 0(uint256)"];
+}
+// Function: 1058.sol-EFMAPlatform-transFee()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+teamXWallet.transfer(_totalFee)
+
+IRs:
+Transfer dest:teamXWallet value:_totalFee"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 1058.sol-EFMAPlatform-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transferOwnership(_newOwner)
+
+IRs:
+INTERNAL_CALL, Ownable._transferOwnership(address)(_newOwner)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 1058.sol-EFMAPlatform-withdraw()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(players_[msg.sender].balance >= 1000000000000000,sorry, withdraw at least 1 finney)
+
+IRs:
+REF_48(FMAPDatasets.Player) -> players_[msg.sender]
+REF_49(uint256) -> REF_48.balance
+TMP_60(bool) = REF_49 >= 1000000000000000
+TMP_61(None) = SOLIDITY_CALL require(bool,string)(TMP_60,sorry, withdraw at least 1 finney)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+_balance = players_[msg.sender].balance
+
+IRs:
+REF_50(FMAPDatasets.Player) -> players_[msg.sender]
+REF_51(uint256) -> REF_50.balance
+_balance(uint256) := REF_51(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+players_[msg.sender].balance = 0
+
+IRs:
+REF_52(FMAPDatasets.Player) -> players_[msg.sender]
+REF_53(uint256) -> REF_52.balance
+REF_53(uint256) (->players_) := 0(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+msg.sender.transfer(_balance)
+
+IRs:
+Transfer dest:msg.sender value:_balance"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+onWithdraw(msg.sender,_balance)
+
+IRs:
+Emit onWithdraw(msg.sender,_balance)"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+isHuman()
+
+IRs:
+MODIFIER_CALL, EFMAPlatform.isHuman()()"];
+6->1;
+}
+// Function: 1058.sol-FMAPMath-calcAirDropAmount(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+ethAmount >= 1000000000000000 && ethAmount < 10000000000000000
+
+IRs:
+TMP_221(bool) = ethAmount >= 1000000000000000
+TMP_222(bool) = ethAmount < 10000000000000000
+TMP_223(bool) = TMP_221 && TMP_222
+CONDITION TMP_223"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+(5)
+
+IRs:
+RETURN 5"];
+3[label="Node Type: IF 3
+
+EXPRESSION:
+ethAmount < 50000000000000000
+
+IRs:
+TMP_224(bool) = ethAmount < 50000000000000000
+CONDITION TMP_224"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+(10)
+
+IRs:
+RETURN 10"];
+5[label="Node Type: IF 5
+
+EXPRESSION:
+ethAmount < 200000000000000000
+
+IRs:
+TMP_225(bool) = ethAmount < 200000000000000000
+CONDITION TMP_225"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+(15)
+
+IRs:
+RETURN 15"];
+7[label="Node Type: IF 7
+
+EXPRESSION:
+ethAmount < 500000000000000000
+
+IRs:
+TMP_226(bool) = ethAmount < 500000000000000000
+CONDITION TMP_226"];
+7->8[label="True"];
+7->9[label="False"];
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+(20)
+
+IRs:
+RETURN 20"];
+9[label="Node Type: IF 9
+
+EXPRESSION:
+ethAmount < 1000000000000000000
+
+IRs:
+TMP_227(bool) = ethAmount < 1000000000000000000
+CONDITION TMP_227"];
+9->10[label="True"];
+9->11[label="False"];
+10[label="Node Type: RETURN 10
+
+EXPRESSION:
+(25)
+
+IRs:
+RETURN 25"];
+11[label="Node Type: IF 11
+
+EXPRESSION:
+ethAmount >= 1000000000000000000
+
+IRs:
+TMP_228(bool) = ethAmount >= 1000000000000000000
+CONDITION TMP_228"];
+11->12[label="True"];
+11->14[label="False"];
+12[label="Node Type: NEW VARIABLE 12
+
+EXPRESSION:
+a = ethAmount.div(1000000000000000000).add(5).mul(5)
+
+IRs:
+TMP_229(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['ethAmount', '1000000000000000000'] 
+TMP_230(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['TMP_229', '5'] 
+TMP_231(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['TMP_230', '5'] 
+a(uint256) := TMP_231(uint256)"];
+12->21;
+14[label="Node Type: END_IF 14
+"];
+14->15;
+15[label="Node Type: END_IF 15
+"];
+15->16;
+16[label="Node Type: END_IF 16
+"];
+16->17;
+17[label="Node Type: END_IF 17
+"];
+17->18;
+18[label="Node Type: END_IF 18
+"];
+18->19;
+19[label="Node Type: END_IF 19
+"];
+19->20;
+20[label="Node Type: RETURN 20
+
+EXPRESSION:
+(0)
+
+IRs:
+RETURN 0"];
+21[label="Node Type: IF 21
+
+EXPRESSION:
+a > 75
+
+IRs:
+TMP_232(bool) = a > 75
+CONDITION TMP_232"];
+21->22[label="True"];
+21->23[label="False"];
+22[label="Node Type: RETURN 22
+
+EXPRESSION:
+(75)
+
+IRs:
+RETURN 75"];
+23[label="Node Type: RETURN 23
+
+EXPRESSION:
+(a)
+
+IRs:
+RETURN a"];
+}
+// Function: 1058.sol-FMAPMath-calcTrackerCount(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+ethAmount >= 1000000000000000 && ethAmount < 10000000000000000
+
+IRs:
+TMP_211(bool) = ethAmount >= 1000000000000000
+TMP_212(bool) = ethAmount < 10000000000000000
+TMP_213(bool) = TMP_211 && TMP_212
+CONDITION TMP_213"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+(1)
+
+IRs:
+RETURN 1"];
+3[label="Node Type: IF 3
+
+EXPRESSION:
+ethAmount < 50000000000000000
+
+IRs:
+TMP_214(bool) = ethAmount < 50000000000000000
+CONDITION TMP_214"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+(2)
+
+IRs:
+RETURN 2"];
+5[label="Node Type: IF 5
+
+EXPRESSION:
+ethAmount < 200000000000000000
+
+IRs:
+TMP_215(bool) = ethAmount < 200000000000000000
+CONDITION TMP_215"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+(3)
+
+IRs:
+RETURN 3"];
+7[label="Node Type: IF 7
+
+EXPRESSION:
+ethAmount < 500000000000000000
+
+IRs:
+TMP_216(bool) = ethAmount < 500000000000000000
+CONDITION TMP_216"];
+7->8[label="True"];
+7->9[label="False"];
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+(4)
+
+IRs:
+RETURN 4"];
+9[label="Node Type: IF 9
+
+EXPRESSION:
+ethAmount < 1000000000000000000
+
+IRs:
+TMP_217(bool) = ethAmount < 1000000000000000000
+CONDITION TMP_217"];
+9->10[label="True"];
+9->11[label="False"];
+10[label="Node Type: RETURN 10
+
+EXPRESSION:
+(5)
+
+IRs:
+RETURN 5"];
+11[label="Node Type: IF 11
+
+EXPRESSION:
+ethAmount >= 1000000000000000000
+
+IRs:
+TMP_218(bool) = ethAmount >= 1000000000000000000
+CONDITION TMP_218"];
+11->12[label="True"];
+11->13[label="False"];
+12[label="Node Type: RETURN 12
+
+EXPRESSION:
+ethAmount.div(1000000000000000000).add(5)
+
+IRs:
+TMP_219(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['ethAmount', '1000000000000000000'] 
+TMP_220(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['TMP_219', '5'] 
+RETURN TMP_220"];
+13[label="Node Type: END_IF 13
+"];
+13->14;
+14[label="Node Type: END_IF 14
+"];
+14->15;
+15[label="Node Type: END_IF 15
+"];
+15->16;
+16[label="Node Type: END_IF 16
+"];
+16->17;
+17[label="Node Type: END_IF 17
+"];
+17->18;
+18[label="Node Type: END_IF 18
+"];
+18->19;
+19[label="Node Type: RETURN 19
+
+EXPRESSION:
+(0)
+
+IRs:
+RETURN 0"];
+}
+// Function: 1058.sol-Ownable-_transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_newOwner != address(0))
+
+IRs:
+TMP_5 = CONVERT 0 to address
+TMP_6(bool) = _newOwner != TMP_5
+TMP_7(None) = SOLIDITY_CALL require(bool)(TMP_6)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,_newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,_newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = _newOwner
+
+IRs:
+owner(address) := _newOwner(address)"];
+}
+// Function: 1058.sol-Ownable-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 1058.sol-Ownable-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_9(bool) = msg.sender == owner
+TMP_10(None) = SOLIDITY_CALL require(bool)(TMP_9)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1058.sol-Ownable-renounceOwnership()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+OwnershipRenounced(owner)
+
+IRs:
+Emit OwnershipRenounced(owner)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = address(0)
+
+IRs:
+TMP_1 = CONVERT 0 to address
+owner(address) := TMP_1(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 1058.sol-Ownable-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transferOwnership(_newOwner)
+
+IRs:
+INTERNAL_CALL, Ownable._transferOwnership(address)(_newOwner)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 1058.sol-SafeMath-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_242(uint256) = a + b
+c(uint256) := TMP_242(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(c >= a)
+
+IRs:
+TMP_243(bool) = c >= a
+TMP_244(None) = SOLIDITY_CALL assert(bool)(TMP_243)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 1058.sol-SafeMath-div(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+a / b
+
+IRs:
+TMP_238(uint256) = a / b
+RETURN TMP_238"];
+}
+// Function: 1058.sol-SafeMath-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+a == 0
+
+IRs:
+TMP_233(bool) = a == 0
+CONDITION TMP_233"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_234(uint256) = a * b
+c(uint256) := TMP_234(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+assert(bool)(c / a == b)
+
+IRs:
+TMP_235(uint256) = c / a
+TMP_236(bool) = TMP_235 == b
+TMP_237(None) = SOLIDITY_CALL assert(bool)(TMP_236)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 1058.sol-SafeMath-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(b <= a)
+
+IRs:
+TMP_239(bool) = b <= a
+TMP_240(None) = SOLIDITY_CALL assert(bool)(TMP_239)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_241(uint256) = a - b
+RETURN TMP_241"];
+}
+}

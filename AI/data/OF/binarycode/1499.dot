@@ -1,0 +1,1716 @@
+digraph G {
+// Function: 1499.sol-ERC20-allowance(address,address)
+digraph{
+}
+// Function: 1499.sol-ERC20-approve(address,uint256)
+digraph{
+}
+// Function: 1499.sol-ERC20-balanceOf(address)
+digraph{
+}
+// Function: 1499.sol-ERC20-decimals()
+digraph{
+}
+// Function: 1499.sol-ERC20-name()
+digraph{
+}
+// Function: 1499.sol-ERC20-symbol()
+digraph{
+}
+// Function: 1499.sol-ERC20-totalSupply()
+digraph{
+}
+// Function: 1499.sol-ERC20-transfer(address,uint256)
+digraph{
+}
+// Function: 1499.sol-ERC20-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 1499.sol-JCT-allowance(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+allowance[_owner][_spender]
+
+IRs:
+REF_38(mapping(address => uint256)) -> allowance[_owner]
+REF_39(uint256) -> REF_38[_spender]
+RETURN REF_39"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+remaining
+
+IRs:
+RETURN remaining"];
+}
+// Function: 1499.sol-JCT-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowance[msg.sender][_spender] = _value
+
+IRs:
+REF_36(mapping(address => uint256)) -> allowance[msg.sender]
+REF_37(uint256) -> REF_36[_spender]
+REF_37(uint256) (->allowance) := _value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,_value)
+
+IRs:
+Emit Approval(msg.sender,_spender,_value)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 1499.sol-JCT-balanceOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+balanceOf[_owner]
+
+IRs:
+REF_1(uint256) -> balanceOf[_owner]
+RETURN REF_1"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+balance
+
+IRs:
+RETURN balance"];
+}
+// Function: 1499.sol-JCT-collectTokens(address[],uint256[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->15;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(hasSameArrayLength(addresses,amounts))
+
+IRs:
+TMP_96(bool) = INTERNAL_CALL, JCT.hasSameArrayLength(address[],uint256[])(addresses,amounts)
+TMP_97(None) = SOLIDITY_CALL require(bool)(TMP_96)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+totalAmount = 0
+
+IRs:
+totalAmount(uint256) := 0(uint256)"];
+2->5;
+3[label="Node Type: BEGIN_LOOP 3
+"];
+3->6;
+4[label="Node Type: END_LOOP 4
+"];
+4->13;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+j = 0
+
+IRs:
+j(uint256) := 0(uint256)"];
+5->3;
+6[label="Node Type: IF_LOOP 6
+
+EXPRESSION:
+j < addresses.length
+
+IRs:
+REF_40 -> LENGTH addresses
+TMP_98(bool) = j < REF_40
+CONDITION TMP_98"];
+6->7[label="True"];
+6->4[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+require(bool)(amounts[j] > 0 && isNonZeroAccount(addresses[j]) && isAvailableAccount(addresses[j]))
+
+IRs:
+REF_41(uint256) -> amounts[j]
+TMP_99(bool) = REF_41 > 0
+REF_42(address) -> addresses[j]
+TMP_100(bool) = INTERNAL_CALL, Ownable.isNonZeroAccount(address)(REF_42)
+TMP_101(bool) = TMP_99 && TMP_100
+REF_43(address) -> addresses[j]
+TMP_102(bool) = INTERNAL_CALL, JCT.isAvailableAccount(address)(REF_43)
+TMP_103(bool) = TMP_101 && TMP_102
+TMP_104(None) = SOLIDITY_CALL require(bool)(TMP_103)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+require(bool)(hasEnoughBalance(addresses[j],amounts[j]))
+
+IRs:
+REF_44(address) -> addresses[j]
+REF_45(uint256) -> amounts[j]
+TMP_105(bool) = INTERNAL_CALL, JCT.hasEnoughBalance(address,uint256)(REF_44,REF_45)
+TMP_106(None) = SOLIDITY_CALL require(bool)(TMP_105)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+balanceOf[addresses[j]] = balanceOf[addresses[j]].sub(amounts[j])
+
+IRs:
+REF_46(address) -> addresses[j]
+REF_47(uint256) -> balanceOf[REF_46]
+REF_48(address) -> addresses[j]
+REF_49(uint256) -> balanceOf[REF_48]
+REF_51(uint256) -> amounts[j]
+TMP_107(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_49', 'REF_51'] 
+REF_47(uint256) (->balanceOf) := TMP_107(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+totalAmount = totalAmount.add(amounts[j])
+
+IRs:
+REF_53(uint256) -> amounts[j]
+TMP_108(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['totalAmount', 'REF_53'] 
+totalAmount(uint256) := TMP_108(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+Transfer(addresses[j],msg.sender,amounts[j])
+
+IRs:
+REF_54(address) -> addresses[j]
+REF_55(uint256) -> amounts[j]
+Emit Transfer(REF_54,msg.sender,REF_55)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+j ++
+
+IRs:
+TMP_110(uint256) := j(uint256)
+j(uint256) = j + 1"];
+12->6;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+balanceOf[msg.sender] = balanceOf[msg.sender].add(totalAmount)
+
+IRs:
+REF_56(uint256) -> balanceOf[msg.sender]
+REF_57(uint256) -> balanceOf[msg.sender]
+TMP_111(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_57', 'totalAmount'] 
+REF_56(uint256) (->balanceOf) := TMP_111(uint256)"];
+13->14;
+14[label="Node Type: RETURN 14
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+onlyCollector()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyCollector()()"];
+15->1;
+}
+// Function: 1499.sol-JCT-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+collector = msg.sender
+
+IRs:
+collector(address) := msg.sender(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+distributor = msg.sender
+
+IRs:
+distributor(address) := msg.sender(address)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+freezer = msg.sender
+
+IRs:
+freezer(address) := msg.sender(address)"];
+}
+// Function: 1499.sol-JCT-constructor(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = founder
+
+IRs:
+owner(address) := founder(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+collector = founder
+
+IRs:
+collector(address) := founder(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+distributor = founder
+
+IRs:
+distributor(address) := founder(address)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+freezer = founder
+
+IRs:
+freezer(address) := founder(address)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balanceOf[founder] = totalSupply
+
+IRs:
+REF_0(uint256) -> balanceOf[founder]
+REF_0(uint256) (->balanceOf) := totalSupply(uint256)"];
+}
+// Function: 1499.sol-JCT-decimals()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+decimals
+
+IRs:
+RETURN decimals"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+_decimals
+
+IRs:
+RETURN _decimals"];
+}
+// Function: 1499.sol-JCT-distributeTokens(address[],uint256[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->20;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(hasSameArrayLength(addresses,amounts) && isAvailableAccount(msg.sender))
+
+IRs:
+TMP_113(bool) = INTERNAL_CALL, JCT.hasSameArrayLength(address[],uint256[])(addresses,amounts)
+TMP_114(bool) = INTERNAL_CALL, JCT.isAvailableAccount(address)(msg.sender)
+TMP_115(bool) = TMP_113 && TMP_114
+TMP_116(None) = SOLIDITY_CALL require(bool)(TMP_115)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+totalAmount = 0
+
+IRs:
+totalAmount(uint256) := 0(uint256)"];
+2->5;
+3[label="Node Type: BEGIN_LOOP 3
+"];
+3->6;
+4[label="Node Type: END_LOOP 4
+"];
+4->10;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+j = 0
+
+IRs:
+j(uint256) := 0(uint256)"];
+5->3;
+6[label="Node Type: IF_LOOP 6
+
+EXPRESSION:
+j < addresses.length
+
+IRs:
+REF_59 -> LENGTH addresses
+TMP_117(bool) = j < REF_59
+CONDITION TMP_117"];
+6->7[label="True"];
+6->4[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+require(bool)(amounts[j] > 0 && isNonZeroAccount(addresses[j]) && isAvailableAccount(addresses[j]))
+
+IRs:
+REF_60(uint256) -> amounts[j]
+TMP_118(bool) = REF_60 > 0
+REF_61(address) -> addresses[j]
+TMP_119(bool) = INTERNAL_CALL, Ownable.isNonZeroAccount(address)(REF_61)
+TMP_120(bool) = TMP_118 && TMP_119
+REF_62(address) -> addresses[j]
+TMP_121(bool) = INTERNAL_CALL, JCT.isAvailableAccount(address)(REF_62)
+TMP_122(bool) = TMP_120 && TMP_121
+TMP_123(None) = SOLIDITY_CALL require(bool)(TMP_122)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+totalAmount = totalAmount.add(amounts[j])
+
+IRs:
+REF_64(uint256) -> amounts[j]
+TMP_124(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['totalAmount', 'REF_64'] 
+totalAmount(uint256) := TMP_124(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+j ++
+
+IRs:
+TMP_125(uint256) := j(uint256)
+j(uint256) = j + 1"];
+9->6;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+require(bool)(hasEnoughBalance(msg.sender,totalAmount))
+
+IRs:
+TMP_126(bool) = INTERNAL_CALL, JCT.hasEnoughBalance(address,uint256)(msg.sender,totalAmount)
+TMP_127(None) = SOLIDITY_CALL require(bool)(TMP_126)"];
+10->13;
+11[label="Node Type: BEGIN_LOOP 11
+"];
+11->14;
+12[label="Node Type: END_LOOP 12
+"];
+12->18;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+j = 0
+
+IRs:
+j(uint256) := 0(uint256)"];
+13->11;
+14[label="Node Type: IF_LOOP 14
+
+EXPRESSION:
+j < addresses.length
+
+IRs:
+REF_65 -> LENGTH addresses
+TMP_128(bool) = j < REF_65
+CONDITION TMP_128"];
+14->15[label="True"];
+14->12[label="False"];
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+balanceOf[addresses[j]] = balanceOf[addresses[j]].add(amounts[j])
+
+IRs:
+REF_66(address) -> addresses[j]
+REF_67(uint256) -> balanceOf[REF_66]
+REF_68(address) -> addresses[j]
+REF_69(uint256) -> balanceOf[REF_68]
+REF_71(uint256) -> amounts[j]
+TMP_129(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_69', 'REF_71'] 
+REF_67(uint256) (->balanceOf) := TMP_129(uint256)"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+Transfer(msg.sender,addresses[j],amounts[j])
+
+IRs:
+REF_72(address) -> addresses[j]
+REF_73(uint256) -> amounts[j]
+Emit Transfer(msg.sender,REF_72,REF_73)"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+j ++
+
+IRs:
+TMP_131(uint256) := j(uint256)
+j(uint256) = j + 1"];
+17->14;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+balanceOf[msg.sender] = balanceOf[msg.sender].sub(totalAmount)
+
+IRs:
+REF_74(uint256) -> balanceOf[msg.sender]
+REF_75(uint256) -> balanceOf[msg.sender]
+TMP_132(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_75', 'totalAmount'] 
+REF_74(uint256) (->balanceOf) := TMP_132(uint256)"];
+18->19;
+19[label="Node Type: RETURN 19
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+onlyDistributor()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyDistributor()()"];
+20->1;
+}
+// Function: 1499.sol-JCT-freezeAccounts(address[],bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->10;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(targets.length > 0)
+
+IRs:
+REF_2 -> LENGTH targets
+TMP_56(bool) = REF_2 > 0
+TMP_57(None) = SOLIDITY_CALL require(bool)(TMP_56)"];
+1->4;
+2[label="Node Type: BEGIN_LOOP 2
+"];
+2->5;
+3[label="Node Type: END_LOOP 3
+"];
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+j = 0
+
+IRs:
+j(uint256) := 0(uint256)"];
+4->2;
+5[label="Node Type: IF_LOOP 5
+
+EXPRESSION:
+j < targets.length
+
+IRs:
+REF_3 -> LENGTH targets
+TMP_58(bool) = j < REF_3
+CONDITION TMP_58"];
+5->6[label="True"];
+5->3[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+require(bool)(isNonZeroAccount(targets[j]))
+
+IRs:
+REF_4(address) -> targets[j]
+TMP_59(bool) = INTERNAL_CALL, Ownable.isNonZeroAccount(address)(REF_4)
+TMP_60(None) = SOLIDITY_CALL require(bool)(TMP_59)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+frozenAccount[targets[j]] = isFrozen
+
+IRs:
+REF_5(address) -> targets[j]
+REF_6(bool) -> frozenAccount[REF_5]
+REF_6(bool) (->frozenAccount) := isFrozen(bool)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+FrozenFunds(targets[j],isFrozen)
+
+IRs:
+REF_7(address) -> targets[j]
+Emit FrozenFunds(REF_7,isFrozen)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+j ++
+
+IRs:
+TMP_62(uint256) := j(uint256)
+j(uint256) = j + 1"];
+9->5;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+onlyFreezer()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyFreezer()()"];
+10->1;
+}
+// Function: 1499.sol-JCT-hasEnoughBalance(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+_value > 0 && balanceOf[_addr] >= _value
+
+IRs:
+TMP_139(bool) = _value > 0
+REF_79(uint256) -> balanceOf[_addr]
+TMP_140(bool) = REF_79 >= _value
+TMP_141(bool) = TMP_139 && TMP_140
+RETURN TMP_141"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+has_enough_balance
+
+IRs:
+RETURN has_enough_balance"];
+}
+// Function: 1499.sol-JCT-hasSameArrayLength(address[],uint256[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+addresses.length > 0 && addresses.length == amounts.length
+
+IRs:
+REF_80 -> LENGTH addresses
+TMP_142(bool) = REF_80 > 0
+REF_81 -> LENGTH addresses
+REF_82 -> LENGTH amounts
+TMP_143(bool) = REF_81 == REF_82
+TMP_144(bool) = TMP_142 && TMP_143
+RETURN TMP_144"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+has_same_array_length
+
+IRs:
+RETURN has_same_array_length"];
+}
+// Function: 1499.sol-JCT-isAvailableAccount(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+isUnLockedAccount(_addr) && isUnfrozenAccount(_addr)
+
+IRs:
+TMP_134(bool) = INTERNAL_CALL, JCT.isUnLockedAccount(address)(_addr)
+TMP_135(bool) = INTERNAL_CALL, JCT.isUnfrozenAccount(address)(_addr)
+TMP_136(bool) = TMP_134 && TMP_135
+RETURN TMP_136"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+is_valid_account
+
+IRs:
+RETURN is_valid_account"];
+}
+// Function: 1499.sol-JCT-isNonZeroAccount(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+_addr != address(0)
+
+IRs:
+TMP_54 = CONVERT 0 to address
+TMP_55(bool) = _addr != TMP_54
+RETURN TMP_55"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+is_nonzero_account
+
+IRs:
+RETURN is_nonzero_account"];
+}
+// Function: 1499.sol-JCT-isUnLockedAccount(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+now > unlockUnixTime[_addr]
+
+IRs:
+REF_77(uint256) -> unlockUnixTime[_addr]
+TMP_137(bool) = now > REF_77
+RETURN TMP_137"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+is_unlocked_account
+
+IRs:
+RETURN is_unlocked_account"];
+}
+// Function: 1499.sol-JCT-isUnfrozenAccount(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+frozenAccount[_addr] == false
+
+IRs:
+REF_78(bool) -> frozenAccount[_addr]
+TMP_138(bool) = REF_78 == False
+RETURN TMP_138"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+is_unfrozen_account
+
+IRs:
+RETURN is_unfrozen_account"];
+}
+// Function: 1499.sol-JCT-lockupAccounts(address[],uint256[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->10;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(hasSameArrayLength(targets,unixTimes))
+
+IRs:
+TMP_64(bool) = INTERNAL_CALL, JCT.hasSameArrayLength(address[],uint256[])(targets,unixTimes)
+TMP_65(None) = SOLIDITY_CALL require(bool)(TMP_64)"];
+1->4;
+2[label="Node Type: BEGIN_LOOP 2
+"];
+2->5;
+3[label="Node Type: END_LOOP 3
+"];
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+j = 0
+
+IRs:
+j(uint256) := 0(uint256)"];
+4->2;
+5[label="Node Type: IF_LOOP 5
+
+EXPRESSION:
+j < targets.length
+
+IRs:
+REF_8 -> LENGTH targets
+TMP_66(bool) = j < REF_8
+CONDITION TMP_66"];
+5->6[label="True"];
+5->3[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+require(bool)(unlockUnixTime[targets[j]] < unixTimes[j])
+
+IRs:
+REF_9(address) -> targets[j]
+REF_10(uint256) -> unlockUnixTime[REF_9]
+REF_11(uint256) -> unixTimes[j]
+TMP_67(bool) = REF_10 < REF_11
+TMP_68(None) = SOLIDITY_CALL require(bool)(TMP_67)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+unlockUnixTime[targets[j]] = unixTimes[j]
+
+IRs:
+REF_12(address) -> targets[j]
+REF_13(uint256) -> unlockUnixTime[REF_12]
+REF_14(uint256) -> unixTimes[j]
+REF_13(uint256) (->unlockUnixTime) := REF_14(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+LockedFunds(targets[j],unixTimes[j])
+
+IRs:
+REF_15(address) -> targets[j]
+REF_16(uint256) -> unixTimes[j]
+Emit LockedFunds(REF_15,REF_16)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+j ++
+
+IRs:
+TMP_70(uint256) := j(uint256)
+j(uint256) = j + 1"];
+9->5;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+10->1;
+}
+// Function: 1499.sol-JCT-name()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+name
+
+IRs:
+RETURN name"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+_name
+
+IRs:
+RETURN _name"];
+}
+// Function: 1499.sol-JCT-onlyCollector()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == collector)
+
+IRs:
+TMP_148(bool) = msg.sender == collector
+TMP_149(None) = SOLIDITY_CALL require(bool)(TMP_148)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1499.sol-JCT-onlyDistributor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == distributor)
+
+IRs:
+TMP_150(bool) = msg.sender == distributor
+TMP_151(None) = SOLIDITY_CALL require(bool)(TMP_150)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1499.sol-JCT-onlyFreezer()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == freezer)
+
+IRs:
+TMP_152(bool) = msg.sender == freezer
+TMP_153(None) = SOLIDITY_CALL require(bool)(TMP_152)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1499.sol-JCT-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_146(bool) = msg.sender == owner
+TMP_147(None) = SOLIDITY_CALL require(bool)(TMP_146)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1499.sol-JCT-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+totalSupply = 17e7 * 1e8
+
+IRs:
+TMP_145(uint256) = 170000000 * 100000000
+totalSupply(uint256) := TMP_145(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+name = JCT
+
+IRs:
+name(string) := JCT(string)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+symbol = JCT
+
+IRs:
+symbol(string) := JCT(string)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+decimals = 8
+
+IRs:
+decimals(uint8) := 8(uint256)"];
+}
+// Function: 1499.sol-JCT-symbol()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+symbol
+
+IRs:
+RETURN symbol"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+_symbol
+
+IRs:
+RETURN _symbol"];
+}
+// Function: 1499.sol-JCT-totalSupply()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+totalSupply
+
+IRs:
+RETURN totalSupply"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+_totalSupply
+
+IRs:
+RETURN _totalSupply"];
+}
+// Function: 1499.sol-JCT-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(hasEnoughBalance(msg.sender,_value) && isAvailableAccount(msg.sender) && isAvailableAccount(_to))
+
+IRs:
+TMP_72(bool) = INTERNAL_CALL, JCT.hasEnoughBalance(address,uint256)(msg.sender,_value)
+TMP_73(bool) = INTERNAL_CALL, JCT.isAvailableAccount(address)(msg.sender)
+TMP_74(bool) = TMP_72 && TMP_73
+TMP_75(bool) = INTERNAL_CALL, JCT.isAvailableAccount(address)(_to)
+TMP_76(bool) = TMP_74 && TMP_75
+TMP_77(None) = SOLIDITY_CALL require(bool)(TMP_76)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balanceOf[msg.sender] = balanceOf[msg.sender].sub(_value)
+
+IRs:
+REF_17(uint256) -> balanceOf[msg.sender]
+REF_18(uint256) -> balanceOf[msg.sender]
+TMP_78(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_18', '_value'] 
+REF_17(uint256) (->balanceOf) := TMP_78(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balanceOf[_to] = balanceOf[_to].add(_value)
+
+IRs:
+REF_20(uint256) -> balanceOf[_to]
+REF_21(uint256) -> balanceOf[_to]
+TMP_79(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_21', '_value'] 
+REF_20(uint256) (->balanceOf) := TMP_79(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Transfer(msg.sender,_to,_value)
+
+IRs:
+Emit Transfer(msg.sender,_to,_value)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 1499.sol-JCT-transferCollectorship(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(isNonZeroAccount(newCollector))
+
+IRs:
+TMP_42(bool) = INTERNAL_CALL, Ownable.isNonZeroAccount(address)(newCollector)
+TMP_43(None) = SOLIDITY_CALL require(bool)(TMP_42)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+CollectorshipTransferred(collector,newCollector)
+
+IRs:
+Emit CollectorshipTransferred(collector,newCollector)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+collector = newCollector
+
+IRs:
+collector(address) := newCollector(address)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->1;
+}
+// Function: 1499.sol-JCT-transferDistributorship(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(isNonZeroAccount(newDistributor))
+
+IRs:
+TMP_46(bool) = INTERNAL_CALL, Ownable.isNonZeroAccount(address)(newDistributor)
+TMP_47(None) = SOLIDITY_CALL require(bool)(TMP_46)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+DistributorshipTransferred(distributor,newDistributor)
+
+IRs:
+Emit DistributorshipTransferred(distributor,newDistributor)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+distributor = newDistributor
+
+IRs:
+distributor(address) := newDistributor(address)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->1;
+}
+// Function: 1499.sol-JCT-transferFreezership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(isNonZeroAccount(newFreezer))
+
+IRs:
+TMP_50(bool) = INTERNAL_CALL, Ownable.isNonZeroAccount(address)(newFreezer)
+TMP_51(None) = SOLIDITY_CALL require(bool)(TMP_50)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+FreezershipTransferred(freezer,newFreezer)
+
+IRs:
+Emit FreezershipTransferred(freezer,newFreezer)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+freezer = newFreezer
+
+IRs:
+freezer(address) := newFreezer(address)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->1;
+}
+// Function: 1499.sol-JCT-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(isNonZeroAccount(_to) && hasEnoughBalance(_from,_value) && allowance[_from][msg.sender] >= _value && isAvailableAccount(_from) && isAvailableAccount(_to))
+
+IRs:
+TMP_81(bool) = INTERNAL_CALL, Ownable.isNonZeroAccount(address)(_to)
+TMP_82(bool) = INTERNAL_CALL, JCT.hasEnoughBalance(address,uint256)(_from,_value)
+TMP_83(bool) = TMP_81 && TMP_82
+REF_23(mapping(address => uint256)) -> allowance[_from]
+REF_24(uint256) -> REF_23[msg.sender]
+TMP_84(bool) = REF_24 >= _value
+TMP_85(bool) = TMP_83 && TMP_84
+TMP_86(bool) = INTERNAL_CALL, JCT.isAvailableAccount(address)(_from)
+TMP_87(bool) = TMP_85 && TMP_86
+TMP_88(bool) = INTERNAL_CALL, JCT.isAvailableAccount(address)(_to)
+TMP_89(bool) = TMP_87 && TMP_88
+TMP_90(None) = SOLIDITY_CALL require(bool)(TMP_89)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balanceOf[_from] = balanceOf[_from].sub(_value)
+
+IRs:
+REF_25(uint256) -> balanceOf[_from]
+REF_26(uint256) -> balanceOf[_from]
+TMP_91(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_26', '_value'] 
+REF_25(uint256) (->balanceOf) := TMP_91(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balanceOf[_to] = balanceOf[_to].add(_value)
+
+IRs:
+REF_28(uint256) -> balanceOf[_to]
+REF_29(uint256) -> balanceOf[_to]
+TMP_92(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_29', '_value'] 
+REF_28(uint256) (->balanceOf) := TMP_92(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+allowance[_from][msg.sender] = allowance[_from][msg.sender].sub(_value)
+
+IRs:
+REF_31(mapping(address => uint256)) -> allowance[_from]
+REF_32(uint256) -> REF_31[msg.sender]
+REF_33(mapping(address => uint256)) -> allowance[_from]
+REF_34(uint256) -> REF_33[msg.sender]
+TMP_93(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_34', '_value'] 
+REF_32(uint256) (->allowance) := TMP_93(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Transfer(_from,_to,_value)
+
+IRs:
+Emit Transfer(_from,_to,_value)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 1499.sol-JCT-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(isNonZeroAccount(newOwner))
+
+IRs:
+TMP_38(bool) = INTERNAL_CALL, Ownable.isNonZeroAccount(address)(newOwner)
+TMP_39(None) = SOLIDITY_CALL require(bool)(TMP_38)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->1;
+}
+// Function: 1499.sol-Ownable-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+collector = msg.sender
+
+IRs:
+collector(address) := msg.sender(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+distributor = msg.sender
+
+IRs:
+distributor(address) := msg.sender(address)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+freezer = msg.sender
+
+IRs:
+freezer(address) := msg.sender(address)"];
+}
+// Function: 1499.sol-Ownable-isNonZeroAccount(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+_addr != address(0)
+
+IRs:
+TMP_28 = CONVERT 0 to address
+TMP_29(bool) = _addr != TMP_28
+RETURN TMP_29"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+is_nonzero_account
+
+IRs:
+RETURN is_nonzero_account"];
+}
+// Function: 1499.sol-Ownable-onlyCollector()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == collector)
+
+IRs:
+TMP_32(bool) = msg.sender == collector
+TMP_33(None) = SOLIDITY_CALL require(bool)(TMP_32)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1499.sol-Ownable-onlyDistributor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == distributor)
+
+IRs:
+TMP_34(bool) = msg.sender == distributor
+TMP_35(None) = SOLIDITY_CALL require(bool)(TMP_34)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1499.sol-Ownable-onlyFreezer()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == freezer)
+
+IRs:
+TMP_36(bool) = msg.sender == freezer
+TMP_37(None) = SOLIDITY_CALL require(bool)(TMP_36)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1499.sol-Ownable-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_30(bool) = msg.sender == owner
+TMP_31(None) = SOLIDITY_CALL require(bool)(TMP_30)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1499.sol-Ownable-transferCollectorship(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(isNonZeroAccount(newCollector))
+
+IRs:
+TMP_16(bool) = INTERNAL_CALL, Ownable.isNonZeroAccount(address)(newCollector)
+TMP_17(None) = SOLIDITY_CALL require(bool)(TMP_16)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+CollectorshipTransferred(collector,newCollector)
+
+IRs:
+Emit CollectorshipTransferred(collector,newCollector)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+collector = newCollector
+
+IRs:
+collector(address) := newCollector(address)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->1;
+}
+// Function: 1499.sol-Ownable-transferDistributorship(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(isNonZeroAccount(newDistributor))
+
+IRs:
+TMP_20(bool) = INTERNAL_CALL, Ownable.isNonZeroAccount(address)(newDistributor)
+TMP_21(None) = SOLIDITY_CALL require(bool)(TMP_20)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+DistributorshipTransferred(distributor,newDistributor)
+
+IRs:
+Emit DistributorshipTransferred(distributor,newDistributor)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+distributor = newDistributor
+
+IRs:
+distributor(address) := newDistributor(address)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->1;
+}
+// Function: 1499.sol-Ownable-transferFreezership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(isNonZeroAccount(newFreezer))
+
+IRs:
+TMP_24(bool) = INTERNAL_CALL, Ownable.isNonZeroAccount(address)(newFreezer)
+TMP_25(None) = SOLIDITY_CALL require(bool)(TMP_24)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+FreezershipTransferred(freezer,newFreezer)
+
+IRs:
+Emit FreezershipTransferred(freezer,newFreezer)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+freezer = newFreezer
+
+IRs:
+freezer(address) := newFreezer(address)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->1;
+}
+// Function: 1499.sol-Ownable-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(isNonZeroAccount(newOwner))
+
+IRs:
+TMP_12(bool) = INTERNAL_CALL, Ownable.isNonZeroAccount(address)(newOwner)
+TMP_13(None) = SOLIDITY_CALL require(bool)(TMP_12)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->1;
+}
+// Function: 1499.sol-SafeMath-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_9(uint256) = a + b
+c(uint256) := TMP_9(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(c >= a)
+
+IRs:
+TMP_10(bool) = c >= a
+TMP_11(None) = SOLIDITY_CALL assert(bool)(TMP_10)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 1499.sol-SafeMath-div(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a / b
+
+IRs:
+TMP_5(uint256) = a / b
+c(uint256) := TMP_5(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 1499.sol-SafeMath-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+a == 0
+
+IRs:
+TMP_0(bool) = a == 0
+CONDITION TMP_0"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_1(uint256) = a * b
+c(uint256) := TMP_1(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+assert(bool)(c / a == b)
+
+IRs:
+TMP_2(uint256) = c / a
+TMP_3(bool) = TMP_2 == b
+TMP_4(None) = SOLIDITY_CALL assert(bool)(TMP_3)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 1499.sol-SafeMath-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(b <= a)
+
+IRs:
+TMP_6(bool) = b <= a
+TMP_7(None) = SOLIDITY_CALL assert(bool)(TMP_6)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_8(uint256) = a - b
+RETURN TMP_8"];
+}
+}

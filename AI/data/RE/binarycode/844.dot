@@ -1,0 +1,322 @@
+digraph G {
+// Function: 844.sol-Updater-Updater()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owners[msg.sender] = true
+
+IRs:
+REF_0(bool) -> owners[msg.sender]
+REF_0(bool) (->owners) := True(bool)"];
+}
+// Function: 844.sol-Updater-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(owners[msg.sender])
+
+IRs:
+REF_39(bool) -> owners[msg.sender]
+TMP_30(None) = SOLIDITY_CALL require(bool)(REF_39)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 844.sol-Updater-setOwner(address,bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+OwnerChanged(_newOwner,_state)
+
+IRs:
+Emit OwnerChanged(_newOwner,_state)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owners[_newOwner] = _state
+
+IRs:
+REF_1(bool) -> owners[_newOwner]
+REF_1(bool) (->owners) := _state(bool)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Updater.onlyOwner()()"];
+3->1;
+}
+// Function: 844.sol-Updater-setStates(address[],uint8[],uint8[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->8;
+1[label="Node Type: BEGIN_LOOP 1
+"];
+1->4;
+2[label="Node Type: END_LOOP 2
+"];
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+3->1;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+i < _addr.length
+
+IRs:
+REF_2 -> LENGTH _addr
+TMP_2(bool) = i < REF_2
+CONDITION TMP_2"];
+4->5[label="True"];
+4->2[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+states[_addr[i]].exchange = _exchange[i] > 0
+
+IRs:
+REF_3(address) -> _addr[i]
+REF_4(Updater.State) -> states[REF_3]
+REF_5(bool) -> REF_4.exchange
+REF_6(uint8) -> _exchange[i]
+TMP_3(bool) = REF_6 > 0
+REF_5(bool) (->states) := TMP_3(bool)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+states[_addr[i]].payment = _payment[i] > 0
+
+IRs:
+REF_7(address) -> _addr[i]
+REF_8(Updater.State) -> states[REF_7]
+REF_9(bool) -> REF_8.payment
+REF_10(uint8) -> _payment[i]
+TMP_4(bool) = REF_10 > 0
+REF_9(bool) (->states) := TMP_4(bool)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_5(uint256) := i(uint256)
+i(uint256) = i + 1"];
+7->4;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Updater.onlyOwner()()"];
+8->3;
+}
+// Function: 844.sol-Updater-update(address[],uint256[],uint256[],uint256[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->21;
+1[label="Node Type: BEGIN_LOOP 1
+"];
+1->4;
+2[label="Node Type: END_LOOP 2
+"];
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+3->1;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+i < _addr.length
+
+IRs:
+REF_11 -> LENGTH _addr
+TMP_7(bool) = i < REF_11
+CONDITION TMP_7"];
+4->5[label="True"];
+4->2[label="False"];
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+state = states[_addr[i]]
+
+IRs:
+REF_12(address) -> _addr[i]
+REF_13(Updater.State) -> states[REF_12]
+state(Updater.State) := REF_13(Updater.State)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+"];
+6->7;
+7[label="Node Type: IF 7
+
+EXPRESSION:
+! (state.exchange || state.payment)
+
+IRs:
+REF_14(bool) -> state.exchange
+REF_15(bool) -> state.payment
+TMP_8(bool) = REF_14 || REF_15
+TMP_9 = UnaryType.BANG TMP_8 
+CONDITION TMP_9"];
+7->8[label="True"];
+7->11[label="False"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+res = _addr[i].call(bytes4(keccak256()(updateInfo(uint256,uint256,uint256))),_ETHUSD[i],_token[i],_value[i])
+
+IRs:
+REF_16(address) -> _addr[i]
+TMP_10(bytes32) = SOLIDITY_CALL keccak256()(updateInfo(uint256,uint256,uint256))
+TMP_11 = CONVERT TMP_10 to bytes4
+REF_18(uint256) -> _ETHUSD[i]
+REF_19(uint256) -> _token[i]
+REF_20(uint256) -> _value[i]
+TMP_12(bool) = LOW_LEVEL_CALL, dest:REF_16, function:call, arguments:['TMP_11', 'REF_18', 'REF_19', 'REF_20']  
+res(bool) := TMP_12(bool)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+InfoUpdated(bytes4(keccak256()(updateInfo(uint256,uint256,uint256))),_addr[i],res,_ETHUSD[i],_token[i],_value[i])
+
+IRs:
+TMP_13(bytes32) = SOLIDITY_CALL keccak256()(updateInfo(uint256,uint256,uint256))
+TMP_14 = CONVERT TMP_13 to bytes4
+REF_21(address) -> _addr[i]
+REF_22(uint256) -> _ETHUSD[i]
+REF_23(uint256) -> _token[i]
+REF_24(uint256) -> _value[i]
+Emit InfoUpdated(TMP_14,REF_21,res,REF_22,REF_23,REF_24)"];
+9->10;
+10[label="Node Type: CONTINUE 10
+"];
+10->20;
+11[label="Node Type: END_IF 11
+"];
+11->12;
+12[label="Node Type: IF 12
+
+EXPRESSION:
+state.exchange
+
+IRs:
+REF_25(bool) -> state.exchange
+CONDITION REF_25"];
+12->13[label="True"];
+12->15[label="False"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+res = _addr[i].call(bytes4(keccak256()(changeExchange(uint256))),_ETHUSD[i])
+
+IRs:
+REF_26(address) -> _addr[i]
+TMP_16(bytes32) = SOLIDITY_CALL keccak256()(changeExchange(uint256))
+TMP_17 = CONVERT TMP_16 to bytes4
+REF_28(uint256) -> _ETHUSD[i]
+TMP_18(bool) = LOW_LEVEL_CALL, dest:REF_26, function:call, arguments:['TMP_17', 'REF_28']  
+res(bool) := TMP_18(bool)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+InfoUpdated(bytes4(keccak256()(changeExchange(uint256))),_addr[i],res,_ETHUSD[i],0x0,0x0)
+
+IRs:
+TMP_19(bytes32) = SOLIDITY_CALL keccak256()(changeExchange(uint256))
+TMP_20 = CONVERT TMP_19 to bytes4
+REF_29(address) -> _addr[i]
+REF_30(uint256) -> _ETHUSD[i]
+Emit InfoUpdated(TMP_20,REF_29,res,REF_30,0,0)"];
+14->15;
+15[label="Node Type: END_IF 15
+"];
+15->16;
+16[label="Node Type: IF 16
+
+EXPRESSION:
+state.payment
+
+IRs:
+REF_31(bool) -> state.payment
+CONDITION REF_31"];
+16->17[label="True"];
+16->19[label="False"];
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+res = _addr[i].call(bytes4(keccak256()(paymentsInOtherCurrency(uint256,uint256))),_token[i],_value[i])
+
+IRs:
+REF_32(address) -> _addr[i]
+TMP_22(bytes32) = SOLIDITY_CALL keccak256()(paymentsInOtherCurrency(uint256,uint256))
+TMP_23 = CONVERT TMP_22 to bytes4
+REF_34(uint256) -> _token[i]
+REF_35(uint256) -> _value[i]
+TMP_24(bool) = LOW_LEVEL_CALL, dest:REF_32, function:call, arguments:['TMP_23', 'REF_34', 'REF_35']  
+res(bool) := TMP_24(bool)"];
+17->18;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+InfoUpdated(bytes4(keccak256()(paymentsInOtherCurrency(uint256,uint256))),_addr[i],res,0x0,_token[i],_value[i])
+
+IRs:
+TMP_25(bytes32) = SOLIDITY_CALL keccak256()(paymentsInOtherCurrency(uint256,uint256))
+TMP_26 = CONVERT TMP_25 to bytes4
+REF_36(address) -> _addr[i]
+REF_37(uint256) -> _token[i]
+REF_38(uint256) -> _value[i]
+Emit InfoUpdated(TMP_26,REF_36,res,0,REF_37,REF_38)"];
+18->19;
+19[label="Node Type: END_IF 19
+"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_28(uint256) := i(uint256)
+i(uint256) = i + 1"];
+20->4;
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Updater.onlyOwner()()"];
+21->3;
+}
+}

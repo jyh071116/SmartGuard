@@ -1,0 +1,535 @@
+digraph G {
+// Function: 36563.sol-FishFactory-create(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+proxy = new FishProxy(_owner,_lockAddr)
+
+IRs:
+TMP_61(FishProxy) = new FishProxy(_owner,_lockAddr) 
+proxy(address) := TMP_61(FishProxy)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+AccountCreated(proxy)
+
+IRs:
+Emit AccountCreated(proxy)"];
+}
+// Function: 36563.sol-FishProxy-FishProxy(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = _owner
+
+IRs:
+owner(address) := _owner(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+lockAddr = _lockAddr
+
+IRs:
+lockAddr(address) := _lockAddr(address)"];
+}
+// Function: 36563.sol-FishProxy-Ownable()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 36563.sol-FishProxy-SharkProxy()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 36563.sol-FishProxy-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(lockAddr == address(0) || this.balance <= 1e17)
+
+IRs:
+TMP_52 = CONVERT 0 to address
+TMP_53(bool) = lockAddr == TMP_52
+REF_4(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_54(bool) = REF_4 <= 100000000000000000
+TMP_55(bool) = TMP_53 || TMP_54
+TMP_56(None) = SOLIDITY_CALL assert(bool)(TMP_55)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Deposit(msg.sender,msg.value)
+
+IRs:
+Emit Deposit(msg.sender,msg.value)"];
+}
+// Function: 36563.sol-FishProxy-forward(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_destination != address(0))
+
+IRs:
+TMP_22 = CONVERT 0 to address
+TMP_23(bool) = _destination != TMP_22
+TMP_24(None) = SOLIDITY_CALL require(bool)(TMP_23)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(_destination.call.value(_value)(_data))
+
+IRs:
+TMP_26(bool) = LOW_LEVEL_CALL, dest:_destination, function:call, arguments:['_data'] value:_value 
+TMP_27(None) = SOLIDITY_CALL assert(bool)(TMP_26)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+_value > 0
+
+IRs:
+TMP_28(bool) = _value > 0
+CONDITION TMP_28"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Withdrawal(_destination,_value,_data)
+
+IRs:
+Emit Withdrawal(_destination,_value,_data)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+6->1;
+}
+// Function: 36563.sol-FishProxy-getOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+owner
+
+IRs:
+RETURN owner"];
+}
+// Function: 36563.sol-FishProxy-isLocked()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+lockAddr != 0x0
+
+IRs:
+TMP_36(bool) = lockAddr != 0
+RETURN TMP_36"];
+}
+// Function: 36563.sol-FishProxy-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_58(bool) = msg.sender == owner
+TMP_59(None) = SOLIDITY_CALL require(bool)(TMP_58)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 36563.sol-FishProxy-tokenFallback(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 36563.sol-FishProxy-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newOwner != address(0))
+
+IRs:
+TMP_32 = CONVERT 0 to address
+TMP_33(bool) = newOwner != TMP_32
+TMP_34(None) = SOLIDITY_CALL require(bool)(TMP_33)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 36563.sol-FishProxy-unlock(bytes32,bytes32,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(lockAddr != 0x0)
+
+IRs:
+TMP_37(bool) = lockAddr != 0
+TMP_38(None) = SOLIDITY_CALL assert(bool)(TMP_37)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+"];
+4->5;
+5[label="Node Type: INLINE ASM 5
+"];
+5->6;
+6[label="Node Type: END INLINE ASM 6
+"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+assert(bool)(target == uint88(address(this)))
+
+IRs:
+TMP_39 = CONVERT this to address
+TMP_40 = CONVERT TMP_39 to uint88
+TMP_41(bool) = target == TMP_40
+TMP_42(None) = SOLIDITY_CALL assert(bool)(TMP_41)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+assert(bool)(newOwner == msg.sender)
+
+IRs:
+TMP_43(bool) = newOwner == msg.sender
+TMP_44(None) = SOLIDITY_CALL assert(bool)(TMP_43)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+assert(bool)(newOwner != owner)
+
+IRs:
+TMP_45(bool) = newOwner != owner
+TMP_46(None) = SOLIDITY_CALL assert(bool)(TMP_45)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+assert(bool)(ecrecover(bytes32,uint8,bytes32,bytes32)(sha3()(uint8(0),target,newOwner),v,_r,_s) == lockAddr)
+
+IRs:
+TMP_47 = CONVERT 0 to uint8
+TMP_48(bytes32) = SOLIDITY_CALL sha3()(TMP_47,target,newOwner)
+TMP_49(address) = SOLIDITY_CALL ecrecover(bytes32,uint8,bytes32,bytes32)(TMP_48,v,_r,_s)
+TMP_50(bool) = TMP_49 == lockAddr
+TMP_51(None) = SOLIDITY_CALL assert(bool)(TMP_50)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+lockAddr = 0x0
+
+IRs:
+lockAddr(address) := 0(uint256)"];
+}
+// Function: 36563.sol-Ownable-Ownable()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 36563.sol-Ownable-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_4(bool) = msg.sender == owner
+TMP_5(None) = SOLIDITY_CALL require(bool)(TMP_4)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 36563.sol-Ownable-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newOwner != address(0))
+
+IRs:
+TMP_0 = CONVERT 0 to address
+TMP_1(bool) = newOwner != TMP_0
+TMP_2(None) = SOLIDITY_CALL require(bool)(TMP_1)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 36563.sol-SharkProxy-Ownable()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 36563.sol-SharkProxy-SharkProxy()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 36563.sol-SharkProxy-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+Deposit(msg.sender,msg.value)
+
+IRs:
+Emit Deposit(msg.sender,msg.value)"];
+}
+// Function: 36563.sol-SharkProxy-forward(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_destination != address(0))
+
+IRs:
+TMP_10 = CONVERT 0 to address
+TMP_11(bool) = _destination != TMP_10
+TMP_12(None) = SOLIDITY_CALL require(bool)(TMP_11)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(_destination.call.value(_value)(_data))
+
+IRs:
+TMP_14(bool) = LOW_LEVEL_CALL, dest:_destination, function:call, arguments:['_data'] value:_value 
+TMP_15(None) = SOLIDITY_CALL assert(bool)(TMP_14)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+_value > 0
+
+IRs:
+TMP_16(bool) = _value > 0
+CONDITION TMP_16"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Withdrawal(_destination,_value,_data)
+
+IRs:
+Emit Withdrawal(_destination,_value,_data)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+6->1;
+}
+// Function: 36563.sol-SharkProxy-getOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+owner
+
+IRs:
+RETURN owner"];
+}
+// Function: 36563.sol-SharkProxy-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_20(bool) = msg.sender == owner
+TMP_21(None) = SOLIDITY_CALL require(bool)(TMP_20)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 36563.sol-SharkProxy-tokenFallback(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 36563.sol-SharkProxy-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newOwner != address(0))
+
+IRs:
+TMP_6 = CONVERT 0 to address
+TMP_7(bool) = newOwner != TMP_6
+TMP_8(None) = SOLIDITY_CALL require(bool)(TMP_7)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+}

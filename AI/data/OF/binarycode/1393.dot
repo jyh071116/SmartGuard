@@ -1,0 +1,826 @@
+digraph G {
+// Function: 1393.sol-ERC20Token-mintTokens(address,uint256)
+digraph{
+}
+// Function: 1393.sol-MultipleVesting-Ownable()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 1393.sol-MultipleVesting-calculateVestedTokens(MultipleVesting.Grant,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_time < _grant.cliff
+
+IRs:
+REF_16(uint256) -> _grant.cliff
+TMP_40(bool) = _time < REF_16
+CONDITION TMP_40"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+_time >= _grant.duration
+
+IRs:
+REF_17(uint256) -> _grant.duration
+TMP_41(bool) = _time >= REF_17
+CONDITION TMP_41"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+_grant.value
+
+IRs:
+REF_18(uint256) -> _grant.value
+RETURN REF_18"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+_grant.value.mul(_time.sub(_grant.start)).div(_grant.duration.sub(_grant.start))
+
+IRs:
+REF_19(uint256) -> _grant.value
+REF_22(uint256) -> _grant.start
+TMP_42(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['_time', 'REF_22'] 
+TMP_43(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['REF_19', 'TMP_42'] 
+REF_24(uint256) -> _grant.duration
+REF_26(uint256) -> _grant.start
+TMP_44(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_24', 'REF_26'] 
+TMP_45(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['TMP_43', 'TMP_44'] 
+RETURN TMP_45"];
+}
+// Function: 1393.sol-MultipleVesting-newGrant(address,uint256,uint256,uint256,uint256,bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->8;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+grants[_address].value == 0
+
+IRs:
+REF_0(MultipleVesting.Grant) -> grants[_address]
+REF_1(uint256) -> REF_0.value
+TMP_26(bool) = REF_1 == 0
+CONDITION TMP_26"];
+1->2[label="True"];
+1->4[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+indexedGrants[index] = _address
+
+IRs:
+REF_2(address) -> indexedGrants[index]
+REF_2(address) (->indexedGrants) := _address(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+index = index.add(1)
+
+IRs:
+TMP_27(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['index', '1'] 
+index(uint256) := TMP_27(uint256)"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+grants[_address] = Grant({start:_start,cliff:_cliff,duration:_duration,value:_value,transferred:0,revocable:_revocable})
+
+IRs:
+REF_4(MultipleVesting.Grant) -> grants[_address]
+TMP_28(MultipleVesting.Grant) = new Grant(_start,_cliff,_duration,_value,0,_revocable)
+REF_4(MultipleVesting.Grant) (->grants) := TMP_28(MultipleVesting.Grant)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+totalVesting = totalVesting.add(_value)
+
+IRs:
+TMP_29(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['totalVesting', '_value'] 
+totalVesting(uint256) := TMP_29(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+NewGrant(_address,_value)
+
+IRs:
+Emit NewGrant(_address,_value)"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+8->1;
+}
+// Function: 1393.sol-MultipleVesting-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_68(bool) = msg.sender == owner
+TMP_69(None) = SOLIDITY_CALL require(bool)(TMP_68)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1393.sol-MultipleVesting-revoke(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->8;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+grant = grants[_grant]
+
+IRs:
+REF_6(MultipleVesting.Grant) -> grants[_grant]
+grant(MultipleVesting.Grant) := REF_6(MultipleVesting.Grant)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(grant.revocable)
+
+IRs:
+REF_7(bool) -> grant.revocable
+TMP_32(None) = SOLIDITY_CALL require(bool)(REF_7)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+refund = grant.value.sub(grant.transferred)
+
+IRs:
+REF_8(uint256) -> grant.value
+REF_10(uint256) -> grant.transferred
+TMP_33(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_8', 'REF_10'] 
+refund(uint256) := TMP_33(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+delete grants[_grant]
+
+IRs:
+REF_11(MultipleVesting.Grant) -> grants[_grant]
+grants = delete REF_11 "];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+totalVesting = totalVesting.sub(refund)
+
+IRs:
+TMP_34(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['totalVesting', 'refund'] 
+totalVesting(uint256) := TMP_34(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+token.mintTokens(msg.sender,refund)
+
+IRs:
+HIGH_LEVEL_CALL, dest:token(ERC20Token), function:mintTokens, arguments:['msg.sender', 'refund']  "];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+RevokeGrant(_grant,refund)
+
+IRs:
+Emit RevokeGrant(_grant,refund)"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+8->1;
+}
+// Function: 1393.sol-MultipleVesting-setToken(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+token = ERC20Token(_token)
+
+IRs:
+TMP_24 = CONVERT _token to ERC20Token
+token(ERC20Token) := TMP_24(ERC20Token)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 1393.sol-MultipleVesting-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newOwner != address(0))
+
+IRs:
+TMP_19 = CONVERT 0 to address
+TMP_20(bool) = newOwner != TMP_19
+TMP_21(None) = SOLIDITY_CALL require(bool)(TMP_20)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->1;
+}
+// Function: 1393.sol-MultipleVesting-unlockVestedTokens()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+grant = grants[msg.sender]
+
+IRs:
+REF_38(MultipleVesting.Grant) -> grants[msg.sender]
+grant(MultipleVesting.Grant) := REF_38(MultipleVesting.Grant)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(grant.value != 0)
+
+IRs:
+REF_39(uint256) -> grant.value
+TMP_58(bool) = REF_39 != 0
+TMP_59(None) = SOLIDITY_CALL require(bool)(TMP_58)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+vested = calculateVestedTokens(grant,now)
+
+IRs:
+TMP_60(uint256) = INTERNAL_CALL, MultipleVesting.calculateVestedTokens(MultipleVesting.Grant,uint256)(grant,now)
+vested(uint256) := TMP_60(uint256)"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+vested == 0
+
+IRs:
+TMP_61(bool) = vested == 0
+CONDITION TMP_61"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: RETURN 5
+"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+transferable = vested.sub(grant.transferred)
+
+IRs:
+REF_41(uint256) -> grant.transferred
+TMP_62(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['vested', 'REF_41'] 
+transferable(uint256) := TMP_62(uint256)"];
+7->8;
+8[label="Node Type: IF 8
+
+EXPRESSION:
+transferable == 0
+
+IRs:
+TMP_63(bool) = transferable == 0
+CONDITION TMP_63"];
+8->9[label="True"];
+8->10[label="False"];
+9[label="Node Type: RETURN 9
+"];
+10[label="Node Type: END_IF 10
+"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+grant.transferred = grant.transferred.add(transferable)
+
+IRs:
+REF_42(uint256) -> grant.transferred
+REF_43(uint256) -> grant.transferred
+TMP_64(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_43', 'transferable'] 
+REF_42(uint256) (->grant) := TMP_64(uint256)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+totalVesting = totalVesting.sub(transferable)
+
+IRs:
+TMP_65(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['totalVesting', 'transferable'] 
+totalVesting(uint256) := TMP_65(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+token.mintTokens(msg.sender,transferable)
+
+IRs:
+HIGH_LEVEL_CALL, dest:token(ERC20Token), function:mintTokens, arguments:['msg.sender', 'transferable']  "];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+UnlockGrant(msg.sender,transferable)
+
+IRs:
+Emit UnlockGrant(msg.sender,transferable)"];
+}
+// Function: 1393.sol-MultipleVesting-vest()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->22;
+1[label="Node Type: BEGIN_LOOP 1
+"];
+1->4;
+2[label="Node Type: END_LOOP 2
+"];
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint16) := 0(uint256)"];
+3->1;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+i < index
+
+IRs:
+TMP_46(bool) = i < index
+CONDITION TMP_46"];
+4->5[label="True"];
+4->2[label="False"];
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+grant = grants[indexedGrants[i]]
+
+IRs:
+REF_27(address) -> indexedGrants[i]
+REF_28(MultipleVesting.Grant) -> grants[REF_27]
+grant(MultipleVesting.Grant) := REF_28(MultipleVesting.Grant)"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+grant.value == 0
+
+IRs:
+REF_29(uint256) -> grant.value
+TMP_47(bool) = REF_29 == 0
+CONDITION TMP_47"];
+6->7[label="True"];
+6->8[label="False"];
+7[label="Node Type: CONTINUE 7
+"];
+7->21;
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+vested = calculateVestedTokens(grant,now)
+
+IRs:
+TMP_48(uint256) = INTERNAL_CALL, MultipleVesting.calculateVestedTokens(MultipleVesting.Grant,uint256)(grant,now)
+vested(uint256) := TMP_48(uint256)"];
+9->10;
+10[label="Node Type: IF 10
+
+EXPRESSION:
+vested == 0
+
+IRs:
+TMP_49(bool) = vested == 0
+CONDITION TMP_49"];
+10->11[label="True"];
+10->12[label="False"];
+11[label="Node Type: CONTINUE 11
+"];
+11->21;
+12[label="Node Type: END_IF 12
+"];
+12->13;
+13[label="Node Type: NEW VARIABLE 13
+
+EXPRESSION:
+transferable = vested.sub(grant.transferred)
+
+IRs:
+REF_31(uint256) -> grant.transferred
+TMP_50(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['vested', 'REF_31'] 
+transferable(uint256) := TMP_50(uint256)"];
+13->14;
+14[label="Node Type: IF 14
+
+EXPRESSION:
+transferable == 0
+
+IRs:
+TMP_51(bool) = transferable == 0
+CONDITION TMP_51"];
+14->15[label="True"];
+14->16[label="False"];
+15[label="Node Type: CONTINUE 15
+"];
+15->21;
+16[label="Node Type: END_IF 16
+"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+grant.transferred = grant.transferred.add(transferable)
+
+IRs:
+REF_32(uint256) -> grant.transferred
+REF_33(uint256) -> grant.transferred
+TMP_52(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_33', 'transferable'] 
+REF_32(uint256) (->grant) := TMP_52(uint256)"];
+17->18;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+totalVesting = totalVesting.sub(transferable)
+
+IRs:
+TMP_53(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['totalVesting', 'transferable'] 
+totalVesting(uint256) := TMP_53(uint256)"];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+token.mintTokens(indexedGrants[i],transferable)
+
+IRs:
+REF_37(address) -> indexedGrants[i]
+HIGH_LEVEL_CALL, dest:token(ERC20Token), function:mintTokens, arguments:['REF_37', 'transferable']  "];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+UnlockGrant(msg.sender,transferable)
+
+IRs:
+Emit UnlockGrant(msg.sender,transferable)"];
+20->21;
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_56(uint16) := i(uint16)
+i(uint16) = i + 1"];
+21->4;
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+22->3;
+}
+// Function: 1393.sol-MultipleVesting-vestedTokens(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+grant = grants[_holder]
+
+IRs:
+REF_14(MultipleVesting.Grant) -> grants[_holder]
+grant(MultipleVesting.Grant) := REF_14(MultipleVesting.Grant)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+grant.value == 0
+
+IRs:
+REF_15(uint256) -> grant.value
+TMP_38(bool) = REF_15 == 0
+CONDITION TMP_38"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+calculateVestedTokens(grant,_time)
+
+IRs:
+TMP_39(uint256) = INTERNAL_CALL, MultipleVesting.calculateVestedTokens(MultipleVesting.Grant,uint256)(grant,_time)
+RETURN TMP_39"];
+}
+// Function: 1393.sol-Ownable-Ownable()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 1393.sol-Ownable-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_17(bool) = msg.sender == owner
+TMP_18(None) = SOLIDITY_CALL require(bool)(TMP_17)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1393.sol-Ownable-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newOwner != address(0))
+
+IRs:
+TMP_12 = CONVERT 0 to address
+TMP_13(bool) = newOwner != TMP_12
+TMP_14(None) = SOLIDITY_CALL require(bool)(TMP_13)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->1;
+}
+// Function: 1393.sol-SafeMath-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_9(uint256) = a + b
+c(uint256) := TMP_9(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(c >= a)
+
+IRs:
+TMP_10(bool) = c >= a
+TMP_11(None) = SOLIDITY_CALL assert(bool)(TMP_10)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 1393.sol-SafeMath-div(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+a / b
+
+IRs:
+TMP_5(uint256) = a / b
+RETURN TMP_5"];
+}
+// Function: 1393.sol-SafeMath-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+a == 0
+
+IRs:
+TMP_0(bool) = a == 0
+CONDITION TMP_0"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_1(uint256) = a * b
+c(uint256) := TMP_1(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+assert(bool)(c / a == b)
+
+IRs:
+TMP_2(uint256) = c / a
+TMP_3(bool) = TMP_2 == b
+TMP_4(None) = SOLIDITY_CALL assert(bool)(TMP_3)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 1393.sol-SafeMath-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(b <= a)
+
+IRs:
+TMP_6(bool) = b <= a
+TMP_7(None) = SOLIDITY_CALL assert(bool)(TMP_6)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_8(uint256) = a - b
+RETURN TMP_8"];
+}
+}

@@ -1,0 +1,1287 @@
+digraph G {
+// Function: 92.sol-AdvanceToken-allowance(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+allowed[_owner][_spender]
+
+IRs:
+REF_45(mapping(address => uint256)) -> allowed[_owner]
+REF_46(uint256) -> REF_45[_spender]
+RETURN REF_46"];
+}
+// Function: 92.sol-AdvanceToken-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowed[msg.sender][_spender] = _value
+
+IRs:
+REF_43(mapping(address => uint256)) -> allowed[msg.sender]
+REF_44(uint256) -> REF_43[_spender]
+REF_44(uint256) (->allowed) := _value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,_value)
+
+IRs:
+Emit Approval(msg.sender,_spender,_value)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 92.sol-AdvanceToken-balanceOf(address)
+digraph{
+}
+// Function: 92.sol-AdvanceToken-burnTokens(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(balances[_who] >= _amount)
+
+IRs:
+REF_14(uint256) -> balances[_who]
+TMP_55(bool) = REF_14 >= _amount
+TMP_56(None) = SOLIDITY_CALL require(bool)(TMP_55)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balances[_who] = balances[_who].sub(_amount)
+
+IRs:
+REF_15(uint256) -> balances[_who]
+REF_16(uint256) -> balances[_who]
+TMP_57(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_16', '_amount'] 
+REF_15(uint256) (->balances) := TMP_57(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+totalSupply = totalSupply.sub(_amount)
+
+IRs:
+TMP_58(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['totalSupply', '_amount'] 
+totalSupply(uint256) := TMP_58(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Burn(_who,_amount)
+
+IRs:
+Emit Burn(_who,_amount)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Transfer(_who,address(0),_amount)
+
+IRs:
+TMP_60 = CONVERT 0 to address
+Emit Transfer(_who,TMP_60,_amount)"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+6->1;
+}
+// Function: 92.sol-AdvanceToken-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = address(0xEFeAc37a6a5Fb3630313742a2FADa6760C6FF653)
+
+IRs:
+TMP_70 = CONVERT 1369684197154954343860050385968058983630804874835 to address
+owner(address) := TMP_70(address)"];
+}
+// Function: 92.sol-AdvanceToken-decreaseApproval(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+oldValue = allowed[msg.sender][_spender]
+
+IRs:
+REF_54(mapping(address => uint256)) -> allowed[msg.sender]
+REF_55(uint256) -> REF_54[_spender]
+oldValue(uint256) := REF_55(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+_subtractedValue > oldValue
+
+IRs:
+TMP_91(bool) = _subtractedValue > oldValue
+CONDITION TMP_91"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+allowed[msg.sender][_spender] = 0
+
+IRs:
+REF_56(mapping(address => uint256)) -> allowed[msg.sender]
+REF_57(uint256) -> REF_56[_spender]
+REF_57(uint256) (->allowed) := 0(uint256)"];
+3->5;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+allowed[msg.sender][_spender] = oldValue.sub(_subtractedValue)
+
+IRs:
+REF_58(mapping(address => uint256)) -> allowed[msg.sender]
+REF_59(uint256) -> REF_58[_spender]
+TMP_92(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['oldValue', '_subtractedValue'] 
+REF_59(uint256) (->allowed) := TMP_92(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+Approval(msg.sender,_spender,allowed[msg.sender][_spender])
+
+IRs:
+REF_61(mapping(address => uint256)) -> allowed[msg.sender]
+REF_62(uint256) -> REF_61[_spender]
+Emit Approval(msg.sender,_spender,REF_62)"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 92.sol-AdvanceToken-freezeAccount(address,bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+frozenAccount[target] = freeze
+
+IRs:
+REF_19(bool) -> frozenAccount[target]
+REF_19(bool) (->frozenAccount) := freeze(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+FrozenFunds(target,freeze)
+
+IRs:
+Emit FrozenFunds(target,freeze)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 92.sol-AdvanceToken-increaseApproval(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowed[msg.sender][_spender] = (allowed[msg.sender][_spender].add(_addedValue))
+
+IRs:
+REF_47(mapping(address => uint256)) -> allowed[msg.sender]
+REF_48(uint256) -> REF_47[_spender]
+REF_49(mapping(address => uint256)) -> allowed[msg.sender]
+REF_50(uint256) -> REF_49[_spender]
+TMP_89(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_50', '_addedValue'] 
+REF_48(uint256) (->allowed) := TMP_89(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,allowed[msg.sender][_spender])
+
+IRs:
+REF_52(mapping(address => uint256)) -> allowed[msg.sender]
+REF_53(uint256) -> REF_52[_spender]
+Emit Approval(msg.sender,_spender,REF_53)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 92.sol-AdvanceToken-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_94(bool) = msg.sender == owner
+TMP_95(None) = SOLIDITY_CALL require(bool)(TMP_94)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 92.sol-AdvanceToken-transfer(address,uint256)
+digraph{
+}
+// Function: 92.sol-AdvanceToken-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_to != address(0))
+
+IRs:
+TMP_75 = CONVERT 0 to address
+TMP_76(bool) = _to != TMP_75
+TMP_77(None) = SOLIDITY_CALL require(bool)(TMP_76)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_value <= balances[_from])
+
+IRs:
+REF_28(uint256) -> balances[_from]
+TMP_78(bool) = _value <= REF_28
+TMP_79(None) = SOLIDITY_CALL require(bool)(TMP_78)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(_value <= allowed[_from][msg.sender])
+
+IRs:
+REF_29(mapping(address => uint256)) -> allowed[_from]
+REF_30(uint256) -> REF_29[msg.sender]
+TMP_80(bool) = _value <= REF_30
+TMP_81(None) = SOLIDITY_CALL require(bool)(TMP_80)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool)(! frozenAccount[_from])
+
+IRs:
+REF_31(bool) -> frozenAccount[_from]
+TMP_82 = UnaryType.BANG REF_31 
+TMP_83(None) = SOLIDITY_CALL require(bool)(TMP_82)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balances[_from] = balances[_from].sub(_value)
+
+IRs:
+REF_32(uint256) -> balances[_from]
+REF_33(uint256) -> balances[_from]
+TMP_84(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_33', '_value'] 
+REF_32(uint256) (->balances) := TMP_84(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+balances[_to] = balances[_to].add(_value)
+
+IRs:
+REF_35(uint256) -> balances[_to]
+REF_36(uint256) -> balances[_to]
+TMP_85(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_36', '_value'] 
+REF_35(uint256) (->balances) := TMP_85(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+allowed[_from][msg.sender] = allowed[_from][msg.sender].sub(_value)
+
+IRs:
+REF_38(mapping(address => uint256)) -> allowed[_from]
+REF_39(uint256) -> REF_38[msg.sender]
+REF_40(mapping(address => uint256)) -> allowed[_from]
+REF_41(uint256) -> REF_40[msg.sender]
+TMP_86(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_41', '_value'] 
+REF_39(uint256) (->allowed) := TMP_86(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+Transfer(_from,_to,_value)
+
+IRs:
+Emit Transfer(_from,_to,_value)"];
+8->9;
+9[label="Node Type: RETURN 9
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 92.sol-AdvanceToken-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newOwner != address(0))
+
+IRs:
+TMP_71 = CONVERT 0 to address
+TMP_72(bool) = newOwner != TMP_71
+TMP_73(None) = SOLIDITY_CALL require(bool)(TMP_72)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 92.sol-BasicToken-balanceOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+balances[_owner]
+
+IRs:
+REF_13(uint256) -> balances[_owner]
+RETURN REF_13"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+balance
+
+IRs:
+RETURN balance"];
+}
+// Function: 92.sol-BasicToken-burnTokens(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(balances[_who] >= _amount)
+
+IRs:
+REF_0(uint256) -> balances[_who]
+TMP_31(bool) = REF_0 >= _amount
+TMP_32(None) = SOLIDITY_CALL require(bool)(TMP_31)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balances[_who] = balances[_who].sub(_amount)
+
+IRs:
+REF_1(uint256) -> balances[_who]
+REF_2(uint256) -> balances[_who]
+TMP_33(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_2', '_amount'] 
+REF_1(uint256) (->balances) := TMP_33(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+totalSupply = totalSupply.sub(_amount)
+
+IRs:
+TMP_34(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['totalSupply', '_amount'] 
+totalSupply(uint256) := TMP_34(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Burn(_who,_amount)
+
+IRs:
+Emit Burn(_who,_amount)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Transfer(_who,address(0),_amount)
+
+IRs:
+TMP_36 = CONVERT 0 to address
+Emit Transfer(_who,TMP_36,_amount)"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+6->1;
+}
+// Function: 92.sol-BasicToken-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = address(0xEFeAc37a6a5Fb3630313742a2FADa6760C6FF653)
+
+IRs:
+TMP_26 = CONVERT 1369684197154954343860050385968058983630804874835 to address
+owner(address) := TMP_26(address)"];
+}
+// Function: 92.sol-BasicToken-freezeAccount(address,bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+frozenAccount[target] = freeze
+
+IRs:
+REF_5(bool) -> frozenAccount[target]
+REF_5(bool) (->frozenAccount) := freeze(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+FrozenFunds(target,freeze)
+
+IRs:
+Emit FrozenFunds(target,freeze)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 92.sol-BasicToken-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_46(bool) = msg.sender == owner
+TMP_47(None) = SOLIDITY_CALL require(bool)(TMP_46)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 92.sol-BasicToken-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! frozenAccount[msg.sender])
+
+IRs:
+REF_6(bool) -> frozenAccount[msg.sender]
+TMP_41 = UnaryType.BANG REF_6 
+TMP_42(None) = SOLIDITY_CALL require(bool)(TMP_41)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balances[msg.sender] = balances[msg.sender].sub(_value)
+
+IRs:
+REF_7(uint256) -> balances[msg.sender]
+REF_8(uint256) -> balances[msg.sender]
+TMP_43(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_8', '_value'] 
+REF_7(uint256) (->balances) := TMP_43(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balances[_to] = balances[_to].add(_value)
+
+IRs:
+REF_10(uint256) -> balances[_to]
+REF_11(uint256) -> balances[_to]
+TMP_44(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_11', '_value'] 
+REF_10(uint256) (->balances) := TMP_44(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Transfer(msg.sender,_to,_value)
+
+IRs:
+Emit Transfer(msg.sender,_to,_value)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 92.sol-BasicToken-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newOwner != address(0))
+
+IRs:
+TMP_27 = CONVERT 0 to address
+TMP_28(bool) = newOwner != TMP_27
+TMP_29(None) = SOLIDITY_CALL require(bool)(TMP_28)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 92.sol-CRYPTOLANCERSToken-allowance(address,address)
+digraph{
+}
+// Function: 92.sol-CRYPTOLANCERSToken-approve(address,uint256)
+digraph{
+}
+// Function: 92.sol-CRYPTOLANCERSToken-balanceOf(address)
+digraph{
+}
+// Function: 92.sol-CRYPTOLANCERSToken-burnTokens(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(balances[_who] >= _amount)
+
+IRs:
+REF_98(uint256) -> balances[_who]
+TMP_115(bool) = REF_98 >= _amount
+TMP_116(None) = SOLIDITY_CALL require(bool)(TMP_115)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balances[_who] = balances[_who].sub(_amount)
+
+IRs:
+REF_99(uint256) -> balances[_who]
+REF_100(uint256) -> balances[_who]
+TMP_117(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_100', '_amount'] 
+REF_99(uint256) (->balances) := TMP_117(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+totalSupply = totalSupply.sub(_amount)
+
+IRs:
+TMP_118(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['totalSupply', '_amount'] 
+totalSupply(uint256) := TMP_118(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Burn(_who,_amount)
+
+IRs:
+Emit Burn(_who,_amount)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Transfer(_who,address(0),_amount)
+
+IRs:
+TMP_120 = CONVERT 0 to address
+Emit Transfer(_who,TMP_120,_amount)"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+6->1;
+}
+// Function: 92.sol-CRYPTOLANCERSToken-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+totalSupply = INITIAL_SUPPLY
+
+IRs:
+totalSupply(uint256) := INITIAL_SUPPLY(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balances[0xEFeAc37a6a5Fb3630313742a2FADa6760C6FF653] = totalSupply
+
+IRs:
+REF_112(uint256) -> balances[1369684197154954343860050385968058983630804874835]
+REF_112(uint256) (->balances) := totalSupply(uint256)"];
+}
+// Function: 92.sol-CRYPTOLANCERSToken-decreaseApproval(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+oldValue = allowed[msg.sender][_spender]
+
+IRs:
+REF_89(mapping(address => uint256)) -> allowed[msg.sender]
+REF_90(uint256) -> REF_89[_spender]
+oldValue(uint256) := REF_90(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+_subtractedValue > oldValue
+
+IRs:
+TMP_112(bool) = _subtractedValue > oldValue
+CONDITION TMP_112"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+allowed[msg.sender][_spender] = 0
+
+IRs:
+REF_91(mapping(address => uint256)) -> allowed[msg.sender]
+REF_92(uint256) -> REF_91[_spender]
+REF_92(uint256) (->allowed) := 0(uint256)"];
+3->5;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+allowed[msg.sender][_spender] = oldValue.sub(_subtractedValue)
+
+IRs:
+REF_93(mapping(address => uint256)) -> allowed[msg.sender]
+REF_94(uint256) -> REF_93[_spender]
+TMP_113(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['oldValue', '_subtractedValue'] 
+REF_94(uint256) (->allowed) := TMP_113(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+Approval(msg.sender,_spender,allowed[msg.sender][_spender])
+
+IRs:
+REF_96(mapping(address => uint256)) -> allowed[msg.sender]
+REF_97(uint256) -> REF_96[_spender]
+Emit Approval(msg.sender,_spender,REF_97)"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 92.sol-CRYPTOLANCERSToken-freezeAccount(address,bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+frozenAccount[target] = freeze
+
+IRs:
+REF_103(bool) -> frozenAccount[target]
+REF_103(bool) (->frozenAccount) := freeze(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+FrozenFunds(target,freeze)
+
+IRs:
+Emit FrozenFunds(target,freeze)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 92.sol-CRYPTOLANCERSToken-increaseApproval(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowed[msg.sender][_spender] = (allowed[msg.sender][_spender].add(_addedValue))
+
+IRs:
+REF_82(mapping(address => uint256)) -> allowed[msg.sender]
+REF_83(uint256) -> REF_82[_spender]
+REF_84(mapping(address => uint256)) -> allowed[msg.sender]
+REF_85(uint256) -> REF_84[_spender]
+TMP_110(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_85', '_addedValue'] 
+REF_83(uint256) (->allowed) := TMP_110(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,allowed[msg.sender][_spender])
+
+IRs:
+REF_87(mapping(address => uint256)) -> allowed[msg.sender]
+REF_88(uint256) -> REF_87[_spender]
+Emit Approval(msg.sender,_spender,REF_88)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 92.sol-CRYPTOLANCERSToken-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_137(bool) = msg.sender == owner
+TMP_138(None) = SOLIDITY_CALL require(bool)(TMP_137)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 92.sol-CRYPTOLANCERSToken-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+name = CRYPTOLANCERS
+
+IRs:
+name(string) := CRYPTOLANCERS(string)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+symbol = CLT
+
+IRs:
+symbol(string) := CLT(string)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+decimals = 18
+
+IRs:
+decimals(uint256) := 18(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+INITIAL_SUPPLY = 100000000 * 10 ** decimals
+
+IRs:
+TMP_135(uint256) = 10 ** decimals
+TMP_136(uint256) = 100000000 * TMP_135
+INITIAL_SUPPLY(uint256) := TMP_136(uint256)"];
+}
+// Function: 92.sol-CRYPTOLANCERSToken-transfer(address,uint256)
+digraph{
+}
+// Function: 92.sol-CRYPTOLANCERSToken-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 92.sol-CRYPTOLANCERSToken-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newOwner != address(0))
+
+IRs:
+TMP_131 = CONVERT 0 to address
+TMP_132(bool) = newOwner != TMP_131
+TMP_133(None) = SOLIDITY_CALL require(bool)(TMP_132)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 92.sol-ERC20-allowance(address,address)
+digraph{
+}
+// Function: 92.sol-ERC20-approve(address,uint256)
+digraph{
+}
+// Function: 92.sol-ERC20-balanceOf(address)
+digraph{
+}
+// Function: 92.sol-ERC20-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = address(0xEFeAc37a6a5Fb3630313742a2FADa6760C6FF653)
+
+IRs:
+TMP_48 = CONVERT 1369684197154954343860050385968058983630804874835 to address
+owner(address) := TMP_48(address)"];
+}
+// Function: 92.sol-ERC20-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_53(bool) = msg.sender == owner
+TMP_54(None) = SOLIDITY_CALL require(bool)(TMP_53)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 92.sol-ERC20-transfer(address,uint256)
+digraph{
+}
+// Function: 92.sol-ERC20-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 92.sol-ERC20-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newOwner != address(0))
+
+IRs:
+TMP_49 = CONVERT 0 to address
+TMP_50(bool) = newOwner != TMP_49
+TMP_51(None) = SOLIDITY_CALL require(bool)(TMP_50)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 92.sol-ERC20Basic-balanceOf(address)
+digraph{
+}
+// Function: 92.sol-ERC20Basic-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = address(0xEFeAc37a6a5Fb3630313742a2FADa6760C6FF653)
+
+IRs:
+TMP_19 = CONVERT 1369684197154954343860050385968058983630804874835 to address
+owner(address) := TMP_19(address)"];
+}
+// Function: 92.sol-ERC20Basic-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_24(bool) = msg.sender == owner
+TMP_25(None) = SOLIDITY_CALL require(bool)(TMP_24)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 92.sol-ERC20Basic-transfer(address,uint256)
+digraph{
+}
+// Function: 92.sol-ERC20Basic-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newOwner != address(0))
+
+IRs:
+TMP_20 = CONVERT 0 to address
+TMP_21(bool) = newOwner != TMP_20
+TMP_22(None) = SOLIDITY_CALL require(bool)(TMP_21)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 92.sol-Ownable-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = address(0xEFeAc37a6a5Fb3630313742a2FADa6760C6FF653)
+
+IRs:
+TMP_12 = CONVERT 1369684197154954343860050385968058983630804874835 to address
+owner(address) := TMP_12(address)"];
+}
+// Function: 92.sol-Ownable-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_17(bool) = msg.sender == owner
+TMP_18(None) = SOLIDITY_CALL require(bool)(TMP_17)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 92.sol-Ownable-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newOwner != address(0))
+
+IRs:
+TMP_13 = CONVERT 0 to address
+TMP_14(bool) = newOwner != TMP_13
+TMP_15(None) = SOLIDITY_CALL require(bool)(TMP_14)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 92.sol-SafeMath-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_9(uint256) = a + b
+c(uint256) := TMP_9(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(c >= a)
+
+IRs:
+TMP_10(bool) = c >= a
+TMP_11(None) = SOLIDITY_CALL assert(bool)(TMP_10)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 92.sol-SafeMath-div(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+a / b
+
+IRs:
+TMP_5(uint256) = a / b
+RETURN TMP_5"];
+}
+// Function: 92.sol-SafeMath-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+a == 0
+
+IRs:
+TMP_0(bool) = a == 0
+CONDITION TMP_0"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_1(uint256) = a * b
+c(uint256) := TMP_1(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+assert(bool)(c / a == b)
+
+IRs:
+TMP_2(uint256) = c / a
+TMP_3(bool) = TMP_2 == b
+TMP_4(None) = SOLIDITY_CALL assert(bool)(TMP_3)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 92.sol-SafeMath-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(b <= a)
+
+IRs:
+TMP_6(bool) = b <= a
+TMP_7(None) = SOLIDITY_CALL assert(bool)(TMP_6)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_8(uint256) = a - b
+RETURN TMP_8"];
+}
+}

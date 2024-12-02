@@ -1,0 +1,605 @@
+digraph G {
+// Function: 1304.sol-iCarChain-_transfer(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_to != 0x0)
+
+IRs:
+TMP_7(bool) = _to != 0
+TMP_8(None) = SOLIDITY_CALL require(bool)(TMP_7)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(balanceOf[_from] >= _value)
+
+IRs:
+REF_1(uint256) -> balanceOf[_from]
+TMP_9(bool) = REF_1 >= _value
+TMP_10(None) = SOLIDITY_CALL require(bool)(TMP_9)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(balanceOf[_to] + _value > balanceOf[_to])
+
+IRs:
+REF_2(uint256) -> balanceOf[_to]
+TMP_11(uint256) = REF_2 + _value
+REF_3(uint256) -> balanceOf[_to]
+TMP_12(bool) = TMP_11 > REF_3
+TMP_13(None) = SOLIDITY_CALL require(bool)(TMP_12)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+previousBalances = balanceOf[_from] + balanceOf[_to]
+
+IRs:
+REF_4(uint256) -> balanceOf[_from]
+REF_5(uint256) -> balanceOf[_to]
+TMP_14(uint256) = REF_4 + REF_5
+previousBalances(uint256) := TMP_14(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balanceOf[_from] -= _value
+
+IRs:
+REF_6(uint256) -> balanceOf[_from]
+REF_6(-> balanceOf) = REF_6 - _value"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+balanceOf[_to] += _value
+
+IRs:
+REF_7(uint256) -> balanceOf[_to]
+REF_7(-> balanceOf) = REF_7 + _value"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+Transfer(_from,_to,_value)
+
+IRs:
+Emit Transfer(_from,_to,_value)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+assert(bool)(balanceOf[_from] + balanceOf[_to] == previousBalances)
+
+IRs:
+REF_8(uint256) -> balanceOf[_from]
+REF_9(uint256) -> balanceOf[_to]
+TMP_16(uint256) = REF_8 + REF_9
+TMP_17(bool) = TMP_16 == previousBalances
+TMP_18(None) = SOLIDITY_CALL assert(bool)(TMP_17)"];
+}
+// Function: 1304.sol-iCarChain-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! frozenAccount[msg.sender])
+
+IRs:
+REF_15(bool) -> frozenAccount[msg.sender]
+TMP_25 = UnaryType.BANG REF_15 
+TMP_26(None) = SOLIDITY_CALL require(bool)(TMP_25)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+allowance[msg.sender][_spender] = _value
+
+IRs:
+REF_16(mapping(address => uint256)) -> allowance[msg.sender]
+REF_17(uint256) -> REF_16[_spender]
+REF_17(uint256) (->allowance) := _value(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+Approval(msg.sender,_spender,_value)
+
+IRs:
+Emit Approval(msg.sender,_spender,_value)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+5->1;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 1304.sol-iCarChain-approveAndCall(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+spender = tokenRecipient(_spender)
+
+IRs:
+TMP_29 = CONVERT _spender to tokenRecipient
+spender(tokenRecipient) := TMP_29(tokenRecipient)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+approve(_spender,_value)
+
+IRs:
+TMP_30(bool) = INTERNAL_CALL, iCarChain.approve(address,uint256)(_spender,_value)
+CONDITION TMP_30"];
+2->3[label="True"];
+2->5[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+spender.receiveApproval(msg.sender,_value,this,_extraData)
+
+IRs:
+HIGH_LEVEL_CALL, dest:spender(tokenRecipient), function:receiveApproval, arguments:['msg.sender', '_value', 'this', '_extraData']  "];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 1304.sol-iCarChain-burn(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(balanceOf[msg.sender] >= _value)
+
+IRs:
+REF_19(uint256) -> balanceOf[msg.sender]
+TMP_32(bool) = REF_19 >= _value
+TMP_33(None) = SOLIDITY_CALL require(bool)(TMP_32)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balanceOf[msg.sender] -= _value
+
+IRs:
+REF_20(uint256) -> balanceOf[msg.sender]
+REF_20(-> balanceOf) = REF_20 - _value"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+totalSupply -= _value
+
+IRs:
+totalSupply(uint256) = totalSupply - _value"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Burn(msg.sender,_value)
+
+IRs:
+Emit Burn(msg.sender,_value)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+6->1;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 1304.sol-iCarChain-burnFrom(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(balanceOf[_from] >= _value)
+
+IRs:
+REF_21(uint256) -> balanceOf[_from]
+TMP_36(bool) = REF_21 >= _value
+TMP_37(None) = SOLIDITY_CALL require(bool)(TMP_36)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_value <= allowance[_from][msg.sender])
+
+IRs:
+REF_22(mapping(address => uint256)) -> allowance[_from]
+REF_23(uint256) -> REF_22[msg.sender]
+TMP_38(bool) = _value <= REF_23
+TMP_39(None) = SOLIDITY_CALL require(bool)(TMP_38)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balanceOf[_from] -= _value
+
+IRs:
+REF_24(uint256) -> balanceOf[_from]
+REF_24(-> balanceOf) = REF_24 - _value"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+allowance[_from][msg.sender] -= _value
+
+IRs:
+REF_25(mapping(address => uint256)) -> allowance[_from]
+REF_26(uint256) -> REF_25[msg.sender]
+REF_26(-> allowance) = REF_26 - _value"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+totalSupply -= _value
+
+IRs:
+totalSupply(uint256) = totalSupply - _value"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+Burn(_from,_value)
+
+IRs:
+Emit Burn(_from,_value)"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 1304.sol-iCarChain-freezeAccount(address,bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+frozenAccount[target] = freeze
+
+IRs:
+REF_27(bool) -> frozenAccount[target]
+REF_27(bool) (->frozenAccount) := freeze(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+FrozenFunds(target,freeze)
+
+IRs:
+Emit FrozenFunds(target,freeze)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+3->1;
+}
+// Function: 1304.sol-iCarChain-iCarChain(uint256,string,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+totalSupply = initialSupply * 10 ** uint256(decimals)
+
+IRs:
+TMP_4 = CONVERT decimals to uint256
+TMP_5(uint256) = 10 ** TMP_4
+TMP_6(uint256) = initialSupply * TMP_5
+totalSupply(uint256) := TMP_6(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balanceOf[msg.sender] = totalSupply
+
+IRs:
+REF_0(uint256) -> balanceOf[msg.sender]
+REF_0(uint256) (->balanceOf) := totalSupply(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+name = tokenName
+
+IRs:
+name(string) := tokenName(string)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+symbol = tokenSymbol
+
+IRs:
+symbol(string) := tokenSymbol(string)"];
+}
+// Function: 1304.sol-iCarChain-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_43(bool) = msg.sender == owner
+TMP_44(None) = SOLIDITY_CALL require(bool)(TMP_43)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1304.sol-iCarChain-owned()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 1304.sol-iCarChain-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+decimals = 18
+
+IRs:
+decimals(uint8) := 18(uint256)"];
+}
+// Function: 1304.sol-iCarChain-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! frozenAccount[msg.sender])
+
+IRs:
+REF_10(bool) -> frozenAccount[msg.sender]
+TMP_19 = UnaryType.BANG REF_10 
+TMP_20(None) = SOLIDITY_CALL require(bool)(TMP_19)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_transfer(msg.sender,_to,_value)
+
+IRs:
+INTERNAL_CALL, iCarChain._transfer(address,address,uint256)(msg.sender,_to,_value)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 1304.sol-iCarChain-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_value <= allowance[_from][msg.sender])
+
+IRs:
+REF_11(mapping(address => uint256)) -> allowance[_from]
+REF_12(uint256) -> REF_11[msg.sender]
+TMP_22(bool) = _value <= REF_12
+TMP_23(None) = SOLIDITY_CALL require(bool)(TMP_22)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+allowance[_from][msg.sender] -= _value
+
+IRs:
+REF_13(mapping(address => uint256)) -> allowance[_from]
+REF_14(uint256) -> REF_13[msg.sender]
+REF_14(-> allowance) = REF_14 - _value"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_transfer(_from,_to,_value)
+
+IRs:
+INTERNAL_CALL, iCarChain._transfer(address,address,uint256)(_from,_to,_value)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 1304.sol-iCarChain-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+2->1;
+}
+// Function: 1304.sol-owned-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_1(bool) = msg.sender == owner
+TMP_2(None) = SOLIDITY_CALL require(bool)(TMP_1)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1304.sol-owned-owned()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 1304.sol-owned-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+2->1;
+}
+// Function: 1304.sol-tokenRecipient-receiveApproval(address,uint256,address,bytes)
+digraph{
+}
+}

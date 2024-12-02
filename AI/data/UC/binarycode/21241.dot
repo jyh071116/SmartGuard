@@ -1,0 +1,1009 @@
+digraph G {
+// Function: 21241.sol-AuctusToken-burn(uint256)
+digraph{
+}
+// Function: 21241.sol-AuctusToken-setTokenSaleFinished()
+digraph{
+}
+// Function: 21241.sol-AuctusToken-transfer(address,uint256)
+digraph{
+}
+// Function: 21241.sol-AuctusToken-transfer(address,uint256,bytes)
+digraph{
+}
+// Function: 21241.sol-AuctusTokenSale-AuctusTokenSale(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+softCap = minimumCap
+
+IRs:
+softCap(uint256) := minimumCap(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+endTime = endSaleTime
+
+IRs:
+endTime(uint256) := endSaleTime(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+saleWasSet = false
+
+IRs:
+saleWasSet(bool) := False(bool)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+tokenSaleHalted = false
+
+IRs:
+tokenSaleHalted(bool) := False(bool)"];
+}
+// Function: 21241.sol-AuctusTokenSale-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->14;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+(weiToInvest,weiRemaining) = getValueToInvest()
+
+IRs:
+TUPLE_0(uint256,uint256) = INTERNAL_CALL, AuctusTokenSale.getValueToInvest()()
+weiToInvest(uint256)= UNPACK TUPLE_0 index: 0 
+weiRemaining(uint256)= UNPACK TUPLE_0 index: 1 "];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool)(weiToInvest > 0)
+
+IRs:
+TMP_29(bool) = weiToInvest > 0
+TMP_30(None) = SOLIDITY_CALL require(bool)(TMP_29)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+tokensToReceive = weiToInvest.mul(basicPricePerEth)
+
+IRs:
+TMP_31(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['weiToInvest', 'basicPricePerEth'] 
+tokensToReceive(uint256) := TMP_31(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+remainingTokens = remainingTokens.sub(tokensToReceive)
+
+IRs:
+TMP_32(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['remainingTokens', 'tokensToReceive'] 
+remainingTokens(uint256) := TMP_32(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+weiRaised = weiRaised.add(weiToInvest)
+
+IRs:
+TMP_33(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['weiRaised', 'weiToInvest'] 
+weiRaised(uint256) := TMP_33(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+invested[msg.sender] = invested[msg.sender].add(weiToInvest)
+
+IRs:
+REF_3(uint256) -> invested[msg.sender]
+REF_4(uint256) -> invested[msg.sender]
+TMP_34(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_4', 'weiToInvest'] 
+REF_3(uint256) (->invested) := TMP_34(uint256)"];
+8->9;
+9[label="Node Type: IF 9
+
+EXPRESSION:
+weiRemaining > 0
+
+IRs:
+TMP_35(bool) = weiRemaining > 0
+CONDITION TMP_35"];
+9->10[label="True"];
+9->11[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+msg.sender.transfer(weiRemaining)
+
+IRs:
+Transfer dest:msg.sender value:weiRemaining"];
+10->11;
+11[label="Node Type: END_IF 11
+"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+assert(bool)(AuctusToken(auctusTokenAddress).transfer(msg.sender,tokensToReceive))
+
+IRs:
+TMP_37 = CONVERT auctusTokenAddress to AuctusToken
+TMP_38(bool) = HIGH_LEVEL_CALL, dest:TMP_37(AuctusToken), function:transfer, arguments:['msg.sender', 'tokensToReceive']  
+TMP_39(None) = SOLIDITY_CALL assert(bool)(TMP_38)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+Buy(msg.sender,tokensToReceive)
+
+IRs:
+Emit Buy(msg.sender,tokensToReceive)"];
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+openSale()
+
+IRs:
+MODIFIER_CALL, AuctusTokenSale.openSale()()"];
+14->1;
+}
+// Function: 21241.sol-AuctusTokenSale-finish()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->11;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+freeEthers = address(this).balance * 40 / 100
+
+IRs:
+TMP_47 = CONVERT this to address
+TMP_48(uint256) = SOLIDITY_CALL balance(address)(TMP_47)
+TMP_49(uint256) = TMP_48 * 40
+TMP_50(uint256) = TMP_49 / 100
+freeEthers(uint256) := TMP_50(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+vestedEthers = address(this).balance - freeEthers
+
+IRs:
+TMP_51 = CONVERT this to address
+TMP_52(uint256) = SOLIDITY_CALL balance(address)(TMP_51)
+TMP_53(uint256) = TMP_52 - freeEthers
+vestedEthers(uint256) := TMP_53(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+address(0xd1B10607921C78D9a00529294C4b99f1bd250E1c).transfer(freeEthers)
+
+IRs:
+TMP_54 = CONVERT 1197126828252229662696652253573776023241284193820 to address
+Transfer dest:TMP_54 value:freeEthers"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+assert(bool)(address(0x0285d35508e1A1f833142EB5211adb858Bd3323A).call.value(vestedEthers)())
+
+IRs:
+TMP_56 = CONVERT 14402390281190417509890659559023896878875095610 to address
+TMP_58(bool) = LOW_LEVEL_CALL, dest:TMP_56, function:call, arguments:[] value:vestedEthers 
+TMP_59(None) = SOLIDITY_CALL assert(bool)(TMP_58)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+token = AuctusToken(auctusTokenAddress)
+
+IRs:
+TMP_60 = CONVERT auctusTokenAddress to AuctusToken
+token(AuctusToken) := TMP_60(AuctusToken)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+token.setTokenSaleFinished()
+
+IRs:
+HIGH_LEVEL_CALL, dest:token(AuctusToken), function:setTokenSaleFinished, arguments:[]  "];
+6->7;
+7[label="Node Type: IF 7
+
+EXPRESSION:
+remainingTokens > 0
+
+IRs:
+TMP_62(bool) = remainingTokens > 0
+CONDITION TMP_62"];
+7->8[label="True"];
+7->10[label="False"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+token.burn(remainingTokens)
+
+IRs:
+TMP_63(bool) = HIGH_LEVEL_CALL, dest:token(AuctusToken), function:burn, arguments:['remainingTokens']  "];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+remainingTokens = 0
+
+IRs:
+remainingTokens(uint256) := 0(uint256)"];
+9->10;
+10[label="Node Type: END_IF 10
+"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, AuctusTokenSale.onlyOwner()()"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+saleCompletedSuccessfully()
+
+IRs:
+MODIFIER_CALL, AuctusTokenSale.saleCompletedSuccessfully()()"];
+12->1;
+}
+// Function: 21241.sol-AuctusTokenSale-getAllowedAmount(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+maximumValue = remainingTokens / basicPricePerEth
+
+IRs:
+TMP_75(uint256) = remainingTokens / basicPricePerEth
+maximumValue(uint256) := TMP_75(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+value > maximumValue
+
+IRs:
+TMP_76(bool) = value > maximumValue
+CONDITION TMP_76"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+maximumValue
+
+IRs:
+RETURN maximumValue"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+value
+
+IRs:
+RETURN value"];
+}
+// Function: 21241.sol-AuctusTokenSale-getValueToInvest()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+allowedValue = AuctusWhitelist(auctusWhiteListAddress).getAllowedAmountToContribute(msg.sender)
+
+IRs:
+TMP_66 = CONVERT auctusWhiteListAddress to AuctusWhitelist
+TMP_67(uint256) = HIGH_LEVEL_CALL, dest:TMP_66(AuctusWhitelist), function:getAllowedAmountToContribute, arguments:['msg.sender']  
+allowedValue(uint256) := TMP_67(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+allowedValue == 0
+
+IRs:
+TMP_68(bool) = allowedValue == 0
+CONDITION TMP_68"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+weiToInvest = 0
+
+IRs:
+weiToInvest(uint256) := 0(uint256)"];
+4->9;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+allowedValue >= invested[msg.sender].add(msg.value)
+
+IRs:
+REF_17(uint256) -> invested[msg.sender]
+TMP_69(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_17', 'msg.value'] 
+TMP_70(bool) = allowedValue >= TMP_69
+CONDITION TMP_70"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+weiToInvest = getAllowedAmount(msg.value)
+
+IRs:
+TMP_71(uint256) = INTERNAL_CALL, AuctusTokenSale.getAllowedAmount(uint256)(msg.value)
+weiToInvest(uint256) := TMP_71(uint256)"];
+6->8;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+weiToInvest = getAllowedAmount(allowedValue.sub(invested[msg.sender]))
+
+IRs:
+REF_20(uint256) -> invested[msg.sender]
+TMP_72(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['allowedValue', 'REF_20'] 
+TMP_73(uint256) = INTERNAL_CALL, AuctusTokenSale.getAllowedAmount(uint256)(TMP_72)
+weiToInvest(uint256) := TMP_73(uint256)"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: RETURN 10
+
+EXPRESSION:
+(weiToInvest,msg.value.sub(weiToInvest))
+
+IRs:
+TMP_74(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['msg.value', 'weiToInvest'] 
+RETURN weiToInvest,TMP_74"];
+}
+// Function: 21241.sol-AuctusTokenSale-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(owner == msg.sender)
+
+IRs:
+TMP_110(bool) = owner == msg.sender
+TMP_111(None) = SOLIDITY_CALL require(bool)(TMP_110)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 21241.sol-AuctusTokenSale-openSale()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(saleWasSet && ! tokenSaleHalted && now >= startTime && now <= endTime && remainingTokens > 0)
+
+IRs:
+TMP_112 = UnaryType.BANG tokenSaleHalted 
+TMP_113(bool) = saleWasSet && TMP_112
+TMP_114(bool) = now >= startTime
+TMP_115(bool) = TMP_113 && TMP_114
+TMP_116(bool) = now <= endTime
+TMP_117(bool) = TMP_115 && TMP_116
+TMP_118(bool) = remainingTokens > 0
+TMP_119(bool) = TMP_117 && TMP_118
+TMP_120(None) = SOLIDITY_CALL require(bool)(TMP_119)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 21241.sol-AuctusTokenSale-revoke()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+investedValue = invested[msg.sender]
+
+IRs:
+REF_8(uint256) -> invested[msg.sender]
+investedValue(uint256) := REF_8(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(investedValue > 0)
+
+IRs:
+TMP_42(bool) = investedValue > 0
+TMP_43(None) = SOLIDITY_CALL require(bool)(TMP_42)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+invested[msg.sender] = 0
+
+IRs:
+REF_9(uint256) -> invested[msg.sender]
+REF_9(uint256) (->invested) := 0(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+msg.sender.transfer(investedValue)
+
+IRs:
+Transfer dest:msg.sender value:investedValue"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Revoke(msg.sender,investedValue)
+
+IRs:
+Emit Revoke(msg.sender,investedValue)"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+saleFailed()
+
+IRs:
+MODIFIER_CALL, AuctusTokenSale.saleFailed()()"];
+6->1;
+}
+// Function: 21241.sol-AuctusTokenSale-saleCompletedSuccessfully()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(weiRaised >= softCap && (now > endTime || remainingTokens == 0))
+
+IRs:
+TMP_121(bool) = weiRaised >= softCap
+TMP_122(bool) = now > endTime
+TMP_123(bool) = remainingTokens == 0
+TMP_124(bool) = TMP_122 || TMP_123
+TMP_125(bool) = TMP_121 && TMP_124
+TMP_126(None) = SOLIDITY_CALL require(bool)(TMP_125)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 21241.sol-AuctusTokenSale-saleFailed()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(weiRaised < softCap && now > endTime)
+
+IRs:
+TMP_127(bool) = weiRaised < softCap
+TMP_128(bool) = now > endTime
+TMP_129(bool) = TMP_127 && TMP_128
+TMP_130(None) = SOLIDITY_CALL require(bool)(TMP_129)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 21241.sol-AuctusTokenSale-setEndSaleTime(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(now < endTime)
+
+IRs:
+TMP_21(bool) = now < endTime
+TMP_22(None) = SOLIDITY_CALL require(bool)(TMP_21)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+endTime = endSaleTime
+
+IRs:
+endTime(uint256) := endSaleTime(uint256)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, AuctusTokenSale.onlyOwner()()"];
+3->1;
+}
+// Function: 21241.sol-AuctusTokenSale-setSoftCap(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(now < startTime)
+
+IRs:
+TMP_18(bool) = now < startTime
+TMP_19(None) = SOLIDITY_CALL require(bool)(TMP_18)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+softCap = minimumCap
+
+IRs:
+softCap(uint256) := minimumCap(uint256)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, AuctusTokenSale.onlyOwner()()"];
+3->1;
+}
+// Function: 21241.sol-AuctusTokenSale-setTokenSaleDistribution(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+auctusCoreTeam = totalAmount * 20 / 100
+
+IRs:
+TMP_77(uint256) = totalAmount * 20
+TMP_78(uint256) = TMP_77 / 100
+auctusCoreTeam(uint256) := TMP_78(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+bounty = totalAmount * 2 / 100
+
+IRs:
+TMP_79(uint256) = totalAmount * 2
+TMP_80(uint256) = TMP_79 / 100
+bounty(uint256) := TMP_80(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+reserveForFuture = totalAmount * 18 / 100
+
+IRs:
+TMP_81(uint256) = totalAmount * 18
+TMP_82(uint256) = TMP_81 / 100
+reserveForFuture(uint256) := TMP_82(uint256)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+partnershipsAdvisoryFree = totalAmount * 18 / 1000
+
+IRs:
+TMP_83(uint256) = totalAmount * 18
+TMP_84(uint256) = TMP_83 / 1000
+partnershipsAdvisoryFree(uint256) := TMP_84(uint256)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+partnershipsAdvisoryVested = totalAmount * 72 / 1000
+
+IRs:
+TMP_85(uint256) = totalAmount * 72
+TMP_86(uint256) = TMP_85 / 1000
+partnershipsAdvisoryVested(uint256) := TMP_86(uint256)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+privateSales = 2970000000000000000000000
+
+IRs:
+privateSales(uint256) := 2970000000000000000000000(uint256)"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+preSale = 2397307557007329968290000
+
+IRs:
+preSale(uint256) := 2397307557007329968290000(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+transferTokens(auctusCoreTeam,bounty,reserveForFuture,preSale,partnershipsAdvisoryVested,partnershipsAdvisoryFree,privateSales)
+
+IRs:
+INTERNAL_CALL, AuctusTokenSale.transferTokens(uint256,uint256,uint256,uint256,uint256,uint256,uint256)(auctusCoreTeam,bounty,reserveForFuture,preSale,partnershipsAdvisoryVested,partnershipsAdvisoryFree,privateSales)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+remainingTokens = totalAmount - auctusCoreTeam - bounty - reserveForFuture - preSale - partnershipsAdvisoryVested - partnershipsAdvisoryFree - privateSales
+
+IRs:
+TMP_88(uint256) = totalAmount - auctusCoreTeam
+TMP_89(uint256) = TMP_88 - bounty
+TMP_90(uint256) = TMP_89 - reserveForFuture
+TMP_91(uint256) = TMP_90 - preSale
+TMP_92(uint256) = TMP_91 - partnershipsAdvisoryVested
+TMP_93(uint256) = TMP_92 - partnershipsAdvisoryFree
+TMP_94(uint256) = TMP_93 - privateSales
+remainingTokens(uint256) := TMP_94(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+saleWasSet = true
+
+IRs:
+saleWasSet(bool) := True(bool)"];
+}
+// Function: 21241.sol-AuctusTokenSale-setTokenSaleHalt(bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+tokenSaleHalted = halted
+
+IRs:
+tokenSaleHalted(bool) := halted(bool)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, AuctusTokenSale.onlyOwner()()"];
+2->1;
+}
+// Function: 21241.sol-AuctusTokenSale-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+auctusTokenAddress = 0xfD89de68b246eB3e21B06e9B65450AC28D222488
+
+IRs:
+auctusTokenAddress(address) := 1447449241664443920872373241115916248267821819016(address)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+auctusWhiteListAddress = 0xA6e728E524c1D7A65fE5193cA1636265DE9Bc982
+
+IRs:
+auctusWhiteListAddress(address) := 952847502562575925314742627461391869022417176962(address)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+startTime = 1522159200
+
+IRs:
+startTime(uint256) := 1522159200(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+basicPricePerEth = 2000
+
+IRs:
+basicPricePerEth(uint256) := 2000(uint256)"];
+}
+// Function: 21241.sol-AuctusTokenSale-tokenFallback(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == auctusTokenAddress)
+
+IRs:
+TMP_24(bool) = msg.sender == auctusTokenAddress
+TMP_25(None) = SOLIDITY_CALL require(bool)(TMP_24)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(! saleWasSet)
+
+IRs:
+TMP_26 = UnaryType.BANG saleWasSet 
+TMP_27(None) = SOLIDITY_CALL require(bool)(TMP_26)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+setTokenSaleDistribution(value)
+
+IRs:
+INTERNAL_CALL, AuctusTokenSale.setTokenSaleDistribution(uint256)(value)"];
+}
+// Function: 21241.sol-AuctusTokenSale-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newOwner != address(0))
+
+IRs:
+TMP_13 = CONVERT 0 to address
+TMP_14(bool) = newOwner != TMP_13
+TMP_15(None) = SOLIDITY_CALL require(bool)(TMP_14)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, AuctusTokenSale.onlyOwner()()"];
+3->1;
+}
+// Function: 21241.sol-AuctusTokenSale-transferTokens(uint256,uint256,uint256,uint256,uint256,uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+token = AuctusToken(auctusTokenAddress)
+
+IRs:
+TMP_95 = CONVERT auctusTokenAddress to AuctusToken
+token(AuctusToken) := TMP_95(AuctusToken)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+assert(bool)(token.transfer(0x6bc58c572d0973cF0EfA1Fe1D7D6c9d7Eea2cd23,auctusCoreTeam,empty))
+
+IRs:
+TMP_96(bool) = HIGH_LEVEL_CALL, dest:token(AuctusToken), function:transfer, arguments:['615267484666722069772023040359595288794004376867', 'auctusCoreTeam', 'empty']  
+TMP_97(None) = SOLIDITY_CALL assert(bool)(TMP_96)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+assert(bool)(token.transfer(0x936Cf3e904B83B1D939C41475DC5F7c470419A3E,bounty,empty))
+
+IRs:
+TMP_98(bool) = HIGH_LEVEL_CALL, dest:token(AuctusToken), function:transfer, arguments:['841651371370092121290731721462992355194013063742', 'bounty', 'empty']  
+TMP_99(None) = SOLIDITY_CALL assert(bool)(TMP_98)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+assert(bool)(token.transfer(0xF5ad5fF703D0AD0df3bAb3A1194FbCC5c152bf3b,reserveForFuture,empty))
+
+IRs:
+TMP_100(bool) = HIGH_LEVEL_CALL, dest:token(AuctusToken), function:transfer, arguments:['1402569127493165819632025936099904958645134343995', 'reserveForFuture', 'empty']  
+TMP_101(None) = SOLIDITY_CALL assert(bool)(TMP_100)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+assert(bool)(token.transfer(0x2cE4FAb9F313F1df0978869C5d302768F1bB471d,preSale,empty))
+
+IRs:
+TMP_102(bool) = HIGH_LEVEL_CALL, dest:token(AuctusToken), function:transfer, arguments:['256302005168340703925378382530801179722350544669', 'preSale', 'empty']  
+TMP_103(None) = SOLIDITY_CALL assert(bool)(TMP_102)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+assert(bool)(token.transfer(0x03f6278E5c359a5E8947a62E87D85AC394580d13,partnershipsAdvisoryVested,empty))
+
+IRs:
+TMP_104(bool) = HIGH_LEVEL_CALL, dest:token(AuctusToken), function:transfer, arguments:['22616401453124791615125158179187650597630774547', 'partnershipsAdvisoryVested', 'empty']  
+TMP_105(None) = SOLIDITY_CALL assert(bool)(TMP_104)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+assert(bool)(token.transfer(0x6c89Cc03036193d52e9b8386413b545184BDAb99,partnershipsAdvisoryFree))
+
+IRs:
+TMP_106(bool) = HIGH_LEVEL_CALL, dest:token(AuctusToken), function:transfer, arguments:['619643977272844879027568527164087716226831068057', 'partnershipsAdvisoryFree']  
+TMP_107(None) = SOLIDITY_CALL assert(bool)(TMP_106)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+assert(bool)(token.transfer(0xd1B10607921C78D9a00529294C4b99f1bd250E1c,privateSales))
+
+IRs:
+TMP_108(bool) = HIGH_LEVEL_CALL, dest:token(AuctusToken), function:transfer, arguments:['1197126828252229662696652253573776023241284193820', 'privateSales']  
+TMP_109(None) = SOLIDITY_CALL assert(bool)(TMP_108)"];
+}
+// Function: 21241.sol-AuctusWhitelist-getAllowedAmountToContribute(address)
+digraph{
+}
+// Function: 21241.sol-ContractReceiver-tokenFallback(address,uint256,bytes)
+digraph{
+}
+// Function: 21241.sol-SafeMath-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_0(uint256) = a + b
+c(uint256) := TMP_0(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(a <= c)
+
+IRs:
+TMP_1(bool) = a <= c
+TMP_2(None) = SOLIDITY_CALL assert(bool)(TMP_1)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 21241.sol-SafeMath-div(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+a / b
+
+IRs:
+TMP_12(uint256) = a / b
+RETURN TMP_12"];
+}
+// Function: 21241.sol-SafeMath-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_6(uint256) = a * b
+c(uint256) := TMP_6(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(a == 0 || c / a == b)
+
+IRs:
+TMP_7(bool) = a == 0
+TMP_8(uint256) = c / a
+TMP_9(bool) = TMP_8 == b
+TMP_10(bool) = TMP_7 || TMP_9
+TMP_11(None) = SOLIDITY_CALL assert(bool)(TMP_10)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 21241.sol-SafeMath-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(a >= b)
+
+IRs:
+TMP_3(bool) = a >= b
+TMP_4(None) = SOLIDITY_CALL assert(bool)(TMP_3)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_5(uint256) = a - b
+RETURN TMP_5"];
+}
+}

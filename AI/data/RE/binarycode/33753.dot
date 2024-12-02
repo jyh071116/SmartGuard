@@ -1,0 +1,306 @@
+digraph G {
+// Function: 33753.sol-ERC20-balanceOf(address)
+digraph{
+}
+// Function: 33753.sol-ERC20-transfer(address,uint256)
+digraph{
+}
+// Function: 33753.sol-OraclesPresale-OraclesPresale()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 33753.sol-OraclesPresale-buy_the_tokens()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_15(bool) = msg.sender == owner
+TMP_16(None) = SOLIDITY_CALL require(bool)(TMP_15)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(! bought_tokens)
+
+IRs:
+TMP_17 = UnaryType.BANG bought_tokens 
+TMP_18(None) = SOLIDITY_CALL require(bool)(TMP_17)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(sale != 0x0)
+
+IRs:
+TMP_19(bool) = sale != 0
+TMP_20(None) = SOLIDITY_CALL require(bool)(TMP_19)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool)(this.balance >= min_required_amount)
+
+IRs:
+REF_8(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_21(bool) = REF_8 >= min_required_amount
+TMP_22(None) = SOLIDITY_CALL require(bool)(TMP_21)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+bought_tokens = true
+
+IRs:
+bought_tokens(bool) := True(bool)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+contract_eth_value = this.balance
+
+IRs:
+REF_9(uint256) = SOLIDITY_CALL balance(address)(this)
+contract_eth_value(uint256) := REF_9([<slither.core.solidity_types.elementary_type.ElementaryType object at 0x7fb37d9ab3a0>])"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+require(bool)(sale.call.value(contract_eth_value)())
+
+IRs:
+TMP_24(bool) = LOW_LEVEL_CALL, dest:sale, function:call, arguments:[] value:contract_eth_value 
+TMP_25(None) = SOLIDITY_CALL require(bool)(TMP_24)"];
+}
+// Function: 33753.sol-OraclesPresale-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! bought_tokens)
+
+IRs:
+TMP_28 = UnaryType.BANG bought_tokens 
+TMP_29(None) = SOLIDITY_CALL require(bool)(TMP_28)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(this.balance + msg.value < eth_cap)
+
+IRs:
+REF_12(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_30([<slither.core.solidity_types.elementary_type.ElementaryType object at 0x7fb37d9aba60>]) = REF_12 + msg.value
+TMP_31(bool) = TMP_30 < eth_cap
+TMP_32(None) = SOLIDITY_CALL require(bool)(TMP_31)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balances[msg.sender] += msg.value
+
+IRs:
+REF_13(uint256) -> balances[msg.sender]
+REF_13(-> balances) = REF_13 + msg.value"];
+}
+// Function: 33753.sol-OraclesPresale-perform_withdrawal(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(bought_tokens)
+
+IRs:
+TMP_4(None) = SOLIDITY_CALL require(bool)(bought_tokens)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+token = ERC20(tokenAddress)
+
+IRs:
+TMP_5 = CONVERT tokenAddress to ERC20
+token(ERC20) := TMP_5(ERC20)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+contract_token_balance = token.balanceOf(address(this))
+
+IRs:
+TMP_6 = CONVERT this to address
+TMP_7(uint256) = HIGH_LEVEL_CALL, dest:token(ERC20), function:balanceOf, arguments:['TMP_6']  
+contract_token_balance(uint256) := TMP_7(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool)(contract_token_balance != 0)
+
+IRs:
+TMP_8(bool) = contract_token_balance != 0
+TMP_9(None) = SOLIDITY_CALL require(bool)(TMP_8)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+tokens_to_withdraw = (balances[msg.sender] * contract_token_balance) / contract_eth_value
+
+IRs:
+REF_1(uint256) -> balances[msg.sender]
+TMP_10(uint256) = REF_1 * contract_token_balance
+TMP_11(uint256) = TMP_10 / contract_eth_value
+tokens_to_withdraw(uint256) := TMP_11(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+contract_eth_value -= balances[msg.sender]
+
+IRs:
+REF_2(uint256) -> balances[msg.sender]
+contract_eth_value(uint256) = contract_eth_value - REF_2"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+balances[msg.sender] = 0
+
+IRs:
+REF_3(uint256) -> balances[msg.sender]
+REF_3(uint256) (->balances) := 0(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+require(bool)(token.transfer(msg.sender,tokens_to_withdraw))
+
+IRs:
+TMP_12(bool) = HIGH_LEVEL_CALL, dest:token(ERC20), function:transfer, arguments:['msg.sender', 'tokens_to_withdraw']  
+TMP_13(None) = SOLIDITY_CALL require(bool)(TMP_12)"];
+}
+// Function: 33753.sol-OraclesPresale-refund_me()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+eth_to_withdraw = balances[msg.sender]
+
+IRs:
+REF_5(uint256) -> balances[msg.sender]
+eth_to_withdraw(uint256) := REF_5(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balances[msg.sender] = 0
+
+IRs:
+REF_6(uint256) -> balances[msg.sender]
+REF_6(uint256) (->balances) := 0(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+msg.sender.transfer(eth_to_withdraw)
+
+IRs:
+Transfer dest:msg.sender value:eth_to_withdraw"];
+}
+// Function: 33753.sol-OraclesPresale-set_saleAddress(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_0(bool) = msg.sender == owner
+TMP_1(None) = SOLIDITY_CALL require(bool)(TMP_0)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(sale == 0x0)
+
+IRs:
+TMP_2(bool) = sale == 0
+TMP_3(None) = SOLIDITY_CALL require(bool)(TMP_2)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+sale = _sale
+
+IRs:
+sale(address) := _sale(address)"];
+}
+// Function: 33753.sol-OraclesPresale-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+min_required_amount = 100000000000000000000
+
+IRs:
+min_required_amount(uint256) := 100000000000000000000(uint256)"];
+}
+// Function: 33753.sol-OraclesPresale-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+eth_cap = 500000000000000000000
+
+IRs:
+eth_cap(uint256) := 500000000000000000000(uint256)"];
+}
+// Function: 33753.sol-OraclesPresale-upgrade_cap()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_26(bool) = msg.sender == owner
+TMP_27(None) = SOLIDITY_CALL require(bool)(TMP_26)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+eth_cap = 1000000000000000000000
+
+IRs:
+eth_cap(uint256) := 1000000000000000000000(uint256)"];
+}
+}

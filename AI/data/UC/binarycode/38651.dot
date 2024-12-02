@@ -1,0 +1,1129 @@
+digraph G {
+// Function: 38651.sol-Ethex-Ethex(address,address,uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+admin = admin_
+
+IRs:
+admin(address) := admin_(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+feeAccount = feeAccount_
+
+IRs:
+feeAccount(address) := feeAccount_(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+buyFee = buyFee_
+
+IRs:
+buyFee(uint256) := buyFee_(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+sellFee = sellFee_
+
+IRs:
+sellFee(uint256) := sellFee_(uint256)"];
+}
+// Function: 38651.sol-Ethex-assert(bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! assertion
+
+IRs:
+TMP_29 = UnaryType.BANG assertion 
+CONDITION TMP_29"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 38651.sol-Ethex-buyOrder(address,uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+h = sha256()(token,price,msg.sender)
+
+IRs:
+TMP_39(bytes32) = SOLIDITY_CALL sha256()(token,price,msg.sender)
+h(bytes32) := TMP_39(bytes32)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+totalCost = tokenAmount * price
+
+IRs:
+TMP_40(uint256) = tokenAmount * price
+totalCost(uint256) := TMP_40(uint256)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+totalCost < msg.value
+
+IRs:
+TMP_41(bool) = totalCost < msg.value
+CONDITION TMP_41"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: THROW 4
+"];
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+buyOrders[h] = safeAdd(buyOrders[h],msg.value)
+
+IRs:
+REF_2(uint256) -> buyOrders[h]
+REF_3(uint256) -> buyOrders[h]
+TMP_42(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(REF_3,msg.value)
+REF_2(uint256) (->buyOrders) := TMP_42(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+BuyOrder(h,token,tokenAmount,price,msg.sender)
+
+IRs:
+Emit BuyOrder(h,token,tokenAmount,price,msg.sender)"];
+}
+// Function: 38651.sol-Ethex-cancelBuyOrder(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+h = sha256()(token,price,msg.sender)
+
+IRs:
+TMP_46(bytes32) = SOLIDITY_CALL sha256()(token,price,msg.sender)
+h(bytes32) := TMP_46(bytes32)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+remain = buyOrders[h]
+
+IRs:
+REF_5(uint256) -> buyOrders[h]
+remain(uint256) := REF_5(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+delete buyOrders[h]
+
+IRs:
+REF_6(uint256) -> buyOrders[h]
+buyOrders = delete REF_6 "];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+! msg.sender.call.value(remain)()
+
+IRs:
+TMP_48(bool) = LOW_LEVEL_CALL, dest:msg.sender, function:call, arguments:[] value:remain 
+TMP_49 = UnaryType.BANG TMP_48 
+CONDITION TMP_49"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: THROW 5
+"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+CancelBuyOrder(h,token,price,msg.sender)
+
+IRs:
+Emit CancelBuyOrder(h,token,price,msg.sender)"];
+}
+// Function: 38651.sol-Ethex-cancelSellOrder(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+h = sha256()(token,price,msg.sender)
+
+IRs:
+TMP_44(bytes32) = SOLIDITY_CALL sha256()(token,price,msg.sender)
+h(bytes32) := TMP_44(bytes32)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+delete sellOrders[h]
+
+IRs:
+REF_4(uint256) -> sellOrders[h]
+sellOrders = delete REF_4 "];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+CancelSellOrder(h,token,price,msg.sender)
+
+IRs:
+Emit CancelSellOrder(h,token,price,msg.sender)"];
+}
+// Function: 38651.sol-Ethex-changeAdmin(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != admin
+
+IRs:
+TMP_30(bool) = msg.sender != admin
+CONDITION TMP_30"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+admin = admin_
+
+IRs:
+admin(address) := admin_(address)"];
+}
+// Function: 38651.sol-Ethex-changeBuyFee(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != admin
+
+IRs:
+TMP_32(bool) = msg.sender != admin
+CONDITION TMP_32"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+buyFee_ > buyFee
+
+IRs:
+TMP_33(bool) = buyFee_ > buyFee
+CONDITION TMP_33"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: THROW 5
+"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+buyFee = buyFee_
+
+IRs:
+buyFee(uint256) := buyFee_(uint256)"];
+}
+// Function: 38651.sol-Ethex-changeFeeAccount(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != admin
+
+IRs:
+TMP_31(bool) = msg.sender != admin
+CONDITION TMP_31"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+feeAccount = feeAccount_
+
+IRs:
+feeAccount(address) := feeAccount_(address)"];
+}
+// Function: 38651.sol-Ethex-changeSellFee(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != admin
+
+IRs:
+TMP_34(bool) = msg.sender != admin
+CONDITION TMP_34"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+sellFee_ > sellFee
+
+IRs:
+TMP_35(bool) = sellFee_ > sellFee
+CONDITION TMP_35"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+sellFee = sellFee_
+
+IRs:
+sellFee(uint256) := sellFee_(uint256)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+}
+// Function: 38651.sol-Ethex-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: THROW 1
+"];
+}
+// Function: 38651.sol-Ethex-safeAdd(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_24(uint256) = a + b
+c(uint256) := TMP_24(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(c >= a && c >= b)
+
+IRs:
+TMP_25(bool) = c >= a
+TMP_26(bool) = c >= b
+TMP_27(bool) = TMP_25 && TMP_26
+INTERNAL_CALL, SafeMath.assert(bool)(TMP_27)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 38651.sol-Ethex-safeMul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_15(uint256) = a * b
+c(uint256) := TMP_15(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(a == 0 || c / a == b)
+
+IRs:
+TMP_16(bool) = a == 0
+TMP_17(uint256) = c / a
+TMP_18(bool) = TMP_17 == b
+TMP_19(bool) = TMP_16 || TMP_18
+INTERNAL_CALL, SafeMath.assert(bool)(TMP_19)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 38651.sol-Ethex-safeSub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(b <= a)
+
+IRs:
+TMP_21(bool) = b <= a
+INTERNAL_CALL, SafeMath.assert(bool)(TMP_21)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_23(uint256) = a - b
+RETURN TMP_23"];
+}
+// Function: 38651.sol-Ethex-sellOrder(address,uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+h = sha256()(token,price,msg.sender)
+
+IRs:
+TMP_36(bytes32) = SOLIDITY_CALL sha256()(token,price,msg.sender)
+h(bytes32) := TMP_36(bytes32)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+sellOrders[h] = safeAdd(sellOrders[h],tokenAmount)
+
+IRs:
+REF_0(uint256) -> sellOrders[h]
+REF_1(uint256) -> sellOrders[h]
+TMP_37(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(REF_1,tokenAmount)
+REF_0(uint256) (->sellOrders) := TMP_37(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+SellOrder(h,token,tokenAmount,price,msg.sender)
+
+IRs:
+Emit SellOrder(h,token,tokenAmount,price,msg.sender)"];
+}
+// Function: 38651.sol-Ethex-takeBuy(address,uint256,uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+h = sha256()(token,price,buyer)
+
+IRs:
+TMP_55(bytes32) = SOLIDITY_CALL sha256()(token,price,buyer)
+h(bytes32) := TMP_55(bytes32)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+totalPriceNoFee = safeMul(amount,price)
+
+IRs:
+TMP_56(uint256) = INTERNAL_CALL, SafeMath.safeMul(uint256,uint256)(amount,price)
+totalPriceNoFee(uint256) := TMP_56(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+totalFee = safeMul(totalPriceNoFee,buyFee) / (1000000000000000000)
+
+IRs:
+TMP_57(uint256) = INTERNAL_CALL, SafeMath.safeMul(uint256,uint256)(totalPriceNoFee,buyFee)
+TMP_58(uint256) = TMP_57 / 1000000000000000000
+totalFee(uint256) := TMP_58(uint256)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+totalPrice = safeAdd(totalPriceNoFee,totalFee)
+
+IRs:
+TMP_59(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(totalPriceNoFee,totalFee)
+totalPrice(uint256) := TMP_59(uint256)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+buyOrders[h] < amount
+
+IRs:
+REF_9(uint256) -> buyOrders[h]
+TMP_60(bool) = REF_9 < amount
+CONDITION TMP_60"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: THROW 6
+"];
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: IF 8
+
+EXPRESSION:
+totalPrice > msg.value
+
+IRs:
+TMP_61(bool) = totalPrice > msg.value
+CONDITION TMP_61"];
+8->9[label="True"];
+8->10[label="False"];
+9[label="Node Type: THROW 9
+"];
+10[label="Node Type: END_IF 10
+"];
+10->11;
+11[label="Node Type: IF 11
+
+EXPRESSION:
+Token(token).allowance(msg.sender,this) < amount
+
+IRs:
+TMP_62 = CONVERT token to Token
+TMP_63(uint256) = HIGH_LEVEL_CALL, dest:TMP_62(Token), function:allowance, arguments:['msg.sender', 'this']  
+TMP_64(bool) = TMP_63 < amount
+CONDITION TMP_64"];
+11->12[label="True"];
+11->13[label="False"];
+12[label="Node Type: THROW 12
+"];
+13[label="Node Type: END_IF 13
+"];
+13->14;
+14[label="Node Type: IF 14
+
+EXPRESSION:
+Token(token).transferFrom(msg.sender,buyer,amount)
+
+IRs:
+TMP_65 = CONVERT token to Token
+TMP_66(bool) = HIGH_LEVEL_CALL, dest:TMP_65(Token), function:transferFrom, arguments:['msg.sender', 'buyer', 'amount']  
+CONDITION TMP_66"];
+14->15[label="True"];
+14->16[label="False"];
+15[label="Node Type: THROW 15
+"];
+16[label="Node Type: END_IF 16
+"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+buyOrders[h] = safeSub(buyOrders[h],amount)
+
+IRs:
+REF_12(uint256) -> buyOrders[h]
+REF_13(uint256) -> buyOrders[h]
+TMP_67(uint256) = INTERNAL_CALL, SafeMath.safeSub(uint256,uint256)(REF_13,amount)
+REF_12(uint256) (->buyOrders) := TMP_67(uint256)"];
+17->18;
+18[label="Node Type: IF 18
+
+EXPRESSION:
+! feeAccount.send(totalFee)
+
+IRs:
+TMP_68 = SEND dest:feeAccount value:totalFee
+TMP_69 = UnaryType.BANG TMP_68 
+CONDITION TMP_69"];
+18->19[label="True"];
+18->20[label="False"];
+19[label="Node Type: THROW 19
+"];
+20[label="Node Type: END_IF 20
+"];
+20->21;
+21[label="Node Type: NEW VARIABLE 21
+
+EXPRESSION:
+leftOver = msg.value - totalPrice
+
+IRs:
+TMP_70(uint256) = msg.value - totalPrice
+leftOver(uint256) := TMP_70(uint256)"];
+21->22;
+22[label="Node Type: IF 22
+
+EXPRESSION:
+leftOver > 0
+
+IRs:
+TMP_71(bool) = leftOver > 0
+CONDITION TMP_71"];
+22->23[label="True"];
+22->26[label="False"];
+23[label="Node Type: IF 23
+
+EXPRESSION:
+! msg.sender.send(leftOver)
+
+IRs:
+TMP_72 = SEND dest:msg.sender value:leftOver
+TMP_73 = UnaryType.BANG TMP_72 
+CONDITION TMP_73"];
+23->24[label="True"];
+23->25[label="False"];
+24[label="Node Type: THROW 24
+"];
+25[label="Node Type: END_IF 25
+"];
+25->26;
+26[label="Node Type: END_IF 26
+"];
+26->27;
+27[label="Node Type: EXPRESSION 27
+
+EXPRESSION:
+Buy(h,token,amount,totalPrice,buyer,msg.sender)
+
+IRs:
+Emit Buy(h,token,amount,totalPrice,buyer,msg.sender)"];
+}
+// Function: 38651.sol-Ethex-takeSell(address,uint256,uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+h = sha256()(token,price,seller)
+
+IRs:
+TMP_79(bytes32) = SOLIDITY_CALL sha256()(token,price,seller)
+h(bytes32) := TMP_79(bytes32)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+totalPriceNoFee = safeMul(amount,price)
+
+IRs:
+TMP_80(uint256) = INTERNAL_CALL, SafeMath.safeMul(uint256,uint256)(amount,price)
+totalPriceNoFee(uint256) := TMP_80(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+totalFee = safeMul(totalPriceNoFee,buyFee) / (1000000000000000000)
+
+IRs:
+TMP_81(uint256) = INTERNAL_CALL, SafeMath.safeMul(uint256,uint256)(totalPriceNoFee,buyFee)
+TMP_82(uint256) = TMP_81 / 1000000000000000000
+totalFee(uint256) := TMP_82(uint256)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+totalPrice = safeSub(totalPriceNoFee,totalFee)
+
+IRs:
+TMP_83(uint256) = INTERNAL_CALL, SafeMath.safeSub(uint256,uint256)(totalPriceNoFee,totalFee)
+totalPrice(uint256) := TMP_83(uint256)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+sellOrders[h] < amount
+
+IRs:
+REF_16(uint256) -> sellOrders[h]
+TMP_84(bool) = REF_16 < amount
+CONDITION TMP_84"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: THROW 6
+"];
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: IF 8
+
+EXPRESSION:
+Token(token).allowance(seller,this) < amount
+
+IRs:
+TMP_85 = CONVERT token to Token
+TMP_86(uint256) = HIGH_LEVEL_CALL, dest:TMP_85(Token), function:allowance, arguments:['seller', 'this']  
+TMP_87(bool) = TMP_86 < amount
+CONDITION TMP_87"];
+8->9[label="True"];
+8->10[label="False"];
+9[label="Node Type: THROW 9
+"];
+10[label="Node Type: END_IF 10
+"];
+10->11;
+11[label="Node Type: IF 11
+
+EXPRESSION:
+! Token(token).transferFrom(seller,msg.sender,amount)
+
+IRs:
+TMP_88 = CONVERT token to Token
+TMP_89(bool) = HIGH_LEVEL_CALL, dest:TMP_88(Token), function:transferFrom, arguments:['seller', 'msg.sender', 'amount']  
+TMP_90 = UnaryType.BANG TMP_89 
+CONDITION TMP_90"];
+11->12[label="True"];
+11->13[label="False"];
+12[label="Node Type: THROW 12
+"];
+13[label="Node Type: END_IF 13
+"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+sellOrders[h] = safeSub(sellOrders[h],amount)
+
+IRs:
+REF_19(uint256) -> sellOrders[h]
+REF_20(uint256) -> sellOrders[h]
+TMP_91(uint256) = INTERNAL_CALL, SafeMath.safeSub(uint256,uint256)(REF_20,amount)
+REF_19(uint256) (->sellOrders) := TMP_91(uint256)"];
+14->15;
+15[label="Node Type: IF 15
+
+EXPRESSION:
+! seller.send(totalPrice)
+
+IRs:
+TMP_92 = SEND dest:seller value:totalPrice
+TMP_93 = UnaryType.BANG TMP_92 
+CONDITION TMP_93"];
+15->16[label="True"];
+15->17[label="False"];
+16[label="Node Type: THROW 16
+"];
+17[label="Node Type: END_IF 17
+"];
+17->18;
+18[label="Node Type: IF 18
+
+EXPRESSION:
+! feeAccount.send(totalFee)
+
+IRs:
+TMP_94 = SEND dest:feeAccount value:totalFee
+TMP_95 = UnaryType.BANG TMP_94 
+CONDITION TMP_95"];
+18->19[label="True"];
+18->20[label="False"];
+19[label="Node Type: THROW 19
+"];
+20[label="Node Type: END_IF 20
+"];
+20->21;
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+Sell(h,token,amount,totalPrice,msg.sender,seller)
+
+IRs:
+Emit Sell(h,token,amount,totalPrice,msg.sender,seller)"];
+}
+// Function: 38651.sol-Ethex-totalBuyPrice(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+totalPriceNoFee = safeMul(amount,price)
+
+IRs:
+TMP_51(uint256) = INTERNAL_CALL, SafeMath.safeMul(uint256,uint256)(amount,price)
+totalPriceNoFee(uint256) := TMP_51(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+totalFee = safeMul(totalPriceNoFee,buyFee) / (1000000000000000000)
+
+IRs:
+TMP_52(uint256) = INTERNAL_CALL, SafeMath.safeMul(uint256,uint256)(totalPriceNoFee,buyFee)
+TMP_53(uint256) = TMP_52 / 1000000000000000000
+totalFee(uint256) := TMP_53(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+totalPrice = safeAdd(totalPriceNoFee,totalFee)
+
+IRs:
+TMP_54(uint256) = INTERNAL_CALL, SafeMath.safeAdd(uint256,uint256)(totalPriceNoFee,totalFee)
+totalPrice(uint256) := TMP_54(uint256)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+totalPrice
+
+IRs:
+RETURN totalPrice"];
+}
+// Function: 38651.sol-Ethex-totalSellPrice(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+totalPriceNoFee = safeMul(amount,price)
+
+IRs:
+TMP_75(uint256) = INTERNAL_CALL, SafeMath.safeMul(uint256,uint256)(amount,price)
+totalPriceNoFee(uint256) := TMP_75(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+totalFee = safeMul(totalPriceNoFee,buyFee) / (1000000000000000000)
+
+IRs:
+TMP_76(uint256) = INTERNAL_CALL, SafeMath.safeMul(uint256,uint256)(totalPriceNoFee,buyFee)
+TMP_77(uint256) = TMP_76 / 1000000000000000000
+totalFee(uint256) := TMP_77(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+totalPrice = safeSub(totalPriceNoFee,totalFee)
+
+IRs:
+TMP_78(uint256) = INTERNAL_CALL, SafeMath.safeSub(uint256,uint256)(totalPriceNoFee,totalFee)
+totalPrice(uint256) := TMP_78(uint256)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+totalPrice
+
+IRs:
+RETURN totalPrice"];
+}
+// Function: 38651.sol-SafeMath-assert(bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! assertion
+
+IRs:
+TMP_14 = UnaryType.BANG assertion 
+CONDITION TMP_14"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 38651.sol-SafeMath-safeAdd(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_9(uint256) = a + b
+c(uint256) := TMP_9(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(c >= a && c >= b)
+
+IRs:
+TMP_10(bool) = c >= a
+TMP_11(bool) = c >= b
+TMP_12(bool) = TMP_10 && TMP_11
+INTERNAL_CALL, SafeMath.assert(bool)(TMP_12)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 38651.sol-SafeMath-safeMul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_0(uint256) = a * b
+c(uint256) := TMP_0(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(a == 0 || c / a == b)
+
+IRs:
+TMP_1(bool) = a == 0
+TMP_2(uint256) = c / a
+TMP_3(bool) = TMP_2 == b
+TMP_4(bool) = TMP_1 || TMP_3
+INTERNAL_CALL, SafeMath.assert(bool)(TMP_4)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 38651.sol-SafeMath-safeSub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(b <= a)
+
+IRs:
+TMP_6(bool) = b <= a
+INTERNAL_CALL, SafeMath.assert(bool)(TMP_6)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_8(uint256) = a - b
+RETURN TMP_8"];
+}
+// Function: 38651.sol-Token-allowance(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_owner
+"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_spender
+"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+remaining
+"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+remaining
+
+IRs:
+RETURN remaining"];
+}
+// Function: 38651.sol-Token-approve(address,uint256)
+digraph{
+}
+// Function: 38651.sol-Token-balanceOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_owner
+"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balance
+"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+balance
+
+IRs:
+RETURN balance"];
+}
+// Function: 38651.sol-Token-decimals()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+decimals
+"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+decimals
+
+IRs:
+RETURN decimals"];
+}
+// Function: 38651.sol-Token-name()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+name
+"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+name
+
+IRs:
+RETURN name"];
+}
+// Function: 38651.sol-Token-symbol()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+symbol
+"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+symbol
+
+IRs:
+RETURN symbol"];
+}
+// Function: 38651.sol-Token-totalSupply()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+totalSupply
+"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+totalSupply
+
+IRs:
+RETURN totalSupply"];
+}
+// Function: 38651.sol-Token-transfer(address,uint256)
+digraph{
+}
+// Function: 38651.sol-Token-transferFrom(address,address,uint256)
+digraph{
+}
+}

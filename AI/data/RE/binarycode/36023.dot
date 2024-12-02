@@ -1,0 +1,1137 @@
+digraph G {
+// Function: 36023.sol-ITransferable-transfer(address,uint256)
+digraph{
+}
+// Function: 36023.sol-P4PPool-P4PPool(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+playToken = PlayToken(_tokenAddr)
+
+IRs:
+TMP_30 = CONVERT _tokenAddr to PlayToken
+playToken(PlayToken) := TMP_30(PlayToken)"];
+}
+// Function: 36023.sol-P4PPool-calcTokenPerEth()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+tokenBalance = playToken.balanceOf(this)
+
+IRs:
+TMP_84(uint256) = HIGH_LEVEL_CALL, dest:playToken(PlayToken), function:balanceOf, arguments:['this']  
+tokenBalance(uint256) := TMP_84(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+virtualEthBalance = (((totalPhase1Donations * 2 + totalPhase2Donations) * 100) / (100 - ownerTokenSharePct) + 1)
+
+IRs:
+TMP_85(uint256) = totalPhase1Donations * 2
+TMP_86(uint256) = TMP_85 + totalPhase2Donations
+TMP_87(uint256) = TMP_86 * 100
+TMP_88(uint256) = 100 - ownerTokenSharePct
+TMP_89(uint256) = TMP_87 / TMP_88
+TMP_90(uint256) = TMP_89 + 1
+virtualEthBalance(uint256) := TMP_90(uint256)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+tokenBalance * 1E18 / (virtualEthBalance)
+
+IRs:
+TMP_91(uint256) = tokenBalance * 1000000000000000000
+TMP_92(uint256) = TMP_91 / virtualEthBalance
+RETURN TMP_92"];
+}
+// Function: 36023.sol-P4PPool-calcTokenShareOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_addr == owner
+
+IRs:
+TMP_69(bool) = _addr == owner
+CONDITION TMP_69"];
+1->2[label="True"];
+1->4[label="False"];
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+virtualEthBalance = (((totalPhase1Donations * 2 + totalPhase2Donations) * 100) / (100 - ownerTokenSharePct) + 1)
+
+IRs:
+TMP_70(uint256) = totalPhase1Donations * 2
+TMP_71(uint256) = TMP_70 + totalPhase2Donations
+TMP_72(uint256) = TMP_71 * 100
+TMP_73(uint256) = 100 - ownerTokenSharePct
+TMP_74(uint256) = TMP_72 / TMP_73
+TMP_75(uint256) = TMP_74 + 1
+virtualEthBalance(uint256) := TMP_75(uint256)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+((tokenPerEth * virtualEthBalance) * ownerTokenSharePct) / (100 * 1E18)
+
+IRs:
+TMP_76(uint256) = tokenPerEth * virtualEthBalance
+TMP_77(uint256) = TMP_76 * ownerTokenSharePct
+TMP_78(uint256) = 100 * 1000000000000000000
+TMP_79(uint256) = TMP_77 / TMP_78
+RETURN TMP_79"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+(tokenPerEth * (round1Donations[_addr] * 2 + round2Donations[_addr])) / 1E18
+
+IRs:
+REF_25(uint256) -> round1Donations[_addr]
+TMP_80(uint256) = REF_25 * 2
+REF_26(uint256) -> round2Donations[_addr]
+TMP_81(uint256) = TMP_80 + REF_26
+TMP_82(uint256) = tokenPerEth * TMP_81
+TMP_83(uint256) = TMP_82 / 1000000000000000000
+RETURN TMP_83"];
+}
+// Function: 36023.sol-P4PPool-destroy()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(currentState == STATE_PAYOUT)
+
+IRs:
+TMP_58(bool) = currentState == STATE_PAYOUT
+TMP_59(None) = SOLIDITY_CALL require(bool)(TMP_58)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(now > 1519862400)
+
+IRs:
+TMP_60(bool) = now > 1519862400
+TMP_61(None) = SOLIDITY_CALL require(bool)(TMP_60)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+selfdestruct(address)(owner)
+
+IRs:
+TMP_62(None) = SOLIDITY_CALL selfdestruct(address)(owner)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, P4PPool.onlyOwner()()"];
+4->1;
+}
+// Function: 36023.sol-P4PPool-donateFor(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+donateForImpl(_donor)
+
+IRs:
+INTERNAL_CALL, P4PPool.donateForImpl(address)(_donor)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyDuringDonationRounds()
+
+IRs:
+MODIFIER_CALL, P4PPool.onlyDuringDonationRounds()()"];
+2->1;
+}
+// Function: 36023.sol-P4PPool-donateForImpl(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->9;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+currentState == STATE_DONATION_ROUND_1
+
+IRs:
+TMP_93(bool) = currentState == STATE_DONATION_ROUND_1
+CONDITION TMP_93"];
+1->2[label="True"];
+1->4[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+round1Donations[_donor] += msg.value
+
+IRs:
+REF_28(uint256) -> round1Donations[_donor]
+REF_28(-> round1Donations) = REF_28 + msg.value"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+totalPhase1Donations += msg.value
+
+IRs:
+totalPhase1Donations(uint256) = totalPhase1Donations + msg.value"];
+3->8;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+currentState == STATE_DONATION_ROUND_2
+
+IRs:
+TMP_94(bool) = currentState == STATE_DONATION_ROUND_2
+CONDITION TMP_94"];
+4->5[label="True"];
+4->7[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+round2Donations[_donor] += msg.value
+
+IRs:
+REF_29(uint256) -> round2Donations[_donor]
+REF_29(-> round2Donations) = REF_29 + msg.value"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+totalPhase2Donations += msg.value
+
+IRs:
+totalPhase2Donations(uint256) = totalPhase2Donations + msg.value"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+onlyDuringDonationRounds()
+
+IRs:
+MODIFIER_CALL, P4PPool.onlyDuringDonationRounds()()"];
+9->1;
+}
+// Function: 36023.sol-P4PPool-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+donateForImpl(msg.sender)
+
+IRs:
+INTERNAL_CALL, P4PPool.donateForImpl(address)(msg.sender)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyDuringDonationRounds()
+
+IRs:
+MODIFIER_CALL, P4PPool.onlyDuringDonationRounds()()"];
+2->1;
+}
+// Function: 36023.sol-P4PPool-lockDonationReceiver()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(donationReceiver != 0)
+
+IRs:
+TMP_48(bool) = donationReceiver != 0
+TMP_49(None) = SOLIDITY_CALL require(bool)(TMP_48)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+donationReceiverLocked = true
+
+IRs:
+donationReceiverLocked(bool) := True(bool)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, P4PPool.onlyOwner()()"];
+3->1;
+}
+// Function: 36023.sol-P4PPool-onlyDuringDonationRounds()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(currentState == STATE_DONATION_ROUND_1 || currentState == STATE_DONATION_ROUND_2)
+
+IRs:
+TMP_99(bool) = currentState == STATE_DONATION_ROUND_1
+TMP_100(bool) = currentState == STATE_DONATION_ROUND_2
+TMP_101(bool) = TMP_99 || TMP_100
+TMP_102(None) = SOLIDITY_CALL require(bool)(TMP_101)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 36023.sol-P4PPool-onlyIfPayoutUnlocked()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(currentState == STATE_PAYOUT)
+
+IRs:
+TMP_103(bool) = currentState == STATE_PAYOUT
+TMP_104(None) = SOLIDITY_CALL require(bool)(TMP_103)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(uint32(now) >= donationUnlockTs)
+
+IRs:
+TMP_105 = CONVERT now to uint32
+TMP_106(bool) = TMP_105 >= donationUnlockTs
+TMP_107(None) = SOLIDITY_CALL require(bool)(TMP_106)"];
+2->3;
+3[label="Node Type: _ 3
+"];
+}
+// Function: 36023.sol-P4PPool-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_97(bool) = msg.sender == owner
+TMP_98(None) = SOLIDITY_CALL require(bool)(TMP_97)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 36023.sol-P4PPool-payoutDonations()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(donationReceiver != 0)
+
+IRs:
+TMP_51(bool) = donationReceiver != 0
+TMP_52(None) = SOLIDITY_CALL require(bool)(TMP_51)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+amount = this.balance
+
+IRs:
+REF_20(uint256) = SOLIDITY_CALL balance(address)(this)
+amount(uint256) := REF_20([<slither.core.solidity_types.elementary_type.ElementaryType object at 0x7f664f306110>])"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(donationReceiver.send(amount))
+
+IRs:
+TMP_53 = SEND dest:donationReceiver value:amount
+TMP_54(None) = SOLIDITY_CALL require(bool)(TMP_53)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+DonatedEthPayout(donationReceiver,amount)
+
+IRs:
+Emit DonatedEthPayout(donationReceiver,amount)"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, P4PPool.onlyOwner()()"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyIfPayoutUnlocked()
+
+IRs:
+MODIFIER_CALL, P4PPool.onlyIfPayoutUnlocked()()"];
+6->1;
+}
+// Function: 36023.sol-P4PPool-setDonationReceiver(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! donationReceiverLocked)
+
+IRs:
+TMP_45 = UnaryType.BANG donationReceiverLocked 
+TMP_46(None) = SOLIDITY_CALL require(bool)(TMP_45)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+donationReceiver = _receiver
+
+IRs:
+donationReceiver(address) := _receiver(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, P4PPool.onlyOwner()()"];
+3->1;
+}
+// Function: 36023.sol-P4PPool-setDonationUnlockTs(uint32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_newTs > donationUnlockTs)
+
+IRs:
+TMP_42(bool) = _newTs > donationUnlockTs
+TMP_43(None) = SOLIDITY_CALL require(bool)(TMP_42)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+donationUnlockTs = _newTs
+
+IRs:
+donationUnlockTs(uint32) := _newTs(uint32)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, P4PPool.onlyOwner()()"];
+3->1;
+}
+// Function: 36023.sol-P4PPool-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+STATE_NOT_STARTED = 0
+
+IRs:
+STATE_NOT_STARTED(uint8) := 0(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+STATE_DONATION_ROUND_1 = 1
+
+IRs:
+STATE_DONATION_ROUND_1(uint8) := 1(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+STATE_PLAYING = 2
+
+IRs:
+STATE_PLAYING(uint8) := 2(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+STATE_DONATION_ROUND_2 = 3
+
+IRs:
+STATE_DONATION_ROUND_2(uint8) := 3(uint256)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+STATE_PAYOUT = 4
+
+IRs:
+STATE_PAYOUT(uint8) := 4(uint256)"];
+4->5;
+5[label="Node Type: OTHER_ENTRYPOINT 5
+
+EXPRESSION:
+ownerTokenSharePct = 20
+
+IRs:
+ownerTokenSharePct(uint8) := 20(uint256)"];
+}
+// Function: 36023.sol-P4PPool-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+currentState = 0
+
+IRs:
+currentState(uint8) := 0(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+totalPhase1Donations = 0
+
+IRs:
+totalPhase1Donations(uint256) := 0(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+totalPhase2Donations = 0
+
+IRs:
+totalPhase2Donations(uint256) := 0(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+donationUnlockTs = uint32(now)
+
+IRs:
+TMP_96 = CONVERT now to uint32
+donationUnlockTs(uint32) := TMP_96(uint32)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+donationReceiverLocked = false
+
+IRs:
+donationReceiverLocked(bool) := False(bool)"];
+}
+// Function: 36023.sol-P4PPool-startNextPhase()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->7;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(currentState <= STATE_PAYOUT)
+
+IRs:
+TMP_35(bool) = currentState <= STATE_PAYOUT
+TMP_36(None) = SOLIDITY_CALL require(bool)(TMP_35)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+currentState ++
+
+IRs:
+TMP_37(uint8) := currentState(uint8)
+currentState(uint8) = currentState + 1"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+currentState == STATE_PAYOUT
+
+IRs:
+TMP_38(bool) = currentState == STATE_PAYOUT
+CONDITION TMP_38"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+tokenPerEth = calcTokenPerEth()
+
+IRs:
+TMP_39(uint256) = INTERNAL_CALL, P4PPool.calcTokenPerEth()()
+tokenPerEth(uint256) := TMP_39(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+StateChanged(currentState)
+
+IRs:
+Emit StateChanged(currentState)"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, P4PPool.onlyOwner()()"];
+7->1;
+}
+// Function: 36023.sol-P4PPool-withdrawTokenShare()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(tokenPerEth > 0)
+
+IRs:
+TMP_64(bool) = tokenPerEth > 0
+TMP_65(None) = SOLIDITY_CALL require(bool)(TMP_64)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(playToken.transfer(msg.sender,calcTokenShareOf(msg.sender)))
+
+IRs:
+TMP_66(uint256) = INTERNAL_CALL, P4PPool.calcTokenShareOf(address)(msg.sender)
+TMP_67(bool) = HIGH_LEVEL_CALL, dest:playToken(PlayToken), function:transfer, arguments:['msg.sender', 'TMP_66']  
+TMP_68(None) = SOLIDITY_CALL require(bool)(TMP_67)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+round1Donations[msg.sender] = 0
+
+IRs:
+REF_23(uint256) -> round1Donations[msg.sender]
+REF_23(uint256) (->round1Donations) := 0(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+round2Donations[msg.sender] = 0
+
+IRs:
+REF_24(uint256) -> round2Donations[msg.sender]
+REF_24(uint256) (->round2Donations) := 0(uint256)"];
+}
+// Function: 36023.sol-PlayToken-PlayToken(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+controller = _controller
+
+IRs:
+controller(address) := _controller(address)"];
+}
+// Function: 36023.sol-PlayToken-allowance(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+allowed[_owner][_spender]
+
+IRs:
+REF_14(mapping(address => uint256)) -> allowed[_owner]
+REF_15(uint256) -> REF_14[_spender]
+RETURN REF_15"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+remaining
+
+IRs:
+RETURN remaining"];
+}
+// Function: 36023.sol-PlayToken-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowed[msg.sender][_spender] = _value
+
+IRs:
+REF_12(mapping(address => uint256)) -> allowed[msg.sender]
+REF_13(uint256) -> REF_12[_spender]
+REF_13(uint256) (->allowed) := _value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,_value)
+
+IRs:
+Emit Approval(msg.sender,_spender,_value)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 36023.sol-PlayToken-approveAndCall(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowed[msg.sender][_spender] = _value
+
+IRs:
+REF_16(mapping(address => uint256)) -> allowed[msg.sender]
+REF_17(uint256) -> REF_16[_spender]
+REF_17(uint256) (->allowed) := _value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,_value)
+
+IRs:
+Emit Approval(msg.sender,_spender,_value)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(_spender.call(bytes4(bytes32(sha3()(receiveApproval(address,uint256,address,bytes)))),msg.sender,_value,this,_extraData))
+
+IRs:
+TMP_21(bytes32) = SOLIDITY_CALL sha3()(receiveApproval(address,uint256,address,bytes))
+TMP_22 = CONVERT TMP_21 to bytes32
+TMP_23 = CONVERT TMP_22 to bytes4
+TMP_24(bool) = LOW_LEVEL_CALL, dest:_spender, function:call, arguments:['TMP_23', 'msg.sender', '_value', 'this', '_extraData']  
+TMP_25(None) = SOLIDITY_CALL require(bool)(TMP_24)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 36023.sol-PlayToken-balanceOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+balances[_owner]
+
+IRs:
+REF_11(uint256) -> balances[_owner]
+RETURN REF_11"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+balance
+
+IRs:
+RETURN balance"];
+}
+// Function: 36023.sol-PlayToken-lockController()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+controllerLocked = true
+
+IRs:
+controllerLocked(bool) := True(bool)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyController()
+
+IRs:
+MODIFIER_CALL, PlayToken.onlyController()()"];
+2->1;
+}
+// Function: 36023.sol-PlayToken-mint(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+balances[_receiver] += _value
+
+IRs:
+REF_0(uint256) -> balances[_receiver]
+REF_0(-> balances) = REF_0 + _value"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+totalSupply += _value
+
+IRs:
+totalSupply(uint256) = totalSupply + _value"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+Transfer(0,_receiver,_value)
+
+IRs:
+Emit Transfer(0,_receiver,_value)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyController()
+
+IRs:
+MODIFIER_CALL, PlayToken.onlyController()()"];
+4->1;
+}
+// Function: 36023.sol-PlayToken-onlyController()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == controller)
+
+IRs:
+TMP_28(bool) = msg.sender == controller
+TMP_29(None) = SOLIDITY_CALL require(bool)(TMP_28)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 36023.sol-PlayToken-setController(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! controllerLocked)
+
+IRs:
+TMP_0 = UnaryType.BANG controllerLocked 
+TMP_1(None) = SOLIDITY_CALL require(bool)(TMP_0)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+controller = _newController
+
+IRs:
+controller(address) := _newController(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyController()
+
+IRs:
+MODIFIER_CALL, PlayToken.onlyController()()"];
+3->1;
+}
+// Function: 36023.sol-PlayToken-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+totalSupply = 0
+
+IRs:
+totalSupply(uint256) := 0(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+name = PLAY
+
+IRs:
+name(string) := PLAY(string)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+decimals = 18
+
+IRs:
+decimals(uint8) := 18(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+symbol = PLY
+
+IRs:
+symbol(string) := PLY(string)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+version = 1
+
+IRs:
+version(string) := 1(string)"];
+4->5;
+5[label="Node Type: OTHER_ENTRYPOINT 5
+
+EXPRESSION:
+controllerLocked = false
+
+IRs:
+controllerLocked(bool) := False(bool)"];
+}
+// Function: 36023.sol-PlayToken-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)((_to != 0) && (_to != address(this)))
+
+IRs:
+TMP_6(bool) = _to != 0
+TMP_7 = CONVERT this to address
+TMP_8(bool) = _to != TMP_7
+TMP_9(bool) = TMP_6 && TMP_8
+TMP_10(None) = SOLIDITY_CALL require(bool)(TMP_9)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(balances[msg.sender] >= _value)
+
+IRs:
+REF_1(uint256) -> balances[msg.sender]
+TMP_11(bool) = REF_1 >= _value
+TMP_12(None) = SOLIDITY_CALL require(bool)(TMP_11)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balances[msg.sender] -= _value
+
+IRs:
+REF_2(uint256) -> balances[msg.sender]
+REF_2(-> balances) = REF_2 - _value"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+balances[_to] += _value
+
+IRs:
+REF_3(uint256) -> balances[_to]
+REF_3(-> balances) = REF_3 + _value"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Transfer(msg.sender,_to,_value)
+
+IRs:
+Emit Transfer(msg.sender,_to,_value)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 36023.sol-PlayToken-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(balances[_from] >= _value && allowed[_from][msg.sender] >= _value)
+
+IRs:
+REF_4(uint256) -> balances[_from]
+TMP_14(bool) = REF_4 >= _value
+REF_5(mapping(address => uint256)) -> allowed[_from]
+REF_6(uint256) -> REF_5[msg.sender]
+TMP_15(bool) = REF_6 >= _value
+TMP_16(bool) = TMP_14 && TMP_15
+TMP_17(None) = SOLIDITY_CALL require(bool)(TMP_16)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balances[_to] += _value
+
+IRs:
+REF_7(uint256) -> balances[_to]
+REF_7(-> balances) = REF_7 + _value"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balances[_from] -= _value
+
+IRs:
+REF_8(uint256) -> balances[_from]
+REF_8(-> balances) = REF_8 - _value"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+allowed[_from][msg.sender] -= _value
+
+IRs:
+REF_9(mapping(address => uint256)) -> allowed[_from]
+REF_10(uint256) -> REF_9[msg.sender]
+REF_10(-> allowed) = REF_10 - _value"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Transfer(_from,_to,_value)
+
+IRs:
+Emit Transfer(_from,_to,_value)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 36023.sol-PlayToken-withdrawTokens(ITransferable,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_token.transfer(_to,_amount)
+
+IRs:
+TMP_26(bool) = HIGH_LEVEL_CALL, dest:_token(ITransferable), function:transfer, arguments:['_to', '_amount']  "];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyController()
+
+IRs:
+MODIFIER_CALL, PlayToken.onlyController()()"];
+2->1;
+}
+}

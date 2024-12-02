@@ -1,0 +1,1321 @@
+digraph G {
+// Function: 567.sol-AirdropToken-_transfer(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_to != 0x0)
+
+IRs:
+TMP_17(bool) = _to != 0
+TMP_18(None) = SOLIDITY_CALL require(bool)(TMP_17)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(balanceOf[_from] >= _value)
+
+IRs:
+REF_15(uint256) -> balanceOf[_from]
+TMP_19(bool) = REF_15 >= _value
+TMP_20(None) = SOLIDITY_CALL require(bool)(TMP_19)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(balanceOf[_to] + _value > balanceOf[_to])
+
+IRs:
+REF_16(uint256) -> balanceOf[_to]
+TMP_21(uint256) = REF_16 + _value
+REF_17(uint256) -> balanceOf[_to]
+TMP_22(bool) = TMP_21 > REF_17
+TMP_23(None) = SOLIDITY_CALL require(bool)(TMP_22)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+previousBalances = balanceOf[_from] + balanceOf[_to]
+
+IRs:
+REF_18(uint256) -> balanceOf[_from]
+REF_19(uint256) -> balanceOf[_to]
+TMP_24(uint256) = REF_18 + REF_19
+previousBalances(uint256) := TMP_24(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balanceOf[_from] -= _value
+
+IRs:
+REF_20(uint256) -> balanceOf[_from]
+REF_20(-> balanceOf) = REF_20 - _value"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+balanceOf[_to] += _value
+
+IRs:
+REF_21(uint256) -> balanceOf[_to]
+REF_21(-> balanceOf) = REF_21 + _value"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+assert(bool)(balanceOf[_from] + balanceOf[_to] == previousBalances)
+
+IRs:
+REF_22(uint256) -> balanceOf[_from]
+REF_23(uint256) -> balanceOf[_to]
+TMP_25(uint256) = REF_22 + REF_23
+TMP_26(bool) = TMP_25 == previousBalances
+TMP_27(None) = SOLIDITY_CALL assert(bool)(TMP_26)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+Transfer(_from,_to,_value)
+
+IRs:
+Emit Transfer(_from,_to,_value)"];
+}
+// Function: 567.sol-AirdropToken-airdrop()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(now >= airBegintime && now <= airEndtime)
+
+IRs:
+TMP_34(bool) = now >= airBegintime
+TMP_35(bool) = now <= airEndtime
+TMP_36(bool) = TMP_34 && TMP_35
+TMP_37(None) = SOLIDITY_CALL require(bool)(TMP_36)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(msg.value == 0)
+
+IRs:
+TMP_38(bool) = msg.value == 0
+TMP_39(None) = SOLIDITY_CALL require(bool)(TMP_38)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+airLimitCount > 0 && airCountOf[msg.sender] >= airLimitCount
+
+IRs:
+TMP_40(bool) = airLimitCount > 0
+REF_30(uint32) -> airCountOf[msg.sender]
+TMP_41(bool) = REF_30 >= airLimitCount
+TMP_42(bool) = TMP_40 && TMP_41
+CONDITION TMP_42"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_43(None) = SOLIDITY_CALL revert()()"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+_transfer(airSender,msg.sender,airAmount)
+
+IRs:
+INTERNAL_CALL, BaseToken._transfer(address,address,uint256)(airSender,msg.sender,airAmount)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+airCountOf[msg.sender] += 1
+
+IRs:
+REF_31(uint32) -> airCountOf[msg.sender]
+REF_31(-> airCountOf) = REF_31 + 1"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+Airdrop(msg.sender,airCountOf[msg.sender],airAmount)
+
+IRs:
+REF_32(uint32) -> airCountOf[msg.sender]
+Emit Airdrop(msg.sender,REF_32,airAmount)"];
+}
+// Function: 567.sol-AirdropToken-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowance[msg.sender][_spender] = _value
+
+IRs:
+REF_28(mapping(address => uint256)) -> allowance[msg.sender]
+REF_29(uint256) -> REF_28[_spender]
+REF_29(uint256) (->allowance) := _value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,_value)
+
+IRs:
+Emit Approval(msg.sender,_spender,_value)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 567.sol-AirdropToken-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transfer(msg.sender,_to,_value)
+
+IRs:
+INTERNAL_CALL, BaseToken._transfer(address,address,uint256)(msg.sender,_to,_value)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 567.sol-AirdropToken-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_value <= allowance[_from][msg.sender])
+
+IRs:
+REF_24(mapping(address => uint256)) -> allowance[_from]
+REF_25(uint256) -> REF_24[msg.sender]
+TMP_30(bool) = _value <= REF_25
+TMP_31(None) = SOLIDITY_CALL require(bool)(TMP_30)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+allowance[_from][msg.sender] -= _value
+
+IRs:
+REF_26(mapping(address => uint256)) -> allowance[_from]
+REF_27(uint256) -> REF_26[msg.sender]
+REF_27(-> allowance) = REF_27 - _value"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_transfer(_from,_to,_value)
+
+IRs:
+INTERNAL_CALL, BaseToken._transfer(address,address,uint256)(_from,_to,_value)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 567.sol-BaseToken-_transfer(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_to != 0x0)
+
+IRs:
+TMP_0(bool) = _to != 0
+TMP_1(None) = SOLIDITY_CALL require(bool)(TMP_0)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(balanceOf[_from] >= _value)
+
+IRs:
+REF_0(uint256) -> balanceOf[_from]
+TMP_2(bool) = REF_0 >= _value
+TMP_3(None) = SOLIDITY_CALL require(bool)(TMP_2)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(balanceOf[_to] + _value > balanceOf[_to])
+
+IRs:
+REF_1(uint256) -> balanceOf[_to]
+TMP_4(uint256) = REF_1 + _value
+REF_2(uint256) -> balanceOf[_to]
+TMP_5(bool) = TMP_4 > REF_2
+TMP_6(None) = SOLIDITY_CALL require(bool)(TMP_5)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+previousBalances = balanceOf[_from] + balanceOf[_to]
+
+IRs:
+REF_3(uint256) -> balanceOf[_from]
+REF_4(uint256) -> balanceOf[_to]
+TMP_7(uint256) = REF_3 + REF_4
+previousBalances(uint256) := TMP_7(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balanceOf[_from] -= _value
+
+IRs:
+REF_5(uint256) -> balanceOf[_from]
+REF_5(-> balanceOf) = REF_5 - _value"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+balanceOf[_to] += _value
+
+IRs:
+REF_6(uint256) -> balanceOf[_to]
+REF_6(-> balanceOf) = REF_6 + _value"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+assert(bool)(balanceOf[_from] + balanceOf[_to] == previousBalances)
+
+IRs:
+REF_7(uint256) -> balanceOf[_from]
+REF_8(uint256) -> balanceOf[_to]
+TMP_8(uint256) = REF_7 + REF_8
+TMP_9(bool) = TMP_8 == previousBalances
+TMP_10(None) = SOLIDITY_CALL assert(bool)(TMP_9)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+Transfer(_from,_to,_value)
+
+IRs:
+Emit Transfer(_from,_to,_value)"];
+}
+// Function: 567.sol-BaseToken-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowance[msg.sender][_spender] = _value
+
+IRs:
+REF_13(mapping(address => uint256)) -> allowance[msg.sender]
+REF_14(uint256) -> REF_13[_spender]
+REF_14(uint256) (->allowance) := _value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,_value)
+
+IRs:
+Emit Approval(msg.sender,_spender,_value)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 567.sol-BaseToken-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transfer(msg.sender,_to,_value)
+
+IRs:
+INTERNAL_CALL, BaseToken._transfer(address,address,uint256)(msg.sender,_to,_value)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 567.sol-BaseToken-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_value <= allowance[_from][msg.sender])
+
+IRs:
+REF_9(mapping(address => uint256)) -> allowance[_from]
+REF_10(uint256) -> REF_9[msg.sender]
+TMP_13(bool) = _value <= REF_10
+TMP_14(None) = SOLIDITY_CALL require(bool)(TMP_13)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+allowance[_from][msg.sender] -= _value
+
+IRs:
+REF_11(mapping(address => uint256)) -> allowance[_from]
+REF_12(uint256) -> REF_11[msg.sender]
+REF_12(-> allowance) = REF_12 - _value"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_transfer(_from,_to,_value)
+
+IRs:
+INTERNAL_CALL, BaseToken._transfer(address,address,uint256)(_from,_to,_value)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 567.sol-EtherChain-EtherChain()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+totalSupply = 100000000000e8
+
+IRs:
+totalSupply(uint256) := 10000000000000000000(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+name = EtherChain
+
+IRs:
+name(string) := EtherChain(string)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+symbol = ETC
+
+IRs:
+symbol(string) := ETC(string)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+decimals = 8
+
+IRs:
+decimals(uint8) := 8(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balanceOf[0x3fB5Fc9bAda7f102EaCc82260C00BaA2D034d98b] = totalSupply
+
+IRs:
+REF_72(uint256) -> balanceOf[363724858713486054280926110436665053371067324811]
+REF_72(uint256) (->balanceOf) := totalSupply(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+Transfer(address(0),0x3fB5Fc9bAda7f102EaCc82260C00BaA2D034d98b,totalSupply)
+
+IRs:
+TMP_128 = CONVERT 0 to address
+Emit Transfer(TMP_128,363724858713486054280926110436665053371067324811,totalSupply)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+airAmount = 1e8
+
+IRs:
+airAmount(uint256) := 100000000(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+airBegintime = 1534449600
+
+IRs:
+airBegintime(uint256) := 1534449600(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+airEndtime = 1534449900
+
+IRs:
+airEndtime(uint256) := 1534449900(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+airSender = 0x3fB5Fc9bAda7f102EaCc82260C00BaA2D034d98b
+
+IRs:
+airSender(address) := 363724858713486054280926110436665053371067324811(address)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+airLimitCount = 1
+
+IRs:
+airLimitCount(uint32) := 1(uint256)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+icoRatio = 100000000
+
+IRs:
+icoRatio(uint256) := 100000000(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+icoBegintime = 1534449600
+
+IRs:
+icoBegintime(uint256) := 1534449600(uint256)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+icoEndtime = 1539820740
+
+IRs:
+icoEndtime(uint256) := 1539820740(uint256)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+icoSender = 0x5F493da3c5d35944739838C627F5c938E0D9F0F8
+
+IRs:
+icoSender(address) := 543987447206180436144019616934848663968464630008(address)"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+icoHolder = 0x5F493da3c5d35944739838C627F5c938E0D9F0F8
+
+IRs:
+icoHolder(address) := 543987447206180436144019616934848663968464630008(address)"];
+}
+// Function: 567.sol-EtherChain-_transfer(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_to != 0x0)
+
+IRs:
+TMP_99(bool) = _to != 0
+TMP_100(None) = SOLIDITY_CALL require(bool)(TMP_99)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(balanceOf[_from] >= _value)
+
+IRs:
+REF_54(uint256) -> balanceOf[_from]
+TMP_101(bool) = REF_54 >= _value
+TMP_102(None) = SOLIDITY_CALL require(bool)(TMP_101)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(balanceOf[_to] + _value > balanceOf[_to])
+
+IRs:
+REF_55(uint256) -> balanceOf[_to]
+TMP_103(uint256) = REF_55 + _value
+REF_56(uint256) -> balanceOf[_to]
+TMP_104(bool) = TMP_103 > REF_56
+TMP_105(None) = SOLIDITY_CALL require(bool)(TMP_104)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+previousBalances = balanceOf[_from] + balanceOf[_to]
+
+IRs:
+REF_57(uint256) -> balanceOf[_from]
+REF_58(uint256) -> balanceOf[_to]
+TMP_106(uint256) = REF_57 + REF_58
+previousBalances(uint256) := TMP_106(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balanceOf[_from] -= _value
+
+IRs:
+REF_59(uint256) -> balanceOf[_from]
+REF_59(-> balanceOf) = REF_59 - _value"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+balanceOf[_to] += _value
+
+IRs:
+REF_60(uint256) -> balanceOf[_to]
+REF_60(-> balanceOf) = REF_60 + _value"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+assert(bool)(balanceOf[_from] + balanceOf[_to] == previousBalances)
+
+IRs:
+REF_61(uint256) -> balanceOf[_from]
+REF_62(uint256) -> balanceOf[_to]
+TMP_107(uint256) = REF_61 + REF_62
+TMP_108(bool) = TMP_107 == previousBalances
+TMP_109(None) = SOLIDITY_CALL assert(bool)(TMP_108)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+Transfer(_from,_to,_value)
+
+IRs:
+Emit Transfer(_from,_to,_value)"];
+}
+// Function: 567.sol-EtherChain-airdrop()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(now >= airBegintime && now <= airEndtime)
+
+IRs:
+TMP_116(bool) = now >= airBegintime
+TMP_117(bool) = now <= airEndtime
+TMP_118(bool) = TMP_116 && TMP_117
+TMP_119(None) = SOLIDITY_CALL require(bool)(TMP_118)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(msg.value == 0)
+
+IRs:
+TMP_120(bool) = msg.value == 0
+TMP_121(None) = SOLIDITY_CALL require(bool)(TMP_120)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+airLimitCount > 0 && airCountOf[msg.sender] >= airLimitCount
+
+IRs:
+TMP_122(bool) = airLimitCount > 0
+REF_69(uint32) -> airCountOf[msg.sender]
+TMP_123(bool) = REF_69 >= airLimitCount
+TMP_124(bool) = TMP_122 && TMP_123
+CONDITION TMP_124"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_125(None) = SOLIDITY_CALL revert()()"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+_transfer(airSender,msg.sender,airAmount)
+
+IRs:
+INTERNAL_CALL, BaseToken._transfer(address,address,uint256)(airSender,msg.sender,airAmount)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+airCountOf[msg.sender] += 1
+
+IRs:
+REF_70(uint32) -> airCountOf[msg.sender]
+REF_70(-> airCountOf) = REF_70 + 1"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+Airdrop(msg.sender,airCountOf[msg.sender],airAmount)
+
+IRs:
+REF_71(uint32) -> airCountOf[msg.sender]
+Emit Airdrop(msg.sender,REF_71,airAmount)"];
+}
+// Function: 567.sol-EtherChain-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowance[msg.sender][_spender] = _value
+
+IRs:
+REF_67(mapping(address => uint256)) -> allowance[msg.sender]
+REF_68(uint256) -> REF_67[_spender]
+REF_68(uint256) (->allowance) := _value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,_value)
+
+IRs:
+Emit Approval(msg.sender,_spender,_value)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 567.sol-EtherChain-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.value == 0
+
+IRs:
+TMP_130(bool) = msg.value == 0
+CONDITION TMP_130"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+airdrop()
+
+IRs:
+INTERNAL_CALL, AirdropToken.airdrop()()"];
+2->4;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+ico()
+
+IRs:
+INTERNAL_CALL, ICOToken.ico()()"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+}
+// Function: 567.sol-EtherChain-ico()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(now >= icoBegintime && now <= icoEndtime)
+
+IRs:
+TMP_81(bool) = now >= icoBegintime
+TMP_82(bool) = now <= icoEndtime
+TMP_83(bool) = TMP_81 && TMP_82
+TMP_84(None) = SOLIDITY_CALL require(bool)(TMP_83)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+tokenValue = (msg.value * icoRatio * 10 ** uint256(decimals)) / (1000000000000000000 / 1)
+
+IRs:
+TMP_85(uint256) = msg.value * icoRatio
+TMP_86 = CONVERT decimals to uint256
+TMP_87(uint256) = 10 ** TMP_86
+TMP_88(uint256) = TMP_85 * TMP_87
+TMP_89(uint256) = 1000000000000000000 / 1
+TMP_90(uint256) = TMP_88 / TMP_89
+tokenValue(uint256) := TMP_90(uint256)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+tokenValue == 0 || balanceOf[icoSender] < tokenValue
+
+IRs:
+TMP_91(bool) = tokenValue == 0
+REF_51(uint256) -> balanceOf[icoSender]
+TMP_92(bool) = REF_51 < tokenValue
+TMP_93(bool) = TMP_91 || TMP_92
+CONDITION TMP_93"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_94(None) = SOLIDITY_CALL revert()()"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+_transfer(icoSender,msg.sender,tokenValue)
+
+IRs:
+INTERNAL_CALL, BaseToken._transfer(address,address,uint256)(icoSender,msg.sender,tokenValue)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+ICO(msg.sender,msg.value,tokenValue)
+
+IRs:
+Emit ICO(msg.sender,msg.value,tokenValue)"];
+}
+// Function: 567.sol-EtherChain-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transfer(msg.sender,_to,_value)
+
+IRs:
+INTERNAL_CALL, BaseToken._transfer(address,address,uint256)(msg.sender,_to,_value)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 567.sol-EtherChain-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_value <= allowance[_from][msg.sender])
+
+IRs:
+REF_63(mapping(address => uint256)) -> allowance[_from]
+REF_64(uint256) -> REF_63[msg.sender]
+TMP_112(bool) = _value <= REF_64
+TMP_113(None) = SOLIDITY_CALL require(bool)(TMP_112)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+allowance[_from][msg.sender] -= _value
+
+IRs:
+REF_65(mapping(address => uint256)) -> allowance[_from]
+REF_66(uint256) -> REF_65[msg.sender]
+REF_66(-> allowance) = REF_66 - _value"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_transfer(_from,_to,_value)
+
+IRs:
+INTERNAL_CALL, BaseToken._transfer(address,address,uint256)(_from,_to,_value)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 567.sol-EtherChain-withdraw()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+balance = this.balance
+
+IRs:
+REF_52(uint256) = SOLIDITY_CALL balance(address)(this)
+balance(uint256) := REF_52([<slither.core.solidity_types.elementary_type.ElementaryType object at 0x7f0bcad22d40>])"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+icoHolder.transfer(balance)
+
+IRs:
+Transfer dest:icoHolder value:balance"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+Withdraw(msg.sender,icoHolder,balance)
+
+IRs:
+Emit Withdraw(msg.sender,icoHolder,balance)"];
+}
+// Function: 567.sol-ICOToken-_transfer(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_to != 0x0)
+
+IRs:
+TMP_46(bool) = _to != 0
+TMP_47(None) = SOLIDITY_CALL require(bool)(TMP_46)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(balanceOf[_from] >= _value)
+
+IRs:
+REF_33(uint256) -> balanceOf[_from]
+TMP_48(bool) = REF_33 >= _value
+TMP_49(None) = SOLIDITY_CALL require(bool)(TMP_48)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(balanceOf[_to] + _value > balanceOf[_to])
+
+IRs:
+REF_34(uint256) -> balanceOf[_to]
+TMP_50(uint256) = REF_34 + _value
+REF_35(uint256) -> balanceOf[_to]
+TMP_51(bool) = TMP_50 > REF_35
+TMP_52(None) = SOLIDITY_CALL require(bool)(TMP_51)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+previousBalances = balanceOf[_from] + balanceOf[_to]
+
+IRs:
+REF_36(uint256) -> balanceOf[_from]
+REF_37(uint256) -> balanceOf[_to]
+TMP_53(uint256) = REF_36 + REF_37
+previousBalances(uint256) := TMP_53(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balanceOf[_from] -= _value
+
+IRs:
+REF_38(uint256) -> balanceOf[_from]
+REF_38(-> balanceOf) = REF_38 - _value"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+balanceOf[_to] += _value
+
+IRs:
+REF_39(uint256) -> balanceOf[_to]
+REF_39(-> balanceOf) = REF_39 + _value"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+assert(bool)(balanceOf[_from] + balanceOf[_to] == previousBalances)
+
+IRs:
+REF_40(uint256) -> balanceOf[_from]
+REF_41(uint256) -> balanceOf[_to]
+TMP_54(uint256) = REF_40 + REF_41
+TMP_55(bool) = TMP_54 == previousBalances
+TMP_56(None) = SOLIDITY_CALL assert(bool)(TMP_55)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+Transfer(_from,_to,_value)
+
+IRs:
+Emit Transfer(_from,_to,_value)"];
+}
+// Function: 567.sol-ICOToken-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowance[msg.sender][_spender] = _value
+
+IRs:
+REF_46(mapping(address => uint256)) -> allowance[msg.sender]
+REF_47(uint256) -> REF_46[_spender]
+REF_47(uint256) (->allowance) := _value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,_value)
+
+IRs:
+Emit Approval(msg.sender,_spender,_value)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 567.sol-ICOToken-ico()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(now >= icoBegintime && now <= icoEndtime)
+
+IRs:
+TMP_63(bool) = now >= icoBegintime
+TMP_64(bool) = now <= icoEndtime
+TMP_65(bool) = TMP_63 && TMP_64
+TMP_66(None) = SOLIDITY_CALL require(bool)(TMP_65)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+tokenValue = (msg.value * icoRatio * 10 ** uint256(decimals)) / (1000000000000000000 / 1)
+
+IRs:
+TMP_67(uint256) = msg.value * icoRatio
+TMP_68 = CONVERT decimals to uint256
+TMP_69(uint256) = 10 ** TMP_68
+TMP_70(uint256) = TMP_67 * TMP_69
+TMP_71(uint256) = 1000000000000000000 / 1
+TMP_72(uint256) = TMP_70 / TMP_71
+tokenValue(uint256) := TMP_72(uint256)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+tokenValue == 0 || balanceOf[icoSender] < tokenValue
+
+IRs:
+TMP_73(bool) = tokenValue == 0
+REF_48(uint256) -> balanceOf[icoSender]
+TMP_74(bool) = REF_48 < tokenValue
+TMP_75(bool) = TMP_73 || TMP_74
+CONDITION TMP_75"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_76(None) = SOLIDITY_CALL revert()()"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+_transfer(icoSender,msg.sender,tokenValue)
+
+IRs:
+INTERNAL_CALL, BaseToken._transfer(address,address,uint256)(icoSender,msg.sender,tokenValue)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+ICO(msg.sender,msg.value,tokenValue)
+
+IRs:
+Emit ICO(msg.sender,msg.value,tokenValue)"];
+}
+// Function: 567.sol-ICOToken-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transfer(msg.sender,_to,_value)
+
+IRs:
+INTERNAL_CALL, BaseToken._transfer(address,address,uint256)(msg.sender,_to,_value)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 567.sol-ICOToken-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_value <= allowance[_from][msg.sender])
+
+IRs:
+REF_42(mapping(address => uint256)) -> allowance[_from]
+REF_43(uint256) -> REF_42[msg.sender]
+TMP_59(bool) = _value <= REF_43
+TMP_60(None) = SOLIDITY_CALL require(bool)(TMP_59)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+allowance[_from][msg.sender] -= _value
+
+IRs:
+REF_44(mapping(address => uint256)) -> allowance[_from]
+REF_45(uint256) -> REF_44[msg.sender]
+REF_45(-> allowance) = REF_45 - _value"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_transfer(_from,_to,_value)
+
+IRs:
+INTERNAL_CALL, BaseToken._transfer(address,address,uint256)(_from,_to,_value)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 567.sol-ICOToken-withdraw()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+balance = this.balance
+
+IRs:
+REF_49(uint256) = SOLIDITY_CALL balance(address)(this)
+balance(uint256) := REF_49([<slither.core.solidity_types.elementary_type.ElementaryType object at 0x7f0bcacdb5b0>])"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+icoHolder.transfer(balance)
+
+IRs:
+Transfer dest:icoHolder value:balance"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+Withdraw(msg.sender,icoHolder,balance)
+
+IRs:
+Emit Withdraw(msg.sender,icoHolder,balance)"];
+}
+}

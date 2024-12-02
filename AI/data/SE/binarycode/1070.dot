@@ -1,0 +1,232 @@
+digraph G {
+// Function: 1070.sol-ERC223Receiving-tokenFallback(address,uint256,bytes)
+digraph{
+}
+// Function: 1070.sol-ZethrInterface-balanceOf(address)
+digraph{
+}
+// Function: 1070.sol-ZethrInterface-transfer(address,uint256)
+digraph{
+}
+// Function: 1070.sol-ZethrInterface-withdraw(address)
+digraph{
+}
+// Function: 1070.sol-ZlotsJackpotHoldingContract-constructor(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+zlots = zlotsAddress
+
+IRs:
+zlots(address) := zlotsAddress(address)"];
+}
+// Function: 1070.sol-ZlotsJackpotHoldingContract-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 1070.sol-ZlotsJackpotHoldingContract-getJackpot()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+Zethr.balanceOf(address(this)) / 2
+
+IRs:
+TMP_13 = CONVERT this to address
+TMP_14(uint256) = HIGH_LEVEL_CALL, dest:Zethr(ZethrInterface), function:balanceOf, arguments:['TMP_13']  
+TMP_15(uint256) = TMP_14 / 2
+RETURN TMP_15"];
+}
+// Function: 1070.sol-ZlotsJackpotHoldingContract-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_17(bool) = msg.sender == owner
+TMP_18(None) = SOLIDITY_CALL require(bool)(TMP_17)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1070.sol-ZlotsJackpotHoldingContract-onlyZlots()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == zlots)
+
+IRs:
+TMP_19(bool) = msg.sender == zlots
+TMP_20(None) = SOLIDITY_CALL require(bool)(TMP_19)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1070.sol-ZlotsJackpotHoldingContract-payOutWinner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+payoutAmount = Zethr.balanceOf(address(this)) / 2
+
+IRs:
+TMP_0 = CONVERT this to address
+TMP_1(uint256) = HIGH_LEVEL_CALL, dest:Zethr(ZethrInterface), function:balanceOf, arguments:['TMP_0']  
+TMP_2(uint256) = TMP_1 / 2
+payoutAmount(uint256) := TMP_2(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Zethr.transfer(winner,payoutAmount)
+
+IRs:
+TMP_3(bool) = HIGH_LEVEL_CALL, dest:Zethr(ZethrInterface), function:transfer, arguments:['winner', 'payoutAmount']  "];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+payoutNumber += 1
+
+IRs:
+payoutNumber(uint256) = payoutNumber + 1"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+totalPaidOut += payoutAmount / 2
+
+IRs:
+TMP_4(uint256) = payoutAmount / 2
+totalPaidOut(uint256) = totalPaidOut + TMP_4"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+JackpotPayout(payoutAmount / 2,winner,payoutNumber)
+
+IRs:
+TMP_5(uint256) = payoutAmount / 2
+Emit JackpotPayout(TMP_5,winner,payoutNumber)"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyZlots()
+
+IRs:
+MODIFIER_CALL, ZlotsJackpotHoldingContract.onlyZlots()()"];
+6->1;
+}
+// Function: 1070.sol-ZlotsJackpotHoldingContract-pullTokens(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+balance = Zethr.balanceOf(address(this))
+
+IRs:
+TMP_8 = CONVERT this to address
+TMP_9(uint256) = HIGH_LEVEL_CALL, dest:Zethr(ZethrInterface), function:balanceOf, arguments:['TMP_8']  
+balance(uint256) := TMP_9(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Zethr.transfer(_to,balance)
+
+IRs:
+TMP_10(bool) = HIGH_LEVEL_CALL, dest:Zethr(ZethrInterface), function:transfer, arguments:['_to', 'balance']  "];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, ZlotsJackpotHoldingContract.onlyOwner()()"];
+3->1;
+}
+// Function: 1070.sol-ZlotsJackpotHoldingContract-setZlotsAddress(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+zlots = zlotsAddress
+
+IRs:
+zlots(address) := zlotsAddress(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, ZlotsJackpotHoldingContract.onlyOwner()()"];
+2->1;
+}
+// Function: 1070.sol-ZlotsJackpotHoldingContract-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+Zethr = ZethrInterface(0xD48B633045af65fF636F3c6edd744748351E020D)
+
+IRs:
+TMP_16 = CONVERT 1213414487539738044640291921087954998087414317581 to ZethrInterface
+Zethr(ZethrInterface) := TMP_16(ZethrInterface)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+payoutNumber = 0
+
+IRs:
+payoutNumber(uint256) := 0(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+totalPaidOut = 0
+
+IRs:
+totalPaidOut(uint256) := 0(uint256)"];
+}
+// Function: 1070.sol-ZlotsJackpotHoldingContract-tokenFallback(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+}

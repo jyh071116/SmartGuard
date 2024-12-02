@@ -1,0 +1,3200 @@
+digraph G {
+// Function: 31617.sol-ERC20-allowance(address,address)
+digraph{
+}
+// Function: 31617.sol-ERC20-approve(address,uint256)
+digraph{
+}
+// Function: 31617.sol-ERC20-balanceOf(address)
+digraph{
+}
+// Function: 31617.sol-ERC20-transfer(address,uint256)
+digraph{
+}
+// Function: 31617.sol-ERC20-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 31617.sol-OpenLongevityPresale-OpenLongevityPresale()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+PresaleToken()
+
+IRs:
+INTERNAL_CALL, PresaleToken.PresaleToken()()"];
+}
+// Function: 31617.sol-OpenLongevityPresale-PresaleToken()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+Presale()
+
+IRs:
+INTERNAL_CALL, owned.owned()()"];
+}
+// Function: 31617.sol-OpenLongevityPresale-allowance(address,address)
+digraph{
+}
+// Function: 31617.sol-OpenLongevityPresale-approve(address,uint256)
+digraph{
+}
+// Function: 31617.sol-OpenLongevityPresale-balanceOf(address)
+digraph{
+}
+// Function: 31617.sol-OpenLongevityPresale-changeOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_owner != 0)
+
+IRs:
+TMP_333(bool) = _owner != 0
+TMP_334(None) = SOLIDITY_CALL require(bool)(TMP_333)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+newOwner = _owner
+
+IRs:
+newOwner(address) := _owner(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+3->1;
+}
+// Function: 31617.sol-OpenLongevityPresale-confirmOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newOwner == msg.sender)
+
+IRs:
+TMP_336(bool) = newOwner == msg.sender
+TMP_337(None) = SOLIDITY_CALL require(bool)(TMP_336)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+delete newOwner
+
+IRs:
+newOwner = delete newOwner "];
+}
+// Function: 31617.sol-OpenLongevityPresale-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(state == State.Presale)
+
+IRs:
+REF_191(Presale.State) -> State.Presale
+TMP_278(bool) = state == REF_191
+TMP_279(None) = SOLIDITY_CALL require(bool)(TMP_278)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(now < presaleFinishTime)
+
+IRs:
+TMP_280(bool) = now < presaleFinishTime
+TMP_281(None) = SOLIDITY_CALL require(bool)(TMP_280)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+valueWei = msg.value
+
+IRs:
+valueWei(uint256) := msg.value(uint256)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+valueUSD = valueWei * etherPrice / 1000000000000000000
+
+IRs:
+TMP_282(uint256) = valueWei * etherPrice
+TMP_283(uint256) = TMP_282 / 1000000000000000000
+valueUSD(uint256) := TMP_283(uint256)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+collectedUSD + valueUSD > totalLimitUSD
+
+IRs:
+TMP_284(uint256) = collectedUSD + valueUSD
+TMP_285(bool) = TMP_284 > totalLimitUSD
+CONDITION TMP_285"];
+5->6[label="True"];
+5->10[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+valueUSD = totalLimitUSD - collectedUSD
+
+IRs:
+TMP_286(uint256) = totalLimitUSD - collectedUSD
+valueUSD(uint256) := TMP_286(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+valueWei = valueUSD * 1000000000000000000 / etherPrice
+
+IRs:
+TMP_287(uint256) = valueUSD * 1000000000000000000
+TMP_288(uint256) = TMP_287 / etherPrice
+valueWei(uint256) := TMP_288(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+require(bool)(msg.sender.call.gas(3000000).value(msg.value - valueWei)())
+
+IRs:
+TMP_290(uint256) = msg.value - valueWei
+TMP_292(bool) = LOW_LEVEL_CALL, dest:msg.sender, function:call, arguments:[] value:TMP_290 gas:3000000
+TMP_293(None) = SOLIDITY_CALL require(bool)(TMP_292)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+collectedUSD = totalLimitUSD
+
+IRs:
+collectedUSD(uint256) := totalLimitUSD(uint256)"];
+9->11;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+collectedUSD += valueUSD
+
+IRs:
+collectedUSD(uint256) = collectedUSD + valueUSD"];
+10->11;
+11[label="Node Type: END_IF 11
+"];
+11->12;
+12[label="Node Type: NEW VARIABLE 12
+
+EXPRESSION:
+tokensPer10USD = 130
+
+IRs:
+tokensPer10USD(uint256) := 130(uint256)"];
+12->13;
+13[label="Node Type: IF 13
+
+EXPRESSION:
+valueUSD >= 100000
+
+IRs:
+TMP_294(bool) = valueUSD >= 100000
+CONDITION TMP_294"];
+13->14[label="True"];
+13->15[label="False"];
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+tokensPer10USD = 150
+
+IRs:
+tokensPer10USD(uint256) := 150(uint256)"];
+14->15;
+15[label="Node Type: END_IF 15
+"];
+15->16;
+16[label="Node Type: NEW VARIABLE 16
+
+EXPRESSION:
+tokens = tokensPer10USD * valueUSD / 10
+
+IRs:
+TMP_295(uint256) = tokensPer10USD * valueUSD
+TMP_296(uint256) = TMP_295 / 10
+tokens(uint256) := TMP_296(uint256)"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+require(bool)(tokens > 0)
+
+IRs:
+TMP_297(bool) = tokens > 0
+TMP_298(None) = SOLIDITY_CALL require(bool)(TMP_297)"];
+17->18;
+18[label="Node Type: NEW VARIABLE 18
+
+EXPRESSION:
+inv = investors[msg.sender]
+
+IRs:
+REF_195(PresaleOriginal.Investor) -> investors[msg.sender]
+inv(PresaleOriginal.Investor) := REF_195(PresaleOriginal.Investor)"];
+18->19;
+19[label="Node Type: IF 19
+
+EXPRESSION:
+inv.amountWei == 0
+
+IRs:
+REF_196(uint256) -> inv.amountWei
+TMP_299(bool) = REF_196 == 0
+CONDITION TMP_299"];
+19->20[label="True"];
+19->21[label="False"];
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+investorsIter[numberOfInvestors ++] = msg.sender
+
+IRs:
+TMP_300(uint256) := numberOfInvestors(uint256)
+numberOfInvestors(uint256) = numberOfInvestors + 1
+REF_197(address) -> investorsIter[TMP_300]
+REF_197(address) (->investorsIter) := msg.sender(address)"];
+20->21;
+21[label="Node Type: END_IF 21
+"];
+21->22;
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+require(bool)(inv.amountTokens + tokens > inv.amountTokens)
+
+IRs:
+REF_198(uint256) -> inv.amountTokens
+TMP_301(uint256) = REF_198 + tokens
+REF_199(uint256) -> inv.amountTokens
+TMP_302(bool) = TMP_301 > REF_199
+TMP_303(None) = SOLIDITY_CALL require(bool)(TMP_302)"];
+22->23;
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+inv.amountTokens += tokens
+
+IRs:
+REF_200(uint256) -> inv.amountTokens
+REF_200(-> inv) = REF_200 + tokens"];
+23->24;
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+inv.amountWei += valueWei
+
+IRs:
+REF_201(uint256) -> inv.amountWei
+REF_201(-> inv) = REF_201 + valueWei"];
+24->25;
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+totalSupply += tokens
+
+IRs:
+totalSupply(uint256) = totalSupply + tokens"];
+25->26;
+26[label="Node Type: EXPRESSION 26
+
+EXPRESSION:
+Transfer(this,msg.sender,tokens)
+
+IRs:
+Emit Transfer(this,msg.sender,tokens)"];
+}
+// Function: 31617.sol-OpenLongevityPresale-finishPresale()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(state == State.Presale)
+
+IRs:
+REF_206(Presale.State) -> State.Presale
+TMP_316(bool) = state == REF_206
+TMP_317(None) = SOLIDITY_CALL require(bool)(TMP_316)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(now >= presaleFinishTime || collectedUSD == totalLimitUSD)
+
+IRs:
+TMP_318(bool) = now >= presaleFinishTime
+TMP_319(bool) = collectedUSD == totalLimitUSD
+TMP_320(bool) = TMP_318 || TMP_319
+TMP_321(None) = SOLIDITY_CALL require(bool)(TMP_320)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(presaleOwner.call.gas(3000000).value(this.balance)())
+
+IRs:
+REF_210(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_324(bool) = LOW_LEVEL_CALL, dest:presaleOwner, function:call, arguments:[] value:REF_210 gas:3000000
+TMP_325(None) = SOLIDITY_CALL require(bool)(TMP_324)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+state = State.Finished
+
+IRs:
+REF_211(Presale.State) -> State.Finished
+state(Presale.State) := REF_211(Presale.State)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+NewState(state)
+
+IRs:
+Emit NewState(state)"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+6->1;
+}
+// Function: 31617.sol-OpenLongevityPresale-killMe()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+selfdestruct(address)(owner)
+
+IRs:
+TMP_339(None) = SOLIDITY_CALL selfdestruct(address)(owner)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+2->1;
+}
+// Function: 31617.sol-OpenLongevityPresale-migrate(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->34;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(state == State.Disabled)
+
+IRs:
+REF_171(Presale.State) -> State.Disabled
+TMP_251(bool) = state == REF_171
+TMP_252(None) = SOLIDITY_CALL require(bool)(TMP_251)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+numberOfInvestors = PresaleOriginal(_originalContract).numberOfInvestors()
+
+IRs:
+TMP_253 = CONVERT _originalContract to PresaleOriginal
+TMP_254(uint256) = HIGH_LEVEL_CALL, dest:TMP_253(PresaleOriginal), function:numberOfInvestors, arguments:[]  
+numberOfInvestors(uint256) := TMP_254(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+limit = migrationCounter + n
+
+IRs:
+TMP_255(uint256) = migrationCounter + n
+limit(uint256) := TMP_255(uint256)"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+limit > numberOfInvestors
+
+IRs:
+TMP_256(bool) = limit > numberOfInvestors
+CONDITION TMP_256"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+limit = numberOfInvestors
+
+IRs:
+limit(uint256) := numberOfInvestors(uint256)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: BEGIN_LOOP 7
+"];
+7->9;
+8[label="Node Type: END_LOOP 8
+"];
+8->21;
+9[label="Node Type: IF_LOOP 9
+
+EXPRESSION:
+migrationCounter < limit
+
+IRs:
+TMP_257(bool) = migrationCounter < limit
+CONDITION TMP_257"];
+9->10[label="True"];
+9->8[label="False"];
+10[label="Node Type: NEW VARIABLE 10
+
+EXPRESSION:
+a = PresaleOriginal(_originalContract).investorsIter(migrationCounter)
+
+IRs:
+TMP_258 = CONVERT _originalContract to PresaleOriginal
+TMP_259(address) = HIGH_LEVEL_CALL, dest:TMP_258(PresaleOriginal), function:investorsIter, arguments:['migrationCounter']  
+a(address) := TMP_259(address)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+investorsIter[migrationCounter] = a
+
+IRs:
+REF_174(address) -> investorsIter[migrationCounter]
+REF_174(address) (->investorsIter) := a(address)"];
+11->12;
+12[label="Node Type: NEW VARIABLE 12
+"];
+12->13;
+13[label="Node Type: NEW VARIABLE 13
+"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+(amountTokens,amountWei) = PresaleOriginal(_originalContract).investors(a)
+
+IRs:
+TMP_260 = CONVERT _originalContract to PresaleOriginal
+TUPLE_2(uint256,uint256) = HIGH_LEVEL_CALL, dest:TMP_260(PresaleOriginal), function:investors, arguments:['a']  
+amountTokens(uint256)= UNPACK TUPLE_2 index: 0 
+amountWei(uint256)= UNPACK TUPLE_2 index: 1 "];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+amountTokens *= 2
+
+IRs:
+amountTokens(uint256) = amountTokens * 2"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+investors[a].amountTokens = amountTokens
+
+IRs:
+REF_176(PresaleOriginal.Investor) -> investors[a]
+REF_177(uint256) -> REF_176.amountTokens
+REF_177(uint256) (->investors) := amountTokens(uint256)"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+investors[a].amountWei = amountWei
+
+IRs:
+REF_178(PresaleOriginal.Investor) -> investors[a]
+REF_179(uint256) -> REF_178.amountWei
+REF_179(uint256) (->investors) := amountWei(uint256)"];
+17->18;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+totalSupply += amountTokens
+
+IRs:
+totalSupply(uint256) = totalSupply + amountTokens"];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+Transfer(_originalContract,a,amountTokens)
+
+IRs:
+Emit Transfer(_originalContract,a,amountTokens)"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+++ migrationCounter
+
+IRs:
+migrationCounter(uint256) = migrationCounter + 1"];
+20->9;
+21[label="Node Type: IF 21
+
+EXPRESSION:
+limit < numberOfInvestors
+
+IRs:
+TMP_262(bool) = limit < numberOfInvestors
+CONDITION TMP_262"];
+21->22[label="True"];
+21->23[label="False"];
+22[label="Node Type: RETURN 22
+"];
+23[label="Node Type: END_IF 23
+"];
+23->24;
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+presaleStartTime = PresaleOriginal(_originalContract).presaleStartTime()
+
+IRs:
+TMP_263 = CONVERT _originalContract to PresaleOriginal
+TMP_264(uint256) = HIGH_LEVEL_CALL, dest:TMP_263(PresaleOriginal), function:presaleStartTime, arguments:[]  
+presaleStartTime(uint256) := TMP_264(uint256)"];
+24->25;
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+collectedUSD = PresaleOriginal(_originalContract).collectedUSD()
+
+IRs:
+TMP_265 = CONVERT _originalContract to PresaleOriginal
+TMP_266(uint256) = HIGH_LEVEL_CALL, dest:TMP_265(PresaleOriginal), function:collectedUSD, arguments:[]  
+collectedUSD(uint256) := TMP_266(uint256)"];
+25->26;
+26[label="Node Type: EXPRESSION 26
+
+EXPRESSION:
+totalLimitUSD = PresaleOriginal(_originalContract).totalLimitUSD()
+
+IRs:
+TMP_267 = CONVERT _originalContract to PresaleOriginal
+TMP_268(uint256) = HIGH_LEVEL_CALL, dest:TMP_267(PresaleOriginal), function:totalLimitUSD, arguments:[]  
+totalLimitUSD(uint256) := TMP_268(uint256)"];
+26->27;
+27[label="Node Type: NEW VARIABLE 27
+
+EXPRESSION:
+bountyAddress = 0x59B95A5e0268Cc843e6308FEf723544BaA6676c6
+
+IRs:
+bountyAddress(address) := 512233688560528834882189522102740645546662721222(address)"];
+27->28;
+28[label="Node Type: IF 28
+
+EXPRESSION:
+investors[bountyAddress].amountWei == 0 && investors[bountyAddress].amountTokens == 0
+
+IRs:
+REF_183(PresaleOriginal.Investor) -> investors[bountyAddress]
+REF_184(uint256) -> REF_183.amountWei
+TMP_269(bool) = REF_184 == 0
+REF_185(PresaleOriginal.Investor) -> investors[bountyAddress]
+REF_186(uint256) -> REF_185.amountTokens
+TMP_270(bool) = REF_186 == 0
+TMP_271(bool) = TMP_269 && TMP_270
+CONDITION TMP_271"];
+28->29[label="True"];
+28->30[label="False"];
+29[label="Node Type: EXPRESSION 29
+
+EXPRESSION:
+investorsIter[numberOfInvestors ++] = bountyAddress
+
+IRs:
+TMP_272(uint256) := numberOfInvestors(uint256)
+numberOfInvestors(uint256) = numberOfInvestors + 1
+REF_187(address) -> investorsIter[TMP_272]
+REF_187(address) (->investorsIter) := bountyAddress(address)"];
+29->30;
+30[label="Node Type: END_IF 30
+"];
+30->31;
+31[label="Node Type: NEW VARIABLE 31
+
+EXPRESSION:
+bountyTokens = 5 * PresaleOriginal(_originalContract).totalSupply() / 100
+
+IRs:
+TMP_273 = CONVERT _originalContract to PresaleOriginal
+TMP_274(uint256) = HIGH_LEVEL_CALL, dest:TMP_273(PresaleOriginal), function:totalSupply, arguments:[]  
+TMP_275(uint256) = 5 * TMP_274
+TMP_276(uint256) = TMP_275 / 100
+bountyTokens(uint256) := TMP_276(uint256)"];
+31->32;
+32[label="Node Type: EXPRESSION 32
+
+EXPRESSION:
+investors[bountyAddress].amountTokens += bountyTokens
+
+IRs:
+REF_189(PresaleOriginal.Investor) -> investors[bountyAddress]
+REF_190(uint256) -> REF_189.amountTokens
+REF_190(-> investors) = REF_190 + bountyTokens"];
+32->33;
+33[label="Node Type: EXPRESSION 33
+
+EXPRESSION:
+totalSupply += bountyTokens
+
+IRs:
+totalSupply(uint256) = totalSupply + bountyTokens"];
+34[label="Node Type: EXPRESSION 34
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+34->1;
+}
+// Function: 31617.sol-OpenLongevityPresale-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(owner == msg.sender)
+
+IRs:
+TMP_344(bool) = owner == msg.sender
+TMP_345(None) = SOLIDITY_CALL require(bool)(TMP_344)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 31617.sol-OpenLongevityPresale-onlyPayloadSize(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.data.length >= size + 4)
+
+IRs:
+REF_216 -> LENGTH msg.data
+TMP_341(uint256) = size + 4
+TMP_342(bool) = REF_216 >= TMP_341
+TMP_343(None) = SOLIDITY_CALL require(bool)(TMP_342)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 31617.sol-OpenLongevityPresale-owned()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 31617.sol-OpenLongevityPresale-setEtherPrice(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(state == State.Presale)
+
+IRs:
+REF_204(Presale.State) -> State.Presale
+TMP_309(bool) = state == REF_204
+TMP_310(None) = SOLIDITY_CALL require(bool)(TMP_309)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+etherPrice = _etherPrice
+
+IRs:
+etherPrice(uint256) := _etherPrice(uint256)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+3->1;
+}
+// Function: 31617.sol-OpenLongevityPresale-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+standard = Token 0.1
+
+IRs:
+standard(string) := Token 0.1(string)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+name = OpenLongevity
+
+IRs:
+name(string) := OpenLongevity(string)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+symbol = YEAR
+
+IRs:
+symbol(string) := YEAR(string)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+decimals = 0
+
+IRs:
+decimals(uint8) := 0(uint256)"];
+}
+// Function: 31617.sol-OpenLongevityPresale-startPresale(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->8;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(state == State.Disabled)
+
+IRs:
+REF_202(Presale.State) -> State.Disabled
+TMP_305(bool) = state == REF_202
+TMP_306(None) = SOLIDITY_CALL require(bool)(TMP_305)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+presaleOwner = _presaleOwner
+
+IRs:
+presaleOwner(address) := _presaleOwner(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+etherPrice = _etherPrice
+
+IRs:
+etherPrice(uint256) := _etherPrice(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+presaleFinishTime = 1526342400
+
+IRs:
+presaleFinishTime(uint256) := 1526342400(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+state = State.Presale
+
+IRs:
+REF_203(Presale.State) -> State.Presale
+state(Presale.State) := REF_203(Presale.State)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+totalLimitUSD = 500000
+
+IRs:
+totalLimitUSD(uint256) := 500000(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+NewState(state)
+
+IRs:
+Emit NewState(state)"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+8->1;
+}
+// Function: 31617.sol-OpenLongevityPresale-timeToFinishPresale()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(state == State.Presale)
+
+IRs:
+REF_205(Presale.State) -> State.Presale
+TMP_312(bool) = state == REF_205
+TMP_313(None) = SOLIDITY_CALL require(bool)(TMP_312)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+now > presaleFinishTime
+
+IRs:
+TMP_314(bool) = now > presaleFinishTime
+CONDITION TMP_314"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+t = 0
+
+IRs:
+t(uint256) := 0(uint256)"];
+3->5;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+t = presaleFinishTime - now
+
+IRs:
+TMP_315(uint256) = presaleFinishTime - now
+t(uint256) := TMP_315(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+t
+
+IRs:
+RETURN t"];
+}
+// Function: 31617.sol-OpenLongevityPresale-transfer(address,uint256)
+digraph{
+}
+// Function: 31617.sol-OpenLongevityPresale-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 31617.sol-OpenLongevityPresale-withdraw()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(presaleOwner.call.gas(3000000).value(this.balance)())
+
+IRs:
+REF_215(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_330(bool) = LOW_LEVEL_CALL, dest:presaleOwner, function:call, arguments:[] value:REF_215 gas:3000000
+TMP_331(None) = SOLIDITY_CALL require(bool)(TMP_330)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+2->1;
+}
+// Function: 31617.sol-Presale-allowance(address,address)
+digraph{
+}
+// Function: 31617.sol-Presale-approve(address,uint256)
+digraph{
+}
+// Function: 31617.sol-Presale-balanceOf(address)
+digraph{
+}
+// Function: 31617.sol-Presale-changeOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_owner != 0)
+
+IRs:
+TMP_14(bool) = _owner != 0
+TMP_15(None) = SOLIDITY_CALL require(bool)(TMP_14)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+newOwner = _owner
+
+IRs:
+newOwner(address) := _owner(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+3->1;
+}
+// Function: 31617.sol-Presale-confirmOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newOwner == msg.sender)
+
+IRs:
+TMP_17(bool) = newOwner == msg.sender
+TMP_18(None) = SOLIDITY_CALL require(bool)(TMP_17)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+delete newOwner
+
+IRs:
+newOwner = delete newOwner "];
+}
+// Function: 31617.sol-Presale-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(state == State.Presale)
+
+IRs:
+REF_20(Presale.State) -> State.Presale
+TMP_46(bool) = state == REF_20
+TMP_47(None) = SOLIDITY_CALL require(bool)(TMP_46)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(now < presaleFinishTime)
+
+IRs:
+TMP_48(bool) = now < presaleFinishTime
+TMP_49(None) = SOLIDITY_CALL require(bool)(TMP_48)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+valueWei = msg.value
+
+IRs:
+valueWei(uint256) := msg.value(uint256)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+valueUSD = valueWei * etherPrice / 1000000000000000000
+
+IRs:
+TMP_50(uint256) = valueWei * etherPrice
+TMP_51(uint256) = TMP_50 / 1000000000000000000
+valueUSD(uint256) := TMP_51(uint256)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+collectedUSD + valueUSD > totalLimitUSD
+
+IRs:
+TMP_52(uint256) = collectedUSD + valueUSD
+TMP_53(bool) = TMP_52 > totalLimitUSD
+CONDITION TMP_53"];
+5->6[label="True"];
+5->10[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+valueUSD = totalLimitUSD - collectedUSD
+
+IRs:
+TMP_54(uint256) = totalLimitUSD - collectedUSD
+valueUSD(uint256) := TMP_54(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+valueWei = valueUSD * 1000000000000000000 / etherPrice
+
+IRs:
+TMP_55(uint256) = valueUSD * 1000000000000000000
+TMP_56(uint256) = TMP_55 / etherPrice
+valueWei(uint256) := TMP_56(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+require(bool)(msg.sender.call.gas(3000000).value(msg.value - valueWei)())
+
+IRs:
+TMP_58(uint256) = msg.value - valueWei
+TMP_60(bool) = LOW_LEVEL_CALL, dest:msg.sender, function:call, arguments:[] value:TMP_58 gas:3000000
+TMP_61(None) = SOLIDITY_CALL require(bool)(TMP_60)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+collectedUSD = totalLimitUSD
+
+IRs:
+collectedUSD(uint256) := totalLimitUSD(uint256)"];
+9->11;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+collectedUSD += valueUSD
+
+IRs:
+collectedUSD(uint256) = collectedUSD + valueUSD"];
+10->11;
+11[label="Node Type: END_IF 11
+"];
+11->12;
+12[label="Node Type: NEW VARIABLE 12
+
+EXPRESSION:
+tokensPer10USD = 130
+
+IRs:
+tokensPer10USD(uint256) := 130(uint256)"];
+12->13;
+13[label="Node Type: IF 13
+
+EXPRESSION:
+valueUSD >= 100000
+
+IRs:
+TMP_62(bool) = valueUSD >= 100000
+CONDITION TMP_62"];
+13->14[label="True"];
+13->15[label="False"];
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+tokensPer10USD = 150
+
+IRs:
+tokensPer10USD(uint256) := 150(uint256)"];
+14->15;
+15[label="Node Type: END_IF 15
+"];
+15->16;
+16[label="Node Type: NEW VARIABLE 16
+
+EXPRESSION:
+tokens = tokensPer10USD * valueUSD / 10
+
+IRs:
+TMP_63(uint256) = tokensPer10USD * valueUSD
+TMP_64(uint256) = TMP_63 / 10
+tokens(uint256) := TMP_64(uint256)"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+require(bool)(tokens > 0)
+
+IRs:
+TMP_65(bool) = tokens > 0
+TMP_66(None) = SOLIDITY_CALL require(bool)(TMP_65)"];
+17->18;
+18[label="Node Type: NEW VARIABLE 18
+
+EXPRESSION:
+inv = investors[msg.sender]
+
+IRs:
+REF_24(PresaleOriginal.Investor) -> investors[msg.sender]
+inv(PresaleOriginal.Investor) := REF_24(PresaleOriginal.Investor)"];
+18->19;
+19[label="Node Type: IF 19
+
+EXPRESSION:
+inv.amountWei == 0
+
+IRs:
+REF_25(uint256) -> inv.amountWei
+TMP_67(bool) = REF_25 == 0
+CONDITION TMP_67"];
+19->20[label="True"];
+19->21[label="False"];
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+investorsIter[numberOfInvestors ++] = msg.sender
+
+IRs:
+TMP_68(uint256) := numberOfInvestors(uint256)
+numberOfInvestors(uint256) = numberOfInvestors + 1
+REF_26(address) -> investorsIter[TMP_68]
+REF_26(address) (->investorsIter) := msg.sender(address)"];
+20->21;
+21[label="Node Type: END_IF 21
+"];
+21->22;
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+require(bool)(inv.amountTokens + tokens > inv.amountTokens)
+
+IRs:
+REF_27(uint256) -> inv.amountTokens
+TMP_69(uint256) = REF_27 + tokens
+REF_28(uint256) -> inv.amountTokens
+TMP_70(bool) = TMP_69 > REF_28
+TMP_71(None) = SOLIDITY_CALL require(bool)(TMP_70)"];
+22->23;
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+inv.amountTokens += tokens
+
+IRs:
+REF_29(uint256) -> inv.amountTokens
+REF_29(-> inv) = REF_29 + tokens"];
+23->24;
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+inv.amountWei += valueWei
+
+IRs:
+REF_30(uint256) -> inv.amountWei
+REF_30(-> inv) = REF_30 + valueWei"];
+24->25;
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+totalSupply += tokens
+
+IRs:
+totalSupply(uint256) = totalSupply + tokens"];
+25->26;
+26[label="Node Type: EXPRESSION 26
+
+EXPRESSION:
+Transfer(this,msg.sender,tokens)
+
+IRs:
+Emit Transfer(this,msg.sender,tokens)"];
+}
+// Function: 31617.sol-Presale-finishPresale()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(state == State.Presale)
+
+IRs:
+REF_35(Presale.State) -> State.Presale
+TMP_84(bool) = state == REF_35
+TMP_85(None) = SOLIDITY_CALL require(bool)(TMP_84)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(now >= presaleFinishTime || collectedUSD == totalLimitUSD)
+
+IRs:
+TMP_86(bool) = now >= presaleFinishTime
+TMP_87(bool) = collectedUSD == totalLimitUSD
+TMP_88(bool) = TMP_86 || TMP_87
+TMP_89(None) = SOLIDITY_CALL require(bool)(TMP_88)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(presaleOwner.call.gas(3000000).value(this.balance)())
+
+IRs:
+REF_39(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_92(bool) = LOW_LEVEL_CALL, dest:presaleOwner, function:call, arguments:[] value:REF_39 gas:3000000
+TMP_93(None) = SOLIDITY_CALL require(bool)(TMP_92)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+state = State.Finished
+
+IRs:
+REF_40(Presale.State) -> State.Finished
+state(Presale.State) := REF_40(Presale.State)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+NewState(state)
+
+IRs:
+Emit NewState(state)"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+6->1;
+}
+// Function: 31617.sol-Presale-migrate(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->34;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(state == State.Disabled)
+
+IRs:
+REF_0(Presale.State) -> State.Disabled
+TMP_19(bool) = state == REF_0
+TMP_20(None) = SOLIDITY_CALL require(bool)(TMP_19)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+numberOfInvestors = PresaleOriginal(_originalContract).numberOfInvestors()
+
+IRs:
+TMP_21 = CONVERT _originalContract to PresaleOriginal
+TMP_22(uint256) = HIGH_LEVEL_CALL, dest:TMP_21(PresaleOriginal), function:numberOfInvestors, arguments:[]  
+numberOfInvestors(uint256) := TMP_22(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+limit = migrationCounter + n
+
+IRs:
+TMP_23(uint256) = migrationCounter + n
+limit(uint256) := TMP_23(uint256)"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+limit > numberOfInvestors
+
+IRs:
+TMP_24(bool) = limit > numberOfInvestors
+CONDITION TMP_24"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+limit = numberOfInvestors
+
+IRs:
+limit(uint256) := numberOfInvestors(uint256)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: BEGIN_LOOP 7
+"];
+7->9;
+8[label="Node Type: END_LOOP 8
+"];
+8->21;
+9[label="Node Type: IF_LOOP 9
+
+EXPRESSION:
+migrationCounter < limit
+
+IRs:
+TMP_25(bool) = migrationCounter < limit
+CONDITION TMP_25"];
+9->10[label="True"];
+9->8[label="False"];
+10[label="Node Type: NEW VARIABLE 10
+
+EXPRESSION:
+a = PresaleOriginal(_originalContract).investorsIter(migrationCounter)
+
+IRs:
+TMP_26 = CONVERT _originalContract to PresaleOriginal
+TMP_27(address) = HIGH_LEVEL_CALL, dest:TMP_26(PresaleOriginal), function:investorsIter, arguments:['migrationCounter']  
+a(address) := TMP_27(address)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+investorsIter[migrationCounter] = a
+
+IRs:
+REF_3(address) -> investorsIter[migrationCounter]
+REF_3(address) (->investorsIter) := a(address)"];
+11->12;
+12[label="Node Type: NEW VARIABLE 12
+"];
+12->13;
+13[label="Node Type: NEW VARIABLE 13
+"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+(amountTokens,amountWei) = PresaleOriginal(_originalContract).investors(a)
+
+IRs:
+TMP_28 = CONVERT _originalContract to PresaleOriginal
+TUPLE_0(uint256,uint256) = HIGH_LEVEL_CALL, dest:TMP_28(PresaleOriginal), function:investors, arguments:['a']  
+amountTokens(uint256)= UNPACK TUPLE_0 index: 0 
+amountWei(uint256)= UNPACK TUPLE_0 index: 1 "];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+amountTokens *= 2
+
+IRs:
+amountTokens(uint256) = amountTokens * 2"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+investors[a].amountTokens = amountTokens
+
+IRs:
+REF_5(PresaleOriginal.Investor) -> investors[a]
+REF_6(uint256) -> REF_5.amountTokens
+REF_6(uint256) (->investors) := amountTokens(uint256)"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+investors[a].amountWei = amountWei
+
+IRs:
+REF_7(PresaleOriginal.Investor) -> investors[a]
+REF_8(uint256) -> REF_7.amountWei
+REF_8(uint256) (->investors) := amountWei(uint256)"];
+17->18;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+totalSupply += amountTokens
+
+IRs:
+totalSupply(uint256) = totalSupply + amountTokens"];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+Transfer(_originalContract,a,amountTokens)
+
+IRs:
+Emit Transfer(_originalContract,a,amountTokens)"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+++ migrationCounter
+
+IRs:
+migrationCounter(uint256) = migrationCounter + 1"];
+20->9;
+21[label="Node Type: IF 21
+
+EXPRESSION:
+limit < numberOfInvestors
+
+IRs:
+TMP_30(bool) = limit < numberOfInvestors
+CONDITION TMP_30"];
+21->22[label="True"];
+21->23[label="False"];
+22[label="Node Type: RETURN 22
+"];
+23[label="Node Type: END_IF 23
+"];
+23->24;
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+presaleStartTime = PresaleOriginal(_originalContract).presaleStartTime()
+
+IRs:
+TMP_31 = CONVERT _originalContract to PresaleOriginal
+TMP_32(uint256) = HIGH_LEVEL_CALL, dest:TMP_31(PresaleOriginal), function:presaleStartTime, arguments:[]  
+presaleStartTime(uint256) := TMP_32(uint256)"];
+24->25;
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+collectedUSD = PresaleOriginal(_originalContract).collectedUSD()
+
+IRs:
+TMP_33 = CONVERT _originalContract to PresaleOriginal
+TMP_34(uint256) = HIGH_LEVEL_CALL, dest:TMP_33(PresaleOriginal), function:collectedUSD, arguments:[]  
+collectedUSD(uint256) := TMP_34(uint256)"];
+25->26;
+26[label="Node Type: EXPRESSION 26
+
+EXPRESSION:
+totalLimitUSD = PresaleOriginal(_originalContract).totalLimitUSD()
+
+IRs:
+TMP_35 = CONVERT _originalContract to PresaleOriginal
+TMP_36(uint256) = HIGH_LEVEL_CALL, dest:TMP_35(PresaleOriginal), function:totalLimitUSD, arguments:[]  
+totalLimitUSD(uint256) := TMP_36(uint256)"];
+26->27;
+27[label="Node Type: NEW VARIABLE 27
+
+EXPRESSION:
+bountyAddress = 0x59B95A5e0268Cc843e6308FEf723544BaA6676c6
+
+IRs:
+bountyAddress(address) := 512233688560528834882189522102740645546662721222(address)"];
+27->28;
+28[label="Node Type: IF 28
+
+EXPRESSION:
+investors[bountyAddress].amountWei == 0 && investors[bountyAddress].amountTokens == 0
+
+IRs:
+REF_12(PresaleOriginal.Investor) -> investors[bountyAddress]
+REF_13(uint256) -> REF_12.amountWei
+TMP_37(bool) = REF_13 == 0
+REF_14(PresaleOriginal.Investor) -> investors[bountyAddress]
+REF_15(uint256) -> REF_14.amountTokens
+TMP_38(bool) = REF_15 == 0
+TMP_39(bool) = TMP_37 && TMP_38
+CONDITION TMP_39"];
+28->29[label="True"];
+28->30[label="False"];
+29[label="Node Type: EXPRESSION 29
+
+EXPRESSION:
+investorsIter[numberOfInvestors ++] = bountyAddress
+
+IRs:
+TMP_40(uint256) := numberOfInvestors(uint256)
+numberOfInvestors(uint256) = numberOfInvestors + 1
+REF_16(address) -> investorsIter[TMP_40]
+REF_16(address) (->investorsIter) := bountyAddress(address)"];
+29->30;
+30[label="Node Type: END_IF 30
+"];
+30->31;
+31[label="Node Type: NEW VARIABLE 31
+
+EXPRESSION:
+bountyTokens = 5 * PresaleOriginal(_originalContract).totalSupply() / 100
+
+IRs:
+TMP_41 = CONVERT _originalContract to PresaleOriginal
+TMP_42(uint256) = HIGH_LEVEL_CALL, dest:TMP_41(PresaleOriginal), function:totalSupply, arguments:[]  
+TMP_43(uint256) = 5 * TMP_42
+TMP_44(uint256) = TMP_43 / 100
+bountyTokens(uint256) := TMP_44(uint256)"];
+31->32;
+32[label="Node Type: EXPRESSION 32
+
+EXPRESSION:
+investors[bountyAddress].amountTokens += bountyTokens
+
+IRs:
+REF_18(PresaleOriginal.Investor) -> investors[bountyAddress]
+REF_19(uint256) -> REF_18.amountTokens
+REF_19(-> investors) = REF_19 + bountyTokens"];
+32->33;
+33[label="Node Type: EXPRESSION 33
+
+EXPRESSION:
+totalSupply += bountyTokens
+
+IRs:
+totalSupply(uint256) = totalSupply + bountyTokens"];
+34[label="Node Type: EXPRESSION 34
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+34->1;
+}
+// Function: 31617.sol-Presale-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(owner == msg.sender)
+
+IRs:
+TMP_101(bool) = owner == msg.sender
+TMP_102(None) = SOLIDITY_CALL require(bool)(TMP_101)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 31617.sol-Presale-owned()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 31617.sol-Presale-setEtherPrice(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(state == State.Presale)
+
+IRs:
+REF_33(Presale.State) -> State.Presale
+TMP_77(bool) = state == REF_33
+TMP_78(None) = SOLIDITY_CALL require(bool)(TMP_77)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+etherPrice = _etherPrice
+
+IRs:
+etherPrice(uint256) := _etherPrice(uint256)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+3->1;
+}
+// Function: 31617.sol-Presale-startPresale(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->8;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(state == State.Disabled)
+
+IRs:
+REF_31(Presale.State) -> State.Disabled
+TMP_73(bool) = state == REF_31
+TMP_74(None) = SOLIDITY_CALL require(bool)(TMP_73)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+presaleOwner = _presaleOwner
+
+IRs:
+presaleOwner(address) := _presaleOwner(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+etherPrice = _etherPrice
+
+IRs:
+etherPrice(uint256) := _etherPrice(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+presaleFinishTime = 1526342400
+
+IRs:
+presaleFinishTime(uint256) := 1526342400(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+state = State.Presale
+
+IRs:
+REF_32(Presale.State) -> State.Presale
+state(Presale.State) := REF_32(Presale.State)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+totalLimitUSD = 500000
+
+IRs:
+totalLimitUSD(uint256) := 500000(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+NewState(state)
+
+IRs:
+Emit NewState(state)"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+8->1;
+}
+// Function: 31617.sol-Presale-timeToFinishPresale()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(state == State.Presale)
+
+IRs:
+REF_34(Presale.State) -> State.Presale
+TMP_80(bool) = state == REF_34
+TMP_81(None) = SOLIDITY_CALL require(bool)(TMP_80)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+now > presaleFinishTime
+
+IRs:
+TMP_82(bool) = now > presaleFinishTime
+CONDITION TMP_82"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+t = 0
+
+IRs:
+t(uint256) := 0(uint256)"];
+3->5;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+t = presaleFinishTime - now
+
+IRs:
+TMP_83(uint256) = presaleFinishTime - now
+t(uint256) := TMP_83(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+t
+
+IRs:
+RETURN t"];
+}
+// Function: 31617.sol-Presale-transfer(address,uint256)
+digraph{
+}
+// Function: 31617.sol-Presale-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 31617.sol-Presale-withdraw()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(presaleOwner.call.gas(3000000).value(this.balance)())
+
+IRs:
+REF_44(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_98(bool) = LOW_LEVEL_CALL, dest:presaleOwner, function:call, arguments:[] value:REF_44 gas:3000000
+TMP_99(None) = SOLIDITY_CALL require(bool)(TMP_98)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+2->1;
+}
+// Function: 31617.sol-PresaleOriginal-allowance(address,address)
+digraph{
+}
+// Function: 31617.sol-PresaleOriginal-approve(address,uint256)
+digraph{
+}
+// Function: 31617.sol-PresaleOriginal-balanceOf(address)
+digraph{
+}
+// Function: 31617.sol-PresaleOriginal-changeOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_owner != 0)
+
+IRs:
+TMP_7(bool) = _owner != 0
+TMP_8(None) = SOLIDITY_CALL require(bool)(TMP_7)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+newOwner = _owner
+
+IRs:
+newOwner(address) := _owner(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+3->1;
+}
+// Function: 31617.sol-PresaleOriginal-confirmOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newOwner == msg.sender)
+
+IRs:
+TMP_10(bool) = newOwner == msg.sender
+TMP_11(None) = SOLIDITY_CALL require(bool)(TMP_10)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+delete newOwner
+
+IRs:
+newOwner = delete newOwner "];
+}
+// Function: 31617.sol-PresaleOriginal-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(owner == msg.sender)
+
+IRs:
+TMP_12(bool) = owner == msg.sender
+TMP_13(None) = SOLIDITY_CALL require(bool)(TMP_12)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 31617.sol-PresaleOriginal-owned()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 31617.sol-PresaleOriginal-transfer(address,uint256)
+digraph{
+}
+// Function: 31617.sol-PresaleOriginal-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 31617.sol-PresaleToken-PresaleToken()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+Presale()
+
+IRs:
+INTERNAL_CALL, owned.owned()()"];
+}
+// Function: 31617.sol-PresaleToken-allowance(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+allowed[_owner][_spender]
+
+IRs:
+REF_128(mapping(address => uint256)) -> allowed[_owner]
+REF_129(uint256) -> REF_128[_spender]
+RETURN REF_129"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+remaining
+
+IRs:
+RETURN remaining"];
+}
+// Function: 31617.sol-PresaleToken-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowed[msg.sender][_spender] = _value
+
+IRs:
+REF_126(mapping(address => uint256)) -> allowed[msg.sender]
+REF_127(uint256) -> REF_126[_spender]
+REF_127(uint256) (->allowed) := _value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,_value)
+
+IRs:
+Emit Approval(msg.sender,_spender,_value)"];
+}
+// Function: 31617.sol-PresaleToken-balanceOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+investors[_who].amountTokens
+
+IRs:
+REF_90(PresaleOriginal.Investor) -> investors[_who]
+REF_91(uint256) -> REF_90.amountTokens
+RETURN REF_91"];
+}
+// Function: 31617.sol-PresaleToken-changeOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_owner != 0)
+
+IRs:
+TMP_185(bool) = _owner != 0
+TMP_186(None) = SOLIDITY_CALL require(bool)(TMP_185)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+newOwner = _owner
+
+IRs:
+newOwner(address) := _owner(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+3->1;
+}
+// Function: 31617.sol-PresaleToken-confirmOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newOwner == msg.sender)
+
+IRs:
+TMP_188(bool) = newOwner == msg.sender
+TMP_189(None) = SOLIDITY_CALL require(bool)(TMP_188)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+delete newOwner
+
+IRs:
+newOwner = delete newOwner "];
+}
+// Function: 31617.sol-PresaleToken-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(state == State.Presale)
+
+IRs:
+REF_65(Presale.State) -> State.Presale
+TMP_130(bool) = state == REF_65
+TMP_131(None) = SOLIDITY_CALL require(bool)(TMP_130)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(now < presaleFinishTime)
+
+IRs:
+TMP_132(bool) = now < presaleFinishTime
+TMP_133(None) = SOLIDITY_CALL require(bool)(TMP_132)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+valueWei = msg.value
+
+IRs:
+valueWei(uint256) := msg.value(uint256)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+valueUSD = valueWei * etherPrice / 1000000000000000000
+
+IRs:
+TMP_134(uint256) = valueWei * etherPrice
+TMP_135(uint256) = TMP_134 / 1000000000000000000
+valueUSD(uint256) := TMP_135(uint256)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+collectedUSD + valueUSD > totalLimitUSD
+
+IRs:
+TMP_136(uint256) = collectedUSD + valueUSD
+TMP_137(bool) = TMP_136 > totalLimitUSD
+CONDITION TMP_137"];
+5->6[label="True"];
+5->10[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+valueUSD = totalLimitUSD - collectedUSD
+
+IRs:
+TMP_138(uint256) = totalLimitUSD - collectedUSD
+valueUSD(uint256) := TMP_138(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+valueWei = valueUSD * 1000000000000000000 / etherPrice
+
+IRs:
+TMP_139(uint256) = valueUSD * 1000000000000000000
+TMP_140(uint256) = TMP_139 / etherPrice
+valueWei(uint256) := TMP_140(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+require(bool)(msg.sender.call.gas(3000000).value(msg.value - valueWei)())
+
+IRs:
+TMP_142(uint256) = msg.value - valueWei
+TMP_144(bool) = LOW_LEVEL_CALL, dest:msg.sender, function:call, arguments:[] value:TMP_142 gas:3000000
+TMP_145(None) = SOLIDITY_CALL require(bool)(TMP_144)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+collectedUSD = totalLimitUSD
+
+IRs:
+collectedUSD(uint256) := totalLimitUSD(uint256)"];
+9->11;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+collectedUSD += valueUSD
+
+IRs:
+collectedUSD(uint256) = collectedUSD + valueUSD"];
+10->11;
+11[label="Node Type: END_IF 11
+"];
+11->12;
+12[label="Node Type: NEW VARIABLE 12
+
+EXPRESSION:
+tokensPer10USD = 130
+
+IRs:
+tokensPer10USD(uint256) := 130(uint256)"];
+12->13;
+13[label="Node Type: IF 13
+
+EXPRESSION:
+valueUSD >= 100000
+
+IRs:
+TMP_146(bool) = valueUSD >= 100000
+CONDITION TMP_146"];
+13->14[label="True"];
+13->15[label="False"];
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+tokensPer10USD = 150
+
+IRs:
+tokensPer10USD(uint256) := 150(uint256)"];
+14->15;
+15[label="Node Type: END_IF 15
+"];
+15->16;
+16[label="Node Type: NEW VARIABLE 16
+
+EXPRESSION:
+tokens = tokensPer10USD * valueUSD / 10
+
+IRs:
+TMP_147(uint256) = tokensPer10USD * valueUSD
+TMP_148(uint256) = TMP_147 / 10
+tokens(uint256) := TMP_148(uint256)"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+require(bool)(tokens > 0)
+
+IRs:
+TMP_149(bool) = tokens > 0
+TMP_150(None) = SOLIDITY_CALL require(bool)(TMP_149)"];
+17->18;
+18[label="Node Type: NEW VARIABLE 18
+
+EXPRESSION:
+inv = investors[msg.sender]
+
+IRs:
+REF_69(PresaleOriginal.Investor) -> investors[msg.sender]
+inv(PresaleOriginal.Investor) := REF_69(PresaleOriginal.Investor)"];
+18->19;
+19[label="Node Type: IF 19
+
+EXPRESSION:
+inv.amountWei == 0
+
+IRs:
+REF_70(uint256) -> inv.amountWei
+TMP_151(bool) = REF_70 == 0
+CONDITION TMP_151"];
+19->20[label="True"];
+19->21[label="False"];
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+investorsIter[numberOfInvestors ++] = msg.sender
+
+IRs:
+TMP_152(uint256) := numberOfInvestors(uint256)
+numberOfInvestors(uint256) = numberOfInvestors + 1
+REF_71(address) -> investorsIter[TMP_152]
+REF_71(address) (->investorsIter) := msg.sender(address)"];
+20->21;
+21[label="Node Type: END_IF 21
+"];
+21->22;
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+require(bool)(inv.amountTokens + tokens > inv.amountTokens)
+
+IRs:
+REF_72(uint256) -> inv.amountTokens
+TMP_153(uint256) = REF_72 + tokens
+REF_73(uint256) -> inv.amountTokens
+TMP_154(bool) = TMP_153 > REF_73
+TMP_155(None) = SOLIDITY_CALL require(bool)(TMP_154)"];
+22->23;
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+inv.amountTokens += tokens
+
+IRs:
+REF_74(uint256) -> inv.amountTokens
+REF_74(-> inv) = REF_74 + tokens"];
+23->24;
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+inv.amountWei += valueWei
+
+IRs:
+REF_75(uint256) -> inv.amountWei
+REF_75(-> inv) = REF_75 + valueWei"];
+24->25;
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+totalSupply += tokens
+
+IRs:
+totalSupply(uint256) = totalSupply + tokens"];
+25->26;
+26[label="Node Type: EXPRESSION 26
+
+EXPRESSION:
+Transfer(this,msg.sender,tokens)
+
+IRs:
+Emit Transfer(this,msg.sender,tokens)"];
+}
+// Function: 31617.sol-PresaleToken-finishPresale()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(state == State.Presale)
+
+IRs:
+REF_80(Presale.State) -> State.Presale
+TMP_168(bool) = state == REF_80
+TMP_169(None) = SOLIDITY_CALL require(bool)(TMP_168)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(now >= presaleFinishTime || collectedUSD == totalLimitUSD)
+
+IRs:
+TMP_170(bool) = now >= presaleFinishTime
+TMP_171(bool) = collectedUSD == totalLimitUSD
+TMP_172(bool) = TMP_170 || TMP_171
+TMP_173(None) = SOLIDITY_CALL require(bool)(TMP_172)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(presaleOwner.call.gas(3000000).value(this.balance)())
+
+IRs:
+REF_84(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_176(bool) = LOW_LEVEL_CALL, dest:presaleOwner, function:call, arguments:[] value:REF_84 gas:3000000
+TMP_177(None) = SOLIDITY_CALL require(bool)(TMP_176)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+state = State.Finished
+
+IRs:
+REF_85(Presale.State) -> State.Finished
+state(Presale.State) := REF_85(Presale.State)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+NewState(state)
+
+IRs:
+Emit NewState(state)"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+6->1;
+}
+// Function: 31617.sol-PresaleToken-migrate(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->34;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(state == State.Disabled)
+
+IRs:
+REF_45(Presale.State) -> State.Disabled
+TMP_103(bool) = state == REF_45
+TMP_104(None) = SOLIDITY_CALL require(bool)(TMP_103)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+numberOfInvestors = PresaleOriginal(_originalContract).numberOfInvestors()
+
+IRs:
+TMP_105 = CONVERT _originalContract to PresaleOriginal
+TMP_106(uint256) = HIGH_LEVEL_CALL, dest:TMP_105(PresaleOriginal), function:numberOfInvestors, arguments:[]  
+numberOfInvestors(uint256) := TMP_106(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+limit = migrationCounter + n
+
+IRs:
+TMP_107(uint256) = migrationCounter + n
+limit(uint256) := TMP_107(uint256)"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+limit > numberOfInvestors
+
+IRs:
+TMP_108(bool) = limit > numberOfInvestors
+CONDITION TMP_108"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+limit = numberOfInvestors
+
+IRs:
+limit(uint256) := numberOfInvestors(uint256)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: BEGIN_LOOP 7
+"];
+7->9;
+8[label="Node Type: END_LOOP 8
+"];
+8->21;
+9[label="Node Type: IF_LOOP 9
+
+EXPRESSION:
+migrationCounter < limit
+
+IRs:
+TMP_109(bool) = migrationCounter < limit
+CONDITION TMP_109"];
+9->10[label="True"];
+9->8[label="False"];
+10[label="Node Type: NEW VARIABLE 10
+
+EXPRESSION:
+a = PresaleOriginal(_originalContract).investorsIter(migrationCounter)
+
+IRs:
+TMP_110 = CONVERT _originalContract to PresaleOriginal
+TMP_111(address) = HIGH_LEVEL_CALL, dest:TMP_110(PresaleOriginal), function:investorsIter, arguments:['migrationCounter']  
+a(address) := TMP_111(address)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+investorsIter[migrationCounter] = a
+
+IRs:
+REF_48(address) -> investorsIter[migrationCounter]
+REF_48(address) (->investorsIter) := a(address)"];
+11->12;
+12[label="Node Type: NEW VARIABLE 12
+"];
+12->13;
+13[label="Node Type: NEW VARIABLE 13
+"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+(amountTokens,amountWei) = PresaleOriginal(_originalContract).investors(a)
+
+IRs:
+TMP_112 = CONVERT _originalContract to PresaleOriginal
+TUPLE_1(uint256,uint256) = HIGH_LEVEL_CALL, dest:TMP_112(PresaleOriginal), function:investors, arguments:['a']  
+amountTokens(uint256)= UNPACK TUPLE_1 index: 0 
+amountWei(uint256)= UNPACK TUPLE_1 index: 1 "];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+amountTokens *= 2
+
+IRs:
+amountTokens(uint256) = amountTokens * 2"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+investors[a].amountTokens = amountTokens
+
+IRs:
+REF_50(PresaleOriginal.Investor) -> investors[a]
+REF_51(uint256) -> REF_50.amountTokens
+REF_51(uint256) (->investors) := amountTokens(uint256)"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+investors[a].amountWei = amountWei
+
+IRs:
+REF_52(PresaleOriginal.Investor) -> investors[a]
+REF_53(uint256) -> REF_52.amountWei
+REF_53(uint256) (->investors) := amountWei(uint256)"];
+17->18;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+totalSupply += amountTokens
+
+IRs:
+totalSupply(uint256) = totalSupply + amountTokens"];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+Transfer(_originalContract,a,amountTokens)
+
+IRs:
+Emit Transfer(_originalContract,a,amountTokens)"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+++ migrationCounter
+
+IRs:
+migrationCounter(uint256) = migrationCounter + 1"];
+20->9;
+21[label="Node Type: IF 21
+
+EXPRESSION:
+limit < numberOfInvestors
+
+IRs:
+TMP_114(bool) = limit < numberOfInvestors
+CONDITION TMP_114"];
+21->22[label="True"];
+21->23[label="False"];
+22[label="Node Type: RETURN 22
+"];
+23[label="Node Type: END_IF 23
+"];
+23->24;
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+presaleStartTime = PresaleOriginal(_originalContract).presaleStartTime()
+
+IRs:
+TMP_115 = CONVERT _originalContract to PresaleOriginal
+TMP_116(uint256) = HIGH_LEVEL_CALL, dest:TMP_115(PresaleOriginal), function:presaleStartTime, arguments:[]  
+presaleStartTime(uint256) := TMP_116(uint256)"];
+24->25;
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+collectedUSD = PresaleOriginal(_originalContract).collectedUSD()
+
+IRs:
+TMP_117 = CONVERT _originalContract to PresaleOriginal
+TMP_118(uint256) = HIGH_LEVEL_CALL, dest:TMP_117(PresaleOriginal), function:collectedUSD, arguments:[]  
+collectedUSD(uint256) := TMP_118(uint256)"];
+25->26;
+26[label="Node Type: EXPRESSION 26
+
+EXPRESSION:
+totalLimitUSD = PresaleOriginal(_originalContract).totalLimitUSD()
+
+IRs:
+TMP_119 = CONVERT _originalContract to PresaleOriginal
+TMP_120(uint256) = HIGH_LEVEL_CALL, dest:TMP_119(PresaleOriginal), function:totalLimitUSD, arguments:[]  
+totalLimitUSD(uint256) := TMP_120(uint256)"];
+26->27;
+27[label="Node Type: NEW VARIABLE 27
+
+EXPRESSION:
+bountyAddress = 0x59B95A5e0268Cc843e6308FEf723544BaA6676c6
+
+IRs:
+bountyAddress(address) := 512233688560528834882189522102740645546662721222(address)"];
+27->28;
+28[label="Node Type: IF 28
+
+EXPRESSION:
+investors[bountyAddress].amountWei == 0 && investors[bountyAddress].amountTokens == 0
+
+IRs:
+REF_57(PresaleOriginal.Investor) -> investors[bountyAddress]
+REF_58(uint256) -> REF_57.amountWei
+TMP_121(bool) = REF_58 == 0
+REF_59(PresaleOriginal.Investor) -> investors[bountyAddress]
+REF_60(uint256) -> REF_59.amountTokens
+TMP_122(bool) = REF_60 == 0
+TMP_123(bool) = TMP_121 && TMP_122
+CONDITION TMP_123"];
+28->29[label="True"];
+28->30[label="False"];
+29[label="Node Type: EXPRESSION 29
+
+EXPRESSION:
+investorsIter[numberOfInvestors ++] = bountyAddress
+
+IRs:
+TMP_124(uint256) := numberOfInvestors(uint256)
+numberOfInvestors(uint256) = numberOfInvestors + 1
+REF_61(address) -> investorsIter[TMP_124]
+REF_61(address) (->investorsIter) := bountyAddress(address)"];
+29->30;
+30[label="Node Type: END_IF 30
+"];
+30->31;
+31[label="Node Type: NEW VARIABLE 31
+
+EXPRESSION:
+bountyTokens = 5 * PresaleOriginal(_originalContract).totalSupply() / 100
+
+IRs:
+TMP_125 = CONVERT _originalContract to PresaleOriginal
+TMP_126(uint256) = HIGH_LEVEL_CALL, dest:TMP_125(PresaleOriginal), function:totalSupply, arguments:[]  
+TMP_127(uint256) = 5 * TMP_126
+TMP_128(uint256) = TMP_127 / 100
+bountyTokens(uint256) := TMP_128(uint256)"];
+31->32;
+32[label="Node Type: EXPRESSION 32
+
+EXPRESSION:
+investors[bountyAddress].amountTokens += bountyTokens
+
+IRs:
+REF_63(PresaleOriginal.Investor) -> investors[bountyAddress]
+REF_64(uint256) -> REF_63.amountTokens
+REF_64(-> investors) = REF_64 + bountyTokens"];
+32->33;
+33[label="Node Type: EXPRESSION 33
+
+EXPRESSION:
+totalSupply += bountyTokens
+
+IRs:
+totalSupply(uint256) = totalSupply + bountyTokens"];
+34[label="Node Type: EXPRESSION 34
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+34->1;
+}
+// Function: 31617.sol-PresaleToken-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(owner == msg.sender)
+
+IRs:
+TMP_218(bool) = owner == msg.sender
+TMP_219(None) = SOLIDITY_CALL require(bool)(TMP_218)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 31617.sol-PresaleToken-onlyPayloadSize(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.data.length >= size + 4)
+
+IRs:
+REF_130 -> LENGTH msg.data
+TMP_220(uint256) = size + 4
+TMP_221(bool) = REF_130 >= TMP_220
+TMP_222(None) = SOLIDITY_CALL require(bool)(TMP_221)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 31617.sol-PresaleToken-owned()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 31617.sol-PresaleToken-setEtherPrice(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(state == State.Presale)
+
+IRs:
+REF_78(Presale.State) -> State.Presale
+TMP_161(bool) = state == REF_78
+TMP_162(None) = SOLIDITY_CALL require(bool)(TMP_161)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+etherPrice = _etherPrice
+
+IRs:
+etherPrice(uint256) := _etherPrice(uint256)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+3->1;
+}
+// Function: 31617.sol-PresaleToken-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+standard = Token 0.1
+
+IRs:
+standard(string) := Token 0.1(string)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+name = OpenLongevity
+
+IRs:
+name(string) := OpenLongevity(string)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+symbol = YEAR
+
+IRs:
+symbol(string) := YEAR(string)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+decimals = 0
+
+IRs:
+decimals(uint8) := 0(uint256)"];
+}
+// Function: 31617.sol-PresaleToken-startPresale(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->8;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(state == State.Disabled)
+
+IRs:
+REF_76(Presale.State) -> State.Disabled
+TMP_157(bool) = state == REF_76
+TMP_158(None) = SOLIDITY_CALL require(bool)(TMP_157)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+presaleOwner = _presaleOwner
+
+IRs:
+presaleOwner(address) := _presaleOwner(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+etherPrice = _etherPrice
+
+IRs:
+etherPrice(uint256) := _etherPrice(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+presaleFinishTime = 1526342400
+
+IRs:
+presaleFinishTime(uint256) := 1526342400(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+state = State.Presale
+
+IRs:
+REF_77(Presale.State) -> State.Presale
+state(Presale.State) := REF_77(Presale.State)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+totalLimitUSD = 500000
+
+IRs:
+totalLimitUSD(uint256) := 500000(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+NewState(state)
+
+IRs:
+Emit NewState(state)"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+8->1;
+}
+// Function: 31617.sol-PresaleToken-timeToFinishPresale()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(state == State.Presale)
+
+IRs:
+REF_79(Presale.State) -> State.Presale
+TMP_164(bool) = state == REF_79
+TMP_165(None) = SOLIDITY_CALL require(bool)(TMP_164)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+now > presaleFinishTime
+
+IRs:
+TMP_166(bool) = now > presaleFinishTime
+CONDITION TMP_166"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+t = 0
+
+IRs:
+t(uint256) := 0(uint256)"];
+3->5;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+t = presaleFinishTime - now
+
+IRs:
+TMP_167(uint256) = presaleFinishTime - now
+t(uint256) := TMP_167(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+t
+
+IRs:
+RETURN t"];
+}
+// Function: 31617.sol-PresaleToken-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->9;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(investors[msg.sender].amountTokens >= _value)
+
+IRs:
+REF_92(PresaleOriginal.Investor) -> investors[msg.sender]
+REF_93(uint256) -> REF_92.amountTokens
+TMP_191(bool) = REF_93 >= _value
+TMP_192(None) = SOLIDITY_CALL require(bool)(TMP_191)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(investors[_to].amountTokens + _value >= investors[_to].amountTokens)
+
+IRs:
+REF_94(PresaleOriginal.Investor) -> investors[_to]
+REF_95(uint256) -> REF_94.amountTokens
+TMP_193(uint256) = REF_95 + _value
+REF_96(PresaleOriginal.Investor) -> investors[_to]
+REF_97(uint256) -> REF_96.amountTokens
+TMP_194(bool) = TMP_193 >= REF_97
+TMP_195(None) = SOLIDITY_CALL require(bool)(TMP_194)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+investors[msg.sender].amountTokens -= _value
+
+IRs:
+REF_98(PresaleOriginal.Investor) -> investors[msg.sender]
+REF_99(uint256) -> REF_98.amountTokens
+REF_99(-> investors) = REF_99 - _value"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+investors[_to].amountTokens == 0 && investors[_to].amountWei == 0
+
+IRs:
+REF_100(PresaleOriginal.Investor) -> investors[_to]
+REF_101(uint256) -> REF_100.amountTokens
+TMP_196(bool) = REF_101 == 0
+REF_102(PresaleOriginal.Investor) -> investors[_to]
+REF_103(uint256) -> REF_102.amountWei
+TMP_197(bool) = REF_103 == 0
+TMP_198(bool) = TMP_196 && TMP_197
+CONDITION TMP_198"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+investorsIter[numberOfInvestors ++] = _to
+
+IRs:
+TMP_199(uint256) := numberOfInvestors(uint256)
+numberOfInvestors(uint256) = numberOfInvestors + 1
+REF_104(address) -> investorsIter[TMP_199]
+REF_104(address) (->investorsIter) := _to(address)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+investors[_to].amountTokens += _value
+
+IRs:
+REF_105(PresaleOriginal.Investor) -> investors[_to]
+REF_106(uint256) -> REF_105.amountTokens
+REF_106(-> investors) = REF_106 + _value"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+Transfer(msg.sender,_to,_value)
+
+IRs:
+Emit Transfer(msg.sender,_to,_value)"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+onlyPayloadSize(2 * 32)
+
+IRs:
+TMP_201(uint256) = 2 * 32
+MODIFIER_CALL, PresaleToken.onlyPayloadSize(uint256)(TMP_201)"];
+9->1;
+}
+// Function: 31617.sol-PresaleToken-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->11;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(investors[_from].amountTokens >= _value)
+
+IRs:
+REF_107(PresaleOriginal.Investor) -> investors[_from]
+REF_108(uint256) -> REF_107.amountTokens
+TMP_203(bool) = REF_108 >= _value
+TMP_204(None) = SOLIDITY_CALL require(bool)(TMP_203)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(investors[_to].amountTokens + _value >= investors[_to].amountTokens)
+
+IRs:
+REF_109(PresaleOriginal.Investor) -> investors[_to]
+REF_110(uint256) -> REF_109.amountTokens
+TMP_205(uint256) = REF_110 + _value
+REF_111(PresaleOriginal.Investor) -> investors[_to]
+REF_112(uint256) -> REF_111.amountTokens
+TMP_206(bool) = TMP_205 >= REF_112
+TMP_207(None) = SOLIDITY_CALL require(bool)(TMP_206)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(allowed[_from][msg.sender] >= _value)
+
+IRs:
+REF_113(mapping(address => uint256)) -> allowed[_from]
+REF_114(uint256) -> REF_113[msg.sender]
+TMP_208(bool) = REF_114 >= _value
+TMP_209(None) = SOLIDITY_CALL require(bool)(TMP_208)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+investors[_from].amountTokens -= _value
+
+IRs:
+REF_115(PresaleOriginal.Investor) -> investors[_from]
+REF_116(uint256) -> REF_115.amountTokens
+REF_116(-> investors) = REF_116 - _value"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+investors[_to].amountTokens == 0 && investors[_to].amountWei == 0
+
+IRs:
+REF_117(PresaleOriginal.Investor) -> investors[_to]
+REF_118(uint256) -> REF_117.amountTokens
+TMP_210(bool) = REF_118 == 0
+REF_119(PresaleOriginal.Investor) -> investors[_to]
+REF_120(uint256) -> REF_119.amountWei
+TMP_211(bool) = REF_120 == 0
+TMP_212(bool) = TMP_210 && TMP_211
+CONDITION TMP_212"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+investorsIter[numberOfInvestors ++] = _to
+
+IRs:
+TMP_213(uint256) := numberOfInvestors(uint256)
+numberOfInvestors(uint256) = numberOfInvestors + 1
+REF_121(address) -> investorsIter[TMP_213]
+REF_121(address) (->investorsIter) := _to(address)"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+investors[_to].amountTokens += _value
+
+IRs:
+REF_122(PresaleOriginal.Investor) -> investors[_to]
+REF_123(uint256) -> REF_122.amountTokens
+REF_123(-> investors) = REF_123 + _value"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+allowed[_from][msg.sender] -= _value
+
+IRs:
+REF_124(mapping(address => uint256)) -> allowed[_from]
+REF_125(uint256) -> REF_124[msg.sender]
+REF_125(-> allowed) = REF_125 - _value"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+Transfer(_from,_to,_value)
+
+IRs:
+Emit Transfer(_from,_to,_value)"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+onlyPayloadSize(3 * 32)
+
+IRs:
+TMP_215(uint256) = 3 * 32
+MODIFIER_CALL, PresaleToken.onlyPayloadSize(uint256)(TMP_215)"];
+11->1;
+}
+// Function: 31617.sol-PresaleToken-withdraw()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(presaleOwner.call.gas(3000000).value(this.balance)())
+
+IRs:
+REF_89(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_182(bool) = LOW_LEVEL_CALL, dest:presaleOwner, function:call, arguments:[] value:REF_89 gas:3000000
+TMP_183(None) = SOLIDITY_CALL require(bool)(TMP_182)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+2->1;
+}
+// Function: 31617.sol-owned-changeOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_owner != 0)
+
+IRs:
+TMP_0(bool) = _owner != 0
+TMP_1(None) = SOLIDITY_CALL require(bool)(TMP_0)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+newOwner = _owner
+
+IRs:
+newOwner(address) := _owner(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+3->1;
+}
+// Function: 31617.sol-owned-confirmOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newOwner == msg.sender)
+
+IRs:
+TMP_3(bool) = newOwner == msg.sender
+TMP_4(None) = SOLIDITY_CALL require(bool)(TMP_3)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+delete newOwner
+
+IRs:
+newOwner = delete newOwner "];
+}
+// Function: 31617.sol-owned-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(owner == msg.sender)
+
+IRs:
+TMP_5(bool) = owner == msg.sender
+TMP_6(None) = SOLIDITY_CALL require(bool)(TMP_5)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 31617.sol-owned-owned()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+}

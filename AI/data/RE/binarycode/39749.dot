@@ -1,0 +1,893 @@
+digraph G {
+// Function: 39749.sol-DSSafeAddSub-safeAdd(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! safeToAdd(a,b)
+
+IRs:
+TMP_4(bool) = INTERNAL_CALL, DSSafeAddSub.safeToAdd(uint256,uint256)(a,b)
+TMP_5 = UnaryType.BANG TMP_4 
+CONDITION TMP_5"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+a + b
+
+IRs:
+TMP_6(uint256) = a + b
+RETURN TMP_6"];
+}
+// Function: 39749.sol-DSSafeAddSub-safeSub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! safeToSubtract(a,b)
+
+IRs:
+TMP_8(bool) = INTERNAL_CALL, DSSafeAddSub.safeToSubtract(uint256,uint256)(a,b)
+TMP_9 = UnaryType.BANG TMP_8 
+CONDITION TMP_9"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_10(uint256) = a - b
+RETURN TMP_10"];
+}
+// Function: 39749.sol-DSSafeAddSub-safeToAdd(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+(a + b >= a)
+
+IRs:
+TMP_2(uint256) = a + b
+TMP_3(bool) = TMP_2 >= a
+RETURN TMP_3"];
+}
+// Function: 39749.sol-DSSafeAddSub-safeToSubtract(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+(b <= a)
+
+IRs:
+TMP_7(bool) = b <= a
+RETURN TMP_7"];
+}
+// Function: 39749.sol-EtherollCrowdfund-EtherollCrowdfund(address,address,uint256,uint256,token)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+bankRollBeneficiary = _ifSuccessfulSendToBeneficiary
+
+IRs:
+bankRollBeneficiary(address) := _ifSuccessfulSendToBeneficiary(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+etherollBeneficiary = _ifSuccessfulSendToEtheroll
+
+IRs:
+etherollBeneficiary(address) := _ifSuccessfulSendToEtheroll(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+fundingGoal = _fundingGoalInEthers * 1000000000000000000
+
+IRs:
+TMP_21(uint256) = _fundingGoalInEthers * 1000000000000000000
+fundingGoal(uint256) := TMP_21(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+deadline = now + _durationInMinutes * 60
+
+IRs:
+TMP_22(uint256) = _durationInMinutes * 60
+TMP_23(uint256) = now + TMP_22
+deadline(uint256) := TMP_23(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+tokenReward = token(_addressOfTokenUsedAsReward)
+
+IRs:
+TMP_24 = CONVERT _addressOfTokenUsedAsReward to token
+tokenReward(token) := TMP_24(token)"];
+}
+// Function: 39749.sol-EtherollCrowdfund-calcRefund(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+amount = balanceOf[_addressToRefund]
+
+IRs:
+REF_8(uint256) -> balanceOf[_addressToRefund]
+amount(uint256) := REF_8(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balanceOf[_addressToRefund] = 0
+
+IRs:
+REF_9(uint256) -> balanceOf[_addressToRefund]
+REF_9(uint256) (->balanceOf) := 0(uint256)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+amount > 0
+
+IRs:
+TMP_53(bool) = amount > 0
+CONDITION TMP_53"];
+3->4[label="True"];
+3->8[label="False"];
+4[label="Node Type: IF 4
+
+EXPRESSION:
+_addressToRefund.call.value(amount)()
+
+IRs:
+TMP_55(bool) = LOW_LEVEL_CALL, dest:_addressToRefund, function:call, arguments:[] value:amount 
+CONDITION TMP_55"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+LogFundTransfer(_addressToRefund,amount,false)
+
+IRs:
+Emit LogFundTransfer(_addressToRefund,amount,False)"];
+5->7;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+balanceOf[_addressToRefund] = amount
+
+IRs:
+REF_12(uint256) -> balanceOf[_addressToRefund]
+REF_12(uint256) (->balanceOf) := amount(uint256)"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+}
+// Function: 39749.sol-EtherollCrowdfund-emergencyWithdraw()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+calcRefund(msg.sender)
+
+IRs:
+INTERNAL_CALL, EtherollCrowdfund.calcRefund(address)(msg.sender)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+isEmergency()
+
+IRs:
+MODIFIER_CALL, EtherollCrowdfund.isEmergency()()"];
+2->1;
+}
+// Function: 39749.sol-EtherollCrowdfund-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+now > deadline
+
+IRs:
+TMP_25(bool) = now > deadline
+CONDITION TMP_25"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+crowdsaleClosed = true
+
+IRs:
+crowdsaleClosed(bool) := True(bool)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+crowdsaleClosed
+
+IRs:
+CONDITION crowdsaleClosed"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: THROW 5
+"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: IF 7
+
+EXPRESSION:
+msg.value == 0
+
+IRs:
+TMP_26(bool) = msg.value == 0
+CONDITION TMP_26"];
+7->8[label="True"];
+7->9[label="False"];
+8[label="Node Type: THROW 8
+"];
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: IF 10
+
+EXPRESSION:
+now < weekTwoPriceRiseBegin
+
+IRs:
+TMP_27(bool) = now < weekTwoPriceRiseBegin
+CONDITION TMP_27"];
+10->11[label="True"];
+10->15[label="False"];
+11[label="Node Type: IF 11
+
+EXPRESSION:
+tokenReward.transfer(msg.sender,((msg.value * price) / price) * 2)
+
+IRs:
+TMP_28(uint256) = msg.value * price
+TMP_29(uint256) = TMP_28 / price
+TMP_30(uint256) = TMP_29 * 2
+TMP_31(bool) = HIGH_LEVEL_CALL, dest:tokenReward(token), function:transfer, arguments:['msg.sender', 'TMP_30']  
+CONDITION TMP_31"];
+11->12[label="True"];
+11->13[label="False"];
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+LogFundTransfer(msg.sender,msg.value,true)
+
+IRs:
+Emit LogFundTransfer(msg.sender,msg.value,True)"];
+12->14;
+13[label="Node Type: THROW 13
+"];
+14[label="Node Type: END_IF 14
+"];
+14->19;
+15[label="Node Type: IF 15
+
+EXPRESSION:
+tokenReward.transfer(msg.sender,(msg.value * price) / price)
+
+IRs:
+TMP_33(uint256) = msg.value * price
+TMP_34(uint256) = TMP_33 / price
+TMP_35(bool) = HIGH_LEVEL_CALL, dest:tokenReward(token), function:transfer, arguments:['msg.sender', 'TMP_34']  
+CONDITION TMP_35"];
+15->16[label="True"];
+15->17[label="False"];
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+LogFundTransfer(msg.sender,msg.value,true)
+
+IRs:
+Emit LogFundTransfer(msg.sender,msg.value,True)"];
+16->18;
+17[label="Node Type: THROW 17
+"];
+18[label="Node Type: END_IF 18
+"];
+18->19;
+19[label="Node Type: END_IF 19
+"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+amountRaised = safeAdd(amountRaised,msg.value)
+
+IRs:
+TMP_37(uint256) = INTERNAL_CALL, DSSafeAddSub.safeAdd(uint256,uint256)(amountRaised,msg.value)
+amountRaised(uint256) := TMP_37(uint256)"];
+20->21;
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+balanceOf[msg.sender] = safeAdd(balanceOf[msg.sender],msg.value)
+
+IRs:
+REF_2(uint256) -> balanceOf[msg.sender]
+REF_3(uint256) -> balanceOf[msg.sender]
+TMP_38(uint256) = INTERNAL_CALL, DSSafeAddSub.safeAdd(uint256,uint256)(REF_3,msg.value)
+REF_2(uint256) (->balanceOf) := TMP_38(uint256)"];
+}
+// Function: 39749.sol-EtherollCrowdfund-isEmergency()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! emergency
+
+IRs:
+TMP_67 = UnaryType.BANG emergency 
+CONDITION TMP_67"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 39749.sol-EtherollCrowdfund-onlyAfterDeadline()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+now < deadline
+
+IRs:
+TMP_66(bool) = now < deadline
+CONDITION TMP_66"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 39749.sol-EtherollCrowdfund-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != owner
+
+IRs:
+TMP_65(bool) = msg.sender != owner
+CONDITION TMP_65"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 39749.sol-EtherollCrowdfund-owned()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 39749.sol-EtherollCrowdfund-ownerBurnUnsoldTokens()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+tokenReward.priviledgedAddressBurnUnsoldCoins()
+
+IRs:
+HIGH_LEVEL_CALL, dest:tokenReward(token), function:priviledgedAddressBurnUnsoldCoins, arguments:[]  "];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyAfterDeadline()
+
+IRs:
+MODIFIER_CALL, EtherollCrowdfund.onlyAfterDeadline()()"];
+3->1;
+}
+// Function: 39749.sol-EtherollCrowdfund-ownerSetEmergencyStatus(bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+crowdsaleClosed = _newEmergencyStatus
+
+IRs:
+crowdsaleClosed(bool) := _newEmergencyStatus(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+emergency = _newEmergencyStatus
+
+IRs:
+emergency(bool) := _newEmergencyStatus(bool)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+3->1;
+}
+// Function: 39749.sol-EtherollCrowdfund-ownerTransferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+2->1;
+}
+// Function: 39749.sol-EtherollCrowdfund-safeAdd(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! safeToAdd(a,b)
+
+IRs:
+TMP_13(bool) = INTERNAL_CALL, DSSafeAddSub.safeToAdd(uint256,uint256)(a,b)
+TMP_14 = UnaryType.BANG TMP_13 
+CONDITION TMP_14"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+a + b
+
+IRs:
+TMP_15(uint256) = a + b
+RETURN TMP_15"];
+}
+// Function: 39749.sol-EtherollCrowdfund-safeSub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! safeToSubtract(a,b)
+
+IRs:
+TMP_17(bool) = INTERNAL_CALL, DSSafeAddSub.safeToSubtract(uint256,uint256)(a,b)
+TMP_18 = UnaryType.BANG TMP_17 
+CONDITION TMP_18"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_19(uint256) = a - b
+RETURN TMP_19"];
+}
+// Function: 39749.sol-EtherollCrowdfund-safeToAdd(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+(a + b >= a)
+
+IRs:
+TMP_11(uint256) = a + b
+TMP_12(bool) = TMP_11 >= a
+RETURN TMP_12"];
+}
+// Function: 39749.sol-EtherollCrowdfund-safeToSubtract(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+(b <= a)
+
+IRs:
+TMP_16(bool) = b <= a
+RETURN TMP_16"];
+}
+// Function: 39749.sol-EtherollCrowdfund-safeWithdraw()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->21;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+amountRaised >= fundingGoal
+
+IRs:
+TMP_39(bool) = amountRaised >= fundingGoal
+CONDITION TMP_39"];
+1->2[label="True"];
+1->4[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+fundingGoalReached = true
+
+IRs:
+fundingGoalReached(bool) := True(bool)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+LogGoalReached(bankRollBeneficiary,amountRaised)
+
+IRs:
+Emit LogGoalReached(bankRollBeneficiary,amountRaised)"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+crowdsaleClosed = true
+
+IRs:
+crowdsaleClosed(bool) := True(bool)"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+! fundingGoalReached
+
+IRs:
+TMP_41 = UnaryType.BANG fundingGoalReached 
+CONDITION TMP_41"];
+6->7[label="True"];
+6->8[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+calcRefund(msg.sender)
+
+IRs:
+INTERNAL_CALL, EtherollCrowdfund.calcRefund(address)(msg.sender)"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: IF 9
+
+EXPRESSION:
+msg.sender == owner && fundingGoalReached
+
+IRs:
+TMP_43(bool) = msg.sender == owner
+TMP_44(bool) = TMP_43 && fundingGoalReached
+CONDITION TMP_44"];
+9->10[label="True"];
+9->20[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+bankrollBeneficiaryAmount = (this.balance * 80) / 100
+
+IRs:
+REF_4(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_45([<slither.core.solidity_types.elementary_type.ElementaryType object at 0x7f406c8dded0>]) = REF_4 * 80
+TMP_46([<slither.core.solidity_types.elementary_type.ElementaryType object at 0x7f406c8dded0>]) = TMP_45 / 100
+bankrollBeneficiaryAmount(uint256) := TMP_46([<slither.core.solidity_types.elementary_type.ElementaryType object at 0x7f406c8dded0>])"];
+10->11;
+11[label="Node Type: IF 11
+
+EXPRESSION:
+bankRollBeneficiary.send(bankrollBeneficiaryAmount)
+
+IRs:
+TMP_47 = SEND dest:bankRollBeneficiary value:bankrollBeneficiaryAmount
+CONDITION TMP_47"];
+11->12[label="True"];
+11->18[label="False"];
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+LogFundTransfer(bankRollBeneficiary,bankrollBeneficiaryAmount,false)
+
+IRs:
+Emit LogFundTransfer(bankRollBeneficiary,bankrollBeneficiaryAmount,False)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+etherollBeneficiaryAmount = this.balance
+
+IRs:
+REF_6(uint256) = SOLIDITY_CALL balance(address)(this)
+etherollBeneficiaryAmount(uint256) := REF_6([<slither.core.solidity_types.elementary_type.ElementaryType object at 0x7f406c8de1a0>])"];
+13->14;
+14[label="Node Type: IF 14
+
+EXPRESSION:
+! etherollBeneficiary.send(etherollBeneficiaryAmount)
+
+IRs:
+TMP_49 = SEND dest:etherollBeneficiary value:etherollBeneficiaryAmount
+TMP_50 = UnaryType.BANG TMP_49 
+CONDITION TMP_50"];
+14->15[label="True"];
+14->16[label="False"];
+15[label="Node Type: THROW 15
+"];
+16[label="Node Type: END_IF 16
+"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+LogFundTransfer(etherollBeneficiary,etherollBeneficiaryAmount,false)
+
+IRs:
+Emit LogFundTransfer(etherollBeneficiary,etherollBeneficiaryAmount,False)"];
+17->19;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+fundingGoalReached = false
+
+IRs:
+fundingGoalReached(bool) := False(bool)"];
+18->19;
+19[label="Node Type: END_IF 19
+"];
+19->20;
+20[label="Node Type: END_IF 20
+"];
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+onlyAfterDeadline()
+
+IRs:
+MODIFIER_CALL, EtherollCrowdfund.onlyAfterDeadline()()"];
+21->1;
+}
+// Function: 39749.sol-EtherollCrowdfund-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+weekTwoPriceRiseBegin = now + 10080 * 60
+
+IRs:
+TMP_63(uint256) = 10080 * 60
+TMP_64(uint256) = now + TMP_63
+weekTwoPriceRiseBegin(uint256) := TMP_64(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+price = 10000000000000000
+
+IRs:
+price(uint256) := 10000000000000000(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+crowdsaleClosed = false
+
+IRs:
+crowdsaleClosed(bool) := False(bool)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+fundingGoalReached = false
+
+IRs:
+fundingGoalReached(bool) := False(bool)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+emergency = false
+
+IRs:
+emergency(bool) := False(bool)"];
+}
+// Function: 39749.sol-owned-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != owner
+
+IRs:
+TMP_1(bool) = msg.sender != owner
+CONDITION TMP_1"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 39749.sol-owned-owned()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 39749.sol-owned-ownerTransferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+2->1;
+}
+// Function: 39749.sol-token-priviledgedAddressBurnUnsoldCoins()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 39749.sol-token-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+}

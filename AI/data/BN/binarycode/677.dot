@@ -1,0 +1,698 @@
+digraph G {
+// Function: 677.sol-BREBuy_ERC20-addPlayer(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+totalPrice = totalPrice + curConfig.singlePrice
+
+IRs:
+REF_24(uint256) -> curConfig.singlePrice
+TMP_28(uint256) = totalPrice + REF_24
+totalPrice(uint256) := TMP_28(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+addressArray.push(player)
+
+IRs:
+REF_26 -> LENGTH addressArray
+TMP_30(uint256) := REF_26(uint256)
+TMP_31(uint256) = TMP_30 + 1
+REF_26(uint256) (->addressArray) := TMP_31(uint256)
+REF_27(address) -> addressArray[TMP_30]
+REF_27(address) (->addressArray) := player(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+addPlayerEvent(gameIndex,player)
+
+IRs:
+Emit addPlayerEvent(gameIndex,player)"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+addressArray.length >= curConfig.totalSize
+
+IRs:
+REF_28 -> LENGTH addressArray
+REF_29(uint32) -> curConfig.totalSize
+TMP_33(bool) = REF_28 >= REF_29
+CONDITION TMP_33"];
+4->5[label="True"];
+4->7[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+gameResult()
+
+IRs:
+INTERNAL_CALL, BREBuy_ERC20.gameResult()()"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+startNewGame()
+
+IRs:
+INTERNAL_CALL, BREBuy_ERC20.startNewGame()()"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+}
+// Function: 677.sol-BREBuy_ERC20-changeConfig(uint32,uint256,uint8)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->11;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+curConfig.hasChange = true
+
+IRs:
+REF_2(bool) -> curConfig.hasChange
+REF_2(bool) (->curConfig) := True(bool)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+setConfig.totalSize != _totalSize
+
+IRs:
+REF_3(uint32) -> setConfig.totalSize
+TMP_18(bool) = REF_3 != _totalSize
+CONDITION TMP_18"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+setConfig.totalSize = _totalSize
+
+IRs:
+REF_4(uint32) -> setConfig.totalSize
+REF_4(uint32) (->setConfig) := _totalSize(uint32)"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+setConfig.pumpRate != _pumpRate
+
+IRs:
+REF_5(uint8) -> setConfig.pumpRate
+TMP_19(bool) = REF_5 != _pumpRate
+CONDITION TMP_19"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+setConfig.pumpRate = _pumpRate
+
+IRs:
+REF_6(uint8) -> setConfig.pumpRate
+REF_6(uint8) (->setConfig) := _pumpRate(uint8)"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: IF 8
+
+EXPRESSION:
+setConfig.singlePrice != _singlePrice * PRICE
+
+IRs:
+REF_7(uint256) -> setConfig.singlePrice
+TMP_20(uint256) = _singlePrice * PRICE
+TMP_21(bool) = REF_7 != TMP_20
+CONDITION TMP_21"];
+8->9[label="True"];
+8->10[label="False"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+setConfig.singlePrice = _singlePrice * PRICE
+
+IRs:
+REF_8(uint256) -> setConfig.singlePrice
+TMP_22(uint256) = _singlePrice * PRICE
+REF_8(uint256) (->setConfig) := TMP_22(uint256)"];
+9->10;
+10[label="Node Type: END_IF 10
+"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, BREBuy_ERC20.onlyOwner()()"];
+11->1;
+}
+// Function: 677.sol-BREBuy_ERC20-constructor(uint32,uint256,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+setConfig = ContractParam(_totalSize,_singlePrice * PRICE,5,false)
+
+IRs:
+TMP_0(uint256) = _singlePrice * PRICE
+TMP_1(BREBuy_ERC20.ContractParam) = new ContractParam(_totalSize,TMP_0,5,False)
+setConfig(BREBuy_ERC20.ContractParam) := TMP_1(BREBuy_ERC20.ContractParam)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+curConfig = ContractParam(_totalSize,_singlePrice * PRICE,5,false)
+
+IRs:
+TMP_2(uint256) = _singlePrice * PRICE
+TMP_3(BREBuy_ERC20.ContractParam) = new ContractParam(_totalSize,TMP_2,5,False)
+curConfig(BREBuy_ERC20.ContractParam) := TMP_3(BREBuy_ERC20.ContractParam)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+token = IERC20Token(tokenAddr)
+
+IRs:
+TMP_4 = CONVERT tokenAddr to IERC20Token
+token(IERC20Token) := TMP_4(IERC20Token)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+startNewGame()
+
+IRs:
+INTERNAL_CALL, BREBuy_ERC20.startNewGame()()"];
+}
+// Function: 677.sol-BREBuy_ERC20-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.value == 0)
+
+IRs:
+TMP_55(bool) = msg.value == 0
+TMP_56(None) = SOLIDITY_CALL require(bool)(TMP_55)"];
+}
+// Function: 677.sol-BREBuy_ERC20-gameResult()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+index = getRamdon()
+
+IRs:
+TMP_37(uint256) = INTERNAL_CALL, BREBuy_ERC20.getRamdon()()
+index(uint256) := TMP_37(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+lastAddress = addressArray[index]
+
+IRs:
+REF_34(address) -> addressArray[index]
+lastAddress(address) := REF_34(address)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+totalBalace = token.balanceOf(this)
+
+IRs:
+TMP_38(uint256) = HIGH_LEVEL_CALL, dest:token(IERC20Token), function:balanceOf, arguments:['this']  
+totalBalace(uint256) := TMP_38(uint256)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+giveToOwn = totalBalace * curConfig.pumpRate / 100
+
+IRs:
+REF_36(uint8) -> curConfig.pumpRate
+TMP_39(uint256) = totalBalace * REF_36
+TMP_40(uint256) = TMP_39 / 100
+giveToOwn(uint256) := TMP_40(uint256)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+giveToActor = totalBalace - giveToOwn
+
+IRs:
+TMP_41(uint256) = totalBalace - giveToOwn
+giveToActor(uint256) := TMP_41(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+token.transfer(owner,giveToOwn)
+
+IRs:
+TMP_42(bool) = HIGH_LEVEL_CALL, dest:token(IERC20Token), function:transfer, arguments:['owner', 'giveToOwn']  "];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+token.transfer(lastAddress,giveToActor)
+
+IRs:
+TMP_43(bool) = HIGH_LEVEL_CALL, dest:token(IERC20Token), function:transfer, arguments:['lastAddress', 'giveToActor']  "];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+GameOverEvent(gameIndex,curConfig.totalSize,curConfig.singlePrice,curConfig.pumpRate,lastAddress,now)
+
+IRs:
+REF_39(uint32) -> curConfig.totalSize
+REF_40(uint256) -> curConfig.singlePrice
+REF_41(uint8) -> curConfig.pumpRate
+Emit GameOverEvent(gameIndex,REF_39,REF_40,REF_41,lastAddress,now)"];
+}
+// Function: 677.sol-BREBuy_ERC20-getGameInfo()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+(gameIndex,curConfig.totalSize,curConfig.singlePrice,curConfig.pumpRate,addressArray,totalPrice,token.balanceOf(msg.sender))
+
+IRs:
+REF_30(uint32) -> curConfig.totalSize
+REF_31(uint256) -> curConfig.singlePrice
+REF_32(uint8) -> curConfig.pumpRate
+TMP_36(uint256) = HIGH_LEVEL_CALL, dest:token(IERC20Token), function:balanceOf, arguments:['msg.sender']  
+RETURN gameIndex,REF_30,REF_31,REF_32,addressArray,totalPrice,TMP_36"];
+}
+// Function: 677.sol-BREBuy_ERC20-getRamdon()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+ramdon = keccak256()(abi.encodePacked(ramdon,now,blockhash(uint256)(block.number - 1)))
+
+IRs:
+TMP_45(uint256) = block.number - 1
+TMP_46(uint256) = SOLIDITY_CALL blockhash(uint256)(TMP_45)
+TMP_47(bytes) = SOLIDITY_CALL abi.encodePacked()(ramdon,now,TMP_46)
+TMP_48(bytes32) = SOLIDITY_CALL keccak256()(TMP_47)
+ramdon(bytes32) := TMP_48(bytes32)"];
+1->4;
+2[label="Node Type: BEGIN_LOOP 2
+"];
+2->5;
+3[label="Node Type: END_LOOP 3
+"];
+3->8;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+4->2;
+5[label="Node Type: IF_LOOP 5
+
+EXPRESSION:
+i < addressArray.length
+
+IRs:
+REF_43 -> LENGTH addressArray
+TMP_49(bool) = i < REF_43
+CONDITION TMP_49"];
+5->6[label="True"];
+5->3[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+ramdon = keccak256()(abi.encodePacked(ramdon,now,addressArray[i]))
+
+IRs:
+REF_45(address) -> addressArray[i]
+TMP_50(bytes) = SOLIDITY_CALL abi.encodePacked()(ramdon,now,REF_45)
+TMP_51(bytes32) = SOLIDITY_CALL keccak256()(TMP_50)
+ramdon(bytes32) := TMP_51(bytes32)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_52(uint256) := i(uint256)
+i(uint256) = i + 1"];
+7->5;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+index = uint256(ramdon) % addressArray.length
+
+IRs:
+TMP_53 = CONVERT ramdon to uint256
+REF_46 -> LENGTH addressArray
+TMP_54(uint256) = TMP_53 % REF_46
+index(uint256) := TMP_54(uint256)"];
+8->9;
+9[label="Node Type: RETURN 9
+
+EXPRESSION:
+index
+
+IRs:
+RETURN index"];
+}
+// Function: 677.sol-BREBuy_ERC20-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_59(bool) = msg.sender == owner
+TMP_60(None) = SOLIDITY_CALL require(bool)(TMP_59)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 677.sol-BREBuy_ERC20-receiveApproval(address,uint256,address,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+t = IERC20Token(_token)
+
+IRs:
+TMP_9 = CONVERT _token to IERC20Token
+t(IERC20Token) := TMP_9(IERC20Token)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_token == address(token))
+
+IRs:
+TMP_10 = CONVERT token to address
+TMP_11(bool) = _token == TMP_10
+TMP_12(None) = SOLIDITY_CALL require(bool)(TMP_11)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(_value == curConfig.singlePrice)
+
+IRs:
+REF_0(uint256) -> curConfig.singlePrice
+TMP_13(bool) = _value == REF_0
+TMP_14(None) = SOLIDITY_CALL require(bool)(TMP_13)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool)(t.transferFrom(_from,this,_value))
+
+IRs:
+TMP_15(bool) = HIGH_LEVEL_CALL, dest:t(IERC20Token), function:transferFrom, arguments:['_from', 'this', '_value']  
+TMP_16(None) = SOLIDITY_CALL require(bool)(TMP_15)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+addPlayer(_from)
+
+IRs:
+INTERNAL_CALL, BREBuy_ERC20.addPlayer(address)(_from)"];
+}
+// Function: 677.sol-BREBuy_ERC20-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+PRICE = 1
+
+IRs:
+PRICE(uint256) := 1(uint256)"];
+}
+// Function: 677.sol-BREBuy_ERC20-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+owner = 0x0
+
+IRs:
+owner(address) := 0(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+gameIndex = 0
+
+IRs:
+gameIndex(uint32) := 0(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+totalPrice = 0
+
+IRs:
+totalPrice(uint256) := 0(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+addressArray = new address[](0)
+
+IRs:
+TMP_58(address[])  = new address[](0)
+addressArray(address[]) = ['TMP_58(address[])']"];
+}
+// Function: 677.sol-BREBuy_ERC20-startNewGame()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+gameIndex ++
+
+IRs:
+TMP_24(uint32) := gameIndex(uint32)
+gameIndex(uint32) = gameIndex + 1"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+curConfig.hasChange
+
+IRs:
+REF_9(bool) -> curConfig.hasChange
+CONDITION REF_9"];
+2->3[label="True"];
+2->13[label="False"];
+3[label="Node Type: IF 3
+
+EXPRESSION:
+curConfig.totalSize != setConfig.totalSize
+
+IRs:
+REF_10(uint32) -> curConfig.totalSize
+REF_11(uint32) -> setConfig.totalSize
+TMP_25(bool) = REF_10 != REF_11
+CONDITION TMP_25"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+curConfig.totalSize = setConfig.totalSize
+
+IRs:
+REF_12(uint32) -> curConfig.totalSize
+REF_13(uint32) -> setConfig.totalSize
+REF_12(uint32) (->curConfig) := REF_13(uint32)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+curConfig.singlePrice != setConfig.singlePrice
+
+IRs:
+REF_14(uint256) -> curConfig.singlePrice
+REF_15(uint256) -> setConfig.singlePrice
+TMP_26(bool) = REF_14 != REF_15
+CONDITION TMP_26"];
+6->7[label="True"];
+6->8[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+curConfig.singlePrice = setConfig.singlePrice
+
+IRs:
+REF_16(uint256) -> curConfig.singlePrice
+REF_17(uint256) -> setConfig.singlePrice
+REF_16(uint256) (->curConfig) := REF_17(uint256)"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: IF 9
+
+EXPRESSION:
+curConfig.pumpRate != setConfig.pumpRate
+
+IRs:
+REF_18(uint8) -> curConfig.pumpRate
+REF_19(uint8) -> setConfig.pumpRate
+TMP_27(bool) = REF_18 != REF_19
+CONDITION TMP_27"];
+9->10[label="True"];
+9->11[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+curConfig.pumpRate = setConfig.pumpRate
+
+IRs:
+REF_20(uint8) -> curConfig.pumpRate
+REF_21(uint8) -> setConfig.pumpRate
+REF_20(uint8) (->curConfig) := REF_21(uint8)"];
+10->11;
+11[label="Node Type: END_IF 11
+"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+curConfig.hasChange = false
+
+IRs:
+REF_22(bool) -> curConfig.hasChange
+REF_22(bool) (->curConfig) := False(bool)"];
+12->13;
+13[label="Node Type: END_IF 13
+"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+addressArray.length = 0
+
+IRs:
+REF_23 -> LENGTH addressArray
+REF_23(uint256) (->addressArray) := 0(uint256)"];
+}
+// Function: 677.sol-BREBuy_ERC20-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+newOwner != address(0)
+
+IRs:
+TMP_6 = CONVERT 0 to address
+TMP_7(bool) = newOwner != TMP_6
+CONDITION TMP_7"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, BREBuy_ERC20.onlyOwner()()"];
+4->1;
+}
+// Function: 677.sol-IERC20Token-allowance(address,address)
+digraph{
+}
+// Function: 677.sol-IERC20Token-approve(address,uint256)
+digraph{
+}
+// Function: 677.sol-IERC20Token-balanceOf(address)
+digraph{
+}
+// Function: 677.sol-IERC20Token-decimals()
+digraph{
+}
+// Function: 677.sol-IERC20Token-name()
+digraph{
+}
+// Function: 677.sol-IERC20Token-symbol()
+digraph{
+}
+// Function: 677.sol-IERC20Token-totalSupply()
+digraph{
+}
+// Function: 677.sol-IERC20Token-transfer(address,uint256)
+digraph{
+}
+// Function: 677.sol-IERC20Token-transferFrom(address,address,uint256)
+digraph{
+}
+}

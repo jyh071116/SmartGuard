@@ -1,0 +1,791 @@
+digraph G {
+// Function: 8139.sol-ForeignToken-balanceOf(address)
+digraph{
+}
+// Function: 8139.sol-ForeignToken-transfer(address,uint256)
+digraph{
+}
+// Function: 8139.sol-VEToken-allowance(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+allowed[_owner][_spender]
+
+IRs:
+REF_21(mapping(address => uint256)) -> allowed[_owner]
+REF_22(uint256) -> REF_21[_spender]
+RETURN REF_22"];
+}
+// Function: 8139.sol-VEToken-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_value != 0 && allowed[msg.sender][_spender] != 0
+
+IRs:
+TMP_21(bool) = _value != 0
+REF_17(mapping(address => uint256)) -> allowed[msg.sender]
+REF_18(uint256) -> REF_17[_spender]
+TMP_22(bool) = REF_18 != 0
+TMP_23(bool) = TMP_21 && TMP_22
+CONDITION TMP_23"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+allowed[msg.sender][_spender] = _value
+
+IRs:
+REF_19(mapping(address => uint256)) -> allowed[msg.sender]
+REF_20(uint256) -> REF_19[_spender]
+REF_20(uint256) (->allowed) := _value(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Approval(msg.sender,_spender,_value)
+
+IRs:
+Emit Approval(msg.sender,_spender,_value)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 8139.sol-VEToken-balanceOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+balances[_owner]
+
+IRs:
+REF_0(uint256) -> balances[_owner]
+RETURN REF_0"];
+}
+// Function: 8139.sol-VEToken-decimals()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+18
+
+IRs:
+RETURN 18"];
+}
+// Function: 8139.sol-VEToken-disablePurchasing()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != owner
+
+IRs:
+TMP_26(bool) = msg.sender != owner
+CONDITION TMP_26"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+purchasingAllowed = false
+
+IRs:
+purchasingAllowed(bool) := False(bool)"];
+}
+// Function: 8139.sol-VEToken-enablePurchasing()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != owner
+
+IRs:
+TMP_25(bool) = msg.sender != owner
+CONDITION TMP_25"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+purchasingAllowed = true
+
+IRs:
+purchasingAllowed(bool) := True(bool)"];
+}
+// Function: 8139.sol-VEToken-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! purchasingAllowed
+
+IRs:
+TMP_32 = UnaryType.BANG purchasingAllowed 
+CONDITION TMP_32"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+msg.value == 0
+
+IRs:
+TMP_33(bool) = msg.value == 0
+CONDITION TMP_33"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: RETURN 5
+"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+owner.transfer(msg.value)
+
+IRs:
+Transfer dest:owner value:msg.value"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+totalContribution += msg.value
+
+IRs:
+totalContribution(uint256) = totalContribution + msg.value"];
+8->9;
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+tokensIssued = (msg.value * 1000)
+
+IRs:
+TMP_35(uint256) = msg.value * 1000
+tokensIssued(uint256) := TMP_35(uint256)"];
+9->10;
+10[label="Node Type: IF 10
+
+EXPRESSION:
+msg.value >= 10000000000000000
+
+IRs:
+TMP_36(bool) = msg.value >= 10000000000000000
+CONDITION TMP_36"];
+10->11[label="True"];
+10->19[label="False"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+tokensIssued += totalContribution
+
+IRs:
+tokensIssued(uint256) = tokensIssued + totalContribution"];
+11->12;
+12[label="Node Type: NEW VARIABLE 12
+
+EXPRESSION:
+bonusHash = ripemd160()(block.coinbase,block.number,block.timestamp)
+
+IRs:
+TMP_37(bytes32) = SOLIDITY_CALL ripemd160()(block.coinbase,block.number,block.timestamp)
+bonusHash(bytes20) := TMP_37(bytes32)"];
+12->13;
+13[label="Node Type: IF 13
+
+EXPRESSION:
+bonusHash[0] == 0
+
+IRs:
+REF_26(None) -> bonusHash[0]
+TMP_38(bool) = REF_26 == 0
+CONDITION TMP_38"];
+13->23[label="True"];
+13->18[label="False"];
+15[label="Node Type: NEW VARIABLE 15
+
+EXPRESSION:
+bonusTokensIssued = (msg.value * 1000) * bonusMultiplier
+
+IRs:
+TMP_39(uint256) = msg.value * 1000
+TMP_40(uint256) = TMP_39 * bonusMultiplier
+bonusTokensIssued(uint256) := TMP_40(uint256)"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+tokensIssued += bonusTokensIssued
+
+IRs:
+tokensIssued(uint256) = tokensIssued + bonusTokensIssued"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+totalBonusTokensIssued += bonusTokensIssued
+
+IRs:
+totalBonusTokensIssued(uint256) = totalBonusTokensIssued + bonusTokensIssued"];
+17->18;
+18[label="Node Type: END_IF 18
+"];
+18->19;
+19[label="Node Type: END_IF 19
+"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+totalSupply += tokensIssued
+
+IRs:
+totalSupply(uint256) = totalSupply + tokensIssued"];
+20->21;
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+balances[msg.sender] += tokensIssued
+
+IRs:
+REF_27(uint256) -> balances[msg.sender]
+REF_27(-> balances) = REF_27 + tokensIssued"];
+21->22;
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+Transfer(address(this),msg.sender,tokensIssued)
+
+IRs:
+TMP_41 = CONVERT this to address
+Emit Transfer(TMP_41,msg.sender,tokensIssued)"];
+23[label="Node Type: IF 23
+
+EXPRESSION:
+(bonusHash[1] & 0x80 != 0)
+
+IRs:
+REF_28(None) -> bonusHash[1]
+TMP_43(None) = REF_28 & 128
+TMP_44(bool) = TMP_43 != 0
+CONDITION TMP_44"];
+23->24[label="True"];
+23->25[label="False"];
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+bonusMultiplier = 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1
+
+IRs:
+TMP_45(uint256) = 1 + 1
+TMP_46(uint256) = TMP_45 + 1
+TMP_47(uint256) = TMP_46 + 1
+TMP_48(uint256) = TMP_47 + 1
+TMP_49(uint256) = TMP_48 + 1
+TMP_50(uint256) = TMP_49 + 1
+TMP_51(uint256) = TMP_50 + 1
+bonusMultiplier(uint8) := TMP_51(uint256)"];
+24->26;
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+bonusMultiplier = 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0
+
+IRs:
+TMP_52(uint256) = 0 + 0
+TMP_53(uint256) = TMP_52 + 0
+TMP_54(uint256) = TMP_53 + 0
+TMP_55(uint256) = TMP_54 + 0
+TMP_56(uint256) = TMP_55 + 0
+TMP_57(uint256) = TMP_56 + 0
+TMP_58(uint256) = TMP_57 + 0
+bonusMultiplier(uint8) := TMP_58(uint256)"];
+25->26;
+26[label="Node Type: END_IF 26
+"];
+26->15;
+}
+// Function: 8139.sol-VEToken-getStats()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+(totalContribution,totalSupply,totalBonusTokensIssued,purchasingAllowed)
+
+IRs:
+RETURN totalContribution,totalSupply,totalBonusTokensIssued,purchasingAllowed"];
+}
+// Function: 8139.sol-VEToken-name()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+Valueless Ethereum Token
+
+IRs:
+RETURN Valueless Ethereum Token"];
+}
+// Function: 8139.sol-VEToken-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+purchasingAllowed = false
+
+IRs:
+purchasingAllowed(bool) := False(bool)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+totalContribution = 0
+
+IRs:
+totalContribution(uint256) := 0(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+totalBonusTokensIssued = 0
+
+IRs:
+totalBonusTokensIssued(uint256) := 0(uint256)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+totalSupply = 0
+
+IRs:
+totalSupply(uint256) := 0(uint256)"];
+}
+// Function: 8139.sol-VEToken-symbol()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+VET
+
+IRs:
+RETURN VET"];
+}
+// Function: 8139.sol-VEToken-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.data.length < (2 * 32) + 4
+
+IRs:
+REF_1 -> LENGTH msg.data
+TMP_0(uint256) = 2 * 32
+TMP_1(uint256) = TMP_0 + 4
+TMP_2(bool) = REF_1 < TMP_1
+CONDITION TMP_2"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+_value == 0
+
+IRs:
+TMP_3(bool) = _value == 0
+CONDITION TMP_3"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+fromBalance = balances[msg.sender]
+
+IRs:
+REF_2(uint256) -> balances[msg.sender]
+fromBalance(uint256) := REF_2(uint256)"];
+7->8;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+sufficientFunds = fromBalance >= _value
+
+IRs:
+TMP_4(bool) = fromBalance >= _value
+sufficientFunds(bool) := TMP_4(bool)"];
+8->9;
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+overflowed = balances[_to] + _value < balances[_to]
+
+IRs:
+REF_3(uint256) -> balances[_to]
+TMP_5(uint256) = REF_3 + _value
+REF_4(uint256) -> balances[_to]
+TMP_6(bool) = TMP_5 < REF_4
+overflowed(bool) := TMP_6(bool)"];
+9->10;
+10[label="Node Type: IF 10
+
+EXPRESSION:
+sufficientFunds && ! overflowed
+
+IRs:
+TMP_7 = UnaryType.BANG overflowed 
+TMP_8(bool) = sufficientFunds && TMP_7
+CONDITION TMP_8"];
+10->11[label="True"];
+10->15[label="False"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+balances[msg.sender] -= _value
+
+IRs:
+REF_5(uint256) -> balances[msg.sender]
+REF_5(-> balances) = REF_5 - _value"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+balances[_to] += _value
+
+IRs:
+REF_6(uint256) -> balances[_to]
+REF_6(-> balances) = REF_6 + _value"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+Transfer(msg.sender,_to,_value)
+
+IRs:
+Emit Transfer(msg.sender,_to,_value)"];
+13->14;
+14[label="Node Type: RETURN 14
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+15[label="Node Type: RETURN 15
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+17[label="Node Type: RETURN 17
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 8139.sol-VEToken-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.data.length < (3 * 32) + 4
+
+IRs:
+REF_7 -> LENGTH msg.data
+TMP_10(uint256) = 3 * 32
+TMP_11(uint256) = TMP_10 + 4
+TMP_12(bool) = REF_7 < TMP_11
+CONDITION TMP_12"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+_value == 0
+
+IRs:
+TMP_13(bool) = _value == 0
+CONDITION TMP_13"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: NEW VARIABLE 7
+
+EXPRESSION:
+fromBalance = balances[_from]
+
+IRs:
+REF_8(uint256) -> balances[_from]
+fromBalance(uint256) := REF_8(uint256)"];
+7->8;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+allowance = allowed[_from][msg.sender]
+
+IRs:
+REF_9(mapping(address => uint256)) -> allowed[_from]
+REF_10(uint256) -> REF_9[msg.sender]
+allowance(uint256) := REF_10(uint256)"];
+8->9;
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+sufficientFunds = fromBalance >= _value
+
+IRs:
+TMP_14(bool) = fromBalance >= _value
+sufficientFunds(bool) := TMP_14(bool)"];
+9->10;
+10[label="Node Type: NEW VARIABLE 10
+
+EXPRESSION:
+sufficientAllowance = allowance >= _value
+
+IRs:
+TMP_15(bool) = allowance >= _value
+sufficientAllowance(bool) := TMP_15(bool)"];
+10->11;
+11[label="Node Type: NEW VARIABLE 11
+
+EXPRESSION:
+overflowed = balances[_to] + _value > balances[_to]
+
+IRs:
+REF_11(uint256) -> balances[_to]
+TMP_16(uint256) = REF_11 + _value
+REF_12(uint256) -> balances[_to]
+TMP_17(bool) = TMP_16 > REF_12
+overflowed(bool) := TMP_17(bool)"];
+11->12;
+12[label="Node Type: IF 12
+
+EXPRESSION:
+sufficientFunds && sufficientAllowance && overflowed
+
+IRs:
+TMP_18(bool) = sufficientFunds && sufficientAllowance
+TMP_19(bool) = TMP_18 && overflowed
+CONDITION TMP_19"];
+12->13[label="True"];
+12->18[label="False"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+balances[_to] += _value
+
+IRs:
+REF_13(uint256) -> balances[_to]
+REF_13(-> balances) = REF_13 + _value"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+balances[_from] -= _value
+
+IRs:
+REF_14(uint256) -> balances[_from]
+REF_14(-> balances) = REF_14 - _value"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+allowed[_from][msg.sender] -= _value
+
+IRs:
+REF_15(mapping(address => uint256)) -> allowed[_from]
+REF_16(uint256) -> REF_15[msg.sender]
+REF_16(-> allowed) = REF_16 - _value"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+Transfer(_from,_to,_value)
+
+IRs:
+Emit Transfer(_from,_to,_value)"];
+16->17;
+17[label="Node Type: RETURN 17
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+18[label="Node Type: RETURN 18
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+20[label="Node Type: RETURN 20
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 8139.sol-VEToken-withdrawForeignTokens(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != owner
+
+IRs:
+TMP_27(bool) = msg.sender != owner
+CONDITION TMP_27"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+token = ForeignToken(_tokenContract)
+
+IRs:
+TMP_28 = CONVERT _tokenContract to ForeignToken
+token(ForeignToken) := TMP_28(ForeignToken)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+amount = token.balanceOf(address(this))
+
+IRs:
+TMP_29 = CONVERT this to address
+TMP_30(uint256) = HIGH_LEVEL_CALL, dest:token(ForeignToken), function:balanceOf, arguments:['TMP_29']  
+amount(uint256) := TMP_30(uint256)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+token.transfer(owner,amount)
+
+IRs:
+TMP_31(bool) = HIGH_LEVEL_CALL, dest:token(ForeignToken), function:transfer, arguments:['owner', 'amount']  
+RETURN TMP_31"];
+}
+}

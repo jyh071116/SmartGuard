@@ -1,0 +1,153 @@
+digraph G {
+// Function: 37707.sol-BountyHunt-claimBounty()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+balance = bountyAmount[msg.sender]
+
+IRs:
+REF_1(uint256) -> bountyAmount[msg.sender]
+balance(uint256) := REF_1(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+msg.sender.call.value(balance)()
+
+IRs:
+TMP_2(bool) = LOW_LEVEL_CALL, dest:msg.sender, function:call, arguments:[] value:balance 
+CONDITION TMP_2"];
+2->3[label="True"];
+2->5[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+totalBountyAmount -= balance
+
+IRs:
+totalBountyAmount(uint256) = totalBountyAmount - balance"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+bountyAmount[msg.sender] = 0
+
+IRs:
+REF_4(uint256) -> bountyAmount[msg.sender]
+REF_4(uint256) (->bountyAmount) := 0(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+preventTheft()
+
+IRs:
+MODIFIER_CALL, BountyHunt.preventTheft()()"];
+6->1;
+}
+// Function: 37707.sol-BountyHunt-grantBounty(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+bountyAmount[beneficiary] += amount
+
+IRs:
+REF_0(uint256) -> bountyAmount[beneficiary]
+REF_0(-> bountyAmount) = REF_0 + amount"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+totalBountyAmount += amount
+
+IRs:
+totalBountyAmount(uint256) = totalBountyAmount + amount"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+preventTheft()
+
+IRs:
+MODIFIER_CALL, BountyHunt.preventTheft()()"];
+3->1;
+}
+// Function: 37707.sol-BountyHunt-preventTheft()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: _ 1
+"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+this.balance < totalBountyAmount
+
+IRs:
+REF_8(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_6(bool) = REF_8 < totalBountyAmount
+CONDITION TMP_6"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: THROW 3
+"];
+4[label="Node Type: END_IF 4
+"];
+}
+// Function: 37707.sol-BountyHunt-transferBounty(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+bountyAmount[msg.sender] >= value
+
+IRs:
+REF_5(uint256) -> bountyAmount[msg.sender]
+TMP_4(bool) = REF_5 >= value
+CONDITION TMP_4"];
+1->2[label="True"];
+1->4[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+bountyAmount[to] += value
+
+IRs:
+REF_6(uint256) -> bountyAmount[to]
+REF_6(-> bountyAmount) = REF_6 + value"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+bountyAmount[msg.sender] -= value
+
+IRs:
+REF_7(uint256) -> bountyAmount[msg.sender]
+REF_7(-> bountyAmount) = REF_7 - value"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+preventTheft()
+
+IRs:
+MODIFIER_CALL, BountyHunt.preventTheft()()"];
+5->1;
+}
+}

@@ -1,0 +1,704 @@
+digraph G {
+// Function: 20918.sol-ContractReceiver-tokenFallback(address,uint256,bytes)
+digraph{
+}
+// Function: 20918.sol-ERC223Token-ERC223Token(uint256,string,uint8,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+totalSupply = initialSupply * 10 ** uint256(decimalUnits)
+
+IRs:
+TMP_0 = CONVERT decimalUnits to uint256
+TMP_1(uint256) = 10 ** TMP_0
+TMP_2(uint256) = initialSupply * TMP_1
+totalSupply(uint256) := TMP_2(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balances_[msg.sender] = totalSupply
+
+IRs:
+REF_0(uint256) -> balances_[msg.sender]
+REF_0(uint256) (->balances_) := totalSupply(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+name = tokenName
+
+IRs:
+name(string) := tokenName(string)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+decimals = decimalUnits
+
+IRs:
+decimals(uint8) := decimalUnits(uint8)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+symbol = tokenSymbol
+
+IRs:
+symbol(string) := tokenSymbol(string)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+Transfer(address(0),msg.sender,totalSupply)
+
+IRs:
+TMP_3 = CONVERT 0 to address
+Emit Transfer(TMP_3,msg.sender,totalSupply)"];
+}
+// Function: 20918.sol-ERC223Token-_transfer(address,address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(to != 0x0)
+
+IRs:
+TMP_40(bool) = to != 0
+TMP_41(None) = SOLIDITY_CALL require(bool)(TMP_40)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(balances_[from] >= value)
+
+IRs:
+REF_24(uint256) -> balances_[from]
+TMP_42(bool) = REF_24 >= value
+TMP_43(None) = SOLIDITY_CALL require(bool)(TMP_42)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(balances_[to] + value > balances_[to])
+
+IRs:
+REF_25(uint256) -> balances_[to]
+TMP_44(uint256) = REF_25 + value
+REF_26(uint256) -> balances_[to]
+TMP_45(bool) = TMP_44 > REF_26
+TMP_46(None) = SOLIDITY_CALL require(bool)(TMP_45)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+balances_[from] -= value
+
+IRs:
+REF_27(uint256) -> balances_[from]
+REF_27(-> balances_) = REF_27 - value"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balances_[to] += value
+
+IRs:
+REF_28(uint256) -> balances_[to]
+REF_28(-> balances_) = REF_28 + value"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+empty = data
+
+IRs:
+empty(bytes) := data(bytes)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+Transfer(from,to,value)
+
+IRs:
+Emit Transfer(from,to,value)"];
+}
+// Function: 20918.sol-ERC223Token-allowance(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+allowances_[owner][spender]
+
+IRs:
+REF_6(mapping(address => uint256)) -> allowances_[owner]
+REF_7(uint256) -> REF_6[spender]
+RETURN REF_7"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+remaining
+
+IRs:
+RETURN remaining"];
+}
+// Function: 20918.sol-ERC223Token-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowances_[msg.sender][spender] = value
+
+IRs:
+REF_2(mapping(address => uint256)) -> allowances_[msg.sender]
+REF_3(uint256) -> REF_2[spender]
+REF_3(uint256) (->allowances_) := value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,spender,value)
+
+IRs:
+Emit Approval(msg.sender,spender,value)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 20918.sol-ERC223Token-approveAndCall(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+approve(spender,value)
+
+IRs:
+TMP_13(bool) = INTERNAL_CALL, ERC223Token.approve(address,uint256)(spender,value)
+CONDITION TMP_13"];
+1->2[label="True"];
+1->5[label="False"];
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+recip = tokenRecipient(spender)
+
+IRs:
+TMP_14 = CONVERT spender to tokenRecipient
+recip(tokenRecipient) := TMP_14(tokenRecipient)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+recip.receiveApproval(msg.sender,value,context)
+
+IRs:
+HIGH_LEVEL_CALL, dest:recip(tokenRecipient), function:receiveApproval, arguments:['msg.sender', 'value', 'context']  "];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 20918.sol-ERC223Token-balanceOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+balances_[owner]
+
+IRs:
+REF_1(uint256) -> balances_[owner]
+RETURN REF_1"];
+}
+// Function: 20918.sol-ERC223Token-burn(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(balances_[msg.sender] >= value)
+
+IRs:
+REF_13(uint256) -> balances_[msg.sender]
+TMP_16(bool) = REF_13 >= value
+TMP_17(None) = SOLIDITY_CALL require(bool)(TMP_16)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balances_[msg.sender] -= value
+
+IRs:
+REF_14(uint256) -> balances_[msg.sender]
+REF_14(-> balances_) = REF_14 - value"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+totalSupply -= value
+
+IRs:
+totalSupply(uint256) = totalSupply - value"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Burn(msg.sender,value)
+
+IRs:
+Emit Burn(msg.sender,value)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 20918.sol-ERC223Token-burnFrom(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(balances_[from] >= value)
+
+IRs:
+REF_15(uint256) -> balances_[from]
+TMP_19(bool) = REF_15 >= value
+TMP_20(None) = SOLIDITY_CALL require(bool)(TMP_19)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(value <= allowances_[from][msg.sender])
+
+IRs:
+REF_16(mapping(address => uint256)) -> allowances_[from]
+REF_17(uint256) -> REF_16[msg.sender]
+TMP_21(bool) = value <= REF_17
+TMP_22(None) = SOLIDITY_CALL require(bool)(TMP_21)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balances_[from] -= value
+
+IRs:
+REF_18(uint256) -> balances_[from]
+REF_18(-> balances_) = REF_18 - value"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+allowances_[from][msg.sender] -= value
+
+IRs:
+REF_19(mapping(address => uint256)) -> allowances_[from]
+REF_20(uint256) -> REF_19[msg.sender]
+REF_20(-> allowances_) = REF_20 - value"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+totalSupply -= value
+
+IRs:
+totalSupply(uint256) = totalSupply - value"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+Burn(from,value)
+
+IRs:
+Emit Burn(from,value)"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 20918.sol-ERC223Token-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_5(None) = SOLIDITY_CALL revert()()"];
+}
+// Function: 20918.sol-ERC223Token-isContract(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->2;
+2[label="Node Type: INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: END INLINE ASM 3
+"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+(length > 0)
+
+IRs:
+TMP_39(bool) = length > 0
+RETURN TMP_39"];
+}
+// Function: 20918.sol-ERC223Token-safeApprove(address,uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+allowances_[msg.sender][_spender] == _currentValue
+
+IRs:
+REF_4(mapping(address => uint256)) -> allowances_[msg.sender]
+REF_5(uint256) -> REF_4[_spender]
+TMP_7(bool) = REF_5 == _currentValue
+CONDITION TMP_7"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+approve(_spender,_value)
+
+IRs:
+TMP_8(bool) = INTERNAL_CALL, ERC223Token.approve(address,uint256)(_spender,_value)
+RETURN TMP_8"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 20918.sol-ERC223Token-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_transfer(msg.sender,to,value,empty)
+
+IRs:
+INTERNAL_CALL, ERC223Token._transfer(address,address,uint256,bytes)(msg.sender,to,value,empty)"];
+}
+// Function: 20918.sol-ERC223Token-transfer(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+isContract(to)
+
+IRs:
+TMP_33(bool) = INTERNAL_CALL, ERC223Token.isContract(address)(to)
+CONDITION TMP_33"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+transferToContract(to,value,data)
+
+IRs:
+TMP_34(bool) = INTERNAL_CALL, ERC223Token.transferToContract(address,uint256,bytes)(to,value,data)
+RETURN TMP_34"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+_transfer(msg.sender,to,value,data)
+
+IRs:
+INTERNAL_CALL, ERC223Token._transfer(address,address,uint256,bytes)(msg.sender,to,value,data)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 20918.sol-ERC223Token-transfer(address,uint256,bytes,string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transfer(msg.sender,to,value,data)
+
+IRs:
+INTERNAL_CALL, ERC223Token._transfer(address,address,uint256,bytes)(msg.sender,to,value,data)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+isContract(to)
+
+IRs:
+TMP_25(bool) = INTERNAL_CALL, ERC223Token.isContract(address)(to)
+CONDITION TMP_25"];
+2->3[label="True"];
+2->5[label="False"];
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+rx = ContractReceiver(to)
+
+IRs:
+TMP_26 = CONVERT to to ContractReceiver
+rx(ContractReceiver) := TMP_26(ContractReceiver)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool)(address(rx).call.value(0)(bytes4(keccak256()(custom_fallback)),msg.sender,value,data))
+
+IRs:
+TMP_27 = CONVERT rx to address
+TMP_29(bytes32) = SOLIDITY_CALL keccak256()(custom_fallback)
+TMP_30 = CONVERT TMP_29 to bytes4
+TMP_31(bool) = LOW_LEVEL_CALL, dest:TMP_27, function:call, arguments:['TMP_30', 'msg.sender', 'value', 'data'] value:0 
+TMP_32(None) = SOLIDITY_CALL require(bool)(TMP_31)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 20918.sol-ERC223Token-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(value <= allowances_[from][msg.sender])
+
+IRs:
+REF_8(mapping(address => uint256)) -> allowances_[from]
+REF_9(uint256) -> REF_8[msg.sender]
+TMP_10(bool) = value <= REF_9
+TMP_11(None) = SOLIDITY_CALL require(bool)(TMP_10)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+allowances_[from][msg.sender] -= value
+
+IRs:
+REF_10(mapping(address => uint256)) -> allowances_[from]
+REF_11(uint256) -> REF_10[msg.sender]
+REF_11(-> allowances_) = REF_11 - value"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+_transfer(from,to,value,empty)
+
+IRs:
+INTERNAL_CALL, ERC223Token._transfer(address,address,uint256,bytes)(from,to,value,empty)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 20918.sol-ERC223Token-transferToContract(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transfer(msg.sender,to,value,data)
+
+IRs:
+INTERNAL_CALL, ERC223Token._transfer(address,address,uint256,bytes)(msg.sender,to,value,data)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+rx = ContractReceiver(to)
+
+IRs:
+TMP_37 = CONVERT to to ContractReceiver
+rx(ContractReceiver) := TMP_37(ContractReceiver)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+rx.tokenFallback(msg.sender,value,data)
+
+IRs:
+HIGH_LEVEL_CALL, dest:rx(ContractReceiver), function:tokenFallback, arguments:['msg.sender', 'value', 'data']  "];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 20918.sol-tokenRecipient-receiveApproval(address,uint256,bytes)
+digraph{
+}
+}

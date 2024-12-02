@@ -1,0 +1,1322 @@
+digraph G {
+// Function: 811.sol-AirdropToken-_transfer(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_to != 0x0)
+
+IRs:
+TMP_42(bool) = _to != 0
+TMP_43(None) = SOLIDITY_CALL require(bool)(TMP_42)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(balanceOf[_from] >= _value)
+
+IRs:
+REF_38(uint256) -> balanceOf[_from]
+TMP_44(bool) = REF_38 >= _value
+TMP_45(None) = SOLIDITY_CALL require(bool)(TMP_44)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(balanceOf[_to] + _value > balanceOf[_to])
+
+IRs:
+REF_39(uint256) -> balanceOf[_to]
+TMP_46(uint256) = REF_39 + _value
+REF_40(uint256) -> balanceOf[_to]
+TMP_47(bool) = TMP_46 > REF_40
+TMP_48(None) = SOLIDITY_CALL require(bool)(TMP_47)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+previousBalances = balanceOf[_from] + balanceOf[_to]
+
+IRs:
+REF_41(uint256) -> balanceOf[_from]
+REF_42(uint256) -> balanceOf[_to]
+TMP_49(uint256) = REF_41 + REF_42
+previousBalances(uint256) := TMP_49(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balanceOf[_from] -= _value
+
+IRs:
+REF_43(uint256) -> balanceOf[_from]
+REF_43(-> balanceOf) = REF_43 - _value"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+balanceOf[_to] += _value
+
+IRs:
+REF_44(uint256) -> balanceOf[_to]
+REF_44(-> balanceOf) = REF_44 + _value"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+assert(bool)(balanceOf[_from] + balanceOf[_to] == previousBalances)
+
+IRs:
+REF_45(uint256) -> balanceOf[_from]
+REF_46(uint256) -> balanceOf[_to]
+TMP_50(uint256) = REF_45 + REF_46
+TMP_51(bool) = TMP_50 == previousBalances
+TMP_52(None) = SOLIDITY_CALL assert(bool)(TMP_51)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+Transfer(_from,_to,_value)
+
+IRs:
+Emit Transfer(_from,_to,_value)"];
+}
+// Function: 811.sol-AirdropToken-airdrop()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(now >= airBegintime && now <= airEndtime)
+
+IRs:
+TMP_59(bool) = now >= airBegintime
+TMP_60(bool) = now <= airEndtime
+TMP_61(bool) = TMP_59 && TMP_60
+TMP_62(None) = SOLIDITY_CALL require(bool)(TMP_61)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(msg.value == 0)
+
+IRs:
+TMP_63(bool) = msg.value == 0
+TMP_64(None) = SOLIDITY_CALL require(bool)(TMP_63)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+airLimitCount > 0 && airCountOf[msg.sender] >= airLimitCount
+
+IRs:
+TMP_65(bool) = airLimitCount > 0
+REF_53(uint32) -> airCountOf[msg.sender]
+TMP_66(bool) = REF_53 >= airLimitCount
+TMP_67(bool) = TMP_65 && TMP_66
+CONDITION TMP_67"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_68(None) = SOLIDITY_CALL revert()()"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+_transfer(airSender,msg.sender,airAmount)
+
+IRs:
+INTERNAL_CALL, BaseToken._transfer(address,address,uint256)(airSender,msg.sender,airAmount)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+airCountOf[msg.sender] += 1
+
+IRs:
+REF_54(uint32) -> airCountOf[msg.sender]
+REF_54(-> airCountOf) = REF_54 + 1"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+Airdrop(msg.sender,airCountOf[msg.sender],airAmount)
+
+IRs:
+REF_55(uint32) -> airCountOf[msg.sender]
+Emit Airdrop(msg.sender,REF_55,airAmount)"];
+}
+// Function: 811.sol-AirdropToken-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowance[msg.sender][_spender] = _value
+
+IRs:
+REF_51(mapping(address => uint256)) -> allowance[msg.sender]
+REF_52(uint256) -> REF_51[_spender]
+REF_52(uint256) (->allowance) := _value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,_value)
+
+IRs:
+Emit Approval(msg.sender,_spender,_value)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 811.sol-AirdropToken-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transfer(msg.sender,_to,_value)
+
+IRs:
+INTERNAL_CALL, BaseToken._transfer(address,address,uint256)(msg.sender,_to,_value)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 811.sol-AirdropToken-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_value <= allowance[_from][msg.sender])
+
+IRs:
+REF_47(mapping(address => uint256)) -> allowance[_from]
+REF_48(uint256) -> REF_47[msg.sender]
+TMP_55(bool) = _value <= REF_48
+TMP_56(None) = SOLIDITY_CALL require(bool)(TMP_55)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+allowance[_from][msg.sender] -= _value
+
+IRs:
+REF_49(mapping(address => uint256)) -> allowance[_from]
+REF_50(uint256) -> REF_49[msg.sender]
+REF_50(-> allowance) = REF_50 - _value"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_transfer(_from,_to,_value)
+
+IRs:
+INTERNAL_CALL, BaseToken._transfer(address,address,uint256)(_from,_to,_value)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 811.sol-BaseToken-_transfer(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_to != 0x0)
+
+IRs:
+TMP_0(bool) = _to != 0
+TMP_1(None) = SOLIDITY_CALL require(bool)(TMP_0)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(balanceOf[_from] >= _value)
+
+IRs:
+REF_0(uint256) -> balanceOf[_from]
+TMP_2(bool) = REF_0 >= _value
+TMP_3(None) = SOLIDITY_CALL require(bool)(TMP_2)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(balanceOf[_to] + _value > balanceOf[_to])
+
+IRs:
+REF_1(uint256) -> balanceOf[_to]
+TMP_4(uint256) = REF_1 + _value
+REF_2(uint256) -> balanceOf[_to]
+TMP_5(bool) = TMP_4 > REF_2
+TMP_6(None) = SOLIDITY_CALL require(bool)(TMP_5)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+previousBalances = balanceOf[_from] + balanceOf[_to]
+
+IRs:
+REF_3(uint256) -> balanceOf[_from]
+REF_4(uint256) -> balanceOf[_to]
+TMP_7(uint256) = REF_3 + REF_4
+previousBalances(uint256) := TMP_7(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balanceOf[_from] -= _value
+
+IRs:
+REF_5(uint256) -> balanceOf[_from]
+REF_5(-> balanceOf) = REF_5 - _value"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+balanceOf[_to] += _value
+
+IRs:
+REF_6(uint256) -> balanceOf[_to]
+REF_6(-> balanceOf) = REF_6 + _value"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+assert(bool)(balanceOf[_from] + balanceOf[_to] == previousBalances)
+
+IRs:
+REF_7(uint256) -> balanceOf[_from]
+REF_8(uint256) -> balanceOf[_to]
+TMP_8(uint256) = REF_7 + REF_8
+TMP_9(bool) = TMP_8 == previousBalances
+TMP_10(None) = SOLIDITY_CALL assert(bool)(TMP_9)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+Transfer(_from,_to,_value)
+
+IRs:
+Emit Transfer(_from,_to,_value)"];
+}
+// Function: 811.sol-BaseToken-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowance[msg.sender][_spender] = _value
+
+IRs:
+REF_13(mapping(address => uint256)) -> allowance[msg.sender]
+REF_14(uint256) -> REF_13[_spender]
+REF_14(uint256) (->allowance) := _value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,_value)
+
+IRs:
+Emit Approval(msg.sender,_spender,_value)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 811.sol-BaseToken-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transfer(msg.sender,_to,_value)
+
+IRs:
+INTERNAL_CALL, BaseToken._transfer(address,address,uint256)(msg.sender,_to,_value)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 811.sol-BaseToken-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_value <= allowance[_from][msg.sender])
+
+IRs:
+REF_9(mapping(address => uint256)) -> allowance[_from]
+REF_10(uint256) -> REF_9[msg.sender]
+TMP_13(bool) = _value <= REF_10
+TMP_14(None) = SOLIDITY_CALL require(bool)(TMP_13)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+allowance[_from][msg.sender] -= _value
+
+IRs:
+REF_11(mapping(address => uint256)) -> allowance[_from]
+REF_12(uint256) -> REF_11[msg.sender]
+REF_12(-> allowance) = REF_12 - _value"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_transfer(_from,_to,_value)
+
+IRs:
+INTERNAL_CALL, BaseToken._transfer(address,address,uint256)(_from,_to,_value)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 811.sol-BurnToken-_transfer(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_to != 0x0)
+
+IRs:
+TMP_17(bool) = _to != 0
+TMP_18(None) = SOLIDITY_CALL require(bool)(TMP_17)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(balanceOf[_from] >= _value)
+
+IRs:
+REF_15(uint256) -> balanceOf[_from]
+TMP_19(bool) = REF_15 >= _value
+TMP_20(None) = SOLIDITY_CALL require(bool)(TMP_19)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(balanceOf[_to] + _value > balanceOf[_to])
+
+IRs:
+REF_16(uint256) -> balanceOf[_to]
+TMP_21(uint256) = REF_16 + _value
+REF_17(uint256) -> balanceOf[_to]
+TMP_22(bool) = TMP_21 > REF_17
+TMP_23(None) = SOLIDITY_CALL require(bool)(TMP_22)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+previousBalances = balanceOf[_from] + balanceOf[_to]
+
+IRs:
+REF_18(uint256) -> balanceOf[_from]
+REF_19(uint256) -> balanceOf[_to]
+TMP_24(uint256) = REF_18 + REF_19
+previousBalances(uint256) := TMP_24(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balanceOf[_from] -= _value
+
+IRs:
+REF_20(uint256) -> balanceOf[_from]
+REF_20(-> balanceOf) = REF_20 - _value"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+balanceOf[_to] += _value
+
+IRs:
+REF_21(uint256) -> balanceOf[_to]
+REF_21(-> balanceOf) = REF_21 + _value"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+assert(bool)(balanceOf[_from] + balanceOf[_to] == previousBalances)
+
+IRs:
+REF_22(uint256) -> balanceOf[_from]
+REF_23(uint256) -> balanceOf[_to]
+TMP_25(uint256) = REF_22 + REF_23
+TMP_26(bool) = TMP_25 == previousBalances
+TMP_27(None) = SOLIDITY_CALL assert(bool)(TMP_26)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+Transfer(_from,_to,_value)
+
+IRs:
+Emit Transfer(_from,_to,_value)"];
+}
+// Function: 811.sol-BurnToken-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowance[msg.sender][_spender] = _value
+
+IRs:
+REF_28(mapping(address => uint256)) -> allowance[msg.sender]
+REF_29(uint256) -> REF_28[_spender]
+REF_29(uint256) (->allowance) := _value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,_value)
+
+IRs:
+Emit Approval(msg.sender,_spender,_value)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 811.sol-BurnToken-burn(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(balanceOf[msg.sender] >= _value)
+
+IRs:
+REF_30(uint256) -> balanceOf[msg.sender]
+TMP_34(bool) = REF_30 >= _value
+TMP_35(None) = SOLIDITY_CALL require(bool)(TMP_34)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balanceOf[msg.sender] -= _value
+
+IRs:
+REF_31(uint256) -> balanceOf[msg.sender]
+REF_31(-> balanceOf) = REF_31 - _value"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+totalSupply -= _value
+
+IRs:
+totalSupply(uint256) = totalSupply - _value"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Burn(msg.sender,_value)
+
+IRs:
+Emit Burn(msg.sender,_value)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 811.sol-BurnToken-burnFrom(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(balanceOf[_from] >= _value)
+
+IRs:
+REF_32(uint256) -> balanceOf[_from]
+TMP_37(bool) = REF_32 >= _value
+TMP_38(None) = SOLIDITY_CALL require(bool)(TMP_37)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_value <= allowance[_from][msg.sender])
+
+IRs:
+REF_33(mapping(address => uint256)) -> allowance[_from]
+REF_34(uint256) -> REF_33[msg.sender]
+TMP_39(bool) = _value <= REF_34
+TMP_40(None) = SOLIDITY_CALL require(bool)(TMP_39)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balanceOf[_from] -= _value
+
+IRs:
+REF_35(uint256) -> balanceOf[_from]
+REF_35(-> balanceOf) = REF_35 - _value"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+allowance[_from][msg.sender] -= _value
+
+IRs:
+REF_36(mapping(address => uint256)) -> allowance[_from]
+REF_37(uint256) -> REF_36[msg.sender]
+REF_37(-> allowance) = REF_37 - _value"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+totalSupply -= _value
+
+IRs:
+totalSupply(uint256) = totalSupply - _value"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+Burn(_from,_value)
+
+IRs:
+Emit Burn(_from,_value)"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 811.sol-BurnToken-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transfer(msg.sender,_to,_value)
+
+IRs:
+INTERNAL_CALL, BaseToken._transfer(address,address,uint256)(msg.sender,_to,_value)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 811.sol-BurnToken-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_value <= allowance[_from][msg.sender])
+
+IRs:
+REF_24(mapping(address => uint256)) -> allowance[_from]
+REF_25(uint256) -> REF_24[msg.sender]
+TMP_30(bool) = _value <= REF_25
+TMP_31(None) = SOLIDITY_CALL require(bool)(TMP_30)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+allowance[_from][msg.sender] -= _value
+
+IRs:
+REF_26(mapping(address => uint256)) -> allowance[_from]
+REF_27(uint256) -> REF_26[msg.sender]
+REF_27(-> allowance) = REF_27 - _value"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_transfer(_from,_to,_value)
+
+IRs:
+INTERNAL_CALL, BaseToken._transfer(address,address,uint256)(_from,_to,_value)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 811.sol-CustomToken-CustomToken()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+totalSupply = 20000000000000000000000000000
+
+IRs:
+totalSupply(uint256) := 20000000000000000000000000000(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+name = DuduTechnology
+
+IRs:
+name(string) := DuduTechnology(string)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+symbol = DUDU
+
+IRs:
+symbol(string) := DUDU(string)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+decimals = 18
+
+IRs:
+decimals(uint8) := 18(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balanceOf[0x828db0897afec00e04d77b4879082bcb7385a76a] = totalSupply
+
+IRs:
+REF_82(uint256) -> balanceOf[745328583824588768206408740989614646047967389546]
+REF_82(uint256) (->balanceOf) := totalSupply(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+Transfer(address(0),0x828db0897afec00e04d77b4879082bcb7385a76a,totalSupply)
+
+IRs:
+TMP_108 = CONVERT 0 to address
+Emit Transfer(TMP_108,745328583824588768206408740989614646047967389546,totalSupply)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+airAmount = 6666666600000000000000
+
+IRs:
+airAmount(uint256) := 6666666600000000000000(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+airBegintime = 1520240400
+
+IRs:
+airBegintime(uint256) := 1520240400(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+airEndtime = 2215389600
+
+IRs:
+airEndtime(uint256) := 2215389600(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+airSender = 0xd686f4d45f96fb035de703206fc55fda8882d33b
+
+IRs:
+airSender(address) := 1224733652477594493705898225289574058005796934459(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+airLimitCount = 1
+
+IRs:
+airLimitCount(uint32) := 1(uint256)"];
+}
+// Function: 811.sol-CustomToken-_transfer(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_to != 0x0)
+
+IRs:
+TMP_83(bool) = _to != 0
+TMP_84(None) = SOLIDITY_CALL require(bool)(TMP_83)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(balanceOf[_from] >= _value)
+
+IRs:
+REF_59(uint256) -> balanceOf[_from]
+TMP_85(bool) = REF_59 >= _value
+TMP_86(None) = SOLIDITY_CALL require(bool)(TMP_85)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(balanceOf[_to] + _value > balanceOf[_to])
+
+IRs:
+REF_60(uint256) -> balanceOf[_to]
+TMP_87(uint256) = REF_60 + _value
+REF_61(uint256) -> balanceOf[_to]
+TMP_88(bool) = TMP_87 > REF_61
+TMP_89(None) = SOLIDITY_CALL require(bool)(TMP_88)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+previousBalances = balanceOf[_from] + balanceOf[_to]
+
+IRs:
+REF_62(uint256) -> balanceOf[_from]
+REF_63(uint256) -> balanceOf[_to]
+TMP_90(uint256) = REF_62 + REF_63
+previousBalances(uint256) := TMP_90(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balanceOf[_from] -= _value
+
+IRs:
+REF_64(uint256) -> balanceOf[_from]
+REF_64(-> balanceOf) = REF_64 - _value"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+balanceOf[_to] += _value
+
+IRs:
+REF_65(uint256) -> balanceOf[_to]
+REF_65(-> balanceOf) = REF_65 + _value"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+assert(bool)(balanceOf[_from] + balanceOf[_to] == previousBalances)
+
+IRs:
+REF_66(uint256) -> balanceOf[_from]
+REF_67(uint256) -> balanceOf[_to]
+TMP_91(uint256) = REF_66 + REF_67
+TMP_92(bool) = TMP_91 == previousBalances
+TMP_93(None) = SOLIDITY_CALL assert(bool)(TMP_92)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+Transfer(_from,_to,_value)
+
+IRs:
+Emit Transfer(_from,_to,_value)"];
+}
+// Function: 811.sol-CustomToken-airdrop()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(now >= airBegintime && now <= airEndtime)
+
+IRs:
+TMP_71(bool) = now >= airBegintime
+TMP_72(bool) = now <= airEndtime
+TMP_73(bool) = TMP_71 && TMP_72
+TMP_74(None) = SOLIDITY_CALL require(bool)(TMP_73)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(msg.value == 0)
+
+IRs:
+TMP_75(bool) = msg.value == 0
+TMP_76(None) = SOLIDITY_CALL require(bool)(TMP_75)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+airLimitCount > 0 && airCountOf[msg.sender] >= airLimitCount
+
+IRs:
+TMP_77(bool) = airLimitCount > 0
+REF_56(uint32) -> airCountOf[msg.sender]
+TMP_78(bool) = REF_56 >= airLimitCount
+TMP_79(bool) = TMP_77 && TMP_78
+CONDITION TMP_79"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_80(None) = SOLIDITY_CALL revert()()"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+_transfer(airSender,msg.sender,airAmount)
+
+IRs:
+INTERNAL_CALL, BaseToken._transfer(address,address,uint256)(airSender,msg.sender,airAmount)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+airCountOf[msg.sender] += 1
+
+IRs:
+REF_57(uint32) -> airCountOf[msg.sender]
+REF_57(-> airCountOf) = REF_57 + 1"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+Airdrop(msg.sender,airCountOf[msg.sender],airAmount)
+
+IRs:
+REF_58(uint32) -> airCountOf[msg.sender]
+Emit Airdrop(msg.sender,REF_58,airAmount)"];
+}
+// Function: 811.sol-CustomToken-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowance[msg.sender][_spender] = _value
+
+IRs:
+REF_72(mapping(address => uint256)) -> allowance[msg.sender]
+REF_73(uint256) -> REF_72[_spender]
+REF_73(uint256) (->allowance) := _value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,_value)
+
+IRs:
+Emit Approval(msg.sender,_spender,_value)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 811.sol-CustomToken-burn(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(balanceOf[msg.sender] >= _value)
+
+IRs:
+REF_74(uint256) -> balanceOf[msg.sender]
+TMP_100(bool) = REF_74 >= _value
+TMP_101(None) = SOLIDITY_CALL require(bool)(TMP_100)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balanceOf[msg.sender] -= _value
+
+IRs:
+REF_75(uint256) -> balanceOf[msg.sender]
+REF_75(-> balanceOf) = REF_75 - _value"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+totalSupply -= _value
+
+IRs:
+totalSupply(uint256) = totalSupply - _value"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Burn(msg.sender,_value)
+
+IRs:
+Emit Burn(msg.sender,_value)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 811.sol-CustomToken-burnFrom(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(balanceOf[_from] >= _value)
+
+IRs:
+REF_76(uint256) -> balanceOf[_from]
+TMP_103(bool) = REF_76 >= _value
+TMP_104(None) = SOLIDITY_CALL require(bool)(TMP_103)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_value <= allowance[_from][msg.sender])
+
+IRs:
+REF_77(mapping(address => uint256)) -> allowance[_from]
+REF_78(uint256) -> REF_77[msg.sender]
+TMP_105(bool) = _value <= REF_78
+TMP_106(None) = SOLIDITY_CALL require(bool)(TMP_105)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balanceOf[_from] -= _value
+
+IRs:
+REF_79(uint256) -> balanceOf[_from]
+REF_79(-> balanceOf) = REF_79 - _value"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+allowance[_from][msg.sender] -= _value
+
+IRs:
+REF_80(mapping(address => uint256)) -> allowance[_from]
+REF_81(uint256) -> REF_80[msg.sender]
+REF_81(-> allowance) = REF_81 - _value"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+totalSupply -= _value
+
+IRs:
+totalSupply(uint256) = totalSupply - _value"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+Burn(_from,_value)
+
+IRs:
+Emit Burn(_from,_value)"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 811.sol-CustomToken-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+airdrop()
+
+IRs:
+INTERNAL_CALL, AirdropToken.airdrop()()"];
+}
+// Function: 811.sol-CustomToken-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transfer(msg.sender,_to,_value)
+
+IRs:
+INTERNAL_CALL, BaseToken._transfer(address,address,uint256)(msg.sender,_to,_value)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 811.sol-CustomToken-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_value <= allowance[_from][msg.sender])
+
+IRs:
+REF_68(mapping(address => uint256)) -> allowance[_from]
+REF_69(uint256) -> REF_68[msg.sender]
+TMP_96(bool) = _value <= REF_69
+TMP_97(None) = SOLIDITY_CALL require(bool)(TMP_96)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+allowance[_from][msg.sender] -= _value
+
+IRs:
+REF_70(mapping(address => uint256)) -> allowance[_from]
+REF_71(uint256) -> REF_70[msg.sender]
+REF_71(-> allowance) = REF_71 - _value"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_transfer(_from,_to,_value)
+
+IRs:
+INTERNAL_CALL, BaseToken._transfer(address,address,uint256)(_from,_to,_value)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+}

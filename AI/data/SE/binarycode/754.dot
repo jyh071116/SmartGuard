@@ -1,0 +1,1764 @@
+digraph G {
+// Function: 754.sol-BookingPoC-_transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_newOwner != address(0))
+
+IRs:
+TMP_38 = CONVERT 0 to address
+TMP_39(bool) = _newOwner != TMP_38
+TMP_40(None) = SOLIDITY_CALL require(bool)(TMP_39)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,_newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,_newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = _newOwner
+
+IRs:
+owner(address) := _newOwner(address)"];
+}
+// Function: 754.sol-BookingPoC-addRefund(uint256,uint8)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+refunds.length > 0
+
+IRs:
+REF_2 -> LENGTH refunds
+TMP_61(bool) = REF_2 > 0
+CONDITION TMP_61"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(refunds[refunds.length - 1].beforeTime > _beforeTime)
+
+IRs:
+REF_3 -> LENGTH refunds
+TMP_62(uint256) = REF_3 - 1
+REF_4(BookingPoC.Refund) -> refunds[TMP_62]
+REF_5(uint256) -> REF_4.beforeTime
+TMP_63(bool) = REF_5 > _beforeTime
+TMP_64(None) = SOLIDITY_CALL require(bool)(TMP_63)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+refunds.push(Refund(_beforeTime,_dividedBy))
+
+IRs:
+TMP_65(BookingPoC.Refund) = new Refund(_beforeTime,_dividedBy)
+REF_7 -> LENGTH refunds
+TMP_67(uint256) := REF_7(uint256)
+TMP_68(uint256) = TMP_67 + 1
+REF_7(uint256) (->refunds) := TMP_68(uint256)
+REF_8(BookingPoC.Refund) -> refunds[TMP_67]
+REF_8(BookingPoC.Refund) (->refunds) := TMP_65(BookingPoC.Refund)"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+5->1;
+}
+// Function: 754.sol-BookingPoC-addRooms(string,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+rooms[roomType].totalRooms = rooms[roomType].totalRooms.add(amount)
+
+IRs:
+REF_15(BookingPoC.RoomType) -> rooms[roomType]
+REF_16(uint256) -> REF_15.totalRooms
+REF_17(BookingPoC.RoomType) -> rooms[roomType]
+REF_18(uint256) -> REF_17.totalRooms
+TMP_75(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_18', 'amount'] 
+REF_16(uint256) (->rooms) := TMP_75(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+RoomsAdded(roomType,amount)
+
+IRs:
+Emit RoomsAdded(roomType,amount)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 754.sol-BookingPoC-bookRoom(string,uint256[],uint256,address,bytes32,uint256,bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: BEGIN_LOOP 1
+"];
+1->4;
+2[label="Node Type: END_LOOP 2
+"];
+2->10;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+3->1;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+i < _nights.length
+
+IRs:
+REF_20 -> LENGTH _nights
+TMP_78(bool) = i < REF_20
+CONDITION TMP_78"];
+4->5[label="True"];
+4->2[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+rooms[roomType].nights[_nights[i]][room].guest = guest
+
+IRs:
+REF_21(BookingPoC.RoomType) -> rooms[roomType]
+REF_22(mapping(uint256 => mapping(uint256 => BookingPoC.Booking))) -> REF_21.nights
+REF_23(uint256) -> _nights[i]
+REF_24(mapping(uint256 => BookingPoC.Booking)) -> REF_22[REF_23]
+REF_25(BookingPoC.Booking) -> REF_24[room]
+REF_26(address) -> REF_25.guest
+REF_26(address) (->rooms) := guest(address)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+rooms[roomType].nights[_nights[i]][room].bookingHash = bookingHash
+
+IRs:
+REF_27(BookingPoC.RoomType) -> rooms[roomType]
+REF_28(mapping(uint256 => mapping(uint256 => BookingPoC.Booking))) -> REF_27.nights
+REF_29(uint256) -> _nights[i]
+REF_30(mapping(uint256 => BookingPoC.Booking)) -> REF_28[REF_29]
+REF_31(BookingPoC.Booking) -> REF_30[room]
+REF_32(bytes32) -> REF_31.bookingHash
+REF_32(bytes32) (->rooms) := bookingHash(bytes32)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+rooms[roomType].nights[_nights[i]][room].payed = weiPerNight
+
+IRs:
+REF_33(BookingPoC.RoomType) -> rooms[roomType]
+REF_34(mapping(uint256 => mapping(uint256 => BookingPoC.Booking))) -> REF_33.nights
+REF_35(uint256) -> _nights[i]
+REF_36(mapping(uint256 => BookingPoC.Booking)) -> REF_34[REF_35]
+REF_37(BookingPoC.Booking) -> REF_36[room]
+REF_38(uint256) -> REF_37.payed
+REF_38(uint256) (->rooms) := weiPerNight(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+rooms[roomType].nights[_nights[i]][room].isEther = isEther
+
+IRs:
+REF_39(BookingPoC.RoomType) -> rooms[roomType]
+REF_40(mapping(uint256 => mapping(uint256 => BookingPoC.Booking))) -> REF_39.nights
+REF_41(uint256) -> _nights[i]
+REF_42(mapping(uint256 => BookingPoC.Booking)) -> REF_40[REF_41]
+REF_43(BookingPoC.Booking) -> REF_42[room]
+REF_44(bool) -> REF_43.isEther
+REF_44(bool) (->rooms) := isEther(bool)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_79(uint256) := i(uint256)
+i(uint256) = i + 1"];
+9->4;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+BookingDone(roomType,_nights,room,guest,bookingHash)
+
+IRs:
+Emit BookingDone(roomType,_nights,room,guest,bookingHash)"];
+}
+// Function: 754.sol-BookingPoC-bookWithEth(uint256,uint256,bytes,string,uint256[],bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(offerTimestamp < now)
+
+IRs:
+TMP_107(bool) = offerTimestamp < now
+TMP_108(None) = SOLIDITY_CALL require(bool)(TMP_107)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(now < endBookings)
+
+IRs:
+TMP_109(bool) = now < endBookings
+TMP_110(None) = SOLIDITY_CALL require(bool)(TMP_109)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(pricePerNight.mul(_nights.length) <= msg.value)
+
+IRs:
+REF_89 -> LENGTH _nights
+TMP_111(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['pricePerNight', 'REF_89'] 
+TMP_112(bool) = TMP_111 <= msg.value
+TMP_113(None) = SOLIDITY_CALL require(bool)(TMP_112)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+available = firstRoomAvailable(roomType,_nights)
+
+IRs:
+TMP_114(uint256) = INTERNAL_CALL, BookingPoC.firstRoomAvailable(string,uint256[])(roomType,_nights)
+available(uint256) := TMP_114(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool)(available > 0)
+
+IRs:
+TMP_115(bool) = available > 0
+TMP_116(None) = SOLIDITY_CALL require(bool)(TMP_115)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+priceSigned = keccak256()(abi.encodePacked(roomType,pricePerNight,offerTimestamp,eth,bookingHash)).toEthSignedMessageHash()
+
+IRs:
+TMP_117(bytes) = SOLIDITY_CALL abi.encodePacked()(roomType,pricePerNight,offerTimestamp,eth,bookingHash)
+TMP_118(bytes32) = SOLIDITY_CALL keccak256()(TMP_117)
+TMP_119(bytes32) = LIBRARY_CALL, dest:ECRecovery, function:ECRecovery.toEthSignedMessageHash(bytes32), arguments:['TMP_118'] 
+priceSigned(bytes32) := TMP_119(bytes32)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+require(bool)(offerSigner == priceSigned.recover(offerSignature))
+
+IRs:
+TMP_120(address) = LIBRARY_CALL, dest:ECRecovery, function:ECRecovery.recover(bytes32,bytes), arguments:['priceSigned', 'offerSignature'] 
+TMP_121(bool) = offerSigner == TMP_120
+TMP_122(None) = SOLIDITY_CALL require(bool)(TMP_121)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+bookRoom(roomType,_nights,available,msg.sender,bookingHash,pricePerNight,true)
+
+IRs:
+INTERNAL_CALL, BookingPoC.bookRoom(string,uint256[],uint256,address,bytes32,uint256,bool)(roomType,_nights,available,msg.sender,bookingHash,pricePerNight,True)"];
+}
+// Function: 754.sol-BookingPoC-bookWithLif(uint256,uint256,bytes,string,uint256[],bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(offerTimestamp < now)
+
+IRs:
+TMP_124(bool) = offerTimestamp < now
+TMP_125(None) = SOLIDITY_CALL require(bool)(TMP_124)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+lifTokenAllowance = lifToken.allowance(msg.sender,address(this))
+
+IRs:
+TMP_126 = CONVERT this to address
+TMP_127(uint256) = HIGH_LEVEL_CALL, dest:lifToken(ERC20), function:allowance, arguments:['msg.sender', 'TMP_126']  
+lifTokenAllowance(uint256) := TMP_127(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(pricePerNight.mul(_nights.length) <= lifTokenAllowance)
+
+IRs:
+REF_95 -> LENGTH _nights
+TMP_128(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['pricePerNight', 'REF_95'] 
+TMP_129(bool) = TMP_128 <= lifTokenAllowance
+TMP_130(None) = SOLIDITY_CALL require(bool)(TMP_129)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+available = firstRoomAvailable(roomType,_nights)
+
+IRs:
+TMP_131(uint256) = INTERNAL_CALL, BookingPoC.firstRoomAvailable(string,uint256[])(roomType,_nights)
+available(uint256) := TMP_131(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool)(available > 0)
+
+IRs:
+TMP_132(bool) = available > 0
+TMP_133(None) = SOLIDITY_CALL require(bool)(TMP_132)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+priceSigned = keccak256()(abi.encodePacked(roomType,pricePerNight,offerTimestamp,lif,bookingHash)).toEthSignedMessageHash()
+
+IRs:
+TMP_134(bytes) = SOLIDITY_CALL abi.encodePacked()(roomType,pricePerNight,offerTimestamp,lif,bookingHash)
+TMP_135(bytes32) = SOLIDITY_CALL keccak256()(TMP_134)
+TMP_136(bytes32) = LIBRARY_CALL, dest:ECRecovery, function:ECRecovery.toEthSignedMessageHash(bytes32), arguments:['TMP_135'] 
+priceSigned(bytes32) := TMP_136(bytes32)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+require(bool)(offerSigner == priceSigned.recover(offerSignature))
+
+IRs:
+TMP_137(address) = LIBRARY_CALL, dest:ECRecovery, function:ECRecovery.recover(bytes32,bytes), arguments:['priceSigned', 'offerSignature'] 
+TMP_138(bool) = offerSigner == TMP_137
+TMP_139(None) = SOLIDITY_CALL require(bool)(TMP_138)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+bookRoom(roomType,_nights,available,msg.sender,bookingHash,pricePerNight,false)
+
+IRs:
+INTERNAL_CALL, BookingPoC.bookRoom(string,uint256[],uint256,address,bytes32,uint256,bool)(roomType,_nights,available,msg.sender,bookingHash,pricePerNight,False)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+lifToken.transferFrom(msg.sender,address(this),lifTokenAllowance)
+
+IRs:
+TMP_141 = CONVERT this to address
+TMP_142(bool) = HIGH_LEVEL_CALL, dest:lifToken(ERC20), function:transferFrom, arguments:['msg.sender', 'TMP_141', 'lifTokenAllowance']  "];
+}
+// Function: 754.sol-BookingPoC-cancelBooking(string,uint256[],uint256,bytes32,bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+totalPayed = 0
+
+IRs:
+totalPayed(uint256) := 0(uint256)"];
+1->4;
+2[label="Node Type: BEGIN_LOOP 2
+"];
+2->5;
+3[label="Node Type: END_LOOP 3
+"];
+3->12;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+4->2;
+5[label="Node Type: IF_LOOP 5
+
+EXPRESSION:
+i < _nights.length
+
+IRs:
+REF_45 -> LENGTH _nights
+TMP_81(bool) = i < REF_45
+CONDITION TMP_81"];
+5->6[label="True"];
+5->3[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+require(bool)(rooms[roomType].nights[_nights[i]][room].guest == msg.sender)
+
+IRs:
+REF_46(BookingPoC.RoomType) -> rooms[roomType]
+REF_47(mapping(uint256 => mapping(uint256 => BookingPoC.Booking))) -> REF_46.nights
+REF_48(uint256) -> _nights[i]
+REF_49(mapping(uint256 => BookingPoC.Booking)) -> REF_47[REF_48]
+REF_50(BookingPoC.Booking) -> REF_49[room]
+REF_51(address) -> REF_50.guest
+TMP_82(bool) = REF_51 == msg.sender
+TMP_83(None) = SOLIDITY_CALL require(bool)(TMP_82)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+require(bool)(rooms[roomType].nights[_nights[i]][room].isEther == isEther)
+
+IRs:
+REF_52(BookingPoC.RoomType) -> rooms[roomType]
+REF_53(mapping(uint256 => mapping(uint256 => BookingPoC.Booking))) -> REF_52.nights
+REF_54(uint256) -> _nights[i]
+REF_55(mapping(uint256 => BookingPoC.Booking)) -> REF_53[REF_54]
+REF_56(BookingPoC.Booking) -> REF_55[room]
+REF_57(bool) -> REF_56.isEther
+TMP_84(bool) = REF_57 == isEther
+TMP_85(None) = SOLIDITY_CALL require(bool)(TMP_84)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+require(bool)(rooms[roomType].nights[_nights[i]][room].bookingHash == bookingHash)
+
+IRs:
+REF_58(BookingPoC.RoomType) -> rooms[roomType]
+REF_59(mapping(uint256 => mapping(uint256 => BookingPoC.Booking))) -> REF_58.nights
+REF_60(uint256) -> _nights[i]
+REF_61(mapping(uint256 => BookingPoC.Booking)) -> REF_59[REF_60]
+REF_62(BookingPoC.Booking) -> REF_61[room]
+REF_63(bytes32) -> REF_62.bookingHash
+TMP_86(bool) = REF_63 == bookingHash
+TMP_87(None) = SOLIDITY_CALL require(bool)(TMP_86)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+totalPayed = totalPayed.add(rooms[roomType].nights[_nights[i]][room].payed)
+
+IRs:
+REF_65(BookingPoC.RoomType) -> rooms[roomType]
+REF_66(mapping(uint256 => mapping(uint256 => BookingPoC.Booking))) -> REF_65.nights
+REF_67(uint256) -> _nights[i]
+REF_68(mapping(uint256 => BookingPoC.Booking)) -> REF_66[REF_67]
+REF_69(BookingPoC.Booking) -> REF_68[room]
+REF_70(uint256) -> REF_69.payed
+TMP_88(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['totalPayed', 'REF_70'] 
+totalPayed(uint256) := TMP_88(uint256)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+delete rooms[roomType].nights[_nights[i]][room]
+
+IRs:
+REF_71(BookingPoC.RoomType) -> rooms[roomType]
+REF_72(mapping(uint256 => mapping(uint256 => BookingPoC.Booking))) -> REF_71.nights
+REF_73(uint256) -> _nights[i]
+REF_74(mapping(uint256 => BookingPoC.Booking)) -> REF_72[REF_73]
+REF_75(BookingPoC.Booking) -> REF_74[room]
+REF_74 = delete REF_75 "];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_89(uint256) := i(uint256)
+i(uint256) = i + 1"];
+11->5;
+12[label="Node Type: NEW VARIABLE 12
+
+EXPRESSION:
+refundAmount = 0
+
+IRs:
+refundAmount(uint256) := 0(uint256)"];
+12->15;
+13[label="Node Type: BEGIN_LOOP 13
+"];
+13->16;
+14[label="Node Type: END_LOOP 14
+"];
+14->22;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+15->13;
+16[label="Node Type: IF_LOOP 16
+
+EXPRESSION:
+i < refunds.length
+
+IRs:
+REF_76 -> LENGTH refunds
+TMP_90(bool) = i < REF_76
+CONDITION TMP_90"];
+16->17[label="True"];
+16->14[label="False"];
+17[label="Node Type: IF 17
+
+EXPRESSION:
+now < endBookings.sub(refunds[i].beforeTime)
+
+IRs:
+REF_78(BookingPoC.Refund) -> refunds[i]
+REF_79(uint256) -> REF_78.beforeTime
+TMP_91(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['endBookings', 'REF_79'] 
+TMP_92(bool) = now < TMP_91
+CONDITION TMP_92"];
+17->18[label="True"];
+17->20[label="False"];
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+refundAmount = totalPayed.div(refunds[i].dividedBy)
+
+IRs:
+REF_81(BookingPoC.Refund) -> refunds[i]
+REF_82(uint8) -> REF_81.dividedBy
+TMP_93(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['totalPayed', 'REF_82'] 
+refundAmount(uint256) := TMP_93(uint256)"];
+18->19;
+19[label="Node Type: BREAK 19
+"];
+19->14;
+20[label="Node Type: END_IF 20
+"];
+20->21;
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_94(uint256) := i(uint256)
+i(uint256) = i + 1"];
+21->16;
+22[label="Node Type: IF 22
+
+EXPRESSION:
+isEther
+
+IRs:
+CONDITION isEther"];
+22->23[label="True"];
+22->24[label="False"];
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+msg.sender.transfer(refundAmount)
+
+IRs:
+Transfer dest:msg.sender value:refundAmount"];
+23->25;
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+lifToken.transfer(msg.sender,refundAmount)
+
+IRs:
+TMP_96(bool) = HIGH_LEVEL_CALL, dest:lifToken(ERC20), function:transfer, arguments:['msg.sender', 'refundAmount']  "];
+24->25;
+25[label="Node Type: END_IF 25
+"];
+25->26;
+26[label="Node Type: EXPRESSION 26
+
+EXPRESSION:
+BookingCanceled(roomType,_nights,room,msg.sender,bookingHash)
+
+IRs:
+Emit BookingCanceled(roomType,_nights,room,msg.sender,bookingHash)"];
+}
+// Function: 754.sol-BookingPoC-changeRefund(uint8,uint256,uint8)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_refundIndex > 0
+
+IRs:
+TMP_70(bool) = _refundIndex > 0
+CONDITION TMP_70"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(refunds[_refundIndex - 1].beforeTime > _beforeTime)
+
+IRs:
+TMP_71(uint8) = _refundIndex - 1
+REF_9(BookingPoC.Refund) -> refunds[TMP_71]
+REF_10(uint256) -> REF_9.beforeTime
+TMP_72(bool) = REF_10 > _beforeTime
+TMP_73(None) = SOLIDITY_CALL require(bool)(TMP_72)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+refunds[_refundIndex].beforeTime = _beforeTime
+
+IRs:
+REF_11(BookingPoC.Refund) -> refunds[_refundIndex]
+REF_12(uint256) -> REF_11.beforeTime
+REF_12(uint256) (->refunds) := _beforeTime(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+refunds[_refundIndex].dividedBy = _dividedBy
+
+IRs:
+REF_13(BookingPoC.Refund) -> refunds[_refundIndex]
+REF_14(uint8) -> REF_13.dividedBy
+REF_14(uint8) (->refunds) := _dividedBy(uint8)"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+6->1;
+}
+// Function: 754.sol-BookingPoC-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 754.sol-BookingPoC-constructor(address,address,uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_offerSigner != address(0))
+
+IRs:
+TMP_42 = CONVERT 0 to address
+TMP_43(bool) = _offerSigner != TMP_42
+TMP_44(None) = SOLIDITY_CALL require(bool)(TMP_43)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_lifToken != address(0))
+
+IRs:
+TMP_45 = CONVERT 0 to address
+TMP_46(bool) = _lifToken != TMP_45
+TMP_47(None) = SOLIDITY_CALL require(bool)(TMP_46)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(_totalNights > 0)
+
+IRs:
+TMP_48(bool) = _totalNights > 0
+TMP_49(None) = SOLIDITY_CALL require(bool)(TMP_48)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool)(_endBookings > now)
+
+IRs:
+TMP_50(bool) = _endBookings > now
+TMP_51(None) = SOLIDITY_CALL require(bool)(TMP_50)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+offerSigner = _offerSigner
+
+IRs:
+offerSigner(address) := _offerSigner(address)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+lifToken = ERC20(_lifToken)
+
+IRs:
+TMP_52 = CONVERT _lifToken to ERC20
+lifToken(ERC20) := TMP_52(ERC20)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+totalNights = _totalNights
+
+IRs:
+totalNights(uint256) := _totalNights(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+endBookings = _endBookings
+
+IRs:
+endBookings(uint256) := _endBookings(uint256)"];
+}
+// Function: 754.sol-BookingPoC-edit(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_offerSigner != address(0))
+
+IRs:
+TMP_53 = CONVERT 0 to address
+TMP_54(bool) = _offerSigner != TMP_53
+TMP_55(None) = SOLIDITY_CALL require(bool)(TMP_54)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_lifToken != address(0))
+
+IRs:
+TMP_56 = CONVERT 0 to address
+TMP_57(bool) = _lifToken != TMP_56
+TMP_58(None) = SOLIDITY_CALL require(bool)(TMP_57)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+offerSigner = _offerSigner
+
+IRs:
+offerSigner(address) := _offerSigner(address)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+lifToken = ERC20(_lifToken)
+
+IRs:
+TMP_59 = CONVERT _lifToken to ERC20
+lifToken(ERC20) := TMP_59(ERC20)"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+5->1;
+}
+// Function: 754.sol-BookingPoC-firstRoomAvailable(string,uint256[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_nights[i] <= totalNights)
+
+IRs:
+REF_146(uint256) -> _nights[i]
+TMP_163(bool) = REF_146 <= totalNights
+TMP_164(None) = SOLIDITY_CALL require(bool)(TMP_163)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+available = 0
+
+IRs:
+available(uint256) := 0(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+"];
+3->6;
+4[label="Node Type: BEGIN_LOOP 4
+"];
+4->7;
+5[label="Node Type: END_LOOP 5
+"];
+5->22;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+z = rooms[roomType].totalRooms
+
+IRs:
+REF_147(BookingPoC.RoomType) -> rooms[roomType]
+REF_148(uint256) -> REF_147.totalRooms
+z(uint256) := REF_148(uint256)"];
+6->4;
+7[label="Node Type: IF_LOOP 7
+
+EXPRESSION:
+z >= 1
+
+IRs:
+TMP_165(bool) = z >= 1
+CONDITION TMP_165"];
+7->8[label="True"];
+7->5[label="False"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+isAvailable = true
+
+IRs:
+isAvailable(bool) := True(bool)"];
+8->11;
+9[label="Node Type: BEGIN_LOOP 9
+"];
+9->12;
+10[label="Node Type: END_LOOP 10
+"];
+10->18;
+11[label="Node Type: NEW VARIABLE 11
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+11->9;
+12[label="Node Type: IF_LOOP 12
+
+EXPRESSION:
+i < _nights.length
+
+IRs:
+REF_149 -> LENGTH _nights
+TMP_166(bool) = i < REF_149
+CONDITION TMP_166"];
+12->13[label="True"];
+12->10[label="False"];
+13[label="Node Type: IF 13
+
+EXPRESSION:
+rooms[roomType].nights[_nights[i]][z].guest != address(0)
+
+IRs:
+REF_150(BookingPoC.RoomType) -> rooms[roomType]
+REF_151(mapping(uint256 => mapping(uint256 => BookingPoC.Booking))) -> REF_150.nights
+REF_152(uint256) -> _nights[i]
+REF_153(mapping(uint256 => BookingPoC.Booking)) -> REF_151[REF_152]
+REF_154(BookingPoC.Booking) -> REF_153[z]
+REF_155(address) -> REF_154.guest
+TMP_167 = CONVERT 0 to address
+TMP_168(bool) = REF_155 != TMP_167
+CONDITION TMP_168"];
+13->14[label="True"];
+13->15[label="False"];
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+isAvailable = false
+
+IRs:
+isAvailable(bool) := False(bool)"];
+14->15;
+15[label="Node Type: END_IF 15
+"];
+15->16;
+16[label="Node Type: BREAK 16
+"];
+16->10;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_169(uint256) := i(uint256)
+i(uint256) = i + 1"];
+17->12;
+18[label="Node Type: IF 18
+
+EXPRESSION:
+isAvailable
+
+IRs:
+CONDITION isAvailable"];
+18->19[label="True"];
+18->20[label="False"];
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+available = z
+
+IRs:
+available(uint256) := z(uint256)"];
+19->20;
+20[label="Node Type: END_IF 20
+"];
+20->21;
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+z --
+
+IRs:
+TMP_170(uint256) := z(uint256)
+z(uint256) = z - 1"];
+21->7;
+22[label="Node Type: RETURN 22
+
+EXPRESSION:
+available
+
+IRs:
+RETURN available"];
+}
+// Function: 754.sol-BookingPoC-getBooking(string,uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+(rooms[roomType].nights[night][room].guest,rooms[roomType].nights[night][room].payed,rooms[roomType].nights[night][room].bookingHash,rooms[roomType].nights[night][room].isEther)
+
+IRs:
+REF_102(BookingPoC.RoomType) -> rooms[roomType]
+REF_103(mapping(uint256 => mapping(uint256 => BookingPoC.Booking))) -> REF_102.nights
+REF_104(mapping(uint256 => BookingPoC.Booking)) -> REF_103[night]
+REF_105(BookingPoC.Booking) -> REF_104[room]
+REF_106(address) -> REF_105.guest
+REF_107(BookingPoC.RoomType) -> rooms[roomType]
+REF_108(mapping(uint256 => mapping(uint256 => BookingPoC.Booking))) -> REF_107.nights
+REF_109(mapping(uint256 => BookingPoC.Booking)) -> REF_108[night]
+REF_110(BookingPoC.Booking) -> REF_109[room]
+REF_111(uint256) -> REF_110.payed
+REF_112(BookingPoC.RoomType) -> rooms[roomType]
+REF_113(mapping(uint256 => mapping(uint256 => BookingPoC.Booking))) -> REF_112.nights
+REF_114(mapping(uint256 => BookingPoC.Booking)) -> REF_113[night]
+REF_115(BookingPoC.Booking) -> REF_114[room]
+REF_116(bytes32) -> REF_115.bookingHash
+REF_117(BookingPoC.RoomType) -> rooms[roomType]
+REF_118(mapping(uint256 => mapping(uint256 => BookingPoC.Booking))) -> REF_117.nights
+REF_119(mapping(uint256 => BookingPoC.Booking)) -> REF_118[night]
+REF_120(BookingPoC.Booking) -> REF_119[room]
+REF_121(bool) -> REF_120.isEther
+RETURN REF_106,REF_111,REF_116,REF_121"];
+}
+// Function: 754.sol-BookingPoC-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_171(bool) = msg.sender == owner
+TMP_172(None) = SOLIDITY_CALL require(bool)(TMP_171)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 754.sol-BookingPoC-renounceOwnership()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+OwnershipRenounced(owner)
+
+IRs:
+Emit OwnershipRenounced(owner)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = address(0)
+
+IRs:
+TMP_34 = CONVERT 0 to address
+owner(address) := TMP_34(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 754.sol-BookingPoC-roomAvailable(string,uint256[],uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(room <= rooms[roomType].totalRooms)
+
+IRs:
+REF_122(BookingPoC.RoomType) -> rooms[roomType]
+REF_123(uint256) -> REF_122.totalRooms
+TMP_143(bool) = room <= REF_123
+TMP_144(None) = SOLIDITY_CALL require(bool)(TMP_143)"];
+1->4;
+2[label="Node Type: BEGIN_LOOP 2
+"];
+2->5;
+3[label="Node Type: END_LOOP 3
+"];
+3->11;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+4->2;
+5[label="Node Type: IF_LOOP 5
+
+EXPRESSION:
+i < _nights.length
+
+IRs:
+REF_124 -> LENGTH _nights
+TMP_145(bool) = i < REF_124
+CONDITION TMP_145"];
+5->6[label="True"];
+5->3[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+require(bool)(_nights[i] <= totalNights)
+
+IRs:
+REF_125(uint256) -> _nights[i]
+TMP_146(bool) = REF_125 <= totalNights
+TMP_147(None) = SOLIDITY_CALL require(bool)(TMP_146)"];
+6->7;
+7[label="Node Type: IF 7
+
+EXPRESSION:
+rooms[roomType].nights[_nights[i]][room].guest != address(0)
+
+IRs:
+REF_126(BookingPoC.RoomType) -> rooms[roomType]
+REF_127(mapping(uint256 => mapping(uint256 => BookingPoC.Booking))) -> REF_126.nights
+REF_128(uint256) -> _nights[i]
+REF_129(mapping(uint256 => BookingPoC.Booking)) -> REF_127[REF_128]
+REF_130(BookingPoC.Booking) -> REF_129[room]
+REF_131(address) -> REF_130.guest
+TMP_148 = CONVERT 0 to address
+TMP_149(bool) = REF_131 != TMP_148
+CONDITION TMP_149"];
+7->8[label="True"];
+7->9[label="False"];
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_150(uint256) := i(uint256)
+i(uint256) = i + 1"];
+10->5;
+11[label="Node Type: RETURN 11
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 754.sol-BookingPoC-roomsAvailable(string,uint256[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_nights[i] <= totalNights)
+
+IRs:
+REF_132(uint256) -> _nights[i]
+TMP_151(bool) = REF_132 <= totalNights
+TMP_152(None) = SOLIDITY_CALL require(bool)(TMP_151)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+available = new uint256[](rooms[roomType].totalRooms)
+
+IRs:
+REF_133(BookingPoC.RoomType) -> rooms[roomType]
+REF_134(uint256) -> REF_133.totalRooms
+TMP_154(uint256[])  = new uint256[](REF_134)
+available(uint256[]) = ['TMP_154(uint256[])']"];
+2->5;
+3[label="Node Type: BEGIN_LOOP 3
+"];
+3->6;
+4[label="Node Type: END_LOOP 4
+"];
+4->18;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+z = 1
+
+IRs:
+z(uint256) := 1(uint256)"];
+5->3;
+6[label="Node Type: IF_LOOP 6
+
+EXPRESSION:
+z <= rooms[roomType].totalRooms
+
+IRs:
+REF_135(BookingPoC.RoomType) -> rooms[roomType]
+REF_136(uint256) -> REF_135.totalRooms
+TMP_155(bool) = z <= REF_136
+CONDITION TMP_155"];
+6->7[label="True"];
+6->4[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+available[z - 1] = z
+
+IRs:
+TMP_156(uint256) = z - 1
+REF_137(uint256) -> available[TMP_156]
+REF_137(uint256) (->available) := z(uint256)"];
+7->10;
+8[label="Node Type: BEGIN_LOOP 8
+"];
+8->11;
+9[label="Node Type: END_LOOP 9
+"];
+9->17;
+10[label="Node Type: NEW VARIABLE 10
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+10->8;
+11[label="Node Type: IF_LOOP 11
+
+EXPRESSION:
+i < _nights.length
+
+IRs:
+REF_138 -> LENGTH _nights
+TMP_157(bool) = i < REF_138
+CONDITION TMP_157"];
+11->12[label="True"];
+11->9[label="False"];
+12[label="Node Type: IF 12
+
+EXPRESSION:
+rooms[roomType].nights[_nights[i]][z].guest != address(0)
+
+IRs:
+REF_139(BookingPoC.RoomType) -> rooms[roomType]
+REF_140(mapping(uint256 => mapping(uint256 => BookingPoC.Booking))) -> REF_139.nights
+REF_141(uint256) -> _nights[i]
+REF_142(mapping(uint256 => BookingPoC.Booking)) -> REF_140[REF_141]
+REF_143(BookingPoC.Booking) -> REF_142[z]
+REF_144(address) -> REF_143.guest
+TMP_158 = CONVERT 0 to address
+TMP_159(bool) = REF_144 != TMP_158
+CONDITION TMP_159"];
+12->13[label="True"];
+12->15[label="False"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+available[z - 1] = 0
+
+IRs:
+TMP_160(uint256) = z - 1
+REF_145(uint256) -> available[TMP_160]
+REF_145(uint256) (->available) := 0(uint256)"];
+13->14;
+14[label="Node Type: BREAK 14
+"];
+14->9;
+15[label="Node Type: END_IF 15
+"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_161(uint256) := i(uint256)
+i(uint256) = i + 1"];
+16->11;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+z ++
+
+IRs:
+TMP_162(uint256) := z(uint256)
+z(uint256) = z + 1"];
+17->6;
+18[label="Node Type: RETURN 18
+
+EXPRESSION:
+available
+
+IRs:
+RETURN available"];
+}
+// Function: 754.sol-BookingPoC-totalRooms(string)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+rooms[roomType].totalRooms
+
+IRs:
+REF_100(BookingPoC.RoomType) -> rooms[roomType]
+REF_101(uint256) -> REF_100.totalRooms
+RETURN REF_101"];
+}
+// Function: 754.sol-BookingPoC-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transferOwnership(_newOwner)
+
+IRs:
+INTERNAL_CALL, Ownable._transferOwnership(address)(_newOwner)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 754.sol-BookingPoC-withdraw()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(now > endBookings)
+
+IRs:
+TMP_98(bool) = now > endBookings
+TMP_99(None) = SOLIDITY_CALL require(bool)(TMP_98)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+lifToken.transfer(owner,lifToken.balanceOf(address(this)))
+
+IRs:
+TMP_100 = CONVERT this to address
+TMP_101(uint256) = HIGH_LEVEL_CALL, dest:lifToken(ERC20), function:balanceOf, arguments:['TMP_100']  
+TMP_102(bool) = HIGH_LEVEL_CALL, dest:lifToken(ERC20), function:transfer, arguments:['owner', 'TMP_101']  "];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner.transfer(address(this).balance)
+
+IRs:
+TMP_103 = CONVERT this to address
+TMP_104(uint256) = SOLIDITY_CALL balance(address)(TMP_103)
+Transfer dest:owner value:TMP_104"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->1;
+}
+// Function: 754.sol-ECRecovery-recover(bytes32,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+sig.length != 65
+
+IRs:
+REF_0 -> LENGTH sig
+TMP_0(bool) = REF_0 != 65
+CONDITION TMP_0"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+(address(0))
+
+IRs:
+TMP_1 = CONVERT 0 to address
+RETURN TMP_1"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: INLINE ASM 7
+"];
+7->8;
+8[label="Node Type: END INLINE ASM 8
+"];
+8->9;
+9[label="Node Type: IF 9
+
+EXPRESSION:
+v < 27
+
+IRs:
+TMP_2(bool) = v < 27
+CONDITION TMP_2"];
+9->10[label="True"];
+9->11[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+v += 27
+
+IRs:
+v(uint8) = v + 27"];
+10->11;
+11[label="Node Type: END_IF 11
+"];
+11->12;
+12[label="Node Type: IF 12
+
+EXPRESSION:
+v != 27 && v != 28
+
+IRs:
+TMP_3(bool) = v != 27
+TMP_4(bool) = v != 28
+TMP_5(bool) = TMP_3 && TMP_4
+CONDITION TMP_5"];
+12->13[label="True"];
+12->14[label="False"];
+13[label="Node Type: RETURN 13
+
+EXPRESSION:
+(address(0))
+
+IRs:
+TMP_6 = CONVERT 0 to address
+RETURN TMP_6"];
+14[label="Node Type: RETURN 14
+
+EXPRESSION:
+ecrecover(bytes32,uint8,bytes32,bytes32)(hash,v,r,s)
+
+IRs:
+TMP_7(address) = SOLIDITY_CALL ecrecover(bytes32,uint8,bytes32,bytes32)(hash,v,r,s)
+RETURN TMP_7"];
+}
+// Function: 754.sol-ECRecovery-toEthSignedMessageHash(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+keccak256()(abi.encodePacked(Ethereum Signed Message:
+32,hash))
+
+IRs:
+TMP_8(bytes) = SOLIDITY_CALL abi.encodePacked()(Ethereum Signed Message:
+32,hash)
+TMP_9(bytes32) = SOLIDITY_CALL keccak256()(TMP_8)
+RETURN TMP_9"];
+}
+// Function: 754.sol-ERC20-allowance(address,address)
+digraph{
+}
+// Function: 754.sol-ERC20-approve(address,uint256)
+digraph{
+}
+// Function: 754.sol-ERC20-balanceOf(address)
+digraph{
+}
+// Function: 754.sol-ERC20-totalSupply()
+digraph{
+}
+// Function: 754.sol-ERC20-transfer(address,uint256)
+digraph{
+}
+// Function: 754.sol-ERC20-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 754.sol-ERC20Basic-balanceOf(address)
+digraph{
+}
+// Function: 754.sol-ERC20Basic-totalSupply()
+digraph{
+}
+// Function: 754.sol-ERC20Basic-transfer(address,uint256)
+digraph{
+}
+// Function: 754.sol-Ownable-_transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_newOwner != address(0))
+
+IRs:
+TMP_27 = CONVERT 0 to address
+TMP_28(bool) = _newOwner != TMP_27
+TMP_29(None) = SOLIDITY_CALL require(bool)(TMP_28)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,_newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,_newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = _newOwner
+
+IRs:
+owner(address) := _newOwner(address)"];
+}
+// Function: 754.sol-Ownable-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 754.sol-Ownable-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_31(bool) = msg.sender == owner
+TMP_32(None) = SOLIDITY_CALL require(bool)(TMP_31)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 754.sol-Ownable-renounceOwnership()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+OwnershipRenounced(owner)
+
+IRs:
+Emit OwnershipRenounced(owner)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = address(0)
+
+IRs:
+TMP_23 = CONVERT 0 to address
+owner(address) := TMP_23(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 754.sol-Ownable-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transferOwnership(_newOwner)
+
+IRs:
+INTERNAL_CALL, Ownable._transferOwnership(address)(_newOwner)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 754.sol-SafeMath-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_19(uint256) = a + b
+c(uint256) := TMP_19(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(c >= a)
+
+IRs:
+TMP_20(bool) = c >= a
+TMP_21(None) = SOLIDITY_CALL assert(bool)(TMP_20)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 754.sol-SafeMath-div(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+a / b
+
+IRs:
+TMP_15(uint256) = a / b
+RETURN TMP_15"];
+}
+// Function: 754.sol-SafeMath-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+a == 0
+
+IRs:
+TMP_10(bool) = a == 0
+CONDITION TMP_10"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_11(uint256) = a * b
+c(uint256) := TMP_11(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+assert(bool)(c / a == b)
+
+IRs:
+TMP_12(uint256) = c / a
+TMP_13(bool) = TMP_12 == b
+TMP_14(None) = SOLIDITY_CALL assert(bool)(TMP_13)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 754.sol-SafeMath-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(b <= a)
+
+IRs:
+TMP_16(bool) = b <= a
+TMP_17(None) = SOLIDITY_CALL assert(bool)(TMP_16)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_18(uint256) = a - b
+RETURN TMP_18"];
+}
+}

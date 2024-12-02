@@ -1,0 +1,1054 @@
+digraph G {
+// Function: 33866.sol-GigaGivingToken-GigaGivingToken(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+creator = msg.sender
+
+IRs:
+creator(address) := msg.sender(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+beneficiary = icoBeneficiary
+
+IRs:
+beneficiary(address) := icoBeneficiary(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+totalSupply = TOTAL_TOKENS
+
+IRs:
+totalSupply(uint256) := TOTAL_TOKENS(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+balances[beneficiary] = TOTAL_TOKENS.sub(CROWDSALE_TOKENS)
+
+IRs:
+REF_30(uint256) -> balances[beneficiary]
+TMP_31(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['TOTAL_TOKENS', 'CROWDSALE_TOKENS'] 
+REF_30(uint256) (->balances) := TMP_31(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Transfer(0x0,icoBeneficiary,TOTAL_TOKENS.sub(CROWDSALE_TOKENS))
+
+IRs:
+TMP_32(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['TOTAL_TOKENS', 'CROWDSALE_TOKENS'] 
+Emit Transfer(0,icoBeneficiary,TMP_32)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+balances[this] = CROWDSALE_TOKENS
+
+IRs:
+REF_33(uint256) -> balances[this]
+REF_33(uint256) (->balances) := CROWDSALE_TOKENS(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+Transfer(0x0,this,CROWDSALE_TOKENS)
+
+IRs:
+Emit Transfer(0,this,CROWDSALE_TOKENS)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+tokenSupply = CROWDSALE_TOKENS
+
+IRs:
+tokenSupply(uint256) := CROWDSALE_TOKENS(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+startTime = 1510527600
+
+IRs:
+startTime(uint256) := 1510527600(uint256)"];
+}
+// Function: 33866.sol-GigaGivingToken-afterDeadline()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+now >= (startTime + DURATION)
+
+IRs:
+TMP_82(uint256) = startTime + DURATION
+TMP_83(bool) = now >= TMP_82
+CONDITION TMP_83"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: _ 2
+"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 33866.sol-GigaGivingToken-allowance(address,address)
+digraph{
+}
+// Function: 33866.sol-GigaGivingToken-approve(address,uint256)
+digraph{
+}
+// Function: 33866.sol-GigaGivingToken-approveAndCall(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowed[msg.sender][_spender] = _value
+
+IRs:
+REF_34(mapping(address => uint256)) -> allowed[msg.sender]
+REF_35(uint256) -> REF_34[_spender]
+REF_35(uint256) (->allowed) := _value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,_value)
+
+IRs:
+Emit Approval(msg.sender,_spender,_value)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(_spender.call(bytes4(bytes32(sha3()(receiveApproval(address,uint256,address,bytes)))),msg.sender,_value,this,_extraData))
+
+IRs:
+TMP_36(bytes32) = SOLIDITY_CALL sha3()(receiveApproval(address,uint256,address,bytes))
+TMP_37 = CONVERT TMP_36 to bytes32
+TMP_38 = CONVERT TMP_37 to bytes4
+TMP_39(bool) = LOW_LEVEL_CALL, dest:_spender, function:call, arguments:['TMP_38', 'msg.sender', '_value', 'this', '_extraData']  
+TMP_40(None) = SOLIDITY_CALL require(bool)(TMP_39)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 33866.sol-GigaGivingToken-balanceOf(address)
+digraph{
+}
+// Function: 33866.sol-GigaGivingToken-checkGoalReached()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+amountRaised >= fundingGoal
+
+IRs:
+TMP_69(bool) = amountRaised >= fundingGoal
+CONDITION TMP_69"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+fundingGoalReached = true
+
+IRs:
+fundingGoalReached(bool) := True(bool)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+crowdsaleClosed = true
+
+IRs:
+crowdsaleClosed(bool) := True(bool)"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+afterDeadline()
+
+IRs:
+MODIFIER_CALL, GigaGivingToken.afterDeadline()()"];
+5->1;
+}
+// Function: 33866.sol-GigaGivingToken-enableRefunds()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == beneficiary)
+
+IRs:
+TMP_79(bool) = msg.sender == beneficiary
+TMP_80(None) = SOLIDITY_CALL require(bool)(TMP_79)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+refundsOpen = true
+
+IRs:
+refundsOpen(bool) := True(bool)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+afterDeadline()
+
+IRs:
+MODIFIER_CALL, GigaGivingToken.afterDeadline()()"];
+3->1;
+}
+// Function: 33866.sol-GigaGivingToken-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(now >= startTime)
+
+IRs:
+TMP_41(bool) = now >= startTime
+TMP_42(None) = SOLIDITY_CALL require(bool)(TMP_41)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(now <= startTime + DURATION)
+
+IRs:
+TMP_43(uint256) = startTime + DURATION
+TMP_44(bool) = now <= TMP_43
+TMP_45(None) = SOLIDITY_CALL require(bool)(TMP_44)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(! crowdsaleClosed)
+
+IRs:
+TMP_46 = UnaryType.BANG crowdsaleClosed 
+TMP_47(None) = SOLIDITY_CALL require(bool)(TMP_46)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool)(msg.value > 0)
+
+IRs:
+TMP_48(bool) = msg.value > 0
+TMP_49(None) = SOLIDITY_CALL require(bool)(TMP_48)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+amount = msg.value
+
+IRs:
+amount(uint256) := msg.value(uint256)"];
+5->6;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+coinTotal = 0
+
+IRs:
+coinTotal(uint256) := 0(uint256)"];
+6->7;
+7[label="Node Type: IF 7
+
+EXPRESSION:
+now > startTime + 1200
+
+IRs:
+TMP_50(uint256) = startTime + 1200
+TMP_51(bool) = now > TMP_50
+CONDITION TMP_51"];
+7->8[label="True"];
+7->9[label="False"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+coinTotal = amount.div(PHASE_5_PRICE)
+
+IRs:
+TMP_52(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['amount', 'PHASE_5_PRICE'] 
+coinTotal(uint256) := TMP_52(uint256)"];
+8->19;
+9[label="Node Type: IF 9
+
+EXPRESSION:
+now > startTime + 900
+
+IRs:
+TMP_53(uint256) = startTime + 900
+TMP_54(bool) = now > TMP_53
+CONDITION TMP_54"];
+9->10[label="True"];
+9->11[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+coinTotal = amount.div(PHASE_4_PRICE)
+
+IRs:
+TMP_55(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['amount', 'PHASE_4_PRICE'] 
+coinTotal(uint256) := TMP_55(uint256)"];
+10->18;
+11[label="Node Type: IF 11
+
+EXPRESSION:
+now > startTime + 600
+
+IRs:
+TMP_56(uint256) = startTime + 600
+TMP_57(bool) = now > TMP_56
+CONDITION TMP_57"];
+11->12[label="True"];
+11->13[label="False"];
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+coinTotal = amount.div(PHASE_3_PRICE)
+
+IRs:
+TMP_58(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['amount', 'PHASE_3_PRICE'] 
+coinTotal(uint256) := TMP_58(uint256)"];
+12->17;
+13[label="Node Type: IF 13
+
+EXPRESSION:
+now > startTime + 300
+
+IRs:
+TMP_59(uint256) = startTime + 300
+TMP_60(bool) = now > TMP_59
+CONDITION TMP_60"];
+13->14[label="True"];
+13->15[label="False"];
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+coinTotal = amount.div(PHASE_2_PRICE)
+
+IRs:
+TMP_61(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['amount', 'PHASE_2_PRICE'] 
+coinTotal(uint256) := TMP_61(uint256)"];
+14->16;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+coinTotal = amount.div(PHASE_1_PRICE)
+
+IRs:
+TMP_62(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.div(uint256,uint256), arguments:['amount', 'PHASE_1_PRICE'] 
+coinTotal(uint256) := TMP_62(uint256)"];
+15->16;
+16[label="Node Type: END_IF 16
+"];
+16->17;
+17[label="Node Type: END_IF 17
+"];
+17->18;
+18[label="Node Type: END_IF 18
+"];
+18->19;
+19[label="Node Type: END_IF 19
+"];
+19->20;
+20[label="Node Type: EXPRESSION 20
+
+EXPRESSION:
+ethBalanceOf[msg.sender] = ethBalanceOf[msg.sender].add(amount)
+
+IRs:
+REF_42(uint256) -> ethBalanceOf[msg.sender]
+REF_43(uint256) -> ethBalanceOf[msg.sender]
+TMP_63(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_43', 'amount'] 
+REF_42(uint256) (->ethBalanceOf) := TMP_63(uint256)"];
+20->21;
+21[label="Node Type: EXPRESSION 21
+
+EXPRESSION:
+balances[msg.sender] = balances[msg.sender].add(coinTotal)
+
+IRs:
+REF_45(uint256) -> balances[msg.sender]
+REF_46(uint256) -> balances[msg.sender]
+TMP_64(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_46', 'coinTotal'] 
+REF_45(uint256) (->balances) := TMP_64(uint256)"];
+21->22;
+22[label="Node Type: EXPRESSION 22
+
+EXPRESSION:
+balances[this] = balances[this].sub(coinTotal)
+
+IRs:
+REF_48(uint256) -> balances[this]
+REF_49(uint256) -> balances[this]
+TMP_65(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_49', 'coinTotal'] 
+REF_48(uint256) (->balances) := TMP_65(uint256)"];
+22->23;
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+amountRaised = amountRaised.add(amount)
+
+IRs:
+TMP_66(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['amountRaised', 'amount'] 
+amountRaised(uint256) := TMP_66(uint256)"];
+23->24;
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+tokenSupply = tokenSupply.sub(coinTotal)
+
+IRs:
+TMP_67(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['tokenSupply', 'coinTotal'] 
+tokenSupply(uint256) := TMP_67(uint256)"];
+24->25;
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+transfer(msg.sender,coinTotal)
+
+IRs:
+TMP_68(bool) = INTERNAL_CALL, StandardToken.transfer(address,uint256)(msg.sender,coinTotal)"];
+}
+// Function: 33866.sol-GigaGivingToken-safeWithdrawal()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->16;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+refundsOpen
+
+IRs:
+CONDITION refundsOpen"];
+1->2[label="True"];
+1->9[label="False"];
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+amount = ethBalanceOf[msg.sender]
+
+IRs:
+REF_53(uint256) -> ethBalanceOf[msg.sender]
+amount(uint256) := REF_53(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+ethBalanceOf[msg.sender] = 0
+
+IRs:
+REF_54(uint256) -> ethBalanceOf[msg.sender]
+REF_54(uint256) (->ethBalanceOf) := 0(uint256)"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+amount > 0
+
+IRs:
+TMP_71(bool) = amount > 0
+CONDITION TMP_71"];
+4->5[label="True"];
+4->8[label="False"];
+5[label="Node Type: IF 5
+
+EXPRESSION:
+! msg.sender.send(amount)
+
+IRs:
+TMP_72 = SEND dest:msg.sender value:amount
+TMP_73 = UnaryType.BANG TMP_72 
+CONDITION TMP_73"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+ethBalanceOf[msg.sender] = amount
+
+IRs:
+REF_56(uint256) -> ethBalanceOf[msg.sender]
+REF_56(uint256) (->ethBalanceOf) := amount(uint256)"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: IF 10
+
+EXPRESSION:
+fundingGoalReached && beneficiary == msg.sender
+
+IRs:
+TMP_74(bool) = beneficiary == msg.sender
+TMP_75(bool) = fundingGoalReached && TMP_74
+CONDITION TMP_75"];
+10->11[label="True"];
+10->15[label="False"];
+11[label="Node Type: IF 11
+
+EXPRESSION:
+beneficiary.send(amountRaised)
+
+IRs:
+TMP_76 = SEND dest:beneficiary value:amountRaised
+CONDITION TMP_76"];
+11->12[label="True"];
+11->13[label="False"];
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+this.transfer(msg.sender,tokenSupply)
+
+IRs:
+TMP_77(bool) = HIGH_LEVEL_CALL, dest:this(address), function:transfer, arguments:['msg.sender', 'tokenSupply']  "];
+12->14;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+fundingGoalReached = false
+
+IRs:
+fundingGoalReached(bool) := False(bool)"];
+13->14;
+14[label="Node Type: END_IF 14
+"];
+14->15;
+15[label="Node Type: END_IF 15
+"];
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+afterDeadline()
+
+IRs:
+MODIFIER_CALL, GigaGivingToken.afterDeadline()()"];
+16->1;
+}
+// Function: 33866.sol-GigaGivingToken-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+PHASE_1_PRICE = 1600000000000
+
+IRs:
+PHASE_1_PRICE(uint256) := 1600000000000(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+PHASE_2_PRICE = 2000000000000
+
+IRs:
+PHASE_2_PRICE(uint256) := 2000000000000(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+PHASE_3_PRICE = 2500000000000
+
+IRs:
+PHASE_3_PRICE(uint256) := 2500000000000(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+PHASE_4_PRICE = 4000000000000
+
+IRs:
+PHASE_4_PRICE(uint256) := 4000000000000(uint256)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+PHASE_5_PRICE = 5000000000000
+
+IRs:
+PHASE_5_PRICE(uint256) := 5000000000000(uint256)"];
+4->5;
+5[label="Node Type: OTHER_ENTRYPOINT 5
+
+EXPRESSION:
+DURATION = 1800
+
+IRs:
+DURATION(uint256) := 1800(uint256)"];
+5->6;
+6[label="Node Type: OTHER_ENTRYPOINT 6
+
+EXPRESSION:
+TOTAL_TOKENS = 15000000
+
+IRs:
+TOTAL_TOKENS(uint256) := 15000000(uint256)"];
+6->7;
+7[label="Node Type: OTHER_ENTRYPOINT 7
+
+EXPRESSION:
+CROWDSALE_TOKENS = 12000000
+
+IRs:
+CROWDSALE_TOKENS(uint256) := 12000000(uint256)"];
+}
+// Function: 33866.sol-GigaGivingToken-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+fundingGoal = 0
+
+IRs:
+fundingGoal(uint256) := 0(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+name = JTEST
+
+IRs:
+name(string) := JTEST(string)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+symbol = JT
+
+IRs:
+symbol(string) := JT(string)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+version = JT.0
+
+IRs:
+version(string) := JT.0(string)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+decimals = 0
+
+IRs:
+decimals(uint256) := 0(uint256)"];
+4->5;
+5[label="Node Type: OTHER_ENTRYPOINT 5
+
+EXPRESSION:
+fundingGoalReached = false
+
+IRs:
+fundingGoalReached(bool) := False(bool)"];
+5->6;
+6[label="Node Type: OTHER_ENTRYPOINT 6
+
+EXPRESSION:
+crowdsaleClosed = false
+
+IRs:
+crowdsaleClosed(bool) := False(bool)"];
+6->7;
+7[label="Node Type: OTHER_ENTRYPOINT 7
+
+EXPRESSION:
+refundsOpen = false
+
+IRs:
+refundsOpen(bool) := False(bool)"];
+}
+// Function: 33866.sol-GigaGivingToken-transfer(address,uint256)
+digraph{
+}
+// Function: 33866.sol-GigaGivingToken-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 33866.sol-SafeMath-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_19(uint256) = a + b
+c(uint256) := TMP_19(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(c >= a)
+
+IRs:
+TMP_20(bool) = c >= a
+TMP_21(None) = SOLIDITY_CALL assert(bool)(TMP_20)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 33866.sol-SafeMath-div(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a / b
+
+IRs:
+TMP_15(uint256) = a / b
+c(uint256) := TMP_15(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 33866.sol-SafeMath-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_9(uint256) = a * b
+c(uint256) := TMP_9(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(a == 0 || c / a == b)
+
+IRs:
+TMP_10(bool) = a == 0
+TMP_11(uint256) = c / a
+TMP_12(bool) = TMP_11 == b
+TMP_13(bool) = TMP_10 || TMP_12
+TMP_14(None) = SOLIDITY_CALL assert(bool)(TMP_13)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 33866.sol-SafeMath-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(b <= a)
+
+IRs:
+TMP_16(bool) = b <= a
+TMP_17(None) = SOLIDITY_CALL assert(bool)(TMP_16)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_18(uint256) = a - b
+RETURN TMP_18"];
+}
+// Function: 33866.sol-StandardToken-allowance(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+allowed[_owner][_spender]
+
+IRs:
+REF_13(mapping(address => uint256)) -> allowed[_owner]
+REF_14(uint256) -> REF_13[_spender]
+RETURN REF_14"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+remaining
+
+IRs:
+RETURN remaining"];
+}
+// Function: 33866.sol-StandardToken-approve(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowed[msg.sender][_spender] = _value
+
+IRs:
+REF_11(mapping(address => uint256)) -> allowed[msg.sender]
+REF_12(uint256) -> REF_11[_spender]
+REF_12(uint256) (->allowed) := _value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,_spender,_value)
+
+IRs:
+Emit Approval(msg.sender,_spender,_value)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 33866.sol-StandardToken-balanceOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+balances[_owner]
+
+IRs:
+REF_10(uint256) -> balances[_owner]
+RETURN REF_10"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+balance
+
+IRs:
+RETURN balance"];
+}
+// Function: 33866.sol-StandardToken-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+sender = msg.sender
+
+IRs:
+sender(address) := msg.sender(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(balances[sender] >= _value)
+
+IRs:
+REF_0(uint256) -> balances[sender]
+TMP_0(bool) = REF_0 >= _value
+TMP_1(None) = SOLIDITY_CALL require(bool)(TMP_0)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balances[sender] -= _value
+
+IRs:
+REF_1(uint256) -> balances[sender]
+REF_1(-> balances) = REF_1 - _value"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+balances[_to] += _value
+
+IRs:
+REF_2(uint256) -> balances[_to]
+REF_2(-> balances) = REF_2 + _value"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Transfer(sender,_to,_value)
+
+IRs:
+Emit Transfer(sender,_to,_value)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 33866.sol-StandardToken-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(balances[_from] >= _value && allowed[_from][msg.sender] >= _value)
+
+IRs:
+REF_3(uint256) -> balances[_from]
+TMP_3(bool) = REF_3 >= _value
+REF_4(mapping(address => uint256)) -> allowed[_from]
+REF_5(uint256) -> REF_4[msg.sender]
+TMP_4(bool) = REF_5 >= _value
+TMP_5(bool) = TMP_3 && TMP_4
+TMP_6(None) = SOLIDITY_CALL require(bool)(TMP_5)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balances[_to] += _value
+
+IRs:
+REF_6(uint256) -> balances[_to]
+REF_6(-> balances) = REF_6 + _value"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balances[_from] -= _value
+
+IRs:
+REF_7(uint256) -> balances[_from]
+REF_7(-> balances) = REF_7 - _value"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+allowed[_from][msg.sender] -= _value
+
+IRs:
+REF_8(mapping(address => uint256)) -> allowed[_from]
+REF_9(uint256) -> REF_8[msg.sender]
+REF_9(-> allowed) = REF_9 - _value"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Transfer(_from,_to,_value)
+
+IRs:
+Emit Transfer(_from,_to,_value)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 33866.sol-Token-allowance(address,address)
+digraph{
+}
+// Function: 33866.sol-Token-approve(address,uint256)
+digraph{
+}
+// Function: 33866.sol-Token-balanceOf(address)
+digraph{
+}
+// Function: 33866.sol-Token-transfer(address,uint256)
+digraph{
+}
+// Function: 33866.sol-Token-transferFrom(address,address,uint256)
+digraph{
+}
+}

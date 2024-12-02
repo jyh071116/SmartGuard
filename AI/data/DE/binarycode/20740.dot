@@ -1,0 +1,1041 @@
+digraph G {
+// Function: 20740.sol-KnowledgeProxy-Ownable()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owners.push(msg.sender)
+
+IRs:
+REF_46 -> LENGTH owners
+TMP_68(uint256) := REF_46(uint256)
+TMP_69(uint256) = TMP_68 + 1
+REF_46(uint256) (->owners) := TMP_69(uint256)
+REF_47(address) -> owners[TMP_68]
+REF_47(address) (->owners) := msg.sender(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnerAdded(0x0,msg.sender,0)
+
+IRs:
+Emit OwnerAdded(0,msg.sender,0)"];
+}
+// Function: 20740.sol-KnowledgeProxy-addOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newOwner != address(0))
+
+IRs:
+TMP_71 = CONVERT 0 to address
+TMP_72(bool) = newOwner != TMP_71
+TMP_73(None) = SOLIDITY_CALL require(bool)(TMP_72)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+i = owners.push(newOwner) - 1
+
+IRs:
+REF_49 -> LENGTH owners
+TMP_76(uint256) := REF_49(uint256)
+TMP_77(uint256) = TMP_76 + 1
+REF_49(uint256) (->owners) := TMP_77(uint256)
+REF_50(address) -> owners[TMP_76]
+REF_50(address) (->owners) := newOwner(address)
+TMP_75(None) = TMP_74 - 1
+i(uint256) := TMP_75(None)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+OwnerAdded(msg.sender,newOwner,i)
+
+IRs:
+Emit OwnerAdded(msg.sender,newOwner,i)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->1;
+}
+// Function: 20740.sol-KnowledgeProxy-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+impl = implementation()
+
+IRs:
+TMP_84(address) = INTERNAL_CALL, UpgradableStorage.implementation()()
+impl(address) := TMP_84(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(impl != address(0))
+
+IRs:
+TMP_85 = CONVERT 0 to address
+TMP_86(bool) = impl != TMP_85
+TMP_87(None) = SOLIDITY_CALL require(bool)(TMP_86)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+data = msg.data
+
+IRs:
+data(bytes) := msg.data(bytes)"];
+3->4;
+4[label="Node Type: INLINE ASM 4
+"];
+4->5;
+5[label="Node Type: END INLINE ASM 5
+"];
+}
+// Function: 20740.sol-KnowledgeProxy-implementation()
+digraph{
+}
+// Function: 20740.sol-KnowledgeProxy-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+isOwner = false
+
+IRs:
+isOwner(bool) := False(bool)"];
+1->4;
+2[label="Node Type: BEGIN_LOOP 2
+"];
+2->5;
+3[label="Node Type: END_LOOP 3
+"];
+3->11;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+4->2;
+5[label="Node Type: IF_LOOP 5
+
+EXPRESSION:
+i < owners.length
+
+IRs:
+REF_60 -> LENGTH owners
+TMP_93(bool) = i < REF_60
+CONDITION TMP_93"];
+5->6[label="True"];
+5->3[label="False"];
+6[label="Node Type: IF 6
+
+EXPRESSION:
+msg.sender == owners[i]
+
+IRs:
+REF_61(address) -> owners[i]
+TMP_94(bool) = msg.sender == REF_61
+CONDITION TMP_94"];
+6->7[label="True"];
+6->9[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+isOwner = true
+
+IRs:
+isOwner(bool) := True(bool)"];
+7->8;
+8[label="Node Type: BREAK 8
+"];
+8->3;
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_95(uint256) := i(uint256)
+i(uint256) = i + 1"];
+10->5;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+require(bool)(isOwner)
+
+IRs:
+TMP_96(None) = SOLIDITY_CALL require(bool)(isOwner)"];
+11->12;
+12[label="Node Type: _ 12
+"];
+}
+// Function: 20740.sol-KnowledgeProxy-ownersCount()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+owners.length
+
+IRs:
+REF_57 -> LENGTH owners
+RETURN REF_57"];
+}
+// Function: 20740.sol-KnowledgeProxy-removeOwner(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+owner = owners[index]
+
+IRs:
+REF_51(address) -> owners[index]
+owner(address) := REF_51(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owners[index] = owners[owners.length - 1]
+
+IRs:
+REF_52(address) -> owners[index]
+REF_53 -> LENGTH owners
+TMP_80(uint256) = REF_53 - 1
+REF_54(address) -> owners[TMP_80]
+REF_52(address) (->owners) := REF_54(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+delete owners[owners.length - 1]
+
+IRs:
+REF_55 -> LENGTH owners
+TMP_81(uint256) = REF_55 - 1
+REF_56(address) -> owners[TMP_81]
+owners = delete REF_56 "];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+OwnerRemoved(msg.sender,owner)
+
+IRs:
+Emit OwnerRemoved(msg.sender,owner)"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+5->1;
+}
+// Function: 20740.sol-KnowledgeProxy-upgradeTo(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_implementation = imp
+
+IRs:
+_implementation(address) := imp(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Upgradable(this).initialize.value(msg.value)()
+
+IRs:
+TMP_88 = CONVERT this to Upgradable
+HIGH_LEVEL_CALL, dest:TMP_88(Upgradable), function:initialize, arguments:[] value:msg.value "];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+NewImplementation(imp)
+
+IRs:
+Emit NewImplementation(imp)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->1;
+}
+// Function: 20740.sol-Ownable-Ownable()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owners.push(msg.sender)
+
+IRs:
+REF_1 -> LENGTH owners
+TMP_5(uint256) := REF_1(uint256)
+TMP_6(uint256) = TMP_5 + 1
+REF_1(uint256) (->owners) := TMP_6(uint256)
+REF_2(address) -> owners[TMP_5]
+REF_2(address) (->owners) := msg.sender(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnerAdded(0x0,msg.sender,0)
+
+IRs:
+Emit OwnerAdded(0,msg.sender,0)"];
+}
+// Function: 20740.sol-Ownable-addOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newOwner != address(0))
+
+IRs:
+TMP_8 = CONVERT 0 to address
+TMP_9(bool) = newOwner != TMP_8
+TMP_10(None) = SOLIDITY_CALL require(bool)(TMP_9)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+i = owners.push(newOwner) - 1
+
+IRs:
+REF_4 -> LENGTH owners
+TMP_13(uint256) := REF_4(uint256)
+TMP_14(uint256) = TMP_13 + 1
+REF_4(uint256) (->owners) := TMP_14(uint256)
+REF_5(address) -> owners[TMP_13]
+REF_5(address) (->owners) := newOwner(address)
+TMP_12(None) = TMP_11 - 1
+i(uint256) := TMP_12(None)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+OwnerAdded(msg.sender,newOwner,i)
+
+IRs:
+Emit OwnerAdded(msg.sender,newOwner,i)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->1;
+}
+// Function: 20740.sol-Ownable-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+isOwner = false
+
+IRs:
+isOwner(bool) := False(bool)"];
+1->4;
+2[label="Node Type: BEGIN_LOOP 2
+"];
+2->5;
+3[label="Node Type: END_LOOP 3
+"];
+3->11;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+4->2;
+5[label="Node Type: IF_LOOP 5
+
+EXPRESSION:
+i < owners.length
+
+IRs:
+REF_13 -> LENGTH owners
+TMP_21(bool) = i < REF_13
+CONDITION TMP_21"];
+5->6[label="True"];
+5->3[label="False"];
+6[label="Node Type: IF 6
+
+EXPRESSION:
+msg.sender == owners[i]
+
+IRs:
+REF_14(address) -> owners[i]
+TMP_22(bool) = msg.sender == REF_14
+CONDITION TMP_22"];
+6->7[label="True"];
+6->9[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+isOwner = true
+
+IRs:
+isOwner(bool) := True(bool)"];
+7->8;
+8[label="Node Type: BREAK 8
+"];
+8->3;
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_23(uint256) := i(uint256)
+i(uint256) = i + 1"];
+10->5;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+require(bool)(isOwner)
+
+IRs:
+TMP_24(None) = SOLIDITY_CALL require(bool)(isOwner)"];
+11->12;
+12[label="Node Type: _ 12
+"];
+}
+// Function: 20740.sol-Ownable-ownersCount()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+owners.length
+
+IRs:
+REF_12 -> LENGTH owners
+RETURN REF_12"];
+}
+// Function: 20740.sol-Ownable-removeOwner(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+owner = owners[index]
+
+IRs:
+REF_6(address) -> owners[index]
+owner(address) := REF_6(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owners[index] = owners[owners.length - 1]
+
+IRs:
+REF_7(address) -> owners[index]
+REF_8 -> LENGTH owners
+TMP_17(uint256) = REF_8 - 1
+REF_9(address) -> owners[TMP_17]
+REF_7(address) (->owners) := REF_9(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+delete owners[owners.length - 1]
+
+IRs:
+REF_10 -> LENGTH owners
+TMP_18(uint256) = REF_10 - 1
+REF_11(address) -> owners[TMP_18]
+owners = delete REF_11 "];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+OwnerRemoved(msg.sender,owner)
+
+IRs:
+Emit OwnerRemoved(msg.sender,owner)"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+5->1;
+}
+// Function: 20740.sol-Proxy-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+impl = implementation()
+
+IRs:
+TMP_0(address) = INTERNAL_CALL, Proxy.implementation()()
+impl(address) := TMP_0(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(impl != address(0))
+
+IRs:
+TMP_1 = CONVERT 0 to address
+TMP_2(bool) = impl != TMP_1
+TMP_3(None) = SOLIDITY_CALL require(bool)(TMP_2)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+data = msg.data
+
+IRs:
+data(bytes) := msg.data(bytes)"];
+3->4;
+4[label="Node Type: INLINE ASM 4
+"];
+4->5;
+5[label="Node Type: END INLINE ASM 5
+"];
+}
+// Function: 20740.sol-Proxy-implementation()
+digraph{
+}
+// Function: 20740.sol-Upgradable-Ownable()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owners.push(msg.sender)
+
+IRs:
+REF_31 -> LENGTH owners
+TMP_47(uint256) := REF_31(uint256)
+TMP_48(uint256) = TMP_47 + 1
+REF_31(uint256) (->owners) := TMP_48(uint256)
+REF_32(address) -> owners[TMP_47]
+REF_32(address) (->owners) := msg.sender(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnerAdded(0x0,msg.sender,0)
+
+IRs:
+Emit OwnerAdded(0,msg.sender,0)"];
+}
+// Function: 20740.sol-Upgradable-addOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newOwner != address(0))
+
+IRs:
+TMP_50 = CONVERT 0 to address
+TMP_51(bool) = newOwner != TMP_50
+TMP_52(None) = SOLIDITY_CALL require(bool)(TMP_51)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+i = owners.push(newOwner) - 1
+
+IRs:
+REF_34 -> LENGTH owners
+TMP_55(uint256) := REF_34(uint256)
+TMP_56(uint256) = TMP_55 + 1
+REF_34(uint256) (->owners) := TMP_56(uint256)
+REF_35(address) -> owners[TMP_55]
+REF_35(address) (->owners) := newOwner(address)
+TMP_54(None) = TMP_53 - 1
+i(uint256) := TMP_54(None)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+OwnerAdded(msg.sender,newOwner,i)
+
+IRs:
+Emit OwnerAdded(msg.sender,newOwner,i)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->1;
+}
+// Function: 20740.sol-Upgradable-implementation()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+_implementation
+
+IRs:
+RETURN _implementation"];
+}
+// Function: 20740.sol-Upgradable-initialize()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 20740.sol-Upgradable-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+isOwner = false
+
+IRs:
+isOwner(bool) := False(bool)"];
+1->4;
+2[label="Node Type: BEGIN_LOOP 2
+"];
+2->5;
+3[label="Node Type: END_LOOP 3
+"];
+3->11;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+4->2;
+5[label="Node Type: IF_LOOP 5
+
+EXPRESSION:
+i < owners.length
+
+IRs:
+REF_43 -> LENGTH owners
+TMP_63(bool) = i < REF_43
+CONDITION TMP_63"];
+5->6[label="True"];
+5->3[label="False"];
+6[label="Node Type: IF 6
+
+EXPRESSION:
+msg.sender == owners[i]
+
+IRs:
+REF_44(address) -> owners[i]
+TMP_64(bool) = msg.sender == REF_44
+CONDITION TMP_64"];
+6->7[label="True"];
+6->9[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+isOwner = true
+
+IRs:
+isOwner(bool) := True(bool)"];
+7->8;
+8[label="Node Type: BREAK 8
+"];
+8->3;
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_65(uint256) := i(uint256)
+i(uint256) = i + 1"];
+10->5;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+require(bool)(isOwner)
+
+IRs:
+TMP_66(None) = SOLIDITY_CALL require(bool)(isOwner)"];
+11->12;
+12[label="Node Type: _ 12
+"];
+}
+// Function: 20740.sol-Upgradable-ownersCount()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+owners.length
+
+IRs:
+REF_42 -> LENGTH owners
+RETURN REF_42"];
+}
+// Function: 20740.sol-Upgradable-removeOwner(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+owner = owners[index]
+
+IRs:
+REF_36(address) -> owners[index]
+owner(address) := REF_36(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owners[index] = owners[owners.length - 1]
+
+IRs:
+REF_37(address) -> owners[index]
+REF_38 -> LENGTH owners
+TMP_59(uint256) = REF_38 - 1
+REF_39(address) -> owners[TMP_59]
+REF_37(address) (->owners) := REF_39(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+delete owners[owners.length - 1]
+
+IRs:
+REF_40 -> LENGTH owners
+TMP_60(uint256) = REF_40 - 1
+REF_41(address) -> owners[TMP_60]
+owners = delete REF_41 "];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+OwnerRemoved(msg.sender,owner)
+
+IRs:
+Emit OwnerRemoved(msg.sender,owner)"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+5->1;
+}
+// Function: 20740.sol-UpgradableStorage-Ownable()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owners.push(msg.sender)
+
+IRs:
+REF_16 -> LENGTH owners
+TMP_26(uint256) := REF_16(uint256)
+TMP_27(uint256) = TMP_26 + 1
+REF_16(uint256) (->owners) := TMP_27(uint256)
+REF_17(address) -> owners[TMP_26]
+REF_17(address) (->owners) := msg.sender(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnerAdded(0x0,msg.sender,0)
+
+IRs:
+Emit OwnerAdded(0,msg.sender,0)"];
+}
+// Function: 20740.sol-UpgradableStorage-addOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(newOwner != address(0))
+
+IRs:
+TMP_29 = CONVERT 0 to address
+TMP_30(bool) = newOwner != TMP_29
+TMP_31(None) = SOLIDITY_CALL require(bool)(TMP_30)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+i = owners.push(newOwner) - 1
+
+IRs:
+REF_19 -> LENGTH owners
+TMP_34(uint256) := REF_19(uint256)
+TMP_35(uint256) = TMP_34 + 1
+REF_19(uint256) (->owners) := TMP_35(uint256)
+REF_20(address) -> owners[TMP_34]
+REF_20(address) (->owners) := newOwner(address)
+TMP_33(None) = TMP_32 - 1
+i(uint256) := TMP_33(None)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+OwnerAdded(msg.sender,newOwner,i)
+
+IRs:
+Emit OwnerAdded(msg.sender,newOwner,i)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+4->1;
+}
+// Function: 20740.sol-UpgradableStorage-implementation()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+_implementation
+
+IRs:
+RETURN _implementation"];
+}
+// Function: 20740.sol-UpgradableStorage-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+isOwner = false
+
+IRs:
+isOwner(bool) := False(bool)"];
+1->4;
+2[label="Node Type: BEGIN_LOOP 2
+"];
+2->5;
+3[label="Node Type: END_LOOP 3
+"];
+3->11;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+4->2;
+5[label="Node Type: IF_LOOP 5
+
+EXPRESSION:
+i < owners.length
+
+IRs:
+REF_28 -> LENGTH owners
+TMP_42(bool) = i < REF_28
+CONDITION TMP_42"];
+5->6[label="True"];
+5->3[label="False"];
+6[label="Node Type: IF 6
+
+EXPRESSION:
+msg.sender == owners[i]
+
+IRs:
+REF_29(address) -> owners[i]
+TMP_43(bool) = msg.sender == REF_29
+CONDITION TMP_43"];
+6->7[label="True"];
+6->9[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+isOwner = true
+
+IRs:
+isOwner(bool) := True(bool)"];
+7->8;
+8[label="Node Type: BREAK 8
+"];
+8->3;
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_44(uint256) := i(uint256)
+i(uint256) = i + 1"];
+10->5;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+require(bool)(isOwner)
+
+IRs:
+TMP_45(None) = SOLIDITY_CALL require(bool)(isOwner)"];
+11->12;
+12[label="Node Type: _ 12
+"];
+}
+// Function: 20740.sol-UpgradableStorage-ownersCount()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+owners.length
+
+IRs:
+REF_27 -> LENGTH owners
+RETURN REF_27"];
+}
+// Function: 20740.sol-UpgradableStorage-removeOwner(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+owner = owners[index]
+
+IRs:
+REF_21(address) -> owners[index]
+owner(address) := REF_21(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owners[index] = owners[owners.length - 1]
+
+IRs:
+REF_22(address) -> owners[index]
+REF_23 -> LENGTH owners
+TMP_38(uint256) = REF_23 - 1
+REF_24(address) -> owners[TMP_38]
+REF_22(address) (->owners) := REF_24(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+delete owners[owners.length - 1]
+
+IRs:
+REF_25 -> LENGTH owners
+TMP_39(uint256) = REF_25 - 1
+REF_26(address) -> owners[TMP_39]
+owners = delete REF_26 "];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+OwnerRemoved(msg.sender,owner)
+
+IRs:
+Emit OwnerRemoved(msg.sender,owner)"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+5->1;
+}
+}

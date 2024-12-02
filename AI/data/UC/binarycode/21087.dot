@@ -1,0 +1,135 @@
+digraph G {
+// Function: 21087.sol-TinyProxy-TinyProxy(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+receiver = toAddr
+
+IRs:
+receiver(address) := toAddr(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+gasBudget = proxyGas
+
+IRs:
+gasBudget(uint256) := proxyGas(uint256)"];
+}
+// Function: 21087.sol-TinyProxy-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 21087.sol-TinyProxy-release()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+balance = address(this).balance
+
+IRs:
+TMP_0 = CONVERT this to address
+TMP_1(uint256) = SOLIDITY_CALL balance(address)(TMP_0)
+balance(uint256) := TMP_1(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+FundsReleased(receiver,balance)
+
+IRs:
+Emit FundsReleased(receiver,balance)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+gasBudget > 0
+
+IRs:
+TMP_3(bool) = gasBudget > 0
+CONDITION TMP_3"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+receiver.call.gas(gasBudget).value(balance)
+
+IRs:
+REF_2(None) -> TMP_4.value"];
+4->6;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+receiver.transfer(balance)
+
+IRs:
+Transfer dest:receiver value:balance"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+}
+// Function: 21087.sol-TinyProxyFactory-make(address,uint256,bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+proxy = new TinyProxy(to,gas)
+
+IRs:
+TMP_8(TinyProxy) = new TinyProxy(to,gas) 
+proxy(address) := TMP_8(TinyProxy)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+track && proxyFor[to][msg.sender] == 0x0
+
+IRs:
+REF_4(mapping(address => address)) -> proxyFor[to]
+REF_5(address) -> REF_4[msg.sender]
+TMP_9(bool) = REF_5 == 0
+TMP_10(bool) = track && TMP_9
+CONDITION TMP_10"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+proxyFor[msg.sender][to] = proxy
+
+IRs:
+REF_6(mapping(address => address)) -> proxyFor[msg.sender]
+REF_7(address) -> REF_6[to]
+REF_7(address) (->proxyFor) := proxy(address)"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+proxy
+
+IRs:
+RETURN proxy"];
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+proxy
+
+IRs:
+RETURN proxy"];
+}
+}

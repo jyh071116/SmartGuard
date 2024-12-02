@@ -1,0 +1,1848 @@
+digraph G {
+// Function: 2391.sol-FsTKColdWallet-addAuthority(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->11;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! isAuthority(authority))
+
+IRs:
+TMP_67(bool) = INTERNAL_CALL, FsTKColdWallet.isAuthority(address)(authority)
+TMP_68 = UnaryType.BANG TMP_67 
+TMP_69(None) = SOLIDITY_CALL require(bool)(TMP_68)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+numAuthorities >= MAX_AUTHORITIES
+
+IRs:
+TMP_70(bool) = numAuthorities >= MAX_AUTHORITIES
+CONDITION TMP_70"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+reOrganizeAuthorities()
+
+IRs:
+INTERNAL_CALL, FsTKColdWallet.reOrganizeAuthorities()()"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool)(numAuthorities < MAX_AUTHORITIES)
+
+IRs:
+TMP_72(bool) = numAuthorities < MAX_AUTHORITIES
+TMP_73(None) = SOLIDITY_CALL require(bool)(TMP_72)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+numAuthorities += 1
+
+IRs:
+numAuthorities(uint256) = numAuthorities + 1"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+authorities[numAuthorities] = authority
+
+IRs:
+REF_30(address) -> authorities[numAuthorities]
+REF_30(address) (->authorities) := authority(address)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+authorityIndex[authority] = numAuthorities
+
+IRs:
+REF_31(uint256) -> authorityIndex[authority]
+REF_31(uint256) (->authorityIndex) := numAuthorities(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+clearPending()
+
+IRs:
+INTERNAL_CALL, FsTKColdWallet.clearPending()()"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+AuthorityAdded(authority)
+
+IRs:
+Emit AuthorityAdded(authority)"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+confirmAndRun(keccak256()(msg.data))
+
+IRs:
+TMP_76(bytes32) = SOLIDITY_CALL keccak256()(msg.data)
+MODIFIER_CALL, FsTKColdWallet.confirmAndRun(bytes32)(TMP_76)"];
+11->1;
+}
+// Function: 2391.sol-FsTKColdWallet-changeAuthority(address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->8;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! isAuthority(to))
+
+IRs:
+TMP_59(bool) = INTERNAL_CALL, FsTKColdWallet.isAuthority(address)(to)
+TMP_60 = UnaryType.BANG TMP_59 
+TMP_61(None) = SOLIDITY_CALL require(bool)(TMP_60)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+index = getAuthorityIndex(from)
+
+IRs:
+TMP_62(uint256) = INTERNAL_CALL, FsTKColdWallet.getAuthorityIndex(address)(from)
+index(uint256) := TMP_62(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+authorities[index] = to
+
+IRs:
+REF_27(address) -> authorities[index]
+REF_27(address) (->authorities) := to(address)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+authorityIndex[to] = index
+
+IRs:
+REF_28(uint256) -> authorityIndex[to]
+REF_28(uint256) (->authorityIndex) := index(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+delete authorityIndex[from]
+
+IRs:
+REF_29(uint256) -> authorityIndex[from]
+authorityIndex = delete REF_29 "];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+clearPending()
+
+IRs:
+INTERNAL_CALL, FsTKColdWallet.clearPending()()"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+AuthorityChanged(from,to)
+
+IRs:
+Emit AuthorityChanged(from,to)"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+confirmAndRun(keccak256()(msg.data))
+
+IRs:
+TMP_65(bytes32) = SOLIDITY_CALL keccak256()(msg.data)
+MODIFIER_CALL, FsTKColdWallet.confirmAndRun(bytes32)(TMP_65)"];
+8->1;
+}
+// Function: 2391.sol-FsTKColdWallet-checkAndUpdateLimit(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+today() > lastDay
+
+IRs:
+TMP_148(uint256) = INTERNAL_CALL, FsTKColdWallet.today()()
+TMP_149(bool) = TMP_148 > lastDay
+CONDITION TMP_149"];
+1->2[label="True"];
+1->4[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+spentToday = 0
+
+IRs:
+spentToday(uint256) := 0(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+lastDay = today()
+
+IRs:
+TMP_150(uint256) = INTERNAL_CALL, FsTKColdWallet.today()()
+lastDay(uint256) := TMP_150(uint256)"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+_spentToday = spentToday.add(value)
+
+IRs:
+TMP_151(uint256) = LIBRARY_CALL, dest:Math, function:Math.add(uint256,uint256), arguments:['spentToday', 'value'] 
+_spentToday(uint256) := TMP_151(uint256)"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+_spentToday <= dailyLimit
+
+IRs:
+TMP_152(bool) = _spentToday <= dailyLimit
+CONDITION TMP_152"];
+6->7[label="True"];
+6->9[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+spentToday = _spentToday
+
+IRs:
+spentToday(uint256) := _spentToday(uint256)"];
+7->8;
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: RETURN 10
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+}
+// Function: 2391.sol-FsTKColdWallet-clearPending()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: BEGIN_LOOP 1
+"];
+1->4;
+2[label="Node Type: END_LOOP 2
+"];
+2->7;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+3->1;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+i < pendingOperation.length
+
+IRs:
+REF_102 -> LENGTH pendingOperation
+TMP_166(bool) = i < REF_102
+CONDITION TMP_166"];
+4->5[label="True"];
+4->2[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+delete pendingTransaction[pendingOperation[i]]
+
+IRs:
+REF_103(bytes32) -> pendingOperation[i]
+REF_104(FsTKColdWallet.PendingTransactionState) -> pendingTransaction[REF_103]
+pendingTransaction = delete REF_104 "];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+i += 1
+
+IRs:
+i(uint256) = i + 1"];
+6->4;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+delete pendingOperation
+
+IRs:
+pendingOperation = delete pendingOperation "];
+}
+// Function: 2391.sol-FsTKColdWallet-confirm(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->7;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+status = pendingTransaction[operation]
+
+IRs:
+REF_50(FsTKColdWallet.PendingTransactionState) -> pendingTransaction[operation]
+status(FsTKColdWallet.PendingTransactionState) := REF_50(FsTKColdWallet.PendingTransactionState)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+status.info.to != 0 || status.info.value != 0 || status.info.data.length != 0
+
+IRs:
+REF_51(FsTKColdWallet.TransactionInfo) -> status.info
+REF_52(address) -> REF_51.to
+TMP_125(bool) = REF_52 != 0
+REF_53(FsTKColdWallet.TransactionInfo) -> status.info
+REF_54(uint256) -> REF_53.value
+TMP_126(bool) = REF_54 != 0
+TMP_127(bool) = TMP_125 || TMP_126
+REF_55(FsTKColdWallet.TransactionInfo) -> status.info
+REF_56(bytes) -> REF_55.data
+REF_57 -> LENGTH REF_56
+TMP_128(bool) = REF_57 != 0
+TMP_129(bool) = TMP_127 || TMP_128
+CONDITION TMP_129"];
+2->3[label="True"];
+2->6[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+MultiTransaction(msg.sender,operation,status.info.to,status.info.value,status.info.data,execute0(status.info.to,status.info.value,status.info.data))
+
+IRs:
+REF_58(FsTKColdWallet.TransactionInfo) -> status.info
+REF_59(address) -> REF_58.to
+REF_60(FsTKColdWallet.TransactionInfo) -> status.info
+REF_61(uint256) -> REF_60.value
+REF_62(FsTKColdWallet.TransactionInfo) -> status.info
+REF_63(bytes) -> REF_62.data
+REF_64(FsTKColdWallet.TransactionInfo) -> status.info
+REF_65(address) -> REF_64.to
+REF_66(FsTKColdWallet.TransactionInfo) -> status.info
+REF_67(uint256) -> REF_66.value
+REF_68(FsTKColdWallet.TransactionInfo) -> status.info
+REF_69(bytes) -> REF_68.data
+TMP_130(address) = INTERNAL_CALL, FsTKColdWallet.execute0(address,uint256,bytes)(REF_65,REF_67,REF_69)
+Emit MultiTransaction(msg.sender,operation,REF_59,REF_61,REF_63,TMP_130)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+delete pendingTransaction[operation].info
+
+IRs:
+REF_70(FsTKColdWallet.PendingTransactionState) -> pendingTransaction[operation]
+REF_71(FsTKColdWallet.TransactionInfo) -> REF_70.info
+REF_70 = delete REF_71 "];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+6[label="Node Type: END_IF 6
+"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+confirmAndRun(operation)
+
+IRs:
+MODIFIER_CALL, FsTKColdWallet.confirmAndRun(bytes32)(operation)"];
+7->1;
+}
+// Function: 2391.sol-FsTKColdWallet-confirmAndCheck(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+pending = pendingTransaction[operation]
+
+IRs:
+REF_74(FsTKColdWallet.PendingTransactionState) -> pendingTransaction[operation]
+pending(FsTKColdWallet.PendingTransactionState) := REF_74(FsTKColdWallet.PendingTransactionState)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+pending.confirmNeeded == 0
+
+IRs:
+REF_75(uint256) -> pending.confirmNeeded
+TMP_138(bool) = REF_75 == 0
+CONDITION TMP_138"];
+2->3[label="True"];
+2->7[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+pending.confirmNeeded = requiredAuthorities
+
+IRs:
+REF_76(uint256) -> pending.confirmNeeded
+REF_76(uint256) (->pending) := requiredAuthorities(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+delete pending.confirmBitmap
+
+IRs:
+REF_77(uint256) -> pending.confirmBitmap
+pending = delete REF_77 "];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+pending.index = pendingOperation.length
+
+IRs:
+REF_78(uint256) -> pending.index
+REF_79 -> LENGTH pendingOperation
+REF_78(uint256) (->pending) := REF_79(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+pendingOperation.push(operation)
+
+IRs:
+REF_81 -> LENGTH pendingOperation
+TMP_140(uint256) := REF_81(uint256)
+TMP_141(uint256) = TMP_140 + 1
+REF_81(uint256) (->pendingOperation) := TMP_141(uint256)
+REF_82(bytes32) -> pendingOperation[TMP_140]
+REF_82(bytes32) (->pendingOperation) := operation(bytes32)"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: NEW VARIABLE 8
+
+EXPRESSION:
+confirmFlag = 1 << getAuthorityIndex(msg.sender)
+
+IRs:
+TMP_142(uint256) = INTERNAL_CALL, FsTKColdWallet.getAuthorityIndex(address)(msg.sender)
+TMP_143(uint256) = 1 << TMP_142
+confirmFlag(uint256) := TMP_143(uint256)"];
+8->9;
+9[label="Node Type: IF 9
+
+EXPRESSION:
+pending.confirmBitmap & confirmFlag == 0
+
+IRs:
+REF_83(uint256) -> pending.confirmBitmap
+TMP_144(uint256) = REF_83 & confirmFlag
+TMP_145(bool) = TMP_144 == 0
+CONDITION TMP_145"];
+9->10[label="True"];
+9->20[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+Confirmation(msg.sender,operation)
+
+IRs:
+Emit Confirmation(msg.sender,operation)"];
+10->11;
+11[label="Node Type: IF 11
+
+EXPRESSION:
+pending.confirmNeeded <= 1
+
+IRs:
+REF_84(uint256) -> pending.confirmNeeded
+TMP_147(bool) = REF_84 <= 1
+CONDITION TMP_147"];
+11->12[label="True"];
+11->17[label="False"];
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+delete pendingOperation[pending.index]
+
+IRs:
+REF_85(uint256) -> pending.index
+REF_86(bytes32) -> pendingOperation[REF_85]
+pendingOperation = delete REF_86 "];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+delete pending.confirmNeeded
+
+IRs:
+REF_87(uint256) -> pending.confirmNeeded
+pending = delete REF_87 "];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+delete pending.confirmBitmap
+
+IRs:
+REF_88(uint256) -> pending.confirmBitmap
+pending = delete REF_88 "];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+delete pending.index
+
+IRs:
+REF_89(uint256) -> pending.index
+pending = delete REF_89 "];
+15->16;
+16[label="Node Type: RETURN 16
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+pending.confirmNeeded -= 1
+
+IRs:
+REF_90(uint256) -> pending.confirmNeeded
+REF_90(-> pending) = REF_90 - 1"];
+17->18;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+pending.confirmBitmap |= confirmFlag
+
+IRs:
+REF_91(uint256) -> pending.confirmBitmap
+REF_91(-> pending) = REF_91 | confirmFlag"];
+18->19;
+19[label="Node Type: END_IF 19
+"];
+19->20;
+20[label="Node Type: END_IF 20
+"];
+}
+// Function: 2391.sol-FsTKColdWallet-confirmAndRun(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+confirmAndCheck(operation)
+
+IRs:
+TMP_169(bool) = INTERNAL_CALL, FsTKColdWallet.confirmAndCheck(bytes32)(operation)
+CONDITION TMP_169"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: _ 2
+"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 2391.sol-FsTKColdWallet-constructor(address[],uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(required > 0 && authorities.length >= required)
+
+IRs:
+TMP_41(bool) = required > 0
+REF_15 -> LENGTH authorities
+TMP_42(bool) = REF_15 >= required
+TMP_43(bool) = TMP_41 && TMP_42
+TMP_44(None) = SOLIDITY_CALL require(bool)(TMP_43)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+numAuthorities = _authorities.length
+
+IRs:
+REF_16 -> LENGTH _authorities
+numAuthorities(uint256) := REF_16(uint256)"];
+2->5;
+3[label="Node Type: BEGIN_LOOP 3
+"];
+3->6;
+4[label="Node Type: END_LOOP 4
+"];
+4->10;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+5->3;
+6[label="Node Type: IF_LOOP 6
+
+EXPRESSION:
+i < _authorities.length
+
+IRs:
+REF_17 -> LENGTH _authorities
+TMP_45(bool) = i < REF_17
+CONDITION TMP_45"];
+6->7[label="True"];
+6->4[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+authorities[1 + i] = _authorities[i]
+
+IRs:
+TMP_46(uint256) = 1 + i
+REF_18(address) -> authorities[TMP_46]
+REF_19(address) -> _authorities[i]
+REF_18(address) (->authorities) := REF_19(address)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+authorityIndex[_authorities[i]] = 1 + i
+
+IRs:
+REF_20(address) -> _authorities[i]
+REF_21(uint256) -> authorityIndex[REF_20]
+TMP_47(uint256) = 1 + i
+REF_21(uint256) (->authorityIndex) := TMP_47(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+i += 1
+
+IRs:
+i(uint256) = i + 1"];
+9->6;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+requiredAuthorities = required
+
+IRs:
+requiredAuthorities(uint256) := required(uint256)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+dailyLimit = _daylimit
+
+IRs:
+dailyLimit(uint256) := _daylimit(uint256)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+lastDay = today()
+
+IRs:
+TMP_48(uint256) = INTERNAL_CALL, FsTKColdWallet.today()()
+lastDay(uint256) := TMP_48(uint256)"];
+}
+// Function: 2391.sol-FsTKColdWallet-create0(uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: INLINE ASM 1
+"];
+1->2;
+2[label="Node Type: END INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+_address
+
+IRs:
+RETURN _address"];
+}
+// Function: 2391.sol-FsTKColdWallet-execute0(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+to == 0
+
+IRs:
+TMP_133(bool) = to == 0
+CONDITION TMP_133"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+created = create0(value,data)
+
+IRs:
+TMP_134(address) = INTERNAL_CALL, FsTKColdWallet.create0(uint256,bytes)(value,data)
+created(address) := TMP_134(address)"];
+2->4;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(to.call.value(value)(data))
+
+IRs:
+TMP_136(bool) = LOW_LEVEL_CALL, dest:to, function:call, arguments:['data'] value:value 
+TMP_137(None) = SOLIDITY_CALL require(bool)(TMP_136)"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+created
+
+IRs:
+RETURN created"];
+}
+// Function: 2391.sol-FsTKColdWallet-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.value > 0
+
+IRs:
+TMP_49(bool) = msg.value > 0
+CONDITION TMP_49"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Deposit(msg.sender,msg.value)
+
+IRs:
+Emit Deposit(msg.sender,msg.value)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 2391.sol-FsTKColdWallet-getAuthority(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+authorities[index + 1]
+
+IRs:
+TMP_51(uint256) = index + 1
+REF_22(address) -> authorities[TMP_51]
+RETURN REF_22"];
+}
+// Function: 2391.sol-FsTKColdWallet-getAuthorityIndex(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+index = authorityIndex[authority]
+
+IRs:
+REF_23(uint256) -> authorityIndex[authority]
+index(uint256) := REF_23(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(index > 0)
+
+IRs:
+TMP_52(bool) = index > 0
+TMP_53(None) = SOLIDITY_CALL require(bool)(TMP_52)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+index
+
+IRs:
+RETURN index"];
+}
+// Function: 2391.sol-FsTKColdWallet-hasConfirmed(bytes32,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+(pendingTransaction[operation].confirmBitmap & (1 << getAuthorityIndex(_address))) != 0
+
+IRs:
+REF_25(FsTKColdWallet.PendingTransactionState) -> pendingTransaction[operation]
+REF_26(uint256) -> REF_25.confirmBitmap
+TMP_55(uint256) = INTERNAL_CALL, FsTKColdWallet.getAuthorityIndex(address)(_address)
+TMP_56(uint256) = 1 << TMP_55
+TMP_57(uint256) = REF_26 & TMP_56
+TMP_58(bool) = TMP_57 != 0
+RETURN TMP_58"];
+}
+// Function: 2391.sol-FsTKColdWallet-isAuthority(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+authorityIndex[authority] > 0
+
+IRs:
+REF_24(uint256) -> authorityIndex[authority]
+TMP_54(bool) = REF_24 > 0
+RETURN TMP_54"];
+}
+// Function: 2391.sol-FsTKColdWallet-onlyAuthority()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(isAuthority(msg.sender))
+
+IRs:
+TMP_167(bool) = INTERNAL_CALL, FsTKColdWallet.isAuthority(address)(msg.sender)
+TMP_168(None) = SOLIDITY_CALL require(bool)(TMP_167)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 2391.sol-FsTKColdWallet-propose(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->12;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+(data.length == 0 && checkAndUpdateLimit(value)) || requiredAuthorities == 1
+
+IRs:
+REF_34 -> LENGTH data
+TMP_100(bool) = REF_34 == 0
+TMP_101(bool) = INTERNAL_CALL, FsTKColdWallet.checkAndUpdateLimit(uint256)(value)
+TMP_102(bool) = TMP_100 && TMP_101
+TMP_103(bool) = requiredAuthorities == 1
+TMP_104(bool) = TMP_102 || TMP_103
+CONDITION TMP_104"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+SingleTransaction(msg.sender,to,value,data,execute0(to,value,data))
+
+IRs:
+TMP_105(address) = INTERNAL_CALL, FsTKColdWallet.execute0(address,uint256,bytes)(to,value,data)
+Emit SingleTransaction(msg.sender,to,value,data,TMP_105)"];
+2->11;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+operation = keccak256()(abi.encodePacked(msg.data,pendingOperation.length))
+
+IRs:
+REF_36 -> LENGTH pendingOperation
+TMP_107(bytes) = SOLIDITY_CALL abi.encodePacked()(msg.data,REF_36)
+TMP_108(bytes32) = SOLIDITY_CALL keccak256()(TMP_107)
+operation(bytes32) := TMP_108(bytes32)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+status = pendingTransaction[operation]
+
+IRs:
+REF_37(FsTKColdWallet.PendingTransactionState) -> pendingTransaction[operation]
+status(FsTKColdWallet.PendingTransactionState) := REF_37(FsTKColdWallet.PendingTransactionState)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+status.info.to == 0 && status.info.value == 0 && status.info.data.length == 0
+
+IRs:
+REF_38(FsTKColdWallet.TransactionInfo) -> status.info
+REF_39(address) -> REF_38.to
+TMP_109(bool) = REF_39 == 0
+REF_40(FsTKColdWallet.TransactionInfo) -> status.info
+REF_41(uint256) -> REF_40.value
+TMP_110(bool) = REF_41 == 0
+TMP_111(bool) = TMP_109 && TMP_110
+REF_42(FsTKColdWallet.TransactionInfo) -> status.info
+REF_43(bytes) -> REF_42.data
+REF_44 -> LENGTH REF_43
+TMP_112(bool) = REF_44 == 0
+TMP_113(bool) = TMP_111 && TMP_112
+CONDITION TMP_113"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+status.info = TransactionInfo({to:to,value:value,data:data})
+
+IRs:
+REF_45(FsTKColdWallet.TransactionInfo) -> status.info
+TMP_114(FsTKColdWallet.TransactionInfo) = new TransactionInfo(to,value,data)
+REF_45(FsTKColdWallet.TransactionInfo) (->status) := TMP_114(FsTKColdWallet.TransactionInfo)"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: IF 8
+
+EXPRESSION:
+! confirm(operation)
+
+IRs:
+TMP_115(bool) = INTERNAL_CALL, FsTKColdWallet.confirm(bytes32)(operation)
+TMP_116 = UnaryType.BANG TMP_115 
+CONDITION TMP_116"];
+8->9[label="True"];
+8->10[label="False"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+ConfirmationNeeded(msg.sender,operation,to,value,data)
+
+IRs:
+Emit ConfirmationNeeded(msg.sender,operation,to,value,data)"];
+9->10;
+10[label="Node Type: END_IF 10
+"];
+10->11;
+11[label="Node Type: END_IF 11
+"];
+11->13;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+onlyAuthority()
+
+IRs:
+MODIFIER_CALL, FsTKColdWallet.onlyAuthority()()"];
+12->1;
+13[label="Node Type: RETURN 13
+
+EXPRESSION:
+operation
+
+IRs:
+RETURN operation"];
+}
+// Function: 2391.sol-FsTKColdWallet-reOrganizeAuthorities()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+free = 1
+
+IRs:
+free(uint256) := 1(uint256)"];
+1->2;
+2[label="Node Type: BEGIN_LOOP 2
+"];
+2->3;
+3[label="Node Type: IF_LOOP 3
+
+EXPRESSION:
+free < numAuthorities
+
+IRs:
+TMP_154(bool) = free < numAuthorities
+CONDITION TMP_154"];
+3->4[label="True"];
+3->17[label="False"];
+4[label="Node Type: BEGIN_LOOP 4
+"];
+4->5;
+5[label="Node Type: IF_LOOP 5
+
+EXPRESSION:
+free < numAuthorities && authorities[free] != 0
+
+IRs:
+TMP_155(bool) = free < numAuthorities
+REF_93(address) -> authorities[free]
+TMP_156(bool) = REF_93 != 0
+TMP_157(bool) = TMP_155 && TMP_156
+CONDITION TMP_157"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+free += 1
+
+IRs:
+free(uint256) = free + 1"];
+6->5;
+7[label="Node Type: END_LOOP 7
+"];
+7->8;
+8[label="Node Type: BEGIN_LOOP 8
+"];
+8->9;
+9[label="Node Type: IF_LOOP 9
+
+EXPRESSION:
+numAuthorities > 1 && authorities[numAuthorities] == 0
+
+IRs:
+TMP_158(bool) = numAuthorities > 1
+REF_94(address) -> authorities[numAuthorities]
+TMP_159(bool) = REF_94 == 0
+TMP_160(bool) = TMP_158 && TMP_159
+CONDITION TMP_160"];
+9->10[label="True"];
+9->11[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+numAuthorities -= 1
+
+IRs:
+numAuthorities(uint256) = numAuthorities - 1"];
+10->9;
+11[label="Node Type: END_LOOP 11
+"];
+11->12;
+12[label="Node Type: IF 12
+
+EXPRESSION:
+free < numAuthorities && authorities[numAuthorities] != 0 && authorities[free] == 0
+
+IRs:
+TMP_161(bool) = free < numAuthorities
+REF_95(address) -> authorities[numAuthorities]
+TMP_162(bool) = REF_95 != 0
+TMP_163(bool) = TMP_161 && TMP_162
+REF_96(address) -> authorities[free]
+TMP_164(bool) = REF_96 == 0
+TMP_165(bool) = TMP_163 && TMP_164
+CONDITION TMP_165"];
+12->13[label="True"];
+12->16[label="False"];
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+authorities[free] = authorities[numAuthorities]
+
+IRs:
+REF_97(address) -> authorities[free]
+REF_98(address) -> authorities[numAuthorities]
+REF_97(address) (->authorities) := REF_98(address)"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+authorityIndex[authorities[free]] = free
+
+IRs:
+REF_99(address) -> authorities[free]
+REF_100(uint256) -> authorityIndex[REF_99]
+REF_100(uint256) (->authorityIndex) := free(uint256)"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+delete authorities[numAuthorities]
+
+IRs:
+REF_101(address) -> authorities[numAuthorities]
+authorities = delete REF_101 "];
+15->16;
+16[label="Node Type: END_IF 16
+"];
+16->3;
+17[label="Node Type: END_LOOP 17
+"];
+}
+// Function: 2391.sol-FsTKColdWallet-removeAuthority(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->8;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(numAuthorities > requiredAuthorities)
+
+IRs:
+TMP_78(bool) = numAuthorities > requiredAuthorities
+TMP_79(None) = SOLIDITY_CALL require(bool)(TMP_78)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+index = getAuthorityIndex(authority)
+
+IRs:
+TMP_80(uint256) = INTERNAL_CALL, FsTKColdWallet.getAuthorityIndex(address)(authority)
+index(uint256) := TMP_80(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+delete authorities[index]
+
+IRs:
+REF_32(address) -> authorities[index]
+authorities = delete REF_32 "];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+delete authorityIndex[authority]
+
+IRs:
+REF_33(uint256) -> authorityIndex[authority]
+authorityIndex = delete REF_33 "];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+clearPending()
+
+IRs:
+INTERNAL_CALL, FsTKColdWallet.clearPending()()"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+reOrganizeAuthorities()
+
+IRs:
+INTERNAL_CALL, FsTKColdWallet.reOrganizeAuthorities()()"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+AuthorityRemoved(authority)
+
+IRs:
+Emit AuthorityRemoved(authority)"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+confirmAndRun(keccak256()(msg.data))
+
+IRs:
+TMP_84(bytes32) = SOLIDITY_CALL keccak256()(msg.data)
+MODIFIER_CALL, FsTKColdWallet.confirmAndRun(bytes32)(TMP_84)"];
+8->1;
+}
+// Function: 2391.sol-FsTKColdWallet-resetSpentToday()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+clearPending()
+
+IRs:
+INTERNAL_CALL, FsTKColdWallet.clearPending()()"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+SpentTodayReset(spentToday)
+
+IRs:
+Emit SpentTodayReset(spentToday)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+delete spentToday
+
+IRs:
+spentToday = delete spentToday "];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+confirmAndRun(keccak256()(msg.data))
+
+IRs:
+TMP_98(bytes32) = SOLIDITY_CALL keccak256()(msg.data)
+MODIFIER_CALL, FsTKColdWallet.confirmAndRun(bytes32)(TMP_98)"];
+4->1;
+}
+// Function: 2391.sol-FsTKColdWallet-revoke(bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+confirmFlag = 1 << getAuthorityIndex(msg.sender)
+
+IRs:
+TMP_119(uint256) = INTERNAL_CALL, FsTKColdWallet.getAuthorityIndex(address)(msg.sender)
+TMP_120(uint256) = 1 << TMP_119
+confirmFlag(uint256) := TMP_120(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+state = pendingTransaction[operation]
+
+IRs:
+REF_46(FsTKColdWallet.PendingTransactionState) -> pendingTransaction[operation]
+state(FsTKColdWallet.PendingTransactionState) := REF_46(FsTKColdWallet.PendingTransactionState)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+state.confirmBitmap & confirmFlag > 0
+
+IRs:
+REF_47(uint256) -> state.confirmBitmap
+TMP_121(uint256) = REF_47 & confirmFlag
+TMP_122(bool) = TMP_121 > 0
+CONDITION TMP_122"];
+3->4[label="True"];
+3->7[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+state.confirmNeeded += 1
+
+IRs:
+REF_48(uint256) -> state.confirmNeeded
+REF_48(-> state) = REF_48 + 1"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+state.confirmBitmap &= ~ confirmFlag
+
+IRs:
+REF_49(uint256) -> state.confirmBitmap
+TMP_123 = UnaryType.TILD confirmFlag 
+REF_49(-> state) = REF_49 & TMP_123"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+Revoke(msg.sender,operation)
+
+IRs:
+Emit Revoke(msg.sender,operation)"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+}
+// Function: 2391.sol-FsTKColdWallet-setDailyLimit(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+clearPending()
+
+IRs:
+INTERNAL_CALL, FsTKColdWallet.clearPending()()"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+DayLimitChanged(dailyLimit = _dailyLimit)
+
+IRs:
+dailyLimit(uint256) := _dailyLimit(uint256)
+Emit DayLimitChanged(dailyLimit)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+confirmAndRun(keccak256()(msg.data))
+
+IRs:
+TMP_94(bytes32) = SOLIDITY_CALL keccak256()(msg.data)
+MODIFIER_CALL, FsTKColdWallet.confirmAndRun(bytes32)(TMP_94)"];
+3->1;
+}
+// Function: 2391.sol-FsTKColdWallet-setRequirement(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(numAuthorities >= requiredAuthorities)
+
+IRs:
+TMP_86(bool) = numAuthorities >= requiredAuthorities
+TMP_87(None) = SOLIDITY_CALL require(bool)(TMP_86)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+clearPending()
+
+IRs:
+INTERNAL_CALL, FsTKColdWallet.clearPending()()"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+RequirementChanged(requiredAuthorities = required)
+
+IRs:
+requiredAuthorities(uint256) := required(uint256)
+Emit RequirementChanged(requiredAuthorities)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+confirmAndRun(keccak256()(msg.data))
+
+IRs:
+TMP_90(bytes32) = SOLIDITY_CALL keccak256()(msg.data)
+MODIFIER_CALL, FsTKColdWallet.confirmAndRun(bytes32)(TMP_90)"];
+4->1;
+}
+// Function: 2391.sol-FsTKColdWallet-slitherConstructorConstantVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+MAX_AUTHORITIES = 250
+
+IRs:
+MAX_AUTHORITIES(uint256) := 250(uint256)"];
+}
+// Function: 2391.sol-FsTKColdWallet-today()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+block.timestamp / 86400
+
+IRs:
+TMP_153(uint256) = block.timestamp / 86400
+RETURN TMP_153"];
+}
+// Function: 2391.sol-Math-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)((r = a + b) >= a)
+
+IRs:
+TMP_13(uint256) = a + b
+r(uint256) := TMP_13(uint256)
+TMP_14(bool) = r >= a
+TMP_15(None) = SOLIDITY_CALL require(bool)(TMP_14)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+r
+
+IRs:
+RETURN r"];
+}
+// Function: 2391.sol-Math-div(uint256,Math.Fraction)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+mulDiv(x,f.denominator,f.numerator)
+
+IRs:
+REF_6(uint256) -> f.denominator
+REF_7(uint256) -> f.numerator
+TMP_36(uint256) = INTERNAL_CALL, Math.mulDiv(uint256,uint256,uint256)(x,REF_6,REF_7)
+RETURN TMP_36"];
+}
+// Function: 2391.sol-Math-div(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+r = a / b
+
+IRs:
+TMP_9(uint256) = a / b
+r(uint256) := TMP_9(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+r
+
+IRs:
+RETURN r"];
+}
+// Function: 2391.sol-Math-divCeil(uint256,Math.Fraction)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+mulDivCeil(x,f.denominator,f.numerator)
+
+IRs:
+REF_8(uint256) -> f.denominator
+REF_9(uint256) -> f.numerator
+TMP_37(uint256) = INTERNAL_CALL, Math.mulDivCeil(uint256,uint256,uint256)(x,REF_8,REF_9)
+RETURN TMP_37"];
+}
+// Function: 2391.sol-Math-isPositive(Math.Fraction)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+fraction.numerator > 0 && fraction.denominator > 0
+
+IRs:
+REF_0(uint256) -> fraction.numerator
+TMP_0(bool) = REF_0 > 0
+REF_1(uint256) -> fraction.denominator
+TMP_1(bool) = REF_1 > 0
+TMP_2(bool) = TMP_0 && TMP_1
+RETURN TMP_2"];
+}
+// Function: 2391.sol-Math-max(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+x >= y
+
+IRs:
+TMP_17(bool) = x >= y
+CONDITION TMP_17"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+x
+
+IRs:
+RETURN x"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+y
+
+IRs:
+RETURN y"];
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+r
+
+IRs:
+RETURN r"];
+}
+// Function: 2391.sol-Math-min(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+x <= y
+
+IRs:
+TMP_16(bool) = x <= y
+CONDITION TMP_16"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+x
+
+IRs:
+RETURN x"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+y
+
+IRs:
+RETURN y"];
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+r
+
+IRs:
+RETURN r"];
+}
+// Function: 2391.sol-Math-mul(Math.Fraction,Math.Fraction)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+Math.Fraction({numerator:mul(x.numerator,y.numerator),denominator:mul(x.denominator,y.denominator)})
+
+IRs:
+REF_11(uint256) -> x.numerator
+REF_12(uint256) -> y.numerator
+TMP_38(uint256) = INTERNAL_CALL, Math.mul(uint256,uint256)(REF_11,REF_12)
+REF_13(uint256) -> x.denominator
+REF_14(uint256) -> y.denominator
+TMP_39(uint256) = INTERNAL_CALL, Math.mul(uint256,uint256)(REF_13,REF_14)
+TMP_40(Math.Fraction) = new Fraction(TMP_38,TMP_39)
+RETURN TMP_40"];
+}
+// Function: 2391.sol-Math-mul(uint256,Math.Fraction)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+mulDiv(x,f.numerator,f.denominator)
+
+IRs:
+REF_2(uint256) -> f.numerator
+REF_3(uint256) -> f.denominator
+TMP_34(uint256) = INTERNAL_CALL, Math.mulDiv(uint256,uint256,uint256)(x,REF_2,REF_3)
+RETURN TMP_34"];
+}
+// Function: 2391.sol-Math-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+r = a * b
+
+IRs:
+TMP_3(uint256) = a * b
+r(uint256) := TMP_3(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)((a == 0) || (r / a == b))
+
+IRs:
+TMP_4(bool) = a == 0
+TMP_5(uint256) = r / a
+TMP_6(bool) = TMP_5 == b
+TMP_7(bool) = TMP_4 || TMP_6
+TMP_8(None) = SOLIDITY_CALL require(bool)(TMP_7)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+r
+
+IRs:
+RETURN r"];
+}
+// Function: 2391.sol-Math-mulCeil(uint256,Math.Fraction)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+mulDivCeil(x,f.numerator,f.denominator)
+
+IRs:
+REF_4(uint256) -> f.numerator
+REF_5(uint256) -> f.denominator
+TMP_35(uint256) = INTERNAL_CALL, Math.mulDivCeil(uint256,uint256,uint256)(x,REF_4,REF_5)
+RETURN TMP_35"];
+}
+// Function: 2391.sol-Math-mulDiv(uint256,uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+r = value * m
+
+IRs:
+TMP_18(uint256) = value * m
+r(uint256) := TMP_18(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+r / value == m
+
+IRs:
+TMP_19(uint256) = r / value
+TMP_20(bool) = TMP_19 == m
+CONDITION TMP_20"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+r /= d
+
+IRs:
+r(uint256) = r / d"];
+3->5;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+r = mul(value / d,m)
+
+IRs:
+TMP_21(uint256) = value / d
+TMP_22(uint256) = INTERNAL_CALL, Math.mul(uint256,uint256)(TMP_21,m)
+r(uint256) := TMP_22(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+r
+
+IRs:
+RETURN r"];
+}
+// Function: 2391.sol-Math-mulDivCeil(uint256,uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+r = value * m
+
+IRs:
+TMP_23(uint256) = value * m
+r(uint256) := TMP_23(uint256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+r / value == m
+
+IRs:
+TMP_24(uint256) = r / value
+TMP_25(bool) = TMP_24 == m
+CONDITION TMP_25"];
+2->3[label="True"];
+2->7[label="False"];
+3[label="Node Type: IF 3
+
+EXPRESSION:
+r % d == 0
+
+IRs:
+TMP_26(uint256) = r % d
+TMP_27(bool) = TMP_26 == 0
+CONDITION TMP_27"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+r /= d
+
+IRs:
+r(uint256) = r / d"];
+4->6;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+r = (r / d) + 1
+
+IRs:
+TMP_28(uint256) = r / d
+TMP_29(uint256) = TMP_28 + 1
+r(uint256) := TMP_29(uint256)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+6->11;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+r = mul(value / d,m)
+
+IRs:
+TMP_30(uint256) = value / d
+TMP_31(uint256) = INTERNAL_CALL, Math.mul(uint256,uint256)(TMP_30,m)
+r(uint256) := TMP_31(uint256)"];
+7->8;
+8[label="Node Type: IF 8
+
+EXPRESSION:
+value % d != 0
+
+IRs:
+TMP_32(uint256) = value % d
+TMP_33(bool) = TMP_32 != 0
+CONDITION TMP_33"];
+8->9[label="True"];
+8->10[label="False"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+r += 1
+
+IRs:
+r(uint256) = r + 1"];
+9->10;
+10[label="Node Type: END_IF 10
+"];
+10->11;
+11[label="Node Type: END_IF 11
+"];
+11->12;
+12[label="Node Type: RETURN 12
+
+EXPRESSION:
+r
+
+IRs:
+RETURN r"];
+}
+// Function: 2391.sol-Math-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)((r = a - b) <= a)
+
+IRs:
+TMP_10(uint256) = a - b
+r(uint256) := TMP_10(uint256)
+TMP_11(bool) = r <= a
+TMP_12(None) = SOLIDITY_CALL require(bool)(TMP_11)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+r
+
+IRs:
+RETURN r"];
+}
+}

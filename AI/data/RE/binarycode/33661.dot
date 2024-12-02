@@ -1,0 +1,1999 @@
+digraph G {
+// Function: 33661.sol-casinoBank-bankroll()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+safeSub(edg.balanceOf(address(this)),playerBalance / 10000)
+
+IRs:
+TMP_64 = CONVERT this to address
+TMP_65(uint256) = HIGH_LEVEL_CALL, dest:edg(token), function:balanceOf, arguments:['TMP_64']  
+TMP_66(uint256) = playerBalance / 10000
+TMP_67(uint256) = INTERNAL_CALL, safeMath.safeSub(uint256,uint256)(TMP_65,TMP_66)
+RETURN TMP_67"];
+}
+// Function: 33661.sol-casinoBank-cancelWithdrawalRequest()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+withdrawAfter[msg.sender] = 0
+
+IRs:
+REF_4(uint256) -> withdrawAfter[msg.sender]
+REF_4(uint256) (->withdrawAfter) := 0(uint256)"];
+}
+// Function: 33661.sol-casinoBank-casinoBank(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+edg = token(tokenContract)
+
+IRs:
+TMP_32 = CONVERT tokenContract to token
+edg(token) := TMP_32(token)"];
+}
+// Function: 33661.sol-casinoBank-changeOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+2->1;
+}
+// Function: 33661.sol-casinoBank-close()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->10;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+playerBalance == 0
+
+IRs:
+TMP_68(bool) = playerBalance == 0
+CONDITION TMP_68"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+selfdestruct(address)(owner)
+
+IRs:
+TMP_69(None) = SOLIDITY_CALL selfdestruct(address)(owner)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+closeAt == 0
+
+IRs:
+TMP_70(bool) = closeAt == 0
+CONDITION TMP_70"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+closeAt = now + 2592000
+
+IRs:
+TMP_71(uint256) = now + 2592000
+closeAt(uint256) := TMP_71(uint256)"];
+5->9;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+closeAt < now
+
+IRs:
+TMP_72(bool) = closeAt < now
+CONDITION TMP_72"];
+6->7[label="True"];
+6->8[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+selfdestruct(address)(owner)
+
+IRs:
+TMP_73(None) = SOLIDITY_CALL selfdestruct(address)(owner)"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: END_IF 9
+"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+10->1;
+}
+// Function: 33661.sol-casinoBank-deposit(address,uint256,bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->10;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(numTokens > 0)
+
+IRs:
+TMP_33(bool) = numTokens > 0
+TMP_34(None) = SOLIDITY_CALL require(bool)(TMP_33)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+value = safeMul(numTokens,10000)
+
+IRs:
+TMP_35(uint256) = INTERNAL_CALL, safeMath.safeMul(uint256,uint256)(numTokens,10000)
+value(uint256) := TMP_35(uint256)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+chargeGas
+
+IRs:
+CONDITION chargeGas"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+value = safeSub(value,msg.gas / 1000 * gasPrice)
+
+IRs:
+TMP_36(uint256) = msg.gas / 1000
+TMP_37(uint256) = TMP_36 * gasPrice
+TMP_38(uint256) = INTERNAL_CALL, safeMath.safeSub(uint256,uint256)(value,TMP_37)
+value(uint256) := TMP_38(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+assert(bool)(edg.transferFrom(msg.sender,address(this),numTokens))
+
+IRs:
+TMP_39 = CONVERT this to address
+TMP_40(bool) = HIGH_LEVEL_CALL, dest:edg(token), function:transferFrom, arguments:['msg.sender', 'TMP_39', 'numTokens']  
+TMP_41(None) = SOLIDITY_CALL assert(bool)(TMP_40)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+balanceOf[receiver] = safeAdd(balanceOf[receiver],value)
+
+IRs:
+REF_1(uint256) -> balanceOf[receiver]
+REF_2(uint256) -> balanceOf[receiver]
+TMP_42(uint256) = INTERNAL_CALL, safeMath.safeAdd(uint256,uint256)(REF_2,value)
+REF_1(uint256) (->balanceOf) := TMP_42(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+playerBalance = safeAdd(playerBalance,value)
+
+IRs:
+TMP_43(uint256) = INTERNAL_CALL, safeMath.safeAdd(uint256,uint256)(playerBalance,value)
+playerBalance(uint256) := TMP_43(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+Deposit(receiver,numTokens,chargeGas)
+
+IRs:
+Emit Deposit(receiver,numTokens,chargeGas)"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+isAlive()
+
+IRs:
+MODIFIER_CALL, casinoBank.isAlive()()"];
+10->1;
+}
+// Function: 33661.sol-casinoBank-isAlive()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(closeAt == 0)
+
+IRs:
+TMP_78(bool) = closeAt == 0
+TMP_79(None) = SOLIDITY_CALL require(bool)(TMP_78)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 33661.sol-casinoBank-keepAlive()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+closeAt > 0
+
+IRs:
+TMP_80(bool) = closeAt > 0
+CONDITION TMP_80"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+closeAt = now + 2592000
+
+IRs:
+TMP_81(uint256) = now + 2592000
+closeAt(uint256) := TMP_81(uint256)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 33661.sol-casinoBank-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_76(bool) = msg.sender == owner
+TMP_77(None) = SOLIDITY_CALL require(bool)(TMP_76)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 33661.sol-casinoBank-open()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+closeAt = 0
+
+IRs:
+closeAt(uint256) := 0(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+2->1;
+}
+// Function: 33661.sol-casinoBank-owned()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 33661.sol-casinoBank-requestWithdrawal()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+withdrawAfter[msg.sender] = now + 420
+
+IRs:
+REF_3(uint256) -> withdrawAfter[msg.sender]
+TMP_46(uint256) = now + 420
+REF_3(uint256) (->withdrawAfter) := TMP_46(uint256)"];
+}
+// Function: 33661.sol-casinoBank-safeAdd(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_20(uint256) = a + b
+c(uint256) := TMP_20(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(c >= a && c >= b)
+
+IRs:
+TMP_21(bool) = c >= a
+TMP_22(bool) = c >= b
+TMP_23(bool) = TMP_21 && TMP_22
+TMP_24(None) = SOLIDITY_CALL assert(bool)(TMP_23)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 33661.sol-casinoBank-safeMul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_25(uint256) = a * b
+c(uint256) := TMP_25(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(a == 0 || c / a == b)
+
+IRs:
+TMP_26(bool) = a == 0
+TMP_27(uint256) = c / a
+TMP_28(bool) = TMP_27 == b
+TMP_29(bool) = TMP_26 || TMP_28
+TMP_30(None) = SOLIDITY_CALL assert(bool)(TMP_29)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 33661.sol-casinoBank-safeSub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(b <= a)
+
+IRs:
+TMP_17(bool) = b <= a
+TMP_18(None) = SOLIDITY_CALL assert(bool)(TMP_17)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_19(uint256) = a - b
+RETURN TMP_19"];
+}
+// Function: 33661.sol-casinoBank-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+gasPrice = 4
+
+IRs:
+gasPrice(uint256) := 4(uint256)"];
+}
+// Function: 33661.sol-casinoBank-withdraw(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->8;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(withdrawAfter[msg.sender] > 0 && now > withdrawAfter[msg.sender])
+
+IRs:
+REF_5(uint256) -> withdrawAfter[msg.sender]
+TMP_47(bool) = REF_5 > 0
+REF_6(uint256) -> withdrawAfter[msg.sender]
+TMP_48(bool) = now > REF_6
+TMP_49(bool) = TMP_47 && TMP_48
+TMP_50(None) = SOLIDITY_CALL require(bool)(TMP_49)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+withdrawAfter[msg.sender] = 0
+
+IRs:
+REF_7(uint256) -> withdrawAfter[msg.sender]
+REF_7(uint256) (->withdrawAfter) := 0(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+value = safeMul(amount,10000)
+
+IRs:
+TMP_51(uint256) = INTERNAL_CALL, safeMath.safeMul(uint256,uint256)(amount,10000)
+value(uint256) := TMP_51(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+balanceOf[msg.sender] = safeSub(balanceOf[msg.sender],value)
+
+IRs:
+REF_8(uint256) -> balanceOf[msg.sender]
+REF_9(uint256) -> balanceOf[msg.sender]
+TMP_52(uint256) = INTERNAL_CALL, safeMath.safeSub(uint256,uint256)(REF_9,value)
+REF_8(uint256) (->balanceOf) := TMP_52(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+playerBalance = safeSub(playerBalance,value)
+
+IRs:
+TMP_53(uint256) = INTERNAL_CALL, safeMath.safeSub(uint256,uint256)(playerBalance,value)
+playerBalance(uint256) := TMP_53(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+assert(bool)(edg.transfer(msg.sender,amount))
+
+IRs:
+TMP_54(bool) = HIGH_LEVEL_CALL, dest:edg(token), function:transfer, arguments:['msg.sender', 'amount']  
+TMP_55(None) = SOLIDITY_CALL assert(bool)(TMP_54)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+Withdrawal(msg.sender,msg.sender,amount)
+
+IRs:
+Emit Withdrawal(msg.sender,msg.sender,amount)"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+keepAlive()
+
+IRs:
+MODIFIER_CALL, casinoBank.keepAlive()()"];
+8->1;
+}
+// Function: 33661.sol-casinoBank-withdrawBankroll(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(numTokens <= bankroll())
+
+IRs:
+TMP_58(uint256) = INTERNAL_CALL, casinoBank.bankroll()()
+TMP_59(bool) = numTokens <= TMP_58
+TMP_60(None) = SOLIDITY_CALL require(bool)(TMP_59)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(edg.transfer(owner,numTokens))
+
+IRs:
+TMP_61(bool) = HIGH_LEVEL_CALL, dest:edg(token), function:transfer, arguments:['owner', 'numTokens']  
+TMP_62(None) = SOLIDITY_CALL assert(bool)(TMP_61)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+3->1;
+}
+// Function: 33661.sol-casinoProxy-authorize(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+authorized[addr] = true
+
+IRs:
+REF_47(bool) -> authorized[addr]
+REF_47(bool) (->authorized) := True(bool)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+2->1;
+}
+// Function: 33661.sol-casinoProxy-authorizeCasino(address,address,uint8,bytes32,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+player = ecrecover(bytes32,uint8,bytes32,bytes32)(keccak256()(casinoAddress,lockedByUser[playerAddress][casinoAddress],true),v,r,s)
+
+IRs:
+REF_49(mapping(address => uint8)) -> lockedByUser[playerAddress]
+REF_50(uint8) -> REF_49[casinoAddress]
+TMP_175(bytes32) = SOLIDITY_CALL keccak256()(casinoAddress,REF_50,True)
+TMP_176(address) = SOLIDITY_CALL ecrecover(bytes32,uint8,bytes32,bytes32)(TMP_175,v,r,s)
+player(address) := TMP_176(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(player == playerAddress)
+
+IRs:
+TMP_177(bool) = player == playerAddress
+TMP_178(None) = SOLIDITY_CALL require(bool)(TMP_177)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+authorizedByUser[player][casinoAddress] = true
+
+IRs:
+REF_51(mapping(address => bool)) -> authorizedByUser[player]
+REF_52(bool) -> REF_51[casinoAddress]
+REF_52(bool) (->authorizedByUser) := True(bool)"];
+}
+// Function: 33661.sol-casinoProxy-bankroll()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+safeSub(edg.balanceOf(address(this)),playerBalance / 10000)
+
+IRs:
+TMP_114 = CONVERT this to address
+TMP_115(uint256) = HIGH_LEVEL_CALL, dest:edg(token), function:balanceOf, arguments:['TMP_114']  
+TMP_116(uint256) = playerBalance / 10000
+TMP_117(uint256) = INTERNAL_CALL, safeMath.safeSub(uint256,uint256)(TMP_115,TMP_116)
+RETURN TMP_117"];
+}
+// Function: 33661.sol-casinoProxy-cancelWithdrawalRequest()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+withdrawAfter[msg.sender] = 0
+
+IRs:
+REF_17(uint256) -> withdrawAfter[msg.sender]
+REF_17(uint256) (->withdrawAfter) := 0(uint256)"];
+}
+// Function: 33661.sol-casinoProxy-casinoBank(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+edg = token(tokenContract)
+
+IRs:
+TMP_82 = CONVERT tokenContract to token
+edg(token) := TMP_82(token)"];
+}
+// Function: 33661.sol-casinoProxy-casinoProxy(address,address,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+authorized[authorizedAddress] = true
+
+IRs:
+REF_26(bool) -> authorized[authorizedAddress]
+REF_26(bool) (->authorized) := True(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+casinoGames.push(blackjackAddress)
+
+IRs:
+REF_28 -> LENGTH casinoGames
+TMP_142(uint256) := REF_28(uint256)
+TMP_143(uint256) = TMP_142 + 1
+REF_28(uint256) (->casinoGames) := TMP_143(uint256)
+REF_29(address) -> casinoGames[TMP_142]
+REF_29(address) (->casinoGames) := blackjackAddress(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+casinoBank(tokenContract)
+
+IRs:
+INTERNAL_CALL, casinoBank.casinoBank(address)(tokenContract)"];
+3->1;
+}
+// Function: 33661.sol-casinoProxy-changeOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+2->1;
+}
+// Function: 33661.sol-casinoProxy-checkAddress(address,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->2;
+2[label="Node Type: INLINE ASM 2
+"];
+2->3;
+3[label="Node Type: END INLINE ASM 3
+"];
+3->6;
+4[label="Node Type: BEGIN_LOOP 4
+"];
+4->7;
+5[label="Node Type: END_LOOP 5
+"];
+5->12;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint8) := 0(uint256)"];
+6->4;
+7[label="Node Type: IF_LOOP 7
+
+EXPRESSION:
+i < 20
+
+IRs:
+TMP_200(bool) = i < 20
+CONDITION TMP_200"];
+7->8[label="True"];
+7->5[label="False"];
+8[label="Node Type: IF 8
+
+EXPRESSION:
+data[16 + i] != ba[i]
+
+IRs:
+TMP_201(uint256) = 16 + i
+REF_66(None) -> data[TMP_201]
+REF_67(None) -> ba[i]
+TMP_202(bool) = REF_66 != REF_67
+CONDITION TMP_202"];
+8->9[label="True"];
+8->10[label="False"];
+9[label="Node Type: RETURN 9
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+10[label="Node Type: END_IF 10
+"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_203(uint8) := i(uint8)
+i(uint8) = i + 1"];
+11->7;
+12[label="Node Type: RETURN 12
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}
+// Function: 33661.sol-casinoProxy-close()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->10;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+playerBalance == 0
+
+IRs:
+TMP_118(bool) = playerBalance == 0
+CONDITION TMP_118"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+selfdestruct(address)(owner)
+
+IRs:
+TMP_119(None) = SOLIDITY_CALL selfdestruct(address)(owner)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+closeAt == 0
+
+IRs:
+TMP_120(bool) = closeAt == 0
+CONDITION TMP_120"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+closeAt = now + 2592000
+
+IRs:
+TMP_121(uint256) = now + 2592000
+closeAt(uint256) := TMP_121(uint256)"];
+5->9;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+closeAt < now
+
+IRs:
+TMP_122(bool) = closeAt < now
+CONDITION TMP_122"];
+6->7[label="True"];
+6->8[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+selfdestruct(address)(owner)
+
+IRs:
+TMP_123(None) = SOLIDITY_CALL selfdestruct(address)(owner)"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: END_IF 9
+"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+10->1;
+}
+// Function: 33661.sol-casinoProxy-deauthorize(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+authorized[addr] = false
+
+IRs:
+REF_48(bool) -> authorized[addr]
+REF_48(bool) (->authorized) := False(bool)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+2->1;
+}
+// Function: 33661.sol-casinoProxy-deauthorizeCasino(address,address,uint8,bytes32,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+player = ecrecover(bytes32,uint8,bytes32,bytes32)(keccak256()(casinoAddress,lockedByUser[playerAddress][casinoAddress],false),v,r,s)
+
+IRs:
+REF_53(mapping(address => uint8)) -> lockedByUser[playerAddress]
+REF_54(uint8) -> REF_53[casinoAddress]
+TMP_179(bytes32) = SOLIDITY_CALL keccak256()(casinoAddress,REF_54,False)
+TMP_180(address) = SOLIDITY_CALL ecrecover(bytes32,uint8,bytes32,bytes32)(TMP_179,v,r,s)
+player(address) := TMP_180(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(player == playerAddress)
+
+IRs:
+TMP_181(bool) = player == playerAddress
+TMP_182(None) = SOLIDITY_CALL require(bool)(TMP_181)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+authorizedByUser[player][casinoAddress] = false
+
+IRs:
+REF_55(mapping(address => bool)) -> authorizedByUser[player]
+REF_56(bool) -> REF_55[casinoAddress]
+REF_56(bool) (->authorizedByUser) := False(bool)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+lockedByUser[player][casinoAddress] ++
+
+IRs:
+REF_57(mapping(address => uint8)) -> lockedByUser[player]
+REF_58(uint8) -> REF_57[casinoAddress]
+TMP_183(uint8) := REF_58(uint8)
+REF_58(-> lockedByUser) = REF_58 + 1"];
+}
+// Function: 33661.sol-casinoProxy-deposit(address,uint256,bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->10;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(numTokens > 0)
+
+IRs:
+TMP_83(bool) = numTokens > 0
+TMP_84(None) = SOLIDITY_CALL require(bool)(TMP_83)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+value = safeMul(numTokens,10000)
+
+IRs:
+TMP_85(uint256) = INTERNAL_CALL, safeMath.safeMul(uint256,uint256)(numTokens,10000)
+value(uint256) := TMP_85(uint256)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+chargeGas
+
+IRs:
+CONDITION chargeGas"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+value = safeSub(value,msg.gas / 1000 * gasPrice)
+
+IRs:
+TMP_86(uint256) = msg.gas / 1000
+TMP_87(uint256) = TMP_86 * gasPrice
+TMP_88(uint256) = INTERNAL_CALL, safeMath.safeSub(uint256,uint256)(value,TMP_87)
+value(uint256) := TMP_88(uint256)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+assert(bool)(edg.transferFrom(msg.sender,address(this),numTokens))
+
+IRs:
+TMP_89 = CONVERT this to address
+TMP_90(bool) = HIGH_LEVEL_CALL, dest:edg(token), function:transferFrom, arguments:['msg.sender', 'TMP_89', 'numTokens']  
+TMP_91(None) = SOLIDITY_CALL assert(bool)(TMP_90)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+balanceOf[receiver] = safeAdd(balanceOf[receiver],value)
+
+IRs:
+REF_14(uint256) -> balanceOf[receiver]
+REF_15(uint256) -> balanceOf[receiver]
+TMP_92(uint256) = INTERNAL_CALL, safeMath.safeAdd(uint256,uint256)(REF_15,value)
+REF_14(uint256) (->balanceOf) := TMP_92(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+playerBalance = safeAdd(playerBalance,value)
+
+IRs:
+TMP_93(uint256) = INTERNAL_CALL, safeMath.safeAdd(uint256,uint256)(playerBalance,value)
+playerBalance(uint256) := TMP_93(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+Deposit(receiver,numTokens,chargeGas)
+
+IRs:
+Emit Deposit(receiver,numTokens,chargeGas)"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+isAlive()
+
+IRs:
+MODIFIER_CALL, casinoBank.isAlive()()"];
+10->1;
+}
+// Function: 33661.sol-casinoProxy-isAlive()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(closeAt == 0)
+
+IRs:
+TMP_204(bool) = closeAt == 0
+TMP_205(None) = SOLIDITY_CALL require(bool)(TMP_204)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 33661.sol-casinoProxy-keepAlive()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+closeAt > 0
+
+IRs:
+TMP_206(bool) = closeAt > 0
+CONDITION TMP_206"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+closeAt = now + 2592000
+
+IRs:
+TMP_207(uint256) = now + 2592000
+closeAt(uint256) := TMP_207(uint256)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 33661.sol-casinoProxy-move(uint8,bytes,uint8,bytes32,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(game < casinoGames.length)
+
+IRs:
+REF_61 -> LENGTH casinoGames
+TMP_186(bool) = game < REF_61
+TMP_187(None) = SOLIDITY_CALL require(bool)(TMP_186)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+player = ecrecover(bytes32,uint8,bytes32,bytes32)(keccak256()(data),v,r,s)
+
+IRs:
+TMP_188(bytes32) = SOLIDITY_CALL keccak256()(data)
+TMP_189(address) = SOLIDITY_CALL ecrecover(bytes32,uint8,bytes32,bytes32)(TMP_188,v,r,s)
+player(address) := TMP_189(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(withdrawAfter[player] == 0 || now < withdrawAfter[player])
+
+IRs:
+REF_62(uint256) -> withdrawAfter[player]
+TMP_190(bool) = REF_62 == 0
+REF_63(uint256) -> withdrawAfter[player]
+TMP_191(bool) = now < REF_63
+TMP_192(bool) = TMP_190 || TMP_191
+TMP_193(None) = SOLIDITY_CALL require(bool)(TMP_192)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+assert(bool)(checkAddress(player,data))
+
+IRs:
+TMP_194(bool) = INTERNAL_CALL, casinoProxy.checkAddress(address,bytes)(player,data)
+TMP_195(None) = SOLIDITY_CALL assert(bool)(TMP_194)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+assert(bool)(casinoGames[game].call(data))
+
+IRs:
+REF_64(address) -> casinoGames[game]
+TMP_196(bool) = LOW_LEVEL_CALL, dest:REF_64, function:call, arguments:['data']  
+TMP_197(None) = SOLIDITY_CALL assert(bool)(TMP_196)"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyAuthorized()
+
+IRs:
+MODIFIER_CALL, casinoProxy.onlyAuthorized()()"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+isAlive()
+
+IRs:
+MODIFIER_CALL, casinoBank.isAlive()()"];
+7->1;
+}
+// Function: 33661.sol-casinoProxy-onlyAuthorized()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(authorized[msg.sender])
+
+IRs:
+REF_68(bool) -> authorized[msg.sender]
+TMP_210(None) = SOLIDITY_CALL require(bool)(REF_68)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 33661.sol-casinoProxy-onlyCasinoGames()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->4;
+2[label="Node Type: BEGIN_LOOP 2
+"];
+2->5;
+3[label="Node Type: END_LOOP 3
+"];
+3->11;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+4->2;
+5[label="Node Type: IF_LOOP 5
+
+EXPRESSION:
+i < casinoGames.length
+
+IRs:
+REF_69 -> LENGTH casinoGames
+TMP_211(bool) = i < REF_69
+CONDITION TMP_211"];
+5->6[label="True"];
+5->3[label="False"];
+6[label="Node Type: IF 6
+
+EXPRESSION:
+msg.sender == casinoGames[i]
+
+IRs:
+REF_70(address) -> casinoGames[i]
+TMP_212(bool) = msg.sender == REF_70
+CONDITION TMP_212"];
+6->7[label="True"];
+6->9[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+isCasino = true
+
+IRs:
+isCasino(bool) := True(bool)"];
+7->8;
+8[label="Node Type: BREAK 8
+"];
+8->3;
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_213(uint256) := i(uint256)
+i(uint256) = i + 1"];
+10->5;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+require(bool)(isCasino)
+
+IRs:
+TMP_214(None) = SOLIDITY_CALL require(bool)(isCasino)"];
+11->12;
+12[label="Node Type: _ 12
+"];
+}
+// Function: 33661.sol-casinoProxy-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_208(bool) = msg.sender == owner
+TMP_209(None) = SOLIDITY_CALL require(bool)(TMP_208)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 33661.sol-casinoProxy-open()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+closeAt = 0
+
+IRs:
+closeAt(uint256) := 0(uint256)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+2->1;
+}
+// Function: 33661.sol-casinoProxy-owned()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 33661.sol-casinoProxy-requestWithdrawal()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+withdrawAfter[msg.sender] = now + 420
+
+IRs:
+REF_16(uint256) -> withdrawAfter[msg.sender]
+TMP_96(uint256) = now + 420
+REF_16(uint256) (->withdrawAfter) := TMP_96(uint256)"];
+}
+// Function: 33661.sol-casinoProxy-safeAdd(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_129(uint256) = a + b
+c(uint256) := TMP_129(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(c >= a && c >= b)
+
+IRs:
+TMP_130(bool) = c >= a
+TMP_131(bool) = c >= b
+TMP_132(bool) = TMP_130 && TMP_131
+TMP_133(None) = SOLIDITY_CALL assert(bool)(TMP_132)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 33661.sol-casinoProxy-safeMul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_134(uint256) = a * b
+c(uint256) := TMP_134(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(a == 0 || c / a == b)
+
+IRs:
+TMP_135(bool) = a == 0
+TMP_136(uint256) = c / a
+TMP_137(bool) = TMP_136 == b
+TMP_138(bool) = TMP_135 || TMP_137
+TMP_139(None) = SOLIDITY_CALL assert(bool)(TMP_138)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 33661.sol-casinoProxy-safeSub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(b <= a)
+
+IRs:
+TMP_126(bool) = b <= a
+TMP_127(None) = SOLIDITY_CALL assert(bool)(TMP_126)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_128(uint256) = a - b
+RETURN TMP_128"];
+}
+// Function: 33661.sol-casinoProxy-setAvgGas(uint8,uint16)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+avgGas[casinoGames[game]] = gas
+
+IRs:
+REF_59(address) -> casinoGames[game]
+REF_60(uint256) -> avgGas[REF_59]
+REF_60(uint256) (->avgGas) := gas(uint16)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+2->1;
+}
+// Function: 33661.sol-casinoProxy-setGameAddress(uint8,address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+game < casinoGames.length
+
+IRs:
+REF_42 -> LENGTH casinoGames
+TMP_168(bool) = game < REF_42
+CONDITION TMP_168"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+casinoGames[game] = newAddress
+
+IRs:
+REF_43(address) -> casinoGames[game]
+REF_43(address) (->casinoGames) := newAddress(address)"];
+2->4;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+casinoGames.push(newAddress)
+
+IRs:
+REF_45 -> LENGTH casinoGames
+TMP_170(uint256) := REF_45(uint256)
+TMP_171(uint256) = TMP_170 + 1
+REF_45(uint256) (->casinoGames) := TMP_171(uint256)
+REF_46(address) -> casinoGames[TMP_170]
+REF_46(address) (->casinoGames) := newAddress(address)"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+5->1;
+}
+// Function: 33661.sol-casinoProxy-setGasPrice(uint8)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+gasPrice = price
+
+IRs:
+gasPrice(uint256) := price(uint8)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+2->1;
+}
+// Function: 33661.sol-casinoProxy-shift(address,uint256,bool)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->11;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(authorizedByUser[player][msg.sender])
+
+IRs:
+REF_30(mapping(address => bool)) -> authorizedByUser[player]
+REF_31(bool) -> REF_30[msg.sender]
+TMP_145(None) = SOLIDITY_CALL require(bool)(REF_31)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+gasCost = avgGas[msg.sender] * gasPrice
+
+IRs:
+REF_32(uint256) -> avgGas[msg.sender]
+TMP_146(uint256) = REF_32 * gasPrice
+gasCost(uint256) := TMP_146(uint256)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+isReceiver
+
+IRs:
+CONDITION isReceiver"];
+3->4[label="True"];
+3->7[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+numTokens = safeSub(numTokens,gasCost)
+
+IRs:
+TMP_147(uint256) = INTERNAL_CALL, safeMath.safeSub(uint256,uint256)(numTokens,gasCost)
+numTokens(uint256) := TMP_147(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balanceOf[player] = safeAdd(balanceOf[player],numTokens)
+
+IRs:
+REF_33(uint256) -> balanceOf[player]
+REF_34(uint256) -> balanceOf[player]
+TMP_148(uint256) = INTERNAL_CALL, safeMath.safeAdd(uint256,uint256)(REF_34,numTokens)
+REF_33(uint256) (->balanceOf) := TMP_148(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+playerBalance = safeAdd(playerBalance,numTokens)
+
+IRs:
+TMP_149(uint256) = INTERNAL_CALL, safeMath.safeAdd(uint256,uint256)(playerBalance,numTokens)
+playerBalance(uint256) := TMP_149(uint256)"];
+6->10;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+numTokens = safeAdd(numTokens,gasCost)
+
+IRs:
+TMP_150(uint256) = INTERNAL_CALL, safeMath.safeAdd(uint256,uint256)(numTokens,gasCost)
+numTokens(uint256) := TMP_150(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+balanceOf[player] = safeSub(balanceOf[player],numTokens)
+
+IRs:
+REF_35(uint256) -> balanceOf[player]
+REF_36(uint256) -> balanceOf[player]
+TMP_151(uint256) = INTERNAL_CALL, safeMath.safeSub(uint256,uint256)(REF_36,numTokens)
+REF_35(uint256) (->balanceOf) := TMP_151(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+playerBalance = safeSub(playerBalance,numTokens)
+
+IRs:
+TMP_152(uint256) = INTERNAL_CALL, safeMath.safeSub(uint256,uint256)(playerBalance,numTokens)
+playerBalance(uint256) := TMP_152(uint256)"];
+9->10;
+10[label="Node Type: END_IF 10
+"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+onlyCasinoGames()
+
+IRs:
+MODIFIER_CALL, casinoProxy.onlyCasinoGames()()"];
+11->1;
+}
+// Function: 33661.sol-casinoProxy-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+gasPrice = 4
+
+IRs:
+gasPrice(uint256) := 4(uint256)"];
+}
+// Function: 33661.sol-casinoProxy-withdraw(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->8;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(withdrawAfter[msg.sender] > 0 && now > withdrawAfter[msg.sender])
+
+IRs:
+REF_18(uint256) -> withdrawAfter[msg.sender]
+TMP_97(bool) = REF_18 > 0
+REF_19(uint256) -> withdrawAfter[msg.sender]
+TMP_98(bool) = now > REF_19
+TMP_99(bool) = TMP_97 && TMP_98
+TMP_100(None) = SOLIDITY_CALL require(bool)(TMP_99)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+withdrawAfter[msg.sender] = 0
+
+IRs:
+REF_20(uint256) -> withdrawAfter[msg.sender]
+REF_20(uint256) (->withdrawAfter) := 0(uint256)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+value = safeMul(amount,10000)
+
+IRs:
+TMP_101(uint256) = INTERNAL_CALL, safeMath.safeMul(uint256,uint256)(amount,10000)
+value(uint256) := TMP_101(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+balanceOf[msg.sender] = safeSub(balanceOf[msg.sender],value)
+
+IRs:
+REF_21(uint256) -> balanceOf[msg.sender]
+REF_22(uint256) -> balanceOf[msg.sender]
+TMP_102(uint256) = INTERNAL_CALL, safeMath.safeSub(uint256,uint256)(REF_22,value)
+REF_21(uint256) (->balanceOf) := TMP_102(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+playerBalance = safeSub(playerBalance,value)
+
+IRs:
+TMP_103(uint256) = INTERNAL_CALL, safeMath.safeSub(uint256,uint256)(playerBalance,value)
+playerBalance(uint256) := TMP_103(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+assert(bool)(edg.transfer(msg.sender,amount))
+
+IRs:
+TMP_104(bool) = HIGH_LEVEL_CALL, dest:edg(token), function:transfer, arguments:['msg.sender', 'amount']  
+TMP_105(None) = SOLIDITY_CALL assert(bool)(TMP_104)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+Withdrawal(msg.sender,msg.sender,amount)
+
+IRs:
+Emit Withdrawal(msg.sender,msg.sender,amount)"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+keepAlive()
+
+IRs:
+MODIFIER_CALL, casinoBank.keepAlive()()"];
+8->1;
+}
+// Function: 33661.sol-casinoProxy-withdrawBankroll(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(numTokens <= bankroll())
+
+IRs:
+TMP_108(uint256) = INTERNAL_CALL, casinoBank.bankroll()()
+TMP_109(bool) = numTokens <= TMP_108
+TMP_110(None) = SOLIDITY_CALL require(bool)(TMP_109)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(edg.transfer(owner,numTokens))
+
+IRs:
+TMP_111(bool) = HIGH_LEVEL_CALL, dest:edg(token), function:transfer, arguments:['owner', 'numTokens']  
+TMP_112(None) = SOLIDITY_CALL assert(bool)(TMP_111)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+3->1;
+}
+// Function: 33661.sol-casinoProxy-withdrawFor(address,uint256,uint8,bytes32,bytes32)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->9;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+gasCost = msg.gas / 1000 * gasPrice
+
+IRs:
+TMP_154(uint256) = msg.gas / 1000
+TMP_155(uint256) = TMP_154 * gasPrice
+gasCost(uint256) := TMP_155(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+player = ecrecover(bytes32,uint8,bytes32,bytes32)(keccak256()(receiver,amount,count[receiver]),v,r,s)
+
+IRs:
+REF_37(uint256) -> count[receiver]
+TMP_156(bytes32) = SOLIDITY_CALL keccak256()(receiver,amount,REF_37)
+TMP_157(address) = SOLIDITY_CALL ecrecover(bytes32,uint8,bytes32,bytes32)(TMP_156,v,r,s)
+player(address) := TMP_157(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+count[receiver] ++
+
+IRs:
+REF_38(uint256) -> count[receiver]
+TMP_158(uint256) := REF_38(uint256)
+REF_38(-> count) = REF_38 + 1"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+value = safeAdd(safeMul(amount,10000),gasCost)
+
+IRs:
+TMP_159(uint256) = INTERNAL_CALL, safeMath.safeMul(uint256,uint256)(amount,10000)
+TMP_160(uint256) = INTERNAL_CALL, safeMath.safeAdd(uint256,uint256)(TMP_159,gasCost)
+value(uint256) := TMP_160(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balanceOf[player] = safeSub(balanceOf[player],value)
+
+IRs:
+REF_39(uint256) -> balanceOf[player]
+REF_40(uint256) -> balanceOf[player]
+TMP_161(uint256) = INTERNAL_CALL, safeMath.safeSub(uint256,uint256)(REF_40,value)
+REF_39(uint256) (->balanceOf) := TMP_161(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+playerBalance = safeSub(playerBalance,value)
+
+IRs:
+TMP_162(uint256) = INTERNAL_CALL, safeMath.safeSub(uint256,uint256)(playerBalance,value)
+playerBalance(uint256) := TMP_162(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+assert(bool)(edg.transfer(receiver,amount))
+
+IRs:
+TMP_163(bool) = HIGH_LEVEL_CALL, dest:edg(token), function:transfer, arguments:['receiver', 'amount']  
+TMP_164(None) = SOLIDITY_CALL assert(bool)(TMP_163)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+Withdrawal(player,receiver,amount)
+
+IRs:
+Emit Withdrawal(player,receiver,amount)"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+onlyAuthorized()
+
+IRs:
+MODIFIER_CALL, casinoProxy.onlyAuthorized()()"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+keepAlive()
+
+IRs:
+MODIFIER_CALL, casinoBank.keepAlive()()"];
+10->1;
+}
+// Function: 33661.sol-owned-changeOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, owned.onlyOwner()()"];
+2->1;
+}
+// Function: 33661.sol-owned-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_1(bool) = msg.sender == owner
+TMP_2(None) = SOLIDITY_CALL require(bool)(TMP_1)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 33661.sol-owned-owned()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 33661.sol-safeMath-safeAdd(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_6(uint256) = a + b
+c(uint256) := TMP_6(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(c >= a && c >= b)
+
+IRs:
+TMP_7(bool) = c >= a
+TMP_8(bool) = c >= b
+TMP_9(bool) = TMP_7 && TMP_8
+TMP_10(None) = SOLIDITY_CALL assert(bool)(TMP_9)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 33661.sol-safeMath-safeMul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_11(uint256) = a * b
+c(uint256) := TMP_11(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(a == 0 || c / a == b)
+
+IRs:
+TMP_12(bool) = a == 0
+TMP_13(uint256) = c / a
+TMP_14(bool) = TMP_13 == b
+TMP_15(bool) = TMP_12 || TMP_14
+TMP_16(None) = SOLIDITY_CALL assert(bool)(TMP_15)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 33661.sol-safeMath-safeSub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(b <= a)
+
+IRs:
+TMP_3(bool) = b <= a
+TMP_4(None) = SOLIDITY_CALL assert(bool)(TMP_3)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_5(uint256) = a - b
+RETURN TMP_5"];
+}
+// Function: 33661.sol-token-balanceOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 33661.sol-token-transfer(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 33661.sol-token-transferFrom(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+}

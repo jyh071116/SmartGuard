@@ -1,0 +1,959 @@
+digraph G {
+// Function: 39358.sol-ArrayLib-findAddress(address,address[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: BEGIN_LOOP 1
+"];
+1->4;
+2[label="Node Type: END_LOOP 2
+"];
+2->9;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+3->1;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+i < arry.length
+
+IRs:
+REF_0 -> LENGTH arry
+TMP_0(bool) = i < REF_0
+CONDITION TMP_0"];
+4->5[label="True"];
+4->2[label="False"];
+5[label="Node Type: IF 5
+
+EXPRESSION:
+arry[i] == a
+
+IRs:
+REF_1(address) -> arry[i]
+TMP_1(bool) = REF_1 == a
+CONDITION TMP_1"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+int256(i)
+
+IRs:
+TMP_2 = CONVERT i to int256
+RETURN TMP_2"];
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_3(uint256) := i(uint256)
+i(uint256) = i + 1"];
+8->4;
+9[label="Node Type: RETURN 9
+
+EXPRESSION:
+- 1
+
+IRs:
+TMP_4(uint256) = 0 - 1
+RETURN TMP_4"];
+}
+// Function: 39358.sol-ArrayLib-removeAddress(uint256,address[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+lengthMinusOne = arry.length - 1
+
+IRs:
+REF_2 -> LENGTH arry
+TMP_5(uint256) = REF_2 - 1
+lengthMinusOne(uint256) := TMP_5(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+arry[i] = arry[lengthMinusOne]
+
+IRs:
+REF_3(address) -> arry[i]
+REF_4(address) -> arry[lengthMinusOne]
+REF_3(address) (->arry) := REF_4(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+delete arry[lengthMinusOne]
+
+IRs:
+REF_5(address) -> arry[lengthMinusOne]
+arry = delete REF_5 "];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+arry.length = lengthMinusOne
+
+IRs:
+REF_6 -> LENGTH arry
+REF_6(uint256) (->arry) := lengthMinusOne(uint256)"];
+}
+// Function: 39358.sol-IdentityFactory-CreateProxyWithControllerAndRecovery(address,address[],uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+proxy = new Proxy()
+
+IRs:
+TMP_58(Proxy) = new Proxy() 
+proxy(Proxy) := TMP_58(Proxy)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+controller = new RecoverableController(proxy,userKey,longTimeLock,shortTimeLock)
+
+IRs:
+TMP_60(RecoverableController) = new RecoverableController(proxy,userKey,longTimeLock,shortTimeLock) 
+controller(RecoverableController) := TMP_60(RecoverableController)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+proxy.transfer(controller)
+
+IRs:
+HIGH_LEVEL_CALL, dest:proxy(Proxy), function:transfer, arguments:['controller']  "];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+recoveryQuorum = new RecoveryQuorum(controller,delegates)
+
+IRs:
+TMP_63(RecoveryQuorum) = new RecoveryQuorum(controller,delegates) 
+recoveryQuorum(RecoveryQuorum) := TMP_63(RecoveryQuorum)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+controller.changeRecoveryFromRecovery(recoveryQuorum)
+
+IRs:
+HIGH_LEVEL_CALL, dest:controller(RecoverableController), function:changeRecoveryFromRecovery, arguments:['recoveryQuorum']  "];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+IdentityCreated(userKey,proxy,controller,recoveryQuorum)
+
+IRs:
+Emit IdentityCreated(userKey,proxy,controller,recoveryQuorum)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+senderToProxy[msg.sender] = proxy
+
+IRs:
+REF_21(address) -> senderToProxy[msg.sender]
+REF_21(address) (->senderToProxy) := proxy(Proxy)"];
+}
+// Function: 39358.sol-Owned-Owned()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 39358.sol-Owned-ifOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+isOwner(sender)
+
+IRs:
+TMP_9(bool) = INTERNAL_CALL, Owned.isOwner(address)(sender)
+CONDITION TMP_9"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: _ 2
+"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 39358.sol-Owned-isOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+addr == owner
+
+IRs:
+TMP_6(bool) = addr == owner
+RETURN TMP_6"];
+}
+// Function: 39358.sol-Owned-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+isOwner(msg.sender)
+
+IRs:
+TMP_8(bool) = INTERNAL_CALL, Owned.isOwner(address)(msg.sender)
+CONDITION TMP_8"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: _ 2
+"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 39358.sol-Owned-transfer(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = _owner
+
+IRs:
+owner(address) := _owner(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Owned.onlyOwner()()"];
+2->1;
+}
+// Function: 39358.sol-Proxy-Owned()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 39358.sol-Proxy-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+Received(msg.sender,msg.value)
+
+IRs:
+Emit Received(msg.sender,msg.value)"];
+}
+// Function: 39358.sol-Proxy-forward(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+! destination.call.value(value)(data)
+
+IRs:
+TMP_14(bool) = LOW_LEVEL_CALL, dest:destination, function:call, arguments:['data'] value:value 
+TMP_15 = UnaryType.BANG TMP_14 
+CONDITION TMP_15"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Forwarded(destination,value,data)
+
+IRs:
+Emit Forwarded(destination,value,data)"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Owned.onlyOwner()()"];
+5->1;
+}
+// Function: 39358.sol-Proxy-ifOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+isOwner(sender)
+
+IRs:
+TMP_19(bool) = INTERNAL_CALL, Owned.isOwner(address)(sender)
+CONDITION TMP_19"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: _ 2
+"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 39358.sol-Proxy-isOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+addr == owner
+
+IRs:
+TMP_10(bool) = addr == owner
+RETURN TMP_10"];
+}
+// Function: 39358.sol-Proxy-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+isOwner(msg.sender)
+
+IRs:
+TMP_18(bool) = INTERNAL_CALL, Owned.isOwner(address)(msg.sender)
+CONDITION TMP_18"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: _ 2
+"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 39358.sol-Proxy-transfer(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = _owner
+
+IRs:
+owner(address) := _owner(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Owned.onlyOwner()()"];
+2->1;
+}
+// Function: 39358.sol-RecoverableController-RecoverableController(address,address,uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+version = 1
+
+IRs:
+version(uint256) := 1(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+proxy = Proxy(proxyAddress)
+
+IRs:
+TMP_20 = CONVERT proxyAddress to Proxy
+proxy(Proxy) := TMP_20(Proxy)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+userKey = _userKey
+
+IRs:
+userKey(address) := _userKey(address)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+shortTimeLock = _shortTimeLock
+
+IRs:
+shortTimeLock(uint256) := _shortTimeLock(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+longTimeLock = _longTimeLock
+
+IRs:
+longTimeLock(uint256) := _longTimeLock(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+recoveryKey = msg.sender
+
+IRs:
+recoveryKey(address) := msg.sender(address)"];
+}
+// Function: 39358.sol-RecoverableController-changeController()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+proposedControllerPendingUntil < now && proposedController != 0x0
+
+IRs:
+TMP_32(bool) = proposedControllerPendingUntil < now
+TMP_33(bool) = proposedController != 0
+TMP_34(bool) = TMP_32 && TMP_33
+CONDITION TMP_34"];
+1->2[label="True"];
+1->4[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+proxy.transfer(proposedController)
+
+IRs:
+HIGH_LEVEL_CALL, dest:proxy(Proxy), function:transfer, arguments:['proposedController']  "];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+suicide(address)(proposedController)
+
+IRs:
+TMP_36(None) = SOLIDITY_CALL suicide(address)(proposedController)"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+}
+// Function: 39358.sol-RecoverableController-changeRecovery()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+proposedRecoveryKeyPendingUntil < now && proposedRecoveryKey != 0x0
+
+IRs:
+TMP_26(bool) = proposedRecoveryKeyPendingUntil < now
+TMP_27(bool) = proposedRecoveryKey != 0
+TMP_28(bool) = TMP_26 && TMP_27
+CONDITION TMP_28"];
+1->2[label="True"];
+1->4[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+recoveryKey = proposedRecoveryKey
+
+IRs:
+recoveryKey(address) := proposedRecoveryKey(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+delete proposedRecoveryKey
+
+IRs:
+proposedRecoveryKey = delete proposedRecoveryKey "];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+}
+// Function: 39358.sol-RecoverableController-changeRecoveryFromRecovery(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+recoveryKey = _recoveryKey
+
+IRs:
+recoveryKey(address) := _recoveryKey(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyRecoveryKey()
+
+IRs:
+MODIFIER_CALL, RecoverableController.onlyRecoveryKey()()"];
+2->1;
+}
+// Function: 39358.sol-RecoverableController-changeUserKey()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+proposedUserKeyPendingUntil < now && proposedUserKey != 0x0
+
+IRs:
+TMP_40(bool) = proposedUserKeyPendingUntil < now
+TMP_41(bool) = proposedUserKey != 0
+TMP_42(bool) = TMP_40 && TMP_41
+CONDITION TMP_42"];
+1->2[label="True"];
+1->5[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+userKey = proposedUserKey
+
+IRs:
+userKey(address) := proposedUserKey(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+delete proposedUserKey
+
+IRs:
+proposedUserKey = delete proposedUserKey "];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+RecoveryEvent(changeUserKey,msg.sender)
+
+IRs:
+Emit RecoveryEvent(changeUserKey,msg.sender)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+}
+// Function: 39358.sol-RecoverableController-changeUserKeyFromRecovery(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+delete proposedUserKey
+
+IRs:
+proposedUserKey = delete proposedUserKey "];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+userKey = _userKey
+
+IRs:
+userKey(address) := _userKey(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyRecoveryKey()
+
+IRs:
+MODIFIER_CALL, RecoverableController.onlyRecoveryKey()()"];
+3->1;
+}
+// Function: 39358.sol-RecoverableController-forward(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+proxy.forward(destination,value,data)
+
+IRs:
+HIGH_LEVEL_CALL, dest:proxy(Proxy), function:forward, arguments:['destination', 'value', 'data']  "];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyUserKey()
+
+IRs:
+MODIFIER_CALL, RecoverableController.onlyUserKey()()"];
+2->1;
+}
+// Function: 39358.sol-RecoverableController-onlyRecoveryKey()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender == recoveryKey
+
+IRs:
+TMP_47(bool) = msg.sender == recoveryKey
+CONDITION TMP_47"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: _ 2
+"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 39358.sol-RecoverableController-onlyUserKey()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender == userKey
+
+IRs:
+TMP_46(bool) = msg.sender == userKey
+CONDITION TMP_46"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: _ 2
+"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 39358.sol-RecoverableController-signControllerChange(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+proposedControllerPendingUntil = now + longTimeLock
+
+IRs:
+TMP_29(uint256) = now + longTimeLock
+proposedControllerPendingUntil(uint256) := TMP_29(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+proposedController = _proposedController
+
+IRs:
+proposedController(address) := _proposedController(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+RecoveryEvent(signControllerChange,msg.sender)
+
+IRs:
+Emit RecoveryEvent(signControllerChange,msg.sender)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyUserKey()
+
+IRs:
+MODIFIER_CALL, RecoverableController.onlyUserKey()()"];
+4->1;
+}
+// Function: 39358.sol-RecoverableController-signRecoveryChange(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+proposedRecoveryKeyPendingUntil = now + longTimeLock
+
+IRs:
+TMP_23(uint256) = now + longTimeLock
+proposedRecoveryKeyPendingUntil(uint256) := TMP_23(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+proposedRecoveryKey = _proposedRecoveryKey
+
+IRs:
+proposedRecoveryKey(address) := _proposedRecoveryKey(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+RecoveryEvent(signRecoveryChange,msg.sender)
+
+IRs:
+Emit RecoveryEvent(signRecoveryChange,msg.sender)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyUserKey()
+
+IRs:
+MODIFIER_CALL, RecoverableController.onlyUserKey()()"];
+4->1;
+}
+// Function: 39358.sol-RecoverableController-signUserKeyChange(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+proposedUserKeyPendingUntil = now + shortTimeLock
+
+IRs:
+TMP_37(uint256) = now + shortTimeLock
+proposedUserKeyPendingUntil(uint256) := TMP_37(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+proposedUserKey = _proposedUserKey
+
+IRs:
+proposedUserKey(address) := _proposedUserKey(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+RecoveryEvent(signUserKeyChange,msg.sender)
+
+IRs:
+Emit RecoveryEvent(signUserKeyChange,msg.sender)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyUserKey()
+
+IRs:
+MODIFIER_CALL, RecoverableController.onlyUserKey()()"];
+4->1;
+}
+// Function: 39358.sol-RecoveryQuorum-RecoveryQuorum(address,address[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+controller = RecoverableController(_controller)
+
+IRs:
+TMP_48 = CONVERT _controller to RecoverableController
+controller(RecoverableController) := TMP_48(RecoverableController)"];
+1->4;
+2[label="Node Type: BEGIN_LOOP 2
+"];
+2->5;
+3[label="Node Type: END_LOOP 3
+"];
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+4->2;
+5[label="Node Type: IF_LOOP 5
+
+EXPRESSION:
+i < _delegates.length
+
+IRs:
+REF_11 -> LENGTH _delegates
+TMP_49(bool) = i < REF_11
+CONDITION TMP_49"];
+5->6[label="True"];
+5->3[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+delegateAddresses.push(_delegates[i])
+
+IRs:
+REF_13(address) -> _delegates[i]
+REF_14 -> LENGTH delegateAddresses
+TMP_51(uint256) := REF_14(uint256)
+TMP_52(uint256) = TMP_51 + 1
+REF_14(uint256) (->delegateAddresses) := TMP_52(uint256)
+REF_15(address) -> delegateAddresses[TMP_51]
+REF_15(address) (->delegateAddresses) := REF_13(address)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+delegates[_delegates[i]] = Delegate(0x0,0,31536000000000)
+
+IRs:
+REF_16(address) -> _delegates[i]
+REF_17(RecoveryQuorum.Delegate) -> delegates[REF_16]
+TMP_53(RecoveryQuorum.Delegate) = new Delegate(0,0,31536000000000)
+REF_17(RecoveryQuorum.Delegate) (->delegates) := TMP_53(RecoveryQuorum.Delegate)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_54(uint256) := i(uint256)
+i(uint256) = i + 1"];
+8->5;
+}
+// Function: 39358.sol-RecoveryQuorum-addDelegate(address)
+digraph{
+}
+// Function: 39358.sol-RecoveryQuorum-changeUserKey(address)
+digraph{
+}
+// Function: 39358.sol-RecoveryQuorum-collectedSignatures(address)
+digraph{
+}
+// Function: 39358.sol-RecoveryQuorum-delegateHasValidSignature(RecoveryQuorum.Delegate)
+digraph{
+}
+// Function: 39358.sol-RecoveryQuorum-delegateIsCurrent(RecoveryQuorum.Delegate)
+digraph{
+}
+// Function: 39358.sol-RecoveryQuorum-delegateIsDeleted(RecoveryQuorum.Delegate)
+digraph{
+}
+// Function: 39358.sol-RecoveryQuorum-delegateRecordExists(RecoveryQuorum.Delegate)
+digraph{
+}
+// Function: 39358.sol-RecoveryQuorum-garbageCollect()
+digraph{
+}
+// Function: 39358.sol-RecoveryQuorum-getAddresses()
+digraph{
+}
+// Function: 39358.sol-RecoveryQuorum-neededSignatures()
+digraph{
+}
+// Function: 39358.sol-RecoveryQuorum-onlyUserKey()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender == controller.userKey()
+
+IRs:
+TMP_55(address) = HIGH_LEVEL_CALL, dest:controller(RecoverableController), function:userKey, arguments:[]  
+TMP_56(bool) = msg.sender == TMP_55
+CONDITION TMP_56"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: _ 2
+"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 39358.sol-RecoveryQuorum-removeDelegate(address)
+digraph{
+}
+// Function: 39358.sol-RecoveryQuorum-replaceDelegates(address[],address[])
+digraph{
+}
+// Function: 39358.sol-RecoveryQuorum-signUserChange(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+"];
+1->2[label="True"];
+1->5[label="False"];
+2[label="Node Type: EXPRESSION 2
+"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+}
+}

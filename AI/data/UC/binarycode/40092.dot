@@ -1,0 +1,1255 @@
+digraph G {
+// Function: 40092.sol-CertificationCentre-CertificationCentre(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.value > 0
+
+IRs:
+TMP_50(bool) = msg.value > 0
+CONDITION TMP_50"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+WithBeneficiary(beneficiary)
+
+IRs:
+INTERNAL_CALL, WithBeneficiary.WithBeneficiary(address)(beneficiary)"];
+4->1;
+}
+// Function: 40092.sol-CertificationCentre-Owned()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 40092.sol-CertificationCentre-PullPaymentCapable()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+0 < this.balance
+
+IRs:
+REF_11(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_28(bool) = 0 < REF_11
+CONDITION TMP_28"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+asyncSend(msg.sender,this.balance)
+
+IRs:
+REF_12(uint256) = SOLIDITY_CALL balance(address)(this)
+INTERNAL_CALL, PullPaymentCapable.asyncSend(address,uint256)(msg.sender,REF_12)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 40092.sol-CertificationCentre-WithBeneficiary(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_beneficiary == 0
+
+IRs:
+TMP_38(bool) = _beneficiary == 0
+CONDITION TMP_38"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+beneficiary = _beneficiary
+
+IRs:
+beneficiary(address) := _beneficiary(address)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+msg.value > 0
+
+IRs:
+TMP_39(bool) = msg.value > 0
+CONDITION TMP_39"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+asyncSend(beneficiary,msg.value)
+
+IRs:
+INTERNAL_CALL, PullPaymentCapable.asyncSend(address,uint256)(beneficiary,msg.value)"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+}
+// Function: 40092.sol-CertificationCentre-asyncSend(address,uint256)
+digraph{
+}
+// Function: 40092.sol-CertificationCentre-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+asyncSend(beneficiary,msg.value)
+
+IRs:
+INTERNAL_CALL, PullPaymentCapable.asyncSend(address,uint256)(beneficiary,msg.value)"];
+}
+// Function: 40092.sol-CertificationCentre-fixBalance()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+fixBalanceInternal(getBeneficiary())
+
+IRs:
+TMP_63(address) = INTERNAL_CALL, WithBeneficiary.getBeneficiary()()
+TMP_64(bool) = INTERNAL_CALL, PullPaymentCapable.fixBalanceInternal(address)(TMP_63)
+RETURN TMP_64"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 40092.sol-CertificationCentre-fixBalanceInternal(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+totalBalance < this.balance
+
+IRs:
+REF_19(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_35(bool) = totalBalance < REF_19
+CONDITION TMP_35"];
+1->2[label="True"];
+1->5[label="False"];
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+amount = this.balance - totalBalance
+
+IRs:
+REF_20(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_36([<slither.core.solidity_types.elementary_type.ElementaryType object at 0x7f0c93987190>]) = REF_20 - totalBalance
+amount(uint256) := TMP_36([<slither.core.solidity_types.elementary_type.ElementaryType object at 0x7f0c93987190>])"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+payments[dest] += amount
+
+IRs:
+REF_21(uint256) -> payments[dest]
+REF_21(-> payments) = REF_21 + amount"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+LogPaymentReceived(dest,amount)
+
+IRs:
+Emit LogPaymentReceived(dest,amount)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 40092.sol-CertificationCentre-fromOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != owner
+
+IRs:
+TMP_65(bool) = msg.sender != owner
+CONDITION TMP_65"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 40092.sol-CertificationCentre-getBeneficiary()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+beneficiary
+
+IRs:
+RETURN beneficiary"];
+}
+// Function: 40092.sol-CertificationCentre-getCertificationDbAtIndex(uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+certificationDbs[index]
+
+IRs:
+REF_26(address) -> certificationDbs[index]
+RETURN REF_26"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+db
+
+IRs:
+RETURN db"];
+}
+// Function: 40092.sol-CertificationCentre-getCertificationDbCount()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+certificationDbs.length
+
+IRs:
+REF_22 -> LENGTH certificationDbs
+RETURN REF_22"];
+}
+// Function: 40092.sol-CertificationCentre-getCertificationDbStatus(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+status = certificationDbStatuses[db]
+
+IRs:
+REF_23(CertificationCentre.CertificationDbStruct) -> certificationDbStatuses[db]
+status(CertificationCentre.CertificationDbStruct) := REF_23(CertificationCentre.CertificationDbStruct)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+(status.valid,status.index)
+
+IRs:
+REF_24(bool) -> status.valid
+REF_25(uint256) -> status.index
+RETURN REF_24,REF_25"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+(valid,index)
+
+IRs:
+RETURN valid,index"];
+}
+// Function: 40092.sol-CertificationCentre-getOwner()
+digraph{
+}
+// Function: 40092.sol-CertificationCentre-getPaymentOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+payments[beneficiary]
+
+IRs:
+REF_14(uint256) -> payments[beneficiary]
+RETURN REF_14"];
+}
+// Function: 40092.sol-CertificationCentre-getTotalBalance()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+totalBalance
+
+IRs:
+RETURN totalBalance"];
+}
+// Function: 40092.sol-CertificationCentre-registerCertificationDb(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->11;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+db == 0
+
+IRs:
+TMP_52(bool) = db == 0
+CONDITION TMP_52"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+! certificationDbStatuses[db].valid
+
+IRs:
+REF_27(CertificationCentre.CertificationDbStruct) -> certificationDbStatuses[db]
+REF_28(bool) -> REF_27.valid
+TMP_53 = UnaryType.BANG REF_28 
+CONDITION TMP_53"];
+4->5[label="True"];
+4->8[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+certificationDbStatuses[db].valid = true
+
+IRs:
+REF_29(CertificationCentre.CertificationDbStruct) -> certificationDbStatuses[db]
+REF_30(bool) -> REF_29.valid
+REF_30(bool) (->certificationDbStatuses) := True(bool)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+certificationDbStatuses[db].index = certificationDbs.length
+
+IRs:
+REF_31(CertificationCentre.CertificationDbStruct) -> certificationDbStatuses[db]
+REF_32(uint256) -> REF_31.index
+REF_33 -> LENGTH certificationDbs
+REF_32(uint256) (->certificationDbStatuses) := REF_33(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+certificationDbs.push(db)
+
+IRs:
+REF_35 -> LENGTH certificationDbs
+TMP_55(uint256) := REF_35(uint256)
+TMP_56(uint256) = TMP_55 + 1
+REF_35(uint256) (->certificationDbs) := TMP_56(uint256)
+REF_36(address) -> certificationDbs[TMP_55]
+REF_36(address) (->certificationDbs) := db(address)"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+LogCertificationDbRegistered(db)
+
+IRs:
+Emit LogCertificationDbRegistered(db)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+success = true
+
+IRs:
+success(bool) := True(bool)"];
+10->12;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+fromOwner()
+
+IRs:
+MODIFIER_CALL, Owned.fromOwner()()"];
+11->1;
+12[label="Node Type: RETURN 12
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 40092.sol-CertificationCentre-setBeneficiary(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->9;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+newBeneficiary == 0
+
+IRs:
+TMP_41(bool) = newBeneficiary == 0
+CONDITION TMP_41"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+beneficiary != newBeneficiary
+
+IRs:
+TMP_42(bool) = beneficiary != newBeneficiary
+CONDITION TMP_42"];
+4->5[label="True"];
+4->7[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+LogBeneficiarySet(beneficiary,newBeneficiary)
+
+IRs:
+Emit LogBeneficiarySet(beneficiary,newBeneficiary)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+beneficiary = newBeneficiary
+
+IRs:
+beneficiary(address) := newBeneficiary(address)"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+success = true
+
+IRs:
+success(bool) := True(bool)"];
+8->10;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+fromOwner()
+
+IRs:
+MODIFIER_CALL, Owned.fromOwner()()"];
+9->1;
+10[label="Node Type: RETURN 10
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 40092.sol-CertificationCentre-setOwner(address)
+digraph{
+}
+// Function: 40092.sol-CertificationCentre-unRegisterCertificationDb(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->10;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+certificationDbStatuses[db].valid
+
+IRs:
+REF_37(CertificationCentre.CertificationDbStruct) -> certificationDbStatuses[db]
+REF_38(bool) -> REF_37.valid
+CONDITION REF_38"];
+1->2[label="True"];
+1->7[label="False"];
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+index = certificationDbStatuses[db].index
+
+IRs:
+REF_39(CertificationCentre.CertificationDbStruct) -> certificationDbStatuses[db]
+REF_40(uint256) -> REF_39.index
+index(uint256) := REF_40(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+certificationDbs[index] = certificationDbs[certificationDbs.length - 1]
+
+IRs:
+REF_41(address) -> certificationDbs[index]
+REF_42 -> LENGTH certificationDbs
+TMP_59(uint256) = REF_42 - 1
+REF_43(address) -> certificationDbs[TMP_59]
+REF_41(address) (->certificationDbs) := REF_43(address)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+certificationDbStatuses[certificationDbs[index]].index = index
+
+IRs:
+REF_44(address) -> certificationDbs[index]
+REF_45(CertificationCentre.CertificationDbStruct) -> certificationDbStatuses[REF_44]
+REF_46(uint256) -> REF_45.index
+REF_46(uint256) (->certificationDbStatuses) := index(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+delete certificationDbStatuses[db]
+
+IRs:
+REF_47(CertificationCentre.CertificationDbStruct) -> certificationDbStatuses[db]
+certificationDbStatuses = delete REF_47 "];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+certificationDbs.length --
+
+IRs:
+REF_48 -> LENGTH certificationDbs
+TMP_60(uint256) := REF_48(uint256)
+REF_48(-> certificationDbs) = REF_48 - 1"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+LogCertificationDbUnRegistered(db)
+
+IRs:
+Emit LogCertificationDbUnRegistered(db)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+success = true
+
+IRs:
+success(bool) := True(bool)"];
+9->11;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+fromOwner()
+
+IRs:
+MODIFIER_CALL, Owned.fromOwner()()"];
+10->1;
+11[label="Node Type: RETURN 11
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 40092.sol-CertificationCentre-withdrawPayments()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+payment = payments[msg.sender]
+
+IRs:
+REF_15(uint256) -> payments[msg.sender]
+payment(uint256) := REF_15(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+payments[msg.sender] = 0
+
+IRs:
+REF_16(uint256) -> payments[msg.sender]
+REF_16(uint256) (->payments) := 0(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+totalBalance -= payment
+
+IRs:
+totalBalance(uint256) = totalBalance - payment"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+! msg.sender.call.value(payment)()
+
+IRs:
+TMP_33(bool) = LOW_LEVEL_CALL, dest:msg.sender, function:call, arguments:[] value:payment 
+TMP_34 = UnaryType.BANG TMP_33 
+CONDITION TMP_34"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: THROW 5
+"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+success = true
+
+IRs:
+success(bool) := True(bool)"];
+7->8;
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 40092.sol-CertificationCentreI-getCertificationDbAtIndex(uint256)
+digraph{
+}
+// Function: 40092.sol-CertificationCentreI-getCertificationDbCount()
+digraph{
+}
+// Function: 40092.sol-CertificationCentreI-getCertificationDbStatus(address)
+digraph{
+}
+// Function: 40092.sol-CertificationCentreI-registerCertificationDb(address)
+digraph{
+}
+// Function: 40092.sol-CertificationCentreI-unRegisterCertificationDb(address)
+digraph{
+}
+// Function: 40092.sol-Owned-Owned()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 40092.sol-Owned-fromOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != owner
+
+IRs:
+TMP_4(bool) = msg.sender != owner
+CONDITION TMP_4"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 40092.sol-Owned-getOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+owner
+
+IRs:
+RETURN owner"];
+}
+// Function: 40092.sol-Owned-setOwner(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->9;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+newOwner == 0
+
+IRs:
+TMP_0(bool) = newOwner == 0
+CONDITION TMP_0"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+owner != newOwner
+
+IRs:
+TMP_1(bool) = owner != newOwner
+CONDITION TMP_1"];
+4->5[label="True"];
+4->7[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+LogOwnerChanged(owner,newOwner)
+
+IRs:
+Emit LogOwnerChanged(owner,newOwner)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+owner = newOwner
+
+IRs:
+owner(address) := newOwner(address)"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+success = true
+
+IRs:
+success(bool) := True(bool)"];
+8->10;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+fromOwner()
+
+IRs:
+MODIFIER_CALL, Owned.fromOwner()()"];
+9->1;
+10[label="Node Type: RETURN 10
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 40092.sol-OwnedI-getOwner()
+digraph{
+}
+// Function: 40092.sol-OwnedI-setOwner(address)
+digraph{
+}
+// Function: 40092.sol-PullPaymentCapable-PullPaymentCapable()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+0 < this.balance
+
+IRs:
+REF_0(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_5(bool) = 0 < REF_0
+CONDITION TMP_5"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+asyncSend(msg.sender,this.balance)
+
+IRs:
+REF_1(uint256) = SOLIDITY_CALL balance(address)(this)
+INTERNAL_CALL, PullPaymentCapable.asyncSend(address,uint256)(msg.sender,REF_1)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+}
+// Function: 40092.sol-PullPaymentCapable-asyncSend(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+amount > 0
+
+IRs:
+TMP_7(bool) = amount > 0
+CONDITION TMP_7"];
+1->2[label="True"];
+1->5[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+totalBalance += amount
+
+IRs:
+totalBalance(uint256) = totalBalance + amount"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+payments[dest] += amount
+
+IRs:
+REF_2(uint256) -> payments[dest]
+REF_2(-> payments) = REF_2 + amount"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+LogPaymentReceived(dest,amount)
+
+IRs:
+Emit LogPaymentReceived(dest,amount)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+}
+// Function: 40092.sol-PullPaymentCapable-fixBalance()
+digraph{
+}
+// Function: 40092.sol-PullPaymentCapable-fixBalanceInternal(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+totalBalance < this.balance
+
+IRs:
+REF_8(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_12(bool) = totalBalance < REF_8
+CONDITION TMP_12"];
+1->2[label="True"];
+1->5[label="False"];
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+amount = this.balance - totalBalance
+
+IRs:
+REF_9(uint256) = SOLIDITY_CALL balance(address)(this)
+TMP_13([<slither.core.solidity_types.elementary_type.ElementaryType object at 0x7f0c93b168f0>]) = REF_9 - totalBalance
+amount(uint256) := TMP_13([<slither.core.solidity_types.elementary_type.ElementaryType object at 0x7f0c93b168f0>])"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+payments[dest] += amount
+
+IRs:
+REF_10(uint256) -> payments[dest]
+REF_10(-> payments) = REF_10 + amount"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+LogPaymentReceived(dest,amount)
+
+IRs:
+Emit LogPaymentReceived(dest,amount)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 40092.sol-PullPaymentCapable-getPaymentOf(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+payments[beneficiary]
+
+IRs:
+REF_3(uint256) -> payments[beneficiary]
+RETURN REF_3"];
+}
+// Function: 40092.sol-PullPaymentCapable-getTotalBalance()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+totalBalance
+
+IRs:
+RETURN totalBalance"];
+}
+// Function: 40092.sol-PullPaymentCapable-withdrawPayments()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+payment = payments[msg.sender]
+
+IRs:
+REF_4(uint256) -> payments[msg.sender]
+payment(uint256) := REF_4(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+payments[msg.sender] = 0
+
+IRs:
+REF_5(uint256) -> payments[msg.sender]
+REF_5(uint256) (->payments) := 0(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+totalBalance -= payment
+
+IRs:
+totalBalance(uint256) = totalBalance - payment"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+! msg.sender.call.value(payment)()
+
+IRs:
+TMP_10(bool) = LOW_LEVEL_CALL, dest:msg.sender, function:call, arguments:[] value:payment 
+TMP_11 = UnaryType.BANG TMP_10 
+CONDITION TMP_11"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: THROW 5
+"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+success = true
+
+IRs:
+success(bool) := True(bool)"];
+7->8;
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 40092.sol-WithBeneficiary-Owned()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 40092.sol-WithBeneficiary-WithBeneficiary(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_beneficiary == 0
+
+IRs:
+TMP_19(bool) = _beneficiary == 0
+CONDITION TMP_19"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+beneficiary = _beneficiary
+
+IRs:
+beneficiary(address) := _beneficiary(address)"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+msg.value > 0
+
+IRs:
+TMP_20(bool) = msg.value > 0
+CONDITION TMP_20"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+asyncSend(beneficiary,msg.value)
+
+IRs:
+INTERNAL_CALL, WithBeneficiary.asyncSend(address,uint256)(beneficiary,msg.value)"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+}
+// Function: 40092.sol-WithBeneficiary-asyncSend(address,uint256)
+digraph{
+}
+// Function: 40092.sol-WithBeneficiary-fallback()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+asyncSend(beneficiary,msg.value)
+
+IRs:
+INTERNAL_CALL, WithBeneficiary.asyncSend(address,uint256)(beneficiary,msg.value)"];
+}
+// Function: 40092.sol-WithBeneficiary-fromOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender != owner
+
+IRs:
+TMP_27(bool) = msg.sender != owner
+CONDITION TMP_27"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: _ 4
+"];
+}
+// Function: 40092.sol-WithBeneficiary-getBeneficiary()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+beneficiary
+
+IRs:
+RETURN beneficiary"];
+}
+// Function: 40092.sol-WithBeneficiary-getOwner()
+digraph{
+}
+// Function: 40092.sol-WithBeneficiary-setBeneficiary(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->9;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+newBeneficiary == 0
+
+IRs:
+TMP_22(bool) = newBeneficiary == 0
+CONDITION TMP_22"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: THROW 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+beneficiary != newBeneficiary
+
+IRs:
+TMP_23(bool) = beneficiary != newBeneficiary
+CONDITION TMP_23"];
+4->5[label="True"];
+4->7[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+LogBeneficiarySet(beneficiary,newBeneficiary)
+
+IRs:
+Emit LogBeneficiarySet(beneficiary,newBeneficiary)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+beneficiary = newBeneficiary
+
+IRs:
+beneficiary(address) := newBeneficiary(address)"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+success = true
+
+IRs:
+success(bool) := True(bool)"];
+8->10;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+fromOwner()
+
+IRs:
+MODIFIER_CALL, Owned.fromOwner()()"];
+9->1;
+10[label="Node Type: RETURN 10
+
+EXPRESSION:
+success
+
+IRs:
+RETURN success"];
+}
+// Function: 40092.sol-WithBeneficiary-setOwner(address)
+digraph{
+}
+}

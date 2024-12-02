@@ -1,0 +1,1589 @@
+digraph G {
+// Function: 1382.sol-Bounty0xEscrow-_transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_newOwner != address(0))
+
+IRs:
+TMP_54 = CONVERT 0 to address
+TMP_55(bool) = _newOwner != TMP_54
+TMP_56(None) = SOLIDITY_CALL require(bool)(TMP_55)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,_newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,_newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = _newOwner
+
+IRs:
+owner(address) := _newOwner(address)"];
+}
+// Function: 1382.sol-Bounty0xEscrow-approveToPullOutTokens(address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+ERC20(_token).approve(_receiver,_amount)
+
+IRs:
+TMP_163 = CONVERT _token to ERC20
+TMP_164(bool) = HIGH_LEVEL_CALL, dest:TMP_163(ERC20), function:approve, arguments:['_receiver', '_amount']  "];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 1382.sol-Bounty0xEscrow-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+}
+// Function: 1382.sol-Bounty0xEscrow-depositEther()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+tokens[address(0)][msg.sender] = SafeMath.add(tokens[address(0)][msg.sender],msg.value)
+
+IRs:
+TMP_70 = CONVERT 0 to address
+REF_15(mapping(address => uint256)) -> tokens[TMP_70]
+REF_16(uint256) -> REF_15[msg.sender]
+TMP_71 = CONVERT 0 to address
+REF_18(mapping(address => uint256)) -> tokens[TMP_71]
+REF_19(uint256) -> REF_18[msg.sender]
+TMP_72(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_19', 'msg.value'] 
+REF_16(uint256) (->tokens) := TMP_72(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Deposit(address(0),msg.sender,msg.value,tokens[address(0)][msg.sender])
+
+IRs:
+TMP_73 = CONVERT 0 to address
+TMP_74 = CONVERT 0 to address
+REF_20(mapping(address => uint256)) -> tokens[TMP_74]
+REF_21(uint256) -> REF_20[msg.sender]
+Emit Deposit(TMP_73,msg.sender,msg.value,REF_21)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+whenNotPaused()
+
+IRs:
+MODIFIER_CALL, Pausable.whenNotPaused()()"];
+3->1;
+}
+// Function: 1382.sol-Bounty0xEscrow-depositToken(address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_token != address(0))
+
+IRs:
+TMP_61 = CONVERT 0 to address
+TMP_62(bool) = _token != TMP_61
+TMP_63(None) = SOLIDITY_CALL require(bool)(TMP_62)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(ERC20(_token).transferFrom(msg.sender,this,_amount))
+
+IRs:
+TMP_64 = CONVERT _token to ERC20
+TMP_65(bool) = HIGH_LEVEL_CALL, dest:TMP_64(ERC20), function:transferFrom, arguments:['msg.sender', 'this', '_amount']  
+TMP_66(None) = SOLIDITY_CALL require(bool)(TMP_65)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+tokens[_token][msg.sender] = SafeMath.add(tokens[_token][msg.sender],_amount)
+
+IRs:
+REF_8(mapping(address => uint256)) -> tokens[_token]
+REF_9(uint256) -> REF_8[msg.sender]
+REF_11(mapping(address => uint256)) -> tokens[_token]
+REF_12(uint256) -> REF_11[msg.sender]
+TMP_67(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_12', '_amount'] 
+REF_9(uint256) (->tokens) := TMP_67(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Deposit(_token,msg.sender,_amount,tokens[_token][msg.sender])
+
+IRs:
+REF_13(mapping(address => uint256)) -> tokens[_token]
+REF_14(uint256) -> REF_13[msg.sender]
+Emit Deposit(_token,msg.sender,_amount,REF_14)"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+whenNotPaused()
+
+IRs:
+MODIFIER_CALL, Pausable.whenNotPaused()()"];
+5->1;
+}
+// Function: 1382.sol-Bounty0xEscrow-distributeTokenToAddress(address,address,address,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->9;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_hunter != address(0))
+
+IRs:
+TMP_77 = CONVERT 0 to address
+TMP_78(bool) = _hunter != TMP_77
+TMP_79(None) = SOLIDITY_CALL require(bool)(TMP_78)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(tokens[_token][_host] >= _amount)
+
+IRs:
+REF_22(mapping(address => uint256)) -> tokens[_token]
+REF_23(uint256) -> REF_22[_host]
+TMP_80(bool) = REF_23 >= _amount
+TMP_81(None) = SOLIDITY_CALL require(bool)(TMP_80)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+tokens[_token][_host] = SafeMath.sub(tokens[_token][_host],_amount)
+
+IRs:
+REF_24(mapping(address => uint256)) -> tokens[_token]
+REF_25(uint256) -> REF_24[_host]
+REF_27(mapping(address => uint256)) -> tokens[_token]
+REF_28(uint256) -> REF_27[_host]
+TMP_82(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_28', '_amount'] 
+REF_25(uint256) (->tokens) := TMP_82(uint256)"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+_token == address(0)
+
+IRs:
+TMP_83 = CONVERT 0 to address
+TMP_84(bool) = _token == TMP_83
+CONDITION TMP_84"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool)(_hunter.send(_amount))
+
+IRs:
+TMP_85 = SEND dest:_hunter value:_amount
+TMP_86(None) = SOLIDITY_CALL require(bool)(TMP_85)"];
+5->7;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+require(bool)(ERC20(_token).transfer(_hunter,_amount))
+
+IRs:
+TMP_87 = CONVERT _token to ERC20
+TMP_88(bool) = HIGH_LEVEL_CALL, dest:TMP_87(ERC20), function:transfer, arguments:['_hunter', '_amount']  
+TMP_89(None) = SOLIDITY_CALL require(bool)(TMP_88)"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+Distribution(_token,_host,_hunter,_amount)
+
+IRs:
+Emit Distribution(_token,_host,_hunter,_amount)"];
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+9->1;
+}
+// Function: 1382.sol-Bounty0xEscrow-distributeTokenToAddressesAndAmounts(address,address,address[],uint256[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->28;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_host != address(0))
+
+IRs:
+TMP_92 = CONVERT 0 to address
+TMP_93(bool) = _host != TMP_92
+TMP_94(None) = SOLIDITY_CALL require(bool)(TMP_93)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_hunters.length == _amounts.length)
+
+IRs:
+REF_31 -> LENGTH _hunters
+REF_32 -> LENGTH _amounts
+TMP_95(bool) = REF_31 == REF_32
+TMP_96(None) = SOLIDITY_CALL require(bool)(TMP_95)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+totalAmount = 0
+
+IRs:
+totalAmount(uint256) := 0(uint256)"];
+3->6;
+4[label="Node Type: BEGIN_LOOP 4
+"];
+4->7;
+5[label="Node Type: END_LOOP 5
+"];
+5->10;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+j = 0
+
+IRs:
+j(uint256) := 0(uint256)"];
+6->4;
+7[label="Node Type: IF_LOOP 7
+
+EXPRESSION:
+j < _amounts.length
+
+IRs:
+REF_33 -> LENGTH _amounts
+TMP_97(bool) = j < REF_33
+CONDITION TMP_97"];
+7->8[label="True"];
+7->5[label="False"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+totalAmount = SafeMath.add(totalAmount,_amounts[j])
+
+IRs:
+REF_35(uint256) -> _amounts[j]
+TMP_98(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['totalAmount', 'REF_35'] 
+totalAmount(uint256) := TMP_98(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+j ++
+
+IRs:
+TMP_99(uint256) := j(uint256)
+j(uint256) = j + 1"];
+9->7;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+require(bool)(tokens[_token][_host] >= totalAmount)
+
+IRs:
+REF_36(mapping(address => uint256)) -> tokens[_token]
+REF_37(uint256) -> REF_36[_host]
+TMP_100(bool) = REF_37 >= totalAmount
+TMP_101(None) = SOLIDITY_CALL require(bool)(TMP_100)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+tokens[_token][_host] = SafeMath.sub(tokens[_token][_host],totalAmount)
+
+IRs:
+REF_38(mapping(address => uint256)) -> tokens[_token]
+REF_39(uint256) -> REF_38[_host]
+REF_41(mapping(address => uint256)) -> tokens[_token]
+REF_42(uint256) -> REF_41[_host]
+TMP_102(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_42', 'totalAmount'] 
+REF_39(uint256) (->tokens) := TMP_102(uint256)"];
+11->12;
+12[label="Node Type: IF 12
+
+EXPRESSION:
+_token == address(0)
+
+IRs:
+TMP_103 = CONVERT 0 to address
+TMP_104(bool) = _token == TMP_103
+CONDITION TMP_104"];
+12->15[label="True"];
+12->22[label="False"];
+13[label="Node Type: BEGIN_LOOP 13
+"];
+13->16;
+14[label="Node Type: END_LOOP 14
+"];
+14->27;
+15[label="Node Type: NEW VARIABLE 15
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+15->13;
+16[label="Node Type: IF_LOOP 16
+
+EXPRESSION:
+i < _hunters.length
+
+IRs:
+REF_43 -> LENGTH _hunters
+TMP_105(bool) = i < REF_43
+CONDITION TMP_105"];
+16->17[label="True"];
+16->14[label="False"];
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+require(bool)(_hunters[i].send(_amounts[i]))
+
+IRs:
+REF_44(address) -> _hunters[i]
+REF_46(uint256) -> _amounts[i]
+TMP_106 = SEND dest:REF_44 value:REF_46
+TMP_107(None) = SOLIDITY_CALL require(bool)(TMP_106)"];
+17->18;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+Distribution(_token,_host,_hunters[i],_amounts[i])
+
+IRs:
+REF_47(address) -> _hunters[i]
+REF_48(uint256) -> _amounts[i]
+Emit Distribution(_token,_host,REF_47,REF_48)"];
+18->19;
+19[label="Node Type: EXPRESSION 19
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_109(uint256) := i(uint256)
+i(uint256) = i + 1"];
+19->16;
+20[label="Node Type: BEGIN_LOOP 20
+"];
+20->23;
+21[label="Node Type: END_LOOP 21
+"];
+21->27;
+22[label="Node Type: NEW VARIABLE 22
+
+EXPRESSION:
+k = 0
+
+IRs:
+k(uint256) := 0(uint256)"];
+22->20;
+23[label="Node Type: IF_LOOP 23
+
+EXPRESSION:
+k < _hunters.length
+
+IRs:
+REF_49 -> LENGTH _hunters
+TMP_110(bool) = k < REF_49
+CONDITION TMP_110"];
+23->24[label="True"];
+23->21[label="False"];
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+require(bool)(ERC20(_token).transfer(_hunters[k],_amounts[k]))
+
+IRs:
+TMP_111 = CONVERT _token to ERC20
+REF_51(address) -> _hunters[k]
+REF_52(uint256) -> _amounts[k]
+TMP_112(bool) = HIGH_LEVEL_CALL, dest:TMP_111(ERC20), function:transfer, arguments:['REF_51', 'REF_52']  
+TMP_113(None) = SOLIDITY_CALL require(bool)(TMP_112)"];
+24->25;
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+Distribution(_token,_host,_hunters[k],_amounts[k])
+
+IRs:
+REF_53(address) -> _hunters[k]
+REF_54(uint256) -> _amounts[k]
+Emit Distribution(_token,_host,REF_53,REF_54)"];
+25->26;
+26[label="Node Type: EXPRESSION 26
+
+EXPRESSION:
+k ++
+
+IRs:
+TMP_115(uint256) := k(uint256)
+k(uint256) = k + 1"];
+26->23;
+27[label="Node Type: END_IF 27
+"];
+28[label="Node Type: EXPRESSION 28
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+28->1;
+}
+// Function: 1382.sol-Bounty0xEscrow-distributeTokenToAddressesAndAmountsWithoutHost(address,address[],uint256[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->27;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_hunters.length == _amounts.length)
+
+IRs:
+REF_55 -> LENGTH _hunters
+REF_56 -> LENGTH _amounts
+TMP_117(bool) = REF_55 == REF_56
+TMP_118(None) = SOLIDITY_CALL require(bool)(TMP_117)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+totalAmount = 0
+
+IRs:
+totalAmount(uint256) := 0(uint256)"];
+2->5;
+3[label="Node Type: BEGIN_LOOP 3
+"];
+3->6;
+4[label="Node Type: END_LOOP 4
+"];
+4->9;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+j = 0
+
+IRs:
+j(uint256) := 0(uint256)"];
+5->3;
+6[label="Node Type: IF_LOOP 6
+
+EXPRESSION:
+j < _amounts.length
+
+IRs:
+REF_57 -> LENGTH _amounts
+TMP_119(bool) = j < REF_57
+CONDITION TMP_119"];
+6->7[label="True"];
+6->4[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+totalAmount = SafeMath.add(totalAmount,_amounts[j])
+
+IRs:
+REF_59(uint256) -> _amounts[j]
+TMP_120(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['totalAmount', 'REF_59'] 
+totalAmount(uint256) := TMP_120(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+j ++
+
+IRs:
+TMP_121(uint256) := j(uint256)
+j(uint256) = j + 1"];
+8->6;
+9[label="Node Type: IF 9
+
+EXPRESSION:
+_token == address(0)
+
+IRs:
+TMP_122 = CONVERT 0 to address
+TMP_123(bool) = _token == TMP_122
+CONDITION TMP_123"];
+9->10[label="True"];
+9->18[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+require(bool)(address(this).balance >= totalAmount)
+
+IRs:
+TMP_124 = CONVERT this to address
+TMP_125(uint256) = SOLIDITY_CALL balance(address)(TMP_124)
+TMP_126(bool) = TMP_125 >= totalAmount
+TMP_127(None) = SOLIDITY_CALL require(bool)(TMP_126)"];
+10->13;
+11[label="Node Type: BEGIN_LOOP 11
+"];
+11->14;
+12[label="Node Type: END_LOOP 12
+"];
+12->26;
+13[label="Node Type: NEW VARIABLE 13
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+13->11;
+14[label="Node Type: IF_LOOP 14
+
+EXPRESSION:
+i < _hunters.length
+
+IRs:
+REF_60 -> LENGTH _hunters
+TMP_128(bool) = i < REF_60
+CONDITION TMP_128"];
+14->15[label="True"];
+14->12[label="False"];
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+require(bool)(_hunters[i].send(_amounts[i]))
+
+IRs:
+REF_61(address) -> _hunters[i]
+REF_63(uint256) -> _amounts[i]
+TMP_129 = SEND dest:REF_61 value:REF_63
+TMP_130(None) = SOLIDITY_CALL require(bool)(TMP_129)"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+Distribution(_token,this,_hunters[i],_amounts[i])
+
+IRs:
+REF_64(address) -> _hunters[i]
+REF_65(uint256) -> _amounts[i]
+Emit Distribution(_token,this,REF_64,REF_65)"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_132(uint256) := i(uint256)
+i(uint256) = i + 1"];
+17->14;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+require(bool)(ERC20(_token).balanceOf(this) >= totalAmount)
+
+IRs:
+TMP_133 = CONVERT _token to ERC20
+TMP_134(uint256) = HIGH_LEVEL_CALL, dest:TMP_133(ERC20), function:balanceOf, arguments:['this']  
+TMP_135(bool) = TMP_134 >= totalAmount
+TMP_136(None) = SOLIDITY_CALL require(bool)(TMP_135)"];
+18->21;
+19[label="Node Type: BEGIN_LOOP 19
+"];
+19->22;
+20[label="Node Type: END_LOOP 20
+"];
+20->26;
+21[label="Node Type: NEW VARIABLE 21
+
+EXPRESSION:
+k = 0
+
+IRs:
+k(uint256) := 0(uint256)"];
+21->19;
+22[label="Node Type: IF_LOOP 22
+
+EXPRESSION:
+k < _hunters.length
+
+IRs:
+REF_67 -> LENGTH _hunters
+TMP_137(bool) = k < REF_67
+CONDITION TMP_137"];
+22->23[label="True"];
+22->20[label="False"];
+23[label="Node Type: EXPRESSION 23
+
+EXPRESSION:
+require(bool)(ERC20(_token).transfer(_hunters[k],_amounts[k]))
+
+IRs:
+TMP_138 = CONVERT _token to ERC20
+REF_69(address) -> _hunters[k]
+REF_70(uint256) -> _amounts[k]
+TMP_139(bool) = HIGH_LEVEL_CALL, dest:TMP_138(ERC20), function:transfer, arguments:['REF_69', 'REF_70']  
+TMP_140(None) = SOLIDITY_CALL require(bool)(TMP_139)"];
+23->24;
+24[label="Node Type: EXPRESSION 24
+
+EXPRESSION:
+Distribution(_token,this,_hunters[k],_amounts[k])
+
+IRs:
+REF_71(address) -> _hunters[k]
+REF_72(uint256) -> _amounts[k]
+Emit Distribution(_token,this,REF_71,REF_72)"];
+24->25;
+25[label="Node Type: EXPRESSION 25
+
+EXPRESSION:
+k ++
+
+IRs:
+TMP_142(uint256) := k(uint256)
+k(uint256) = k + 1"];
+25->22;
+26[label="Node Type: END_IF 26
+"];
+27[label="Node Type: EXPRESSION 27
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+27->1;
+}
+// Function: 1382.sol-Bounty0xEscrow-distributeWithTransferFrom(address,address,address[],uint256[])
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->18;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_token != address(0))
+
+IRs:
+TMP_144 = CONVERT 0 to address
+TMP_145(bool) = _token != TMP_144
+TMP_146(None) = SOLIDITY_CALL require(bool)(TMP_145)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_hunters.length == _amounts.length)
+
+IRs:
+REF_73 -> LENGTH _hunters
+REF_74 -> LENGTH _amounts
+TMP_147(bool) = REF_73 == REF_74
+TMP_148(None) = SOLIDITY_CALL require(bool)(TMP_147)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+totalAmount = 0
+
+IRs:
+totalAmount(uint256) := 0(uint256)"];
+3->6;
+4[label="Node Type: BEGIN_LOOP 4
+"];
+4->7;
+5[label="Node Type: END_LOOP 5
+"];
+5->10;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+j = 0
+
+IRs:
+j(uint256) := 0(uint256)"];
+6->4;
+7[label="Node Type: IF_LOOP 7
+
+EXPRESSION:
+j < _amounts.length
+
+IRs:
+REF_75 -> LENGTH _amounts
+TMP_149(bool) = j < REF_75
+CONDITION TMP_149"];
+7->8[label="True"];
+7->5[label="False"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+totalAmount = SafeMath.add(totalAmount,_amounts[j])
+
+IRs:
+REF_77(uint256) -> _amounts[j]
+TMP_150(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['totalAmount', 'REF_77'] 
+totalAmount(uint256) := TMP_150(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+j ++
+
+IRs:
+TMP_151(uint256) := j(uint256)
+j(uint256) = j + 1"];
+9->7;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+require(bool)(ERC20(_token).allowance(_ownerOfTokens,this) >= totalAmount)
+
+IRs:
+TMP_152 = CONVERT _token to ERC20
+TMP_153(uint256) = HIGH_LEVEL_CALL, dest:TMP_152(ERC20), function:allowance, arguments:['_ownerOfTokens', 'this']  
+TMP_154(bool) = TMP_153 >= totalAmount
+TMP_155(None) = SOLIDITY_CALL require(bool)(TMP_154)"];
+10->13;
+11[label="Node Type: BEGIN_LOOP 11
+"];
+11->14;
+12[label="Node Type: END_LOOP 12
+"];
+13[label="Node Type: NEW VARIABLE 13
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+13->11;
+14[label="Node Type: IF_LOOP 14
+
+EXPRESSION:
+i < _hunters.length
+
+IRs:
+REF_79 -> LENGTH _hunters
+TMP_156(bool) = i < REF_79
+CONDITION TMP_156"];
+14->15[label="True"];
+14->12[label="False"];
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+require(bool)(ERC20(_token).transferFrom(_ownerOfTokens,_hunters[i],_amounts[i]))
+
+IRs:
+TMP_157 = CONVERT _token to ERC20
+REF_81(address) -> _hunters[i]
+REF_82(uint256) -> _amounts[i]
+TMP_158(bool) = HIGH_LEVEL_CALL, dest:TMP_157(ERC20), function:transferFrom, arguments:['_ownerOfTokens', 'REF_81', 'REF_82']  
+TMP_159(None) = SOLIDITY_CALL require(bool)(TMP_158)"];
+15->16;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+Distribution(_token,this,_hunters[i],_amounts[i])
+
+IRs:
+REF_83(address) -> _hunters[i]
+REF_84(uint256) -> _amounts[i]
+Emit Distribution(_token,this,REF_83,REF_84)"];
+16->17;
+17[label="Node Type: EXPRESSION 17
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_161(uint256) := i(uint256)
+i(uint256) = i + 1"];
+17->14;
+18[label="Node Type: EXPRESSION 18
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+18->1;
+}
+// Function: 1382.sol-Bounty0xEscrow-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_169(bool) = msg.sender == owner
+TMP_170(None) = SOLIDITY_CALL require(bool)(TMP_169)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1382.sol-Bounty0xEscrow-pause()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+paused = true
+
+IRs:
+paused(bool) := True(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Pause()
+
+IRs:
+Emit Pause()"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+whenNotPaused()
+
+IRs:
+MODIFIER_CALL, Pausable.whenNotPaused()()"];
+4->1;
+}
+// Function: 1382.sol-Bounty0xEscrow-renounceOwnership()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+OwnershipRenounced(owner)
+
+IRs:
+Emit OwnershipRenounced(owner)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = address(0)
+
+IRs:
+TMP_50 = CONVERT 0 to address
+owner(address) := TMP_50(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 1382.sol-Bounty0xEscrow-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+paused = false
+
+IRs:
+paused(bool) := False(bool)"];
+}
+// Function: 1382.sol-Bounty0xEscrow-tokenFallback(address,uint256,bytes)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+_token = msg.sender
+
+IRs:
+_token(address) := msg.sender(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+tokens[_token][_from] = SafeMath.add(tokens[_token][_from],_value)
+
+IRs:
+REF_0(mapping(address => uint256)) -> tokens[_token]
+REF_1(uint256) -> REF_0[_from]
+REF_3(mapping(address => uint256)) -> tokens[_token]
+REF_4(uint256) -> REF_3[_from]
+TMP_58(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_4', '_value'] 
+REF_1(uint256) (->tokens) := TMP_58(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+Deposit(_token,_from,_value,tokens[_token][_from])
+
+IRs:
+REF_5(mapping(address => uint256)) -> tokens[_token]
+REF_6(uint256) -> REF_5[_from]
+Emit Deposit(_token,_from,_value,REF_6)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+whenNotPaused()
+
+IRs:
+MODIFIER_CALL, Pausable.whenNotPaused()()"];
+4->1;
+}
+// Function: 1382.sol-Bounty0xEscrow-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transferOwnership(_newOwner)
+
+IRs:
+INTERNAL_CALL, Ownable._transferOwnership(address)(_newOwner)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 1382.sol-Bounty0xEscrow-unpause()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+paused = false
+
+IRs:
+paused(bool) := False(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Unpause()
+
+IRs:
+Emit Unpause()"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+whenPaused()
+
+IRs:
+MODIFIER_CALL, Pausable.whenPaused()()"];
+4->1;
+}
+// Function: 1382.sol-Bounty0xEscrow-whenNotPaused()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! paused)
+
+IRs:
+TMP_166 = UnaryType.BANG paused 
+TMP_167(None) = SOLIDITY_CALL require(bool)(TMP_166)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1382.sol-Bounty0xEscrow-whenPaused()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(paused)
+
+IRs:
+TMP_168(None) = SOLIDITY_CALL require(bool)(paused)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1382.sol-ERC20-allowance(address,address)
+digraph{
+}
+// Function: 1382.sol-ERC20-approve(address,uint256)
+digraph{
+}
+// Function: 1382.sol-ERC20-balanceOf(address)
+digraph{
+}
+// Function: 1382.sol-ERC20-totalSupply()
+digraph{
+}
+// Function: 1382.sol-ERC20-transfer(address,uint256)
+digraph{
+}
+// Function: 1382.sol-ERC20-transferFrom(address,address,uint256)
+digraph{
+}
+// Function: 1382.sol-ERC20Basic-balanceOf(address)
+digraph{
+}
+// Function: 1382.sol-ERC20Basic-totalSupply()
+digraph{
+}
+// Function: 1382.sol-ERC20Basic-transfer(address,uint256)
+digraph{
+}
+// Function: 1382.sol-ERC223ReceivingContract-tokenFallback(address,uint256,bytes)
+digraph{
+}
+// Function: 1382.sol-Ownable-_transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_newOwner != address(0))
+
+IRs:
+TMP_5 = CONVERT 0 to address
+TMP_6(bool) = _newOwner != TMP_5
+TMP_7(None) = SOLIDITY_CALL require(bool)(TMP_6)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,_newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,_newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = _newOwner
+
+IRs:
+owner(address) := _newOwner(address)"];
+}
+// Function: 1382.sol-Ownable-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 1382.sol-Ownable-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_9(bool) = msg.sender == owner
+TMP_10(None) = SOLIDITY_CALL require(bool)(TMP_9)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1382.sol-Ownable-renounceOwnership()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+OwnershipRenounced(owner)
+
+IRs:
+Emit OwnershipRenounced(owner)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = address(0)
+
+IRs:
+TMP_1 = CONVERT 0 to address
+owner(address) := TMP_1(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 1382.sol-Ownable-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transferOwnership(_newOwner)
+
+IRs:
+INTERNAL_CALL, Ownable._transferOwnership(address)(_newOwner)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 1382.sol-Pausable-_transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_newOwner != address(0))
+
+IRs:
+TMP_28 = CONVERT 0 to address
+TMP_29(bool) = _newOwner != TMP_28
+TMP_30(None) = SOLIDITY_CALL require(bool)(TMP_29)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+OwnershipTransferred(owner,_newOwner)
+
+IRs:
+Emit OwnershipTransferred(owner,_newOwner)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = _newOwner
+
+IRs:
+owner(address) := _newOwner(address)"];
+}
+// Function: 1382.sol-Pausable-constructor()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+}
+// Function: 1382.sol-Pausable-onlyOwner()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_38(bool) = msg.sender == owner
+TMP_39(None) = SOLIDITY_CALL require(bool)(TMP_38)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1382.sol-Pausable-pause()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+paused = true
+
+IRs:
+paused(bool) := True(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Pause()
+
+IRs:
+Emit Pause()"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+whenNotPaused()
+
+IRs:
+MODIFIER_CALL, Pausable.whenNotPaused()()"];
+4->1;
+}
+// Function: 1382.sol-Pausable-renounceOwnership()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+OwnershipRenounced(owner)
+
+IRs:
+Emit OwnershipRenounced(owner)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = address(0)
+
+IRs:
+TMP_24 = CONVERT 0 to address
+owner(address) := TMP_24(address)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->1;
+}
+// Function: 1382.sol-Pausable-slitherConstructorVariables()
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+paused = false
+
+IRs:
+paused(bool) := False(bool)"];
+}
+// Function: 1382.sol-Pausable-transferOwnership(address)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transferOwnership(_newOwner)
+
+IRs:
+INTERNAL_CALL, Ownable._transferOwnership(address)(_newOwner)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+2->1;
+}
+// Function: 1382.sol-Pausable-unpause()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+paused = false
+
+IRs:
+paused(bool) := False(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Unpause()
+
+IRs:
+Emit Unpause()"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Ownable.onlyOwner()()"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+whenPaused()
+
+IRs:
+MODIFIER_CALL, Pausable.whenPaused()()"];
+4->1;
+}
+// Function: 1382.sol-Pausable-whenNotPaused()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! paused)
+
+IRs:
+TMP_40 = UnaryType.BANG paused 
+TMP_41(None) = SOLIDITY_CALL require(bool)(TMP_40)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1382.sol-Pausable-whenPaused()
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(paused)
+
+IRs:
+TMP_42(None) = SOLIDITY_CALL require(bool)(paused)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}
+// Function: 1382.sol-SafeMath-add(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_20(uint256) = a + b
+c(uint256) := TMP_20(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+assert(bool)(c >= a)
+
+IRs:
+TMP_21(bool) = c >= a
+TMP_22(None) = SOLIDITY_CALL assert(bool)(TMP_21)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 1382.sol-SafeMath-div(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+a / b
+
+IRs:
+TMP_16(uint256) = a / b
+RETURN TMP_16"];
+}
+// Function: 1382.sol-SafeMath-mul(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+a == 0
+
+IRs:
+TMP_11(bool) = a == 0
+CONDITION TMP_11"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_12(uint256) = a * b
+c(uint256) := TMP_12(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+assert(bool)(c / a == b)
+
+IRs:
+TMP_13(uint256) = c / a
+TMP_14(bool) = TMP_13 == b
+TMP_15(None) = SOLIDITY_CALL assert(bool)(TMP_14)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+}
+// Function: 1382.sol-SafeMath-sub(uint256,uint256)
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+assert(bool)(b <= a)
+
+IRs:
+TMP_17(bool) = b <= a
+TMP_18(None) = SOLIDITY_CALL assert(bool)(TMP_17)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_19(uint256) = a - b
+RETURN TMP_19"];
+}
+}
