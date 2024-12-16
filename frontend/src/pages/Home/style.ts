@@ -1,12 +1,12 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
+export const Container = styled.div<{ height: number }>`
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   gap: 20px;
-  height: 100vh;
+  min-height: calc(${({ height }) => height}px + 100vh);
   background-color: #181818;
 `;
 

@@ -3,13 +3,14 @@ import pandas as pd
 from tqdm import trange
 
 base_dir = "C:\\Users\\jyh07\\Documents\\SmartGuard\\AI\\data"
-
+vulnerabilities = {"RE": "Reentrancy", "BN": "Block Number Dependency", "DE": "Dangerous Delegatecall", "EF": "Ether Frozen", "OF": "Integer Overflow/Underflow", "SE": "Ether Strict Equality", "UC": "Unchecked External Call", "TP": "Timestamp Dependency"}
 data = []
 
 for i in trange(50000):
   for vulnerability in os.listdir(base_dir):
     vuln_path = os.path.join(base_dir, vulnerability)
-    row = {"num": i, "vulnerability": vulnerability}
+    vuln = vulnerabilities[vulnerability]
+    row = {"num": i, "vulnerability": vuln}
     for code_type in ["binarycode", "bytecode", "sourcecode"]:
       code_path = os.path.join(vuln_path, code_type)
       for file in os.listdir(code_path):
@@ -25,5 +26,14 @@ for i in trange(50000):
 df = pd.DataFrame(data)
 df = df.dropna(axis=0)
 df = df[df["bytecode"] != ""]
+df = (
+    df.groupby("num")
+    .agg({
+        "vulnerability": lambda x: list(x.unique()),
+        "binarycode": "first",
+        "bytecode": "first",
+    })
+    .reset_index()
+)
 
-df.to_json("processed_data.json", orient="records", lines=True, force_ascii=False)
+df.to_json("processed_data.jsonl", orient="records", lines=True, force_ascii=False)

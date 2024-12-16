@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import * as S from "./style";
+import axios from "axios";
 import Arrow from "../../assets/Arrow";
 import Upload from "../../assets/Upload";
 import { useNavigate } from "react-router-dom";
@@ -17,8 +18,16 @@ const Home = () => {
       setTextareaHeight(textarea.scrollHeight);
     }
   };
+
+  const request = async (message: string | undefined) => {
+    const res = await axios.post("http://localhost:5000/request", {
+      message: message,
+    });
+    return res.data;
+  };
+
   return (
-    <S.Container>
+    <S.Container height={textareaHeight}>
       <S.Text>SmartGuard에 오신 것을 환영합니다!</S.Text>
       <S.InputBox height={textareaHeight}>
         <S.input
@@ -29,8 +38,15 @@ const Home = () => {
         <S.IconBox>
           <Upload />{" "}
           <Arrow
-            onClick={() => {
-              navigate("/report/1");
+            onClick={async () => {
+              const res = await request(textareaRef.current?.value);
+              navigate("/report/1", {
+                state: {
+                  message: res.response,
+                  vuln: res.vuln,
+                  input: textareaRef.current?.value,
+                },
+              });
             }}
           />
         </S.IconBox>
