@@ -54,7 +54,7 @@ const Report = () => {
           {content}
         </ReactMarkdown>
       </S.ReportBox>
-      <S.CodeBox className="codebox">
+      <S.CodeBox>
         <Editor
           height="100%"
           beforeMount={handleEditorWillMount}
